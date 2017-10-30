@@ -1,0 +1,36 @@
+
+PO
+
+1. ใน table ไม่มี primary key
+2. ถ้าข้อมูลใน table เยอะๆ จะให้ทำยังไง
+3. Validate
+4. การ Process ให้ทำ ทีละ file จนเสร็จ แลัว เริ่ม file ใหม่
+5. XCUST_POR_REQ_HEADER_INT_ALL ลงอะไร
+6. XCUST_POR_REQ_LINE_INT_ALL ลงอะไร
+7. XCUST_POR_REQ_DIST_INT_ALL ลงอะไร
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Table : XCUST_POR_REQ_HEADER_INT_ALL.Batch ID	YYYYMMDD+RUNNING 2 หลัก
+	running สร้าง ยังไง
+		Requisitioning BU* 		สร้าง ยังไง
+		Import Source
+
+
+
+
+XCUST_POR_REQ_LINE_INT_ALL
+	Requester
