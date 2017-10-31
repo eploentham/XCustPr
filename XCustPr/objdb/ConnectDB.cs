@@ -46,7 +46,7 @@ namespace XCustPr
         public String passDBKFCPO = "Ekartc2c5";
         public String portDBKFCPO = "3306";
         
-        public SqlConnection connBIT, connMainHIS1, connBITDemo, connKFC;
+        public SqlConnection connBIT,  connBITDemo, connKFC;
         //public MySqlConnection connORCMA, connORCBA, connORCBIT;
         public int _rowsAffected = 0;
         private InitC initC;
@@ -67,7 +67,8 @@ namespace XCustPr
             else if (host == "kfc_po")
             {
                 connKFC = new SqlConnection();
-                connKFC.ConnectionString = "Server=" + initC.hostDBKFCPO + ";Database=" + initC.databaseDBKFCPO + ";Uid=" + initC.userDBKFCPO + ";Pwd=" + initC.passDBKFCPO + ";port = " + initC.portDBKFCPO + ";Connection Timeout = 300;default command timeout=0; CharSet=utf8;";
+                //connKFC.ConnectionString = "Server=" + initC.hostDBKFCPO + ";Database=" + initC.databaseDBKFCPO + ";Uid=" + initC.userDBKFCPO + ";Pwd=" + initC.passDBKFCPO + ";port = " + initC.portDBKFCPO + ";Connection Timeout = 300;default command timeout=0; CharSet=utf8;";
+                connKFC.ConnectionString = "Server=" + initC.hostDBKFCPO + ";Database=" + initC.databaseDBKFCPO + ";Uid=" + initC.userDBKFCPO + ";Pwd=" + initC.passDBKFCPO + ";";
             }
         }
         public ConnectDB(String hostDB, String databaseDB, String userDB, String passDB)
@@ -423,11 +424,11 @@ namespace XCustPr
                 ConnectionString = connKFC.ConnectionString;
             }
 
-            StringBuilder sCommand = new StringBuilder("INSERT INTO " + xclfptdb.xCLFPT.table + " (" + xclfptdb.xCLFPT.COMPANY + ", " +
-                xclfptdb.xCLFPT.DELIVERY_INSTRUCTION + "," + xclfptdb.xCLFPT.ERROR_MSG + "," + xclfptdb.xCLFPT.ITEM_NUMBER + "," +
+            StringBuilder sCommand = new StringBuilder("INSERT INTO " + xclfptdb.xCLFPT.table + " (" + xclfptdb.xCLFPT.COMPANYCODE + ", " +
+                xclfptdb.xCLFPT.DELIVERY_INSTRUCTION + "," + xclfptdb.xCLFPT.ERROR_MSG + "," + xclfptdb.xCLFPT.ITEM_CODE + "," +
                 xclfptdb.xCLFPT.LINE_NUMBER + "," + xclfptdb.xCLFPT.ORDER_DATE + "," + xclfptdb.xCLFPT.ORDER_TIME + "," +
                 xclfptdb.xCLFPT.PO_NUMBER + "," + xclfptdb.xCLFPT.PROCESS_FLAG + "," + xclfptdb.xCLFPT.QTY + "," +
-                xclfptdb.xCLFPT.SUPPLIER_CODE + "," + xclfptdb.xCLFPT.UOM + "," + xclfptdb.xCLFPT.VALIDATE_FLAG +
+                xclfptdb.xCLFPT.SUPPLIER_CODE + "," + xclfptdb.xCLFPT.UOMCODE + "," + xclfptdb.xCLFPT.VALIDATE_FLAG +
                 //xclfptdb.xCLFPT.COMPANY + "," + xclfptdb.xCLFPT.COMPANY + "," + xclfptdb.xCLFPT.COMPANY +
                 ") VALUES ");
             using (SqlCommand mConnection = new SqlCommand(ConnectionString))

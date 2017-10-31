@@ -26,7 +26,7 @@ namespace XCustPr
         public String EmailUsername = "172.25.1.153";
         public String EmailPassword = "root";
         public String EmailSMTPSecure = "Ekartc2c5";
-        public String portDBORCMA = "3306";
+        public String PathLinfox = "3306";
 
         public String EmailHost = "hisorc_ba";        // orc backoffice
         public String EmailSender = "172.25.1.153";

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,10 +24,10 @@ namespace XCustPr
         private void initConfig()
         {
             xCLFPT = new XcustLinfoxPrTbl();
-            xCLFPT.COMPANY = "COMPANY";
+            xCLFPT.COMPANYCODE = "COMPANY_CODE";
             xCLFPT.DELIVERY_INSTRUCTION = "DELIVERY_INSTRUCTION";
-            xCLFPT.ERROR_MSG = "ERROR_MSG";
-            xCLFPT.ITEM_NUMBER = "ITEM_NUMBER";
+            xCLFPT.ERROR_MSG = "error_message";
+            xCLFPT.ITEM_CODE = "ITEM_CODE";
             xCLFPT.LINE_NUMBER = "LINE_NUMBER";
             xCLFPT.ORDER_DATE = "ORDER_DATE";
             xCLFPT.ORDER_TIME = "ORDER_TIME";
@@ -34,8 +35,13 @@ namespace XCustPr
             xCLFPT.PROCESS_FLAG = "PROCESS_FLAG";
             xCLFPT.QTY = "QTY";
             xCLFPT.SUPPLIER_CODE = "SUPPLIER_CODE";
-            xCLFPT.UOM = "UOM";
+            xCLFPT.UOMCODE = "UOM_CODE";
             xCLFPT.VALIDATE_FLAG = "VALIDATE_FLAG";
+            xCLFPT.create_date = "creation_date";
+            xCLFPT.create_by = "creation_by";
+            xCLFPT.last_update_by = "last_update_by";
+            xCLFPT.last_update_date = "last_update_date";
+            xCLFPT.file_name = "file_name";
 
             xCLFPT.table = "xcust_linfox_pr_tbl";
         }
@@ -45,6 +51,48 @@ namespace XCustPr
             String sql = "select * From "+xCLFPT.table;
             dt = conn.selectData(sql, "kfc_po");
             return dt;
+        }
+        public void insertBluk(List<String> linfox, String filename, String host)
+        {
+            String ConnectionString = "", errMsg = "", processFlag = "", validateFlag = "", createBy="-", createDate= "GETDATE()", lastUpdateBy="", lastUpdateTime="null";
+            if (host == "kfc_po")
+            {
+                ConnectionString = conn.connKFC.ConnectionString;
+            }
+            StringBuilder sql = new StringBuilder();
+            
+            using (SqlCommand mConnection = new SqlCommand(ConnectionString))
+            {
+                sql.Clear();
+                List<string> Rows = new List<string>();
+                foreach (String bbb in linfox)
+                {
+                    String[] aaa = bbb.Split('|');
+                    errMsg = "";
+                    processFlag = "";
+                    validateFlag = "";
+                    //bbb += "('" + aaa[0] + "','" +
+                    //aaa[11] + "','" + errMsg + "','" + aaa[6] + "','" +
+                    //aaa[2] + "','" + aaa[4] + "','" + aaa[5] + "','" +
+                    //aaa[1] + "','" + processFlag + "','" + aaa[7] + "','" +
+                    //aaa[3] + "','" + aaa[8] + "','" + validateFlag + "'),";
+                    sql.Append("Insert Into ").Append(xCLFPT.table).Append(" (").Append(xCLFPT.COMPANYCODE).Append(",").Append(xCLFPT.PO_NUMBER).Append(",").Append(xCLFPT.LINE_NUMBER)
+                        .Append(",").Append(xCLFPT.SUPPLIER_CODE).Append(",").Append(xCLFPT.ORDER_DATE).Append(",").Append(xCLFPT.ORDER_TIME)
+                        .Append(",").Append(xCLFPT.ITEM_CODE).Append(",").Append(xCLFPT.QTY).Append(",").Append(xCLFPT.UOMCODE)
+                        .Append(",").Append(xCLFPT.DELIVERY_INSTRUCTION).Append(",").Append(xCLFPT.VALIDATE_FLAG).Append(",").Append(xCLFPT.PROCESS_FLAG)
+                        .Append(",").Append(xCLFPT.ERROR_MSG).Append(",").Append(xCLFPT.create_by).Append(",").Append(xCLFPT.create_date)
+                        .Append(",").Append(xCLFPT.last_update_by).Append(",").Append(xCLFPT.last_update_date).Append(",").Append(xCLFPT.file_name).Append(") Values ('")
+                        .Append(aaa[0]).Append("','").Append(aaa[1]).Append("','").Append(aaa[2])
+                        .Append("','").Append(aaa[3]).Append("',").Append(aaa[4]).Append(",'").Append(aaa[5])
+                        .Append("','").Append(aaa[6]).Append("',").Append(aaa[7]).Append(",'").Append(aaa[10])
+                        .Append("','").Append(aaa[11]).Append("','").Append(validateFlag).Append("','").Append(processFlag)
+                        .Append("','").Append(errMsg).Append("','").Append(createBy).Append("',").Append(createDate)
+                        .Append(",'").Append(lastUpdateBy).Append("',").Append(lastUpdateTime).Append(",'").Append(filename).Append("') ");
+                    conn.ExecuteNonQuery(sql.ToString(), host);
+                }
+                
+            }
+
         }
         //public static void BulkToMySQL()
         //{

@@ -35,7 +35,7 @@ namespace XCustPr
             initC = new InitC();
             GetConfig();
 
-            //conn = new ConnectDB("kfc_po", initC);
+            conn = new ConnectDB("kfc_po", initC);
             xCLFPTDB = new XcustLinfoxPrTblDB(conn);
             xCPRHIADB = new XcustPorReqHeaderIntAllDB(conn);
             xCPRLIADB = new XcustPorReqLineIntAllDB(conn);
@@ -65,7 +65,7 @@ namespace XCustPr
             initC.EmailUsername = iniFile.Read("EmailUsername");
             initC.EmailPassword = iniFile.Read("EmailPassword");
             initC.EmailSMTPSecure = iniFile.Read("EmailSMTPSecure");
-            initC.portDBORCMA = iniFile.Read("portDBORCMA");
+            initC.PathLinfox = iniFile.Read("PathLinfox");
 
             initC.EmailHost = iniFile.Read("EmailHost");        // orc backoffice
             initC.EmailSender = iniFile.Read("EmailSender");
@@ -130,7 +130,8 @@ namespace XCustPr
             foreach (string aa in filePOProcess)
             {
                 List<String> linfox = rd.ReadTextFile(aa);
-                conn.BulkToMySQL("kfc_po", linfox);
+                //conn.BulkToMySQL("kfc_po", linfox);       // ย้ายจาก MySQL ไป MSSQL
+                xCLFPTDB.insertBluk(linfox, aa, "kfc_po");
 
                 dt.Clear();
                 //d.	จากนั้น Program จะเอาข้อมูลจาก Table XCUST_LINFOX_PR_TBL มาทำการ Validate 
@@ -200,7 +201,7 @@ namespace XCustPr
             xCPRLIA.Deliver_to_Organization = "";
             xCPRLIA.Goods = "";
             xCPRLIA.INVENTORY = "";
-            xCPRLIA.ITEM_NUMBER = row[xCLFPTDB.xCLFPT.ITEM_NUMBER].ToString().Trim();
+            xCPRLIA.ITEM_NUMBER = row[xCLFPTDB.xCLFPT.ITEM_CODE].ToString().Trim();
             xCPRLIA.LINFOX_PR = "";
             xCPRLIA.Need_by_Date = "";
             xCPRLIA.PO_LINE_NUMBER = row[xCLFPTDB.xCLFPT.LINE_NUMBER].ToString().Trim();
