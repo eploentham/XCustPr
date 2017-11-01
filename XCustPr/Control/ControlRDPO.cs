@@ -109,7 +109,7 @@ namespace XCustPr
             //row[dc].ToString().Trim()
             return true;
         }
-        public void processRDPO(String[] filePO)
+        public void processLinfoxPOtoErpPR(String[] filePO)
         {
             TimeZoneInfo tz = TimeZoneInfo.FindSystemTimeZoneById("US Eastern Standard Time");
             String date = System.DateTime.Now.ToString("yyyy-MM-dd");

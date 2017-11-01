@@ -156,7 +156,7 @@ namespace XCustPr
         {
             //throw new NotImplementedException();
             // move file
-            cRDPO.processRDPO(filePO);
+            cRDPO.processLinfoxPOtoErpPR(filePO);
             
         }
         private void btnPrepare_Click(object sender, EventArgs e)
