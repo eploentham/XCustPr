@@ -62,7 +62,7 @@ namespace XCustPr
             else if (host == "bithis")
             {
                 connBITDemo = new SqlConnection();
-                connBITDemo.ConnectionString = "Server=" + initC.hostDBBITDemo + ";Database=" + initC.databaseDBBITDemo + ";Uid=" + initC.userDBBITDemo + ";Pwd=" + initC.passDBBITDemo + ";Connection Timeout=300;";
+                connBITDemo.ConnectionString = "Server=" + initC.hostDBBITDemo + ";Database=" + initC.databaseDBBITDemo + ";Uid=" + initC.userDBBITDemo + ";Pwd=" + initC.ImportSource + ";Connection Timeout=300;";
             }
             else if (host == "kfc_po")
             {

@@ -19,9 +19,11 @@ namespace XCustPr
         public String databaseDBBITDemo = "bithis_demo";             //bit demo
         public String hostDBBITDemo = "172.25.1.153";
         public String userDBBITDemo = "sa";
-        public String passDBBITDemo = "Orawanhospital1*";
-        public String EmailPort = "3306";
+        public String ImportSource = "ImportSource";
+        public String Company = "Company";
+        public String DELIVER_TO_LOCATTION = "DELIVER_TO_LOCATTION";
 
+        public String EmailPort = "3306";
         public String EmailCharset = "hisorc_ma";        //orc master
         public String EmailUsername = "172.25.1.153";
         public String EmailPassword = "root";
