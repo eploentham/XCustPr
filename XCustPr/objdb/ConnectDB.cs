@@ -426,7 +426,7 @@ namespace XCustPr
 
             StringBuilder sCommand = new StringBuilder("INSERT INTO " + xclfptdb.xCLFPT.table + " (" + xclfptdb.xCLFPT.COMPANYCODE + ", " +
                 xclfptdb.xCLFPT.DELIVERY_INSTRUCTION + "," + xclfptdb.xCLFPT.ERROR_MSG + "," + xclfptdb.xCLFPT.ITEM_CODE + "," +
-                xclfptdb.xCLFPT.LINE_NUMBER + "," + xclfptdb.xCLFPT.ORDER_DATE + "," + xclfptdb.xCLFPT.ORDER_TIME + "," +
+                xclfptdb.xCLFPT.LINE_NUMBER + "," + xclfptdb.xCLFPT.ORDER_DATE + "," + xclfptdb.xCLFPT.REQUEST_DATE + "," +
                 xclfptdb.xCLFPT.PO_NUMBER + "," + xclfptdb.xCLFPT.PROCESS_FLAG + "," + xclfptdb.xCLFPT.QTY + "," +
                 xclfptdb.xCLFPT.SUPPLIER_CODE + "," + xclfptdb.xCLFPT.UOMCODE + "," + xclfptdb.xCLFPT.VALIDATE_FLAG +
                 //xclfptdb.xCLFPT.COMPANY + "," + xclfptdb.xCLFPT.COMPANY + "," + xclfptdb.xCLFPT.COMPANY +

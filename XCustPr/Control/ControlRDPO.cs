@@ -36,7 +36,7 @@ namespace XCustPr
             GetConfig();
 
             conn = new ConnectDB("kfc_po", initC);
-            xCLFPTDB = new XcustLinfoxPrTblDB(conn);
+            xCLFPTDB = new XcustLinfoxPrTblDB(conn, initC);
             xCPRHIADB = new XcustPorReqHeaderIntAllDB(conn);
             xCPRLIADB = new XcustPorReqLineIntAllDB(conn);
             xCPRDIADB = new XcustPorReqDistIntAllDB(conn);

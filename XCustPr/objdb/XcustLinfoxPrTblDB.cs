@@ -12,13 +12,15 @@ namespace XCustPr
     {
         public XcustLinfoxPrTbl xCLFPT;
         ConnectDB conn;
+        private InitC initC;
         public XcustLinfoxPrTblDB()
         {
             initConfig();
         }
-        public XcustLinfoxPrTblDB(ConnectDB c)
+        public XcustLinfoxPrTblDB(ConnectDB c, InitC initc)
         {
             conn = c;
+            initC = initc;
             initConfig();
         }
         private void initConfig()
@@ -30,7 +32,7 @@ namespace XCustPr
             xCLFPT.ITEM_CODE = "ITEM_CODE";
             xCLFPT.LINE_NUMBER = "LINE_NUMBER";
             xCLFPT.ORDER_DATE = "ORDER_DATE";
-            xCLFPT.ORDER_TIME = "ORDER_TIME";
+            xCLFPT.REQUEST_DATE = "REQUEST_DATE";
             xCLFPT.PO_NUMBER = "PO_NUMBER";
             xCLFPT.PROCESS_FLAG = "PROCESS_FLAG";
             xCLFPT.QTY = "QTY";
@@ -42,6 +44,9 @@ namespace XCustPr
             xCLFPT.last_update_by = "last_update_by";
             xCLFPT.last_update_date = "last_update_date";
             xCLFPT.file_name = "file_name";
+            xCLFPT.store_code = "store_code";
+            //xCLFPT.REQUEST_TIME = "REQUEST_TIME";
+            xCLFPT.REQUEST_TIME = "ORDER_TIME";
 
             //xCLFPT.table = "xcust_linfox_pr_tbl";
             xCLFPT.table = "xcust_linfox_pr_int_tbl";
@@ -59,7 +64,7 @@ namespace XCustPr
             String date = System.DateTime.Now.ToString("yyyy-MM-dd");
             String time = System.DateTime.Now.ToString("HH:mm:ss");
 
-            String ConnectionString = "", errMsg = "", processFlag = "", validateFlag = "", createBy="-", createDate= "GETDATE()", lastUpdateBy="-", lastUpdateTime="null";
+            String ConnectionString = "", errMsg = "", processFlag = "", validateFlag = "", createBy="0", createDate= "GETDATE()", lastUpdateBy="0", lastUpdateTime="null";
             if (host == "kfc_po")
             {
                 ConnectionString = conn.connKFC.ConnectionString;
@@ -82,18 +87,20 @@ namespace XCustPr
                     //aaa[1] + "','" + processFlag + "','" + aaa[7] + "','" +
                     //aaa[3] + "','" + aaa[8] + "','" + validateFlag + "'),";
                     sql.Append("Insert Into ").Append(xCLFPT.table).Append(" (").Append(xCLFPT.COMPANYCODE).Append(",").Append(xCLFPT.PO_NUMBER).Append(",").Append(xCLFPT.LINE_NUMBER)
-                        .Append(",").Append(xCLFPT.SUPPLIER_CODE).Append(",").Append(xCLFPT.ORDER_DATE).Append(",").Append(xCLFPT.ORDER_TIME)
+                        .Append(",").Append(xCLFPT.SUPPLIER_CODE).Append(",").Append(xCLFPT.ORDER_DATE).Append(",").Append(xCLFPT.REQUEST_DATE)
                         .Append(",").Append(xCLFPT.ITEM_CODE).Append(",").Append(xCLFPT.QTY).Append(",").Append(xCLFPT.UOMCODE)
                         .Append(",").Append(xCLFPT.DELIVERY_INSTRUCTION).Append(",").Append(xCLFPT.VALIDATE_FLAG).Append(",").Append(xCLFPT.PROCESS_FLAG)
                         .Append(",").Append(xCLFPT.ERROR_MSG).Append(",").Append(xCLFPT.create_by).Append(",").Append(xCLFPT.create_date)
-                        .Append(",").Append(xCLFPT.last_update_by).Append(",").Append(xCLFPT.last_update_date).Append(",").Append(xCLFPT.file_name).Append(") Values ('")
+                        .Append(",").Append(xCLFPT.last_update_by).Append(",").Append(xCLFPT.last_update_date).Append(",").Append(xCLFPT.file_name)
+                        .Append(",").Append(xCLFPT.store_code).Append(",").Append(xCLFPT.REQUEST_TIME).Append(") Values ('")
                         .Append(aaa[0]).Append("','").Append(aaa[1]).Append("','").Append(aaa[2])
                         .Append("','").Append(aaa[3]).Append("',").Append(aaa[4]).Append(",'").Append(aaa[5])
-                        //.Append("','").Append(aaa[6]).Append("',").Append(aaa[7]).Append(",'").Append(aaa[10])
-                        .Append("','").Append(aaa[6]).Append("',").Append(1).Append(",'").Append(aaa[10])// จำนวนยัง error อยู่
-                        .Append("','").Append(aaa[11]).Append("','").Append(validateFlag).Append("','").Append(processFlag)
+                        .Append("','").Append(aaa[7]).Append("',").Append(aaa[8]).Append(",'").Append(aaa[9])
+                        //.Append("','").Append(aaa[7]).Append("',").Append(1).Append(",'").Append(aaa[10])// จำนวนยัง error อยู่
+                        .Append("','").Append(aaa[10]).Append("','").Append(validateFlag).Append("','").Append(processFlag)
                         .Append("','").Append(errMsg).Append("','").Append(createBy).Append("',").Append(createDate)
-                        .Append(",'").Append(lastUpdateBy).Append("',").Append(lastUpdateTime).Append(",'").Append(filename).Append("') ");
+                        .Append(",'").Append(lastUpdateBy).Append("',").Append(lastUpdateTime).Append(",'").Append(filename.Replace(initC.PathProcess,""))
+                        .Append("','").Append(aaa[11]).Append("','").Append(aaa[6]).Append("') ");
                     conn.ExecuteNonQuery(sql.ToString(), host);
                 }
                 
