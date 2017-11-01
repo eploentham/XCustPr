@@ -43,7 +43,8 @@ namespace XCustPr
             xCLFPT.last_update_date = "last_update_date";
             xCLFPT.file_name = "file_name";
 
-            xCLFPT.table = "xcust_linfox_pr_tbl";
+            //xCLFPT.table = "xcust_linfox_pr_tbl";
+            xCLFPT.table = "xcust_linfox_pr_int_tbl";
         }
         public DataTable selectLinfox()
         {
@@ -54,7 +55,11 @@ namespace XCustPr
         }
         public void insertBluk(List<String> linfox, String filename, String host)
         {
-            String ConnectionString = "", errMsg = "", processFlag = "", validateFlag = "", createBy="-", createDate= "GETDATE()", lastUpdateBy="", lastUpdateTime="null";
+            TimeZoneInfo tz = TimeZoneInfo.FindSystemTimeZoneById("US Eastern Standard Time");
+            String date = System.DateTime.Now.ToString("yyyy-MM-dd");
+            String time = System.DateTime.Now.ToString("HH:mm:ss");
+
+            String ConnectionString = "", errMsg = "", processFlag = "", validateFlag = "", createBy="-", createDate= "GETDATE()", lastUpdateBy="-", lastUpdateTime="null";
             if (host == "kfc_po")
             {
                 ConnectionString = conn.connKFC.ConnectionString;
@@ -63,14 +68,14 @@ namespace XCustPr
             
             using (SqlCommand mConnection = new SqlCommand(ConnectionString))
             {
-                sql.Clear();
                 List<string> Rows = new List<string>();
                 foreach (String bbb in linfox)
                 {
+                    sql.Clear();
                     String[] aaa = bbb.Split('|');
                     errMsg = "";
-                    processFlag = "";
-                    validateFlag = "";
+                    processFlag = "N";
+                    validateFlag = "N";
                     //bbb += "('" + aaa[0] + "','" +
                     //aaa[11] + "','" + errMsg + "','" + aaa[6] + "','" +
                     //aaa[2] + "','" + aaa[4] + "','" + aaa[5] + "','" +
@@ -84,7 +89,8 @@ namespace XCustPr
                         .Append(",").Append(xCLFPT.last_update_by).Append(",").Append(xCLFPT.last_update_date).Append(",").Append(xCLFPT.file_name).Append(") Values ('")
                         .Append(aaa[0]).Append("','").Append(aaa[1]).Append("','").Append(aaa[2])
                         .Append("','").Append(aaa[3]).Append("',").Append(aaa[4]).Append(",'").Append(aaa[5])
-                        .Append("','").Append(aaa[6]).Append("',").Append(aaa[7]).Append(",'").Append(aaa[10])
+                        //.Append("','").Append(aaa[6]).Append("',").Append(aaa[7]).Append(",'").Append(aaa[10])
+                        .Append("','").Append(aaa[6]).Append("',").Append(1).Append(",'").Append(aaa[10])// จำนวนยัง error อยู่
                         .Append("','").Append(aaa[11]).Append("','").Append(validateFlag).Append("','").Append(processFlag)
                         .Append("','").Append(errMsg).Append("','").Append(createBy).Append("',").Append(createDate)
                         .Append(",'").Append(lastUpdateBy).Append("',").Append(lastUpdateTime).Append(",'").Append(filename).Append("') ");

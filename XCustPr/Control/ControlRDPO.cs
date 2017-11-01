@@ -111,13 +111,15 @@ namespace XCustPr
         }
         public void processRDPO(String[] filePO)
         {
+            TimeZoneInfo tz = TimeZoneInfo.FindSystemTimeZoneById("US Eastern Standard Time");
+            String date = System.DateTime.Now.ToString("yyyy-MM-dd");
+            String time = System.DateTime.Now.ToString("HH:mm:ss");
+
             ReadText rd = new ReadText();
             String[] filePOProcess;
             DataTable dt = new DataTable();
             Boolean chk = false;
-            TimeZoneInfo tz = TimeZoneInfo.FindSystemTimeZoneById("US Eastern Standard Time");
-            String date = System.DateTime.Now.ToString("yyyy-MM-dd");
-            String time = System.DateTime.Now.ToString("HH:mm:ss");
+            
             // b.	Program ทำการ Move File มาไว้ที่ Path ตาม Parameter Path Process
             foreach (string aa in filePO)
             {
