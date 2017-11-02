@@ -58,6 +58,26 @@ namespace XCustPr
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
+        public DataTable selectLinfoxGroupByFilename()
+        {
+            DataTable dt = new DataTable();
+            String sql = "select "+xCLFPT.file_name+" From " + xCLFPT.table+" Group By "+xCLFPT.file_name;
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
+        }
+        public DataTable selectLinfoxByFilename(String filename)
+        {
+            DataTable dt = new DataTable();
+            String sql = "select * From " + xCLFPT.table + " Where " + xCLFPT.file_name+"='"+filename+"'";
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
+        }
+        public void DeleteLinfox()
+        {
+            String sql = "Delete From " + xCLFPT.table;
+            conn.ExecuteNonQuery(sql, "kfc_po");            
+        }
+
         public void insertBluk(List<String> linfox, String filename, String host)
         {
             TimeZoneInfo tz = TimeZoneInfo.FindSystemTimeZoneById("US Eastern Standard Time");
@@ -95,17 +115,14 @@ namespace XCustPr
                         .Append(",").Append(xCLFPT.store_code).Append(",").Append(xCLFPT.REQUEST_TIME).Append(") Values ('")
                         .Append(aaa[0]).Append("','").Append(aaa[1]).Append("','").Append(aaa[2])
                         .Append("','").Append(aaa[3]).Append("',").Append(aaa[4]).Append(",'").Append(aaa[5])
-                        .Append("','").Append(aaa[7]).Append("',").Append(aaa[8]).Append(",'").Append(aaa[9])
-                        //.Append("','").Append(aaa[7]).Append("',").Append(1).Append(",'").Append(aaa[10])// จำนวนยัง error อยู่
+                        .Append("','").Append(aaa[7]).Append("',").Append(aaa[8]).Append(",'").Append(aaa[9])                        
                         .Append("','").Append(aaa[10]).Append("','").Append(validateFlag).Append("','").Append(processFlag)
                         .Append("','").Append(errMsg).Append("','").Append(createBy).Append("',").Append(createDate)
                         .Append(",'").Append(lastUpdateBy).Append("',").Append(lastUpdateTime).Append(",'").Append(filename.Replace(initC.PathProcess,""))
                         .Append("','").Append(aaa[11]).Append("','").Append(aaa[6]).Append("') ");
                     conn.ExecuteNonQuery(sql.ToString(), host);
                 }
-                
             }
-
         }
         //public static void BulkToMySQL()
         //{

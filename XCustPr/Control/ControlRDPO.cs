@@ -29,6 +29,9 @@ namespace XCustPr
         public XcustPorReqHeaderIntAllDB xCPRHIADB;
         public XcustPorReqLineIntAllDB xCPRLIADB;
         public XcustPorReqDistIntAllDB xCPRDIADB;
+        private StringBuilder sYear = new StringBuilder();
+        private StringBuilder sMonth = new StringBuilder();
+        private StringBuilder sDay = new StringBuilder();
         public ControlRDPO()
         {
             iniFile = new IniFile(Environment.CurrentDirectory + "\\" + Application.ProductName + ".ini");
@@ -58,7 +61,9 @@ namespace XCustPr
             initC.APPROVER_EMAIL = iniFile.Read("APPROVER_EMAIL");    //bit demo
             initC.BU_NAME = iniFile.Read("BU_NAME");
             initC.Requester = iniFile.Read("Requester");
-            initC.passDBBITDemo = iniFile.Read("passDBBITDemo");
+            initC.ImportSource = iniFile.Read("ImportSource");
+            initC.Company = iniFile.Read("Company");
+            initC.DELIVER_TO_LOCATTION = iniFile.Read("DELIVER_TO_LOCATTION");
             initC.EmailPort = iniFile.Read("EmailPort");
 
             initC.EmailCharset = iniFile.Read("EmailCharset");      //orc master
@@ -104,7 +109,61 @@ namespace XCustPr
         {
             System.IO.File.Move(@sourceFile, @destinationFile);
         }
-        private Boolean validateLinfox(DataRow row)
+        /*
+         * check แค่ format ว่า เป็น yyyymmdd เท่านั้น
+         */
+        public Boolean validateDate(String date)
+        {
+            Boolean chk = false;
+            if (date.Length == 8)
+            {
+                sYear.Clear();
+                sMonth.Clear();
+                sDay.Clear();
+                try
+                {
+                    sYear.Append(date.Substring(4));
+                    sMonth.Append(date.Substring(4, 2));
+                    sDay.Append(date.Substring(6, 2));
+                    if ((int.Parse(sYear.ToString()) > 2000) && (int.Parse(sYear.ToString()) < 2100))
+                    {
+                        if ((int.Parse(sMonth.ToString()) >= 1) && (int.Parse(sMonth.ToString()) <= 12))
+                        {
+                            if ((int.Parse(sDay.ToString()) >= 1) && (int.Parse(sDay.ToString()) <= 31))
+                            {
+                                chk = true;
+                            }
+                        }
+                    }
+                }
+                catch(Exception ex)
+                {
+                    chk = false;
+                }
+                finally
+                {
+
+                }
+                
+            }
+            else
+            {
+                chk = false;
+            }
+            return chk;
+        }
+        /*
+         * check qty ว่า data type ถูกต้องไหม
+         * ที่ใช้ int.tryparse เพราะ ใน database เป็น decimal(18,0)
+         */
+        public Boolean validateQTY(String qty)
+        {
+            Boolean chk = false;
+            int i = 0;
+            chk = int.TryParse(qty,out i);
+            return chk;
+        }
+        public Boolean validateLinfox(DataRow row)
         {
             //row[dc].ToString().Trim()
             return true;
@@ -125,7 +184,7 @@ namespace XCustPr
             {
                 moveFile(aa, initC.PathProcess + aa.Replace(initC.PathInitial, ""));
             }
-
+            xCLFPTDB.DeleteLinfox();//  clear temp table
             //c.	จากนัน Program ทำการอ่าน File ใน Folder Path Process มาไว้ยัง Table XCUST_LINFOX_PR_TBL ด้วย Validate Flag = ‘N’ ,PROCES_FLAG = ‘N’
             // insert XCUST_LINFOX_PR_TBL
             filePOProcess = getFileinFolder(initC.PathProcess);
