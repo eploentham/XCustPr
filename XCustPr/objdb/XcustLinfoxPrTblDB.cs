@@ -58,6 +58,20 @@ namespace XCustPr
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
+        public DataTable selectLinfoxGroupByFilename()
+        {
+            DataTable dt = new DataTable();
+            String sql = "select "+xCLFPT.file_name+" From " + xCLFPT.table+" Group By "+xCLFPT.file_name;
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
+        }
+        public DataTable selectLinfoxByFilename(String filename)
+        {
+            DataTable dt = new DataTable();
+            String sql = "select * From " + xCLFPT.table + " Where " + xCLFPT.file_name+"='"+filename+"'";
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
+        }
         public void DeleteLinfox()
         {
             String sql = "Delete From " + xCLFPT.table;
