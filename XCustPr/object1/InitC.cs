@@ -22,6 +22,8 @@ namespace XCustPr
         public String ImportSource = "ImportSource";
         public String Company = "Company";
         public String DELIVER_TO_LOCATTION = "DELIVER_TO_LOCATTION";
+        public String ORGANIZATION_code = "ORGANIZATION_code";
+        public String Locator = "Locator";
 
         public String EmailPort = "3306";
         public String EmailCharset = "hisorc_ma";        //orc master

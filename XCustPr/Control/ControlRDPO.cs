@@ -29,6 +29,12 @@ namespace XCustPr
         public XcustPorReqHeaderIntAllDB xCPRHIADB;
         public XcustPorReqLineIntAllDB xCPRLIADB;
         public XcustPorReqDistIntAllDB xCPRDIADB;
+        public XcustBuMstTblDB xCBMTDB;
+        public XcustDeriverLocatorMstTblDB xCDLMTDB;
+        public XcustDeriverOrganizationMstTblDB xCDOMTDB;
+
+        public ValidatePrPo vPrPo;
+
         private StringBuilder sYear = new StringBuilder();
         private StringBuilder sMonth = new StringBuilder();
         private StringBuilder sDay = new StringBuilder();
@@ -36,6 +42,8 @@ namespace XCustPr
         {
             iniFile = new IniFile(Environment.CurrentDirectory + "\\" + Application.ProductName + ".ini");
             initC = new InitC();
+            vPrPo = new ValidatePrPo();
+
             GetConfig();
 
             conn = new ConnectDB("kfc_po", initC);
@@ -43,6 +51,10 @@ namespace XCustPr
             xCPRHIADB = new XcustPorReqHeaderIntAllDB(conn);
             xCPRLIADB = new XcustPorReqLineIntAllDB(conn);
             xCPRDIADB = new XcustPorReqDistIntAllDB(conn);
+            xCBMTDB = new XcustBuMstTblDB(conn, initC);
+            xCDLMTDB = new XcustDeriverLocatorMstTblDB(conn, initC);
+            xCDOMTDB = new XcustDeriverOrganizationMstTblDB(conn, initC);
+
 
             fontSize9 = 9.75f;
             fontSize8 = 8.25f;
@@ -64,6 +76,9 @@ namespace XCustPr
             initC.ImportSource = iniFile.Read("ImportSource");
             initC.Company = iniFile.Read("Company");
             initC.DELIVER_TO_LOCATTION = iniFile.Read("DELIVER_TO_LOCATTION");
+            initC.ORGANIZATION_code = iniFile.Read("ORGANIZATION_code");
+            initC.Locator = iniFile.Read("Locator");
+
             initC.EmailPort = iniFile.Read("EmailPort");
 
             initC.EmailCharset = iniFile.Read("EmailCharset");      //orc master
@@ -111,6 +126,7 @@ namespace XCustPr
         }
         /*
          * check แค่ format ว่า เป็น yyyymmdd เท่านั้น
+         * Error PO001-002 : Date Format not correct 
          */
         public Boolean validateDate(String date)
         {
@@ -153,8 +169,36 @@ namespace XCustPr
             return chk;
         }
         /*
+         * กรณีที Order Date ย้อนหลังจากวันที่ปัจจุบัน
+         * Error PO001-028 : Order date is less than current date
+         */
+        public Boolean validateOrderDateMinCurrDate(String orderdate, DateTime currdate)
+        {
+            Boolean chk = false;
+            DateTime orderDate = new DateTime();
+            if(DateTime.TryParse(orderdate,out orderDate))
+            {
+                if(DateTime.Compare(orderDate, currdate)>=0)// check แบบนี้ เพราะจะได้ return false เพื่อในการ gen log และ return false จะได้ออกจาก loop ง่ายดี
+                {
+                    chk = true;
+                }
+                else
+                {
+                    chk = false;
+                }
+            }
+            else
+            {
+                chk = false;
+            }
+            
+
+            return chk;
+        }
+        /*
          * check qty ว่า data type ถูกต้องไหม
          * ที่ใช้ int.tryparse เพราะ ใน database เป็น decimal(18,0)
+         * Error PO001-006 : Invalid data type
          */
         public Boolean validateQTY(String qty)
         {
@@ -163,10 +207,70 @@ namespace XCustPr
             chk = int.TryParse(qty,out i);
             return chk;
         }
+
         public Boolean validateLinfox(DataRow row)
         {
             //row[dc].ToString().Trim()
             return true;
+        }
+        /*
+         *d. จากนั้น Program จะเอาข้อมูลจาก Table XCUST_LINFOX_PR_TBL มาทำการ Validate 
+         *e. กรณีที่ Validat ผ่าน จะเอาข้อมูล Insert ลง table XCUST_POR_REQ_HEADER_INT_ALL, XCUST_POR_REQ_LINE_INT_ALL, XCUST_POR_REQ_DIST_INT_ALL
+         * Validate ไม่ผ่าน ลบ temp where ตาม filename
+         */
+        public void processGetTempTableToValidate()
+        {
+            Boolean chk = false;
+            DataTable dtGroupBy = new DataTable();
+            DataTable dt = new DataTable();
+            DataTable dt1 = new DataTable();
+            String currDate = System.DateTime.Now.ToString("yyyy-MM-dd");
+            String buCode = "", locator="", Org="";
+            ValidatePrPo vPP = new ValidatePrPo();
+            List<ValidatePrPo> lVPr = new List<ValidatePrPo>();
+            int row1 = 0;
+
+            buCode = xCBMTDB.selectActive1();
+            //Error PO001-004 : Invalid Requisitioning BU
+            if (!buCode.Equals(initC.BU_NAME.Trim()))
+            {
+                chk = false;
+            }
+            //Error PO001-008 : Invalid Deliver To Location  
+            locator = xCDLMTDB.selectLocator1();
+            if (!locator.Equals(initC.Locator.Trim()))
+            {
+                chk = false;
+            }
+            //Error PO001-009 : Invalid Deliver-to Organization
+            Org = xCDOMTDB.selectActive1();
+            if (!Org.Equals(initC.ORGANIZATION_code.Trim()))
+            {
+                chk = false;
+            }
+            //StringBuilder filename = new StringBuilder();
+            dtGroupBy = xCLFPTDB.selectLinfoxGroupByFilename();//   ดึง filename
+            foreach(DataRow rowG in dtGroupBy.Rows)
+            {
+                //filename.Clear();
+                //filename.Append(row[xCLFPTDB.xCLFPT.file_name].ToString().Trim());
+                //dt = xCLFPTDB.selectLinfoxByFilename(filename.ToString());        // for test
+                vPP = new ValidatePrPo();
+                dt = xCLFPTDB.selectLinfoxByFilename(rowG[xCLFPTDB.xCLFPT.file_name].ToString().Trim());    // ข้อมูลใน file
+                foreach(DataRow row in dt.Rows)
+                {
+                    row1++;
+                    //Error PO001-006 : Invalid data type
+                    chk = validateQTY(row[xCLFPTDB.xCLFPT.QTY].ToString());
+                    if (!chk)
+                    {
+                        vPP.Filename = rowG[xCLFPTDB.xCLFPT.file_name].ToString().Trim();
+                        vPP.Message = "Error PO001-006 ";
+                        vPP.Validate = "row "+ row1 + " QTY=" + rowG[xCLFPTDB.xCLFPT.QTY].ToString();
+                    }
+                    //dt.Rows[0][xc xCBMT.BU_ID].ToString();
+                }
+            }
         }
         public void processLinfoxPOtoErpPR(String[] filePO)
         {
@@ -184,7 +288,7 @@ namespace XCustPr
             {
                 moveFile(aa, initC.PathProcess + aa.Replace(initC.PathInitial, ""));
             }
-            xCLFPTDB.DeleteLinfox();//  clear temp table
+            xCLFPTDB.DeleteLinfoxTemp();//  clear temp table
             //c.	จากนัน Program ทำการอ่าน File ใน Folder Path Process มาไว้ยัง Table XCUST_LINFOX_PR_TBL ด้วย Validate Flag = ‘N’ ,PROCES_FLAG = ‘N’
             // insert XCUST_LINFOX_PR_TBL
             filePOProcess = getFileinFolder(initC.PathProcess);
@@ -194,32 +298,32 @@ namespace XCustPr
                 //conn.BulkToMySQL("kfc_po", linfox);       // ย้ายจาก MySQL ไป MSSQL
                 xCLFPTDB.insertBluk(linfox, aa, "kfc_po");
 
-                dt.Clear();
-                //d.	จากนั้น Program จะเอาข้อมูลจาก Table XCUST_LINFOX_PR_TBL มาทำการ Validate 
-                //e.กรณีที่ Validat ผ่าน จะเอาข้อมูล Insert ลง table XCUST_POR_REQ_HEADER_INT_ALL, XCUST_POR_REQ_LINE_INT_ALL, XCUST_POR_REQ_DIST_INT_ALL
-                dt = xCLFPTDB.selectLinfox();
-                foreach (DataRow row in dt.Rows)
-                {
-                    chk = validateLinfox(row);
-                    if (chk)
-                    {
-                        //e.	กรณีที่ Validat ผ่าน จะเอาข้อมูล Insert ลง table XCUST_POR_REQ_HEADER_INT_ALL,XCUST_POR_REQ_LINE_INT_ALL ,XCUST_POR_REQ_DIST_INT_ALLและ Update Validate_flag = ‘Y’
-                        insertXcustPorReqHeaderIntAll(row, date, time);
+                //dt.Clear();
+                ////d.	จากนั้น Program จะเอาข้อมูลจาก Table XCUST_LINFOX_PR_TBL มาทำการ Validate 
+                ////e.กรณีที่ Validat ผ่าน จะเอาข้อมูล Insert ลง table XCUST_POR_REQ_HEADER_INT_ALL, XCUST_POR_REQ_LINE_INT_ALL, XCUST_POR_REQ_DIST_INT_ALL
+                //dt = xCLFPTDB.selectLinfox();
+                //foreach (DataRow row in dt.Rows)
+                //{
+                //    chk = validateLinfox(row);
+                //    if (chk)
+                //    {
+                //        //e.	กรณีที่ Validat ผ่าน จะเอาข้อมูล Insert ลง table XCUST_POR_REQ_HEADER_INT_ALL,XCUST_POR_REQ_LINE_INT_ALL ,XCUST_POR_REQ_DIST_INT_ALLและ Update Validate_flag = ‘Y’
+                //        insertXcustPorReqHeaderIntAll(row, date, time);
 
-                        insertXcustPorReqLineIntAll(row, date, time);
+                //        insertXcustPorReqLineIntAll(row, date, time);
 
-                        insertXcustPorReqDistIntAll(row, date, time);
-                        //และ Update Validate_flag = ‘Y’
+                //        insertXcustPorReqDistIntAll(row, date, time);
+                //        //และ Update Validate_flag = ‘Y’
 
-                    }
-                    else
-                    {
-                        //f.	กรณีที่ Validate ไม่ผ่าน จะะ Update Validate_flag = ‘E’ พร้อมระบุ Error Message
-                    }
-                }
-                //g.	จากนั้นรายการที่ผ่าน Program จะอ่านค่าจาก Table XCUST_POR_REQ_HEADER_INT_ALL
-                //h.  ,XCUST_POR_REQ_LINE_INT_ALL ,XCUST_POR_REQ_DIST_INT_ALL โดยมี Process_flag = ‘N’  แล้วทำการ Generate File PR Interface ตาม Format Standard
-                genFilePR();
+                //    }
+                //    else
+                //    {
+                //        //f.	กรณีที่ Validate ไม่ผ่าน จะะ Update Validate_flag = ‘E’ พร้อมระบุ Error Message
+                //    }
+                //}
+                ////g.	จากนั้นรายการที่ผ่าน Program จะอ่านค่าจาก Table XCUST_POR_REQ_HEADER_INT_ALL
+                ////h.  ,XCUST_POR_REQ_LINE_INT_ALL ,XCUST_POR_REQ_DIST_INT_ALL โดยมี Process_flag = ‘N’  แล้วทำการ Generate File PR Interface ตาม Format Standard
+                //genFilePR();
 
 
             }

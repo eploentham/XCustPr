@@ -157,9 +157,11 @@ namespace XCustPr
             //throw new NotImplementedException();
             // move file
             cRDPO.processLinfoxPOtoErpPR(filePO);
-            
+
             //1. ดึงข้อมูลตาม group by filename เพราะ field filename เป็นตัวแบ่งข้อมูลแต่ละfile
             //2. ดึงข้อมูล where ตาม filename เพื่อ validate ถ้า validate ผ่าน ก็ update validate_flag = 'Y'
+            cRDPO.processGetTempTableToValidate();
+
         }
         private void btnPrepare_Click(object sender, EventArgs e)
         {
@@ -189,6 +191,7 @@ namespace XCustPr
             // move file
             //cRDPO.processRDPO(filePO);
             FtpWebRequest request;
+            //cRDPO.validateOrderDateMinCurrDate("");
         }
         private void btnFTP_Click(object sender, EventArgs e)
         {

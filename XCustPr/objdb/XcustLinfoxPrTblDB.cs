@@ -72,10 +72,15 @@ namespace XCustPr
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
-        public void DeleteLinfox()
+        public void DeleteLinfoxTemp()
         {
             String sql = "Delete From " + xCLFPT.table;
             conn.ExecuteNonQuery(sql, "kfc_po");            
+        }
+        public void DeleteLinfoxTempByFilename(String filename)
+        {
+            String sql = "Delete From " + xCLFPT.table + " Where " + xCLFPT.file_name + "='" + filename + "'";
+            conn.ExecuteNonQuery(sql, "kfc_po");
         }
 
         public void insertBluk(List<String> linfox, String filename, String host)
@@ -118,7 +123,7 @@ namespace XCustPr
                         .Append("','").Append(aaa[7]).Append("',").Append(aaa[8]).Append(",'").Append(aaa[9])                        
                         .Append("','").Append(aaa[10]).Append("','").Append(validateFlag).Append("','").Append(processFlag)
                         .Append("','").Append(errMsg).Append("','").Append(createBy).Append("',").Append(createDate)
-                        .Append(",'").Append(lastUpdateBy).Append("',").Append(lastUpdateTime).Append(",'").Append(filename.Replace(initC.PathProcess,""))
+                        .Append(",'").Append(lastUpdateBy).Append("',").Append(lastUpdateTime).Append(",'").Append(filename.Trim().Replace(initC.PathProcess,""))
                         .Append("','").Append(aaa[11]).Append("','").Append(aaa[6]).Append("') ");
                     conn.ExecuteNonQuery(sql.ToString(), host);
                 }
