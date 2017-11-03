@@ -16,19 +16,22 @@ namespace XCustPr
     {
         int gapLine = 5;
         int grd0 = 0, grd1 = 100, grd2 = 240, grd3 = 320, grd4 = 570, grd5 = 700, grd51 = 700, grd6 = 820, grd7 = 900, grd8 = 1070, grd9 = 1200;
-        int line1 = 35, line2 = 27, line3 = 85, line4 = 105, line41 = 120, line5 = 270, ControlHeight = 21, lineGap = 5;
+        int line1 = 35, line2 = 27, line3 = 85, line4 = 105, line41 = 120, line42=111, line5 = 270, ControlHeight = 21, lineGap = 5;
 
-        int formwidth = 860, formheight = 600;
+        int formwidth = 860, formheight = 740;
 
         MaterialLabel lb1;
         MaterialSingleLineTextField txtFileName;
         MaterialFlatButton btnRead, btnPrepare, btnWebService, btnFTP, btnEmail;
         MaterialListView lv1;
+        MaterialProgressBar pB1;
         
         Color cTxtL, cTxtE, cForm;
 
         ControlRDPO cRDPO;
         String[] filePO;
+
+        private ListViewColumnSorter lvwColumnSorter;
 
         private void InitializeComponent()
         {
@@ -36,7 +39,7 @@ namespace XCustPr
             // 
             // XCustPrToCloud
             // 
-            this.ClientSize = new System.Drawing.Size(284, 261);
+            //this.ClientSize = new System.Drawing.Size(284, 261);
             this.Name = "XCustPrToCloud";
             this.ResumeLayout(false);
         }
@@ -55,6 +58,11 @@ namespace XCustPr
         private void initConfig()
         {
             initCompoment();
+            pB1.Visible = false;
+            lvwColumnSorter = new ListViewColumnSorter();
+            lvwColumnSorter.Order = SortOrder.Descending;
+            lvwColumnSorter.SortColumn = 0;
+            lv1.Sort();
             //txtFileName.Text = cRDPO.initC.PathInitial + "PR03102017.txt";
             txtFileName.Text = cRDPO.initC.PathInitial ;
             cRDPO.CreateIfMissing(cRDPO.initC.PathArchive);
@@ -62,23 +70,27 @@ namespace XCustPr
             cRDPO.CreateIfMissing(cRDPO.initC.PathInitial);
             cRDPO.CreateIfMissing(cRDPO.initC.PathProcess);
 
-            lv1.Columns.Add("List File", formwidth - 40 - 100, HorizontalAlignment.Left);
+            lv1.Columns.Add("NO", 50);
+            lv1.Columns.Add("List File", formwidth - 50 - 40 - 100, HorizontalAlignment.Left);
             lv1.Columns.Add("   process   ", 100, HorizontalAlignment.Center);
-            //lv1.Columns.Add(" Azimuth ", 100, HorizontalAlignment.Center);
+            lv1.ListViewItemSorter = lvwColumnSorter;
 
+            int i = 1;
             filePO = cRDPO.getFileinFolder(cRDPO.initC.PathInitial);
             foreach(string aa in filePO)
             {
-                lv1.Items.Add(aa);
+                lv1.Items.Add(AddToList((i++),aa,""));
+                //lv1.Items.s
             }
         }
         private void initCompoment()
         {
             line1 = 35 + gapLine;
             line2 = 57 + gapLine;
-            line3 = 85 + gapLine;
+            line3 = 75 + gapLine;
             line4 = 125 + gapLine;
             line41 = 120 + gapLine;
+            line42 = 140 + gapLine;
             line5 = 270 + gapLine;
 
             lb1 = new MaterialLabel();
@@ -139,11 +151,16 @@ namespace XCustPr
             btnEmail.Location = new System.Drawing.Point(grd1, line3);
             btnEmail.Click += btnEmail_Click;
 
+            pB1 = new MaterialProgressBar();
+            Controls.Add(pB1);
+            pB1.Size = new System.Drawing.Size(formwidth - 40, pB1.Height);
+            pB1.Location = new System.Drawing.Point(cRDPO.formFirstLineX + 5, line41);
+
             lv1 = new MaterialListView();
             lv1.Font =cRDPO.fV1;
             lv1.FullRowSelect = true;
-            lv1.Size = new System.Drawing.Size(formwidth-40, formheight- line3-80);
-            lv1.Location = new System.Drawing.Point(cRDPO.formFirstLineX+5, line4);
+            lv1.Size = new System.Drawing.Size(formwidth-40, formheight- line3-100);
+            lv1.Location = new System.Drawing.Point(cRDPO.formFirstLineX+5, line42);
             lv1.FullRowSelect = true;
             lv1.View = View.Details;
             //lv1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -152,15 +169,27 @@ namespace XCustPr
             Controls.Add(lv1);
         }
 
+        private ListViewItem AddToList(int col1, string col2, string col3)
+        {
+            string[] array = new string[3];
+            array[0] = col1.ToString();
+            array[1] = col2;
+            array[2] = col3;
+
+            return (new ListViewItem(array));
+        }
         private void btnRead_Click(object sender, EventArgs e)
         {
             //throw new NotImplementedException();
             // move file
-            cRDPO.processLinfoxPOtoErpPR(filePO);
-
+            lv1.Items.Clear();
+            filePO = cRDPO.getFileinFolder(cRDPO.initC.PathInitial);
+            cRDPO.processLinfoxPOtoErpPR(filePO, lv1, this, pB1);
+            //lv1.Items.Add(AddToList((1), "", ""));
             //1. ดึงข้อมูลตาม group by filename เพราะ field filename เป็นตัวแบ่งข้อมูลแต่ละfile
             //2. ดึงข้อมูล where ตาม filename เพื่อ validate ถ้า validate ผ่าน ก็ update validate_flag = 'Y'
-            cRDPO.processGetTempTableToValidate();
+            cRDPO.processGetTempTableToValidate(lv1, this, pB1);
+            // e.	ทำการหา Blanket Agreement Number 
 
         }
         private void btnPrepare_Click(object sender, EventArgs e)

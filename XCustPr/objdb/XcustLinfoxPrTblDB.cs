@@ -83,8 +83,9 @@ namespace XCustPr
             conn.ExecuteNonQuery(sql, "kfc_po");
         }
 
-        public void insertBluk(List<String> linfox, String filename, String host)
+        public void insertBluk(List<String> linfox, String filename, String host, MaterialProgressBar pB1)
         {
+            int i = 0;
             TimeZoneInfo tz = TimeZoneInfo.FindSystemTimeZoneById("US Eastern Standard Time");
             String date = System.DateTime.Now.ToString("yyyy-MM-dd");
             String time = System.DateTime.Now.ToString("HH:mm:ss");
@@ -95,13 +96,16 @@ namespace XCustPr
                 ConnectionString = conn.connKFC.ConnectionString;
             }
             StringBuilder sql = new StringBuilder();
-            
+            pB1.Minimum = 1;
+            pB1.Maximum = linfox.Count();
             using (SqlCommand mConnection = new SqlCommand(ConnectionString))
             {
                 List<string> Rows = new List<string>();
                 foreach (String bbb in linfox)
                 {
+                    i++;
                     sql.Clear();
+                    pB1.Value = i;
                     String[] aaa = bbb.Split('|');
                     errMsg = "";
                     processFlag = "N";

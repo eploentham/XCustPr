@@ -47,5 +47,20 @@ namespace XCustPr
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
+        public Boolean validateUOMCodeByUOMCode(String uomCode)
+        {
+            DataTable dt = new DataTable();
+            String chk = "";
+            String sql = "select * From " + xCUMT.table + " where " + xCUMT.UOM_CODE + "  = '" + uomCode + "'";
+            dt = conn.selectData(sql, "kfc_po");
+            if (dt.Rows.Count > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

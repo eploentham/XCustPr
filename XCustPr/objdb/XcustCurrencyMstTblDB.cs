@@ -50,5 +50,20 @@ namespace XCustPr
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
+        public Boolean validateCurrencyCodeBycurrCode(String currCode)
+        {
+            DataTable dt = new DataTable();
+            String chk = "";
+            String sql = "select * From " + xCCMT.table + " where " + xCCMT.CURRENCY_CODE + "  = '" + currCode + "'";
+            dt = conn.selectData(sql, "kfc_po");
+            if (dt.Rows.Count > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

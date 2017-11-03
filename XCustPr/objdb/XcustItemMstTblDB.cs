@@ -20,8 +20,9 @@ namespace XCustPr
         }
         private void initConfig()
         {
+            xCIMT = new XcustItemMstTbl();
             xCIMT.ATTRIBUTE1 = "ATTRIBUTE1";
-            xCIMT.ATTRIBUTE1 = "ATTRIBUTE1";
+            //xCIMT.ATTRIBUTE1 = "ATTRIBUTE1";
             xCIMT.ATTRIBUTE11 = "ATTRIBUTE11";
             xCIMT.ATTRIBUTE12 = "ATTRIBUTE12";
             xCIMT.ATTRIBUTE13 = "ATTRIBUTE13";
@@ -44,7 +45,7 @@ namespace XCustPr
             xCIMT.ITEM_CLASS_NAME = "ITEM_CLASS_NAME";
             xCIMT.ITEM_CODE = "ITEM_CODE";
             xCIMT.ITEM_NAME = "ITEM_NAME";
-            xCIMT.ITEM_REFERENCE1 = "ITEM_REFERENCE1";
+            xCIMT.ITEM_REFERENCE1 = "ITEM_REFERENCE1";// SUPPLIER_ITEM_CODE
             xCIMT.ITEM_STATUS = "ITEM_STATUS";
             xCIMT.ITEM_TYPE = "ITEM_TYPE";
             xCIMT.LAST_UPDATE_DATE = "LAST_UPDATE_DATE";
@@ -60,6 +61,32 @@ namespace XCustPr
             String sql = "select * From " + xCIMT.table;
             dt = conn.selectData(sql, "kfc_po");
             return dt;
+        }
+        public String selectItemCodeByOrgRef1(String OrgId, String ref1)
+        {
+            DataTable dt = new DataTable();
+            String chk = "";
+            String sql = "select * From " + xCIMT.table + " where " + xCIMT.ITEM_REFERENCE1 + "  = '"+ ref1 + "' and "+xCIMT.ORGAINZATION_ID + " ='"+OrgId+"'";
+            dt = conn.selectData(sql, "kfc_po");
+            if (dt.Rows.Count > 0)
+            {
+                chk = dt.Rows[0][xCIMT.ITEM_CODE].ToString().Trim();
+            }
+            return chk;
+        }
+        public Boolean validateItemCodeByOrgRef1(String OrgId, String itemCode)
+        {
+            DataTable dt = new DataTable();
+            String chk = "";
+            String sql = "select * From " + xCIMT.table + " where " + xCIMT.ITEM_REFERENCE1 + "  = '" + itemCode + "' and " + xCIMT.ORGAINZATION_ID + " ='" + OrgId + "'";
+            dt = conn.selectData(sql, "kfc_po");
+            if (dt.Rows.Count > 0)
+            {
+                return true;
+            }
+            else{
+                return false;
+            }
         }
     }
 }

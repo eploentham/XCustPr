@@ -40,6 +40,101 @@ namespace XCustPr
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
-
+        public Boolean validateValueBySegment1(String valuesetcode, String enableflag, String value)
+        {
+            DataTable dt = new DataTable();
+            String chk = "";
+            String sql = "select * From " + xCVSMT.table + " where " + xCVSMT.VALUE_SET_CODE + "  = '"
+                + valuesetcode + "' and " + xCVSMT.ENABLED_FLAG + "='"+ enableflag + "' and "+xCVSMT.VALUE +"='"+ value+"'";
+            dt = conn.selectData(sql, "kfc_po");
+            if (dt.Rows.Count > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public Boolean validateValueBySegment2(String valuesetcode, String enableflag, String value)
+        {
+            DataTable dt = new DataTable();
+            String chk = "";
+            String sql = "select * From " + xCVSMT.table + " where " + xCVSMT.VALUE_SET_CODE + "  = '"
+                + valuesetcode + "' and " + xCVSMT.ENABLED_FLAG + "='" + enableflag + "' and " + xCVSMT.VALUE + "='" + value + "'";
+            dt = conn.selectData(sql, "kfc_po");
+            if (dt.Rows.Count > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public Boolean validateValueBySegment3(String valuesetcode, String enableflag, String value)
+        {
+            DataTable dt = new DataTable();
+            String chk = "";
+            String sql = "select * From " + xCVSMT.table + " where " + xCVSMT.VALUE_SET_CODE + "  = '"
+                + valuesetcode + "' and " + xCVSMT.ENABLED_FLAG + "='" + enableflag + "' and " + xCVSMT.VALUE + "='" + value + "'";
+            dt = conn.selectData(sql, "kfc_po");
+            if (dt.Rows.Count > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public Boolean validateValueBySegment4(String valuesetcode, String enableflag, String value)
+        {
+            DataTable dt = new DataTable();
+            String chk = "";
+            String sql = "select * From " + xCVSMT.table + " where " + xCVSMT.VALUE_SET_CODE + "  = '"
+                + valuesetcode + "' and " + xCVSMT.ENABLED_FLAG + "='" + enableflag + "' and " + xCVSMT.VALUE + "='" + value + "'";
+            dt = conn.selectData(sql, "kfc_po");
+            if (dt.Rows.Count > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public Boolean validateValueBySegment5(String valuesetcode, String enableflag, String value)
+        {
+            DataTable dt = new DataTable();
+            String chk = "";
+            String sql = "select * From " + xCVSMT.table + " where " + xCVSMT.VALUE_SET_CODE + "  = '"
+                + valuesetcode + "' and " + xCVSMT.ENABLED_FLAG + "='" + enableflag + "' and " + xCVSMT.VALUE + "='" + value + "'";
+            dt = conn.selectData(sql, "kfc_po");
+            if (dt.Rows.Count > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public Boolean validateValueBySegment6(String valuesetcode, String enableflag, String value)
+        {
+            DataTable dt = new DataTable();
+            String chk = "";
+            String sql = "select * From " + xCVSMT.table + " where " + xCVSMT.VALUE_SET_CODE + "  = '"
+                + valuesetcode + "' and " + xCVSMT.ENABLED_FLAG + "='" + enableflag + "' and " + xCVSMT.VALUE + "='" + value + "'";
+            dt = conn.selectData(sql, "kfc_po");
+            if (dt.Rows.Count > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }
