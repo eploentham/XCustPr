@@ -32,6 +32,7 @@ namespace XCustPr
         public XcustBuMstTblDB xCBMTDB;
         public XcustDeriverLocatorMstTblDB xCDLMTDB;
         public XcustDeriverOrganizationMstTblDB xCDOMTDB;
+        public XcustSubInventoryMstTblDB xCSIMTDB;
 
         public ValidatePrPo vPrPo;
 
@@ -54,7 +55,7 @@ namespace XCustPr
             xCBMTDB = new XcustBuMstTblDB(conn, initC);
             xCDLMTDB = new XcustDeriverLocatorMstTblDB(conn, initC);
             xCDOMTDB = new XcustDeriverOrganizationMstTblDB(conn, initC);
-
+            xCSIMTDB = new XcustSubInventoryMstTblDB(conn,initC);
 
             fontSize9 = 9.75f;
             fontSize8 = 8.25f;
@@ -78,6 +79,7 @@ namespace XCustPr
             initC.DELIVER_TO_LOCATTION = iniFile.Read("DELIVER_TO_LOCATTION");
             initC.ORGANIZATION_code = iniFile.Read("ORGANIZATION_code");
             initC.Locator = iniFile.Read("Locator");
+            initC.Subinventory_Code = iniFile.Read("Subinventory_Code");
 
             initC.EmailPort = iniFile.Read("EmailPort");
 
@@ -225,7 +227,7 @@ namespace XCustPr
             DataTable dt = new DataTable();
             DataTable dt1 = new DataTable();
             String currDate = System.DateTime.Now.ToString("yyyy-MM-dd");
-            String buCode = "", locator="", Org="";
+            String buCode = "", locator="", Org="", subInv_code="";
             ValidatePrPo vPP = new ValidatePrPo();
             List<ValidatePrPo> lVPr = new List<ValidatePrPo>();
             int row1 = 0;
@@ -248,6 +250,8 @@ namespace XCustPr
             {
                 chk = false;
             }
+            
+
             //StringBuilder filename = new StringBuilder();
             dtGroupBy = xCLFPTDB.selectLinfoxGroupByFilename();//   ดึง filename
             foreach(DataRow rowG in dtGroupBy.Rows)
@@ -268,6 +272,28 @@ namespace XCustPr
                         vPP.Message = "Error PO001-006 ";
                         vPP.Validate = "row "+ row1 + " QTY=" + rowG[xCLFPTDB.xCLFPT.QTY].ToString();
                     }
+                    chk = validateDate(row[xCLFPTDB.xCLFPT.ORDER_DATE].ToString());
+                    if (!chk)
+                    {
+                        vPP.Filename = rowG[xCLFPTDB.xCLFPT.file_name].ToString().Trim();
+                        vPP.Message = "Error PO001-002 ";
+                        vPP.Validate = "row " + row1 + " ORDER_DATE=" + rowG[xCLFPTDB.xCLFPT.ORDER_DATE].ToString();
+                    }
+                    chk = validateDate(row[xCLFPTDB.xCLFPT.REQUEST_DATE].ToString());
+                    if (!chk)
+                    {
+                        vPP.Filename = rowG[xCLFPTDB.xCLFPT.file_name].ToString().Trim();
+                        vPP.Message = "Error PO001-002 ";
+                        vPP.Validate = "row " + row1 + " REQUEST_DATE=" + rowG[xCLFPTDB.xCLFPT.REQUEST_DATE].ToString();
+                    }
+                    subInv_code = xCSIMTDB.validateSubInventoryCode1(initC.ORGANIZATION_code.Trim(), rowG[xCLFPTDB.xCLFPT.store_code].ToString().Trim());
+                    if (subInv_code.Equals(""))
+                    {
+                        vPP.Filename = rowG[xCLFPTDB.xCLFPT.file_name].ToString().Trim();
+                        vPP.Message = "Error PO001-010 ";
+                        vPP.Validate = "row " + row1 + " store_code=" + rowG[xCLFPTDB.xCLFPT.store_code].ToString().Trim()+ " ORGANIZATION_code "+ initC.ORGANIZATION_code.Trim();
+                    }
+
                     //dt.Rows[0][xc xCBMT.BU_ID].ToString();
                 }
             }

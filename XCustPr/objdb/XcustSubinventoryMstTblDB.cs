@@ -52,5 +52,18 @@ namespace XCustPr
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
+        public String validateSubInventoryCode1(String ordId, String StoreCode)
+        {
+            DataTable dt = new DataTable();
+            String chk = "";
+            String sql = "select * From " + xCSIMT.table +
+                " Where " + xCSIMT.SUBINVENTORY_ID + " = '" + ordId + "' and " + xCSIMT.attribute1 + " = '" + StoreCode + "'";
+            dt = conn.selectData(sql, "kfc_po");
+            if (dt.Rows.Count > 0)
+            {
+                chk = dt.Rows[0][xCSIMT.SECONDARY_INVENTORY_NAME].ToString().Trim();
+            }
+            return chk;
+        }
     }
 }
