@@ -30,6 +30,18 @@ namespace XCustPr
             xCUMT.table = "XCUST_UOM_MST_TBL";
             xCUMT.pkField = "";
         }
+        public XcustUomMstTbl setData(DataRow row)
+        {
+            XcustUomMstTbl item;
+            item = new XcustUomMstTbl();
+            item.CREATION_DATE = row[xCUMT.CREATION_DATE].ToString();
+            item.DISABLE_DATE = row[xCUMT.DISABLE_DATE].ToString();            
+            item.LAST_UPDATE_DATE = row[xCUMT.LAST_UPDATE_DATE].ToString();
+            item.UNIT_OF_MEASURE_ID = row[xCUMT.UNIT_OF_MEASURE_ID].ToString();
+            item.UOM_CODE = row[xCUMT.UOM_CODE].ToString();            
+
+            return item;
+        }
         public DataTable selectAll()
         {
             DataTable dt = new DataTable();

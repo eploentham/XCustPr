@@ -8,7 +8,7 @@ namespace XCustPr
 {
     public class XcustBlanketAgreementLinesTblDB
     {
-        XcustBlanketAgreementLinesTbl xCBALT;
+        public XcustBlanketAgreementLinesTbl xCBALT;
         ConnectDB conn;
         private InitC initC;
         public XcustBlanketAgreementLinesTblDB(ConnectDB c, InitC initc)

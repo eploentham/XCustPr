@@ -55,6 +55,42 @@ namespace XCustPr
             xCIMT.table = "xcust_item_mst_tbl";
             xCIMT.pkField = "";
         }
+        public XcustItemMstTbl setData(DataRow row)
+        {
+            XcustItemMstTbl item;
+            item = new XcustItemMstTbl();
+            item.ATTRIBUTE1 = row[xCIMT.ATTRIBUTE1].ToString();
+            //item.ATTRIBUTE1 = "ATTRIBUTE1";
+            item.ATTRIBUTE11 = row[xCIMT.ATTRIBUTE11].ToString();
+            item.ATTRIBUTE12 = row[xCIMT.ATTRIBUTE12].ToString();
+            item.ATTRIBUTE13 = row[xCIMT.ATTRIBUTE13].ToString();
+            item.ATTRIBUTE14 = row[xCIMT.ATTRIBUTE14].ToString();
+            item.ATTRIBUTE15 = row[xCIMT.ATTRIBUTE15].ToString();
+            item.ATTRIBUTE2 = row[xCIMT.ATTRIBUTE2].ToString();
+            item.ATTRIBUTE3 = row[xCIMT.ATTRIBUTE3].ToString();
+            item.ATTRIBUTE4 = row[xCIMT.ATTRIBUTE4].ToString();
+            item.ATTRIBUTE5 = row[xCIMT.ATTRIBUTE5].ToString();
+            item.ATTRIBUTE6 = row[xCIMT.ATTRIBUTE6].ToString();
+            item.ATTRIBUTE7 = row[xCIMT.ATTRIBUTE7].ToString();
+            item.ATTRIBUTE8 = row[xCIMT.ATTRIBUTE8].ToString();
+            item.ATTRIBUTE9 = row[xCIMT.ATTRIBUTE9].ToString();
+            item.CREATION_DATE = row[xCIMT.CREATION_DATE].ToString();
+            item.DESCRIPTION = row[xCIMT.DESCRIPTION].ToString();
+            item.INVENTORY_ITEM_ID = row[xCIMT.INVENTORY_ITEM_ID].ToString();
+            item.ITEM_CATEGORY_CODE = row[xCIMT.ITEM_CATEGORY_CODE].ToString();
+            item.ITEM_CATEGORY_NAME = row[xCIMT.ITEM_CATEGORY_NAME].ToString();
+            item.ITEM_CLASS_CODE = row[xCIMT.ITEM_CLASS_CODE].ToString();
+            item.ITEM_CLASS_NAME = row[xCIMT.ITEM_CLASS_NAME].ToString();
+            item.ITEM_CODE = row[xCIMT.ITEM_CODE].ToString();
+            item.ITEM_NAME = row[xCIMT.ITEM_NAME].ToString();
+            item.ITEM_REFERENCE1 = row[xCIMT.ITEM_REFERENCE1].ToString();
+            item.ITEM_STATUS = row[xCIMT.ITEM_STATUS].ToString();
+            item.ITEM_TYPE = row[xCIMT.ITEM_TYPE].ToString();
+            item.LAST_UPDATE_DATE = row[xCIMT.LAST_UPDATE_DATE].ToString();
+            item.ORGAINZATION_ID = row[xCIMT.ORGAINZATION_ID].ToString();
+            item.PRIMARY_UOM = row[xCIMT.PRIMARY_UOM].ToString();
+            return item;
+        }
         public DataTable selectAll()
         {
             DataTable dt = new DataTable();

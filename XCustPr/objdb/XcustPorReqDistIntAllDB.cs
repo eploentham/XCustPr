@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -94,6 +95,16 @@ namespace XCustPr
             xCPRDIA.pkField = "";
             xCPRDIA.table = "xcust_por_req_dist_int_all";
         }
+        public XcustPorReqDistIntAll setData(DataRow row, XcustLinfoxPrTbl xclfpt)
+        {
+            XcustPorReqDistIntAll item = new XcustPorReqDistIntAll();
+            item.REQ_HEADER_INTERFACE_ID = row[xclfpt.PO_NUMBER].ToString();
+            item.REQ_LINE_INTERFACE_ID = row[xclfpt.LINE_NUMBER].ToString();
+
+            item.QTY = row[xclfpt.QTY].ToString();
+
+            return item;
+        }
         public String insert(XcustPorReqDistIntAll p)
         {
             String sql = "", chk = "";
@@ -105,8 +116,8 @@ namespace XCustPr
                 //}
                 //p.RowNumber = selectMaxRowNumber(p.YearId);
                 //p.Active = "1";
-                sql = "Insert Into " + xCPRDIA.table + "(" + xCPRDIA.ATTRIBUTE1 + "," + xCPRDIA.ATTRIBUTE_DATE1 + "," + xCPRDIA.ATTRIBUTE_CATEGORY + ","+
-                    xCPRDIA.ATTRIBUTE_NUMBER1 + "," + xCPRDIA.ATTRIBUTE_TIMESTAMP1 + "," + xCPRDIA.CHARGE_ACCOUNT_SEGMENT1 + "," +
+                sql = "Insert Into " + xCPRDIA.table + "(" + xCPRDIA.ATTRIBUTE1 + "," + xCPRDIA.ATTRIBUTE_DATE1 + ","+
+                    xCPRDIA.ATTRIBUTE_TIMESTAMP1 + "," + xCPRDIA.CHARGE_ACCOUNT_SEGMENT1 + "," +
                     xCPRDIA.CHARGE_ACCOUNT_SEGMENT2 + "," + xCPRDIA.CHARGE_ACCOUNT_SEGMENT3 + "," + xCPRDIA.CHARGE_ACCOUNT_SEGMENT4 + "," +
                     xCPRDIA.CHARGE_ACCOUNT_SEGMENT5 + "," + xCPRDIA.CHARGE_ACCOUNT_SEGMENT6 + "," + xCPRDIA.REQ_LINE_INTERFACE_ID + "," +
                     xCPRDIA.REQ_HEADER_INTERFACE_ID + "," + xCPRDIA.PROCESS_FLAG + "," + xCPRDIA.REQ_DIST_INTERFACE_ID + "," +  
@@ -121,7 +132,7 @@ namespace XCustPr
                     xCPRDIA.ATTRIBUTE_NUMBER1 + "," + xCPRDIA.ATTRIBUTE_NUMBER2 + "," + xCPRDIA.ATTRIBUTE_NUMBER3 + "," +
                     xCPRDIA.ATTRIBUTE_NUMBER4 + "," + xCPRDIA.ATTRIBUTE_NUMBER5 + "," + xCPRDIA.ATTRIBUTE_NUMBER6 + "," +
                     xCPRDIA.ATTRIBUTE_NUMBER7 + "," + xCPRDIA.ATTRIBUTE_NUMBER8 + "," + xCPRDIA.ATTRIBUTE_NUMBER9 + "," +
-                    xCPRDIA.ATTRIBUTE_NUMBER10 +
+                    xCPRDIA.ATTRIBUTE_NUMBER10 +"," +
                     xCPRDIA.ATTRIBUTE_DATE2 + "," + xCPRDIA.ATTRIBUTE_DATE3 + "," + xCPRDIA.ATTRIBUTE_DATE4 + "," +
                     xCPRDIA.ATTRIBUTE_DATE5 + "," + xCPRDIA.ATTRIBUTE_DATE6 + "," + xCPRDIA.ATTRIBUTE_DATE7 + "," +
                     xCPRDIA.ATTRIBUTE_DATE8 + "," + xCPRDIA.ATTRIBUTE_DATE9 + "," + xCPRDIA.ATTRIBUTE_DATE10 + "," +
@@ -129,14 +140,14 @@ namespace XCustPr
                     xCPRDIA.ATTRIBUTE_TIMESTAMP5 + "," + xCPRDIA.ATTRIBUTE_TIMESTAMP6 + "," + xCPRDIA.ATTRIBUTE_TIMESTAMP7 + "," +
                     xCPRDIA.ATTRIBUTE_TIMESTAMP8 + "," + xCPRDIA.ATTRIBUTE_TIMESTAMP9 + "," + xCPRDIA.ATTRIBUTE_TIMESTAMP10 + "," +
                     xCPRDIA.DISTRIBUTION_CURRENCY_AMT + "," + xCPRDIA.LAST_UPDATE_DATE + "," +
-                    xCPRDIA.CREATION_DATE + "," + xCPRDIA.CREATE_BY + "," + xCPRDIA.LAST_UPDATE_BY + "," +
+                    xCPRDIA.CREATION_DATE + "," + xCPRDIA.CREATE_BY + "," + xCPRDIA.LAST_UPDATE_BY +
                     ") " +
-                    "Values('" + p.ATTRIBUTE1 + "','" + p.ATTRIBUTE_DATE1 + "','" + p.ATTRIBUTE_CATEGORY + "','" +
-                    p.ATTRIBUTE_NUMBER1 + "',now(),'" + p.CHARGE_ACCOUNT_SEGMENT1 + "','" + 
+                    "Values('" + p.ATTRIBUTE1 + "','" + p.ATTRIBUTE_DATE1 + "'," +
+                    "getdate(),'" + p.CHARGE_ACCOUNT_SEGMENT1 + "','" + 
                     p.CHARGE_ACCOUNT_SEGMENT2 + "','" + p.CHARGE_ACCOUNT_SEGMENT3 + "','" + p.CHARGE_ACCOUNT_SEGMENT4 + "','" +
-                    p.CHARGE_ACCOUNT_SEGMENT5 + "','" + p.CHARGE_ACCOUNT_SEGMENT6 + "','" + p.REQ_LINE_INTERFACE_ID + "','" +
-                    p.REQ_HEADER_INTERFACE_ID + "','" + p.PROCESS_FLAG + "','" + p.REQ_DIST_INTERFACE_ID + "','" + 
-                    p.QTY + "','" +
+                    p.CHARGE_ACCOUNT_SEGMENT5 + "','" + p.CHARGE_ACCOUNT_SEGMENT6 + "'," + p.REQ_LINE_INTERFACE_ID + ",'" +
+                    p.REQ_HEADER_INTERFACE_ID + "','" + p.PROCESS_FLAG + "','" + p.REQ_DIST_INTERFACE_ID + "'," + 
+                    p.QTY + ",'" +
                     p.ATTRIBUTE2 + "','" + p.ATTRIBUTE3 + "','" + p.ATTRIBUTE4 + "','" +
                     p.ATTRIBUTE5 + "','" + p.ATTRIBUTE6 + "','" + p.ATTRIBUTE7 + "','" +
                     p.ATTRIBUTE8 + "','" + p.ATTRIBUTE9 + "','" + p.ATTRIBUTE10 + "','" +
@@ -155,8 +166,8 @@ namespace XCustPr
                     p.ATTRIBUTE_TIMESTAMP5 + "','" + p.ATTRIBUTE_TIMESTAMP6 + "','" + p.ATTRIBUTE_TIMESTAMP7 + "','" +
                     p.ATTRIBUTE_TIMESTAMP8 + "','" + p.ATTRIBUTE_TIMESTAMP9 + "','" + p.ATTRIBUTE_TIMESTAMP10 + "','" +
                     p.DISTRIBUTION_CURRENCY_AMT + "','" + p.LAST_UPDATE_DATE + "','" +
-                    p.CREATION_DATE + "','" + p.CREATE_BY + "','" + p.LAST_UPDATE_BY + "','" +
-                    "') ";
+                    p.CREATION_DATE + "','" + p.CREATE_BY + "','" + p.LAST_UPDATE_BY + "'" +
+                    ") ";
                 chk = conn.ExecuteNonQueryAutoIncrement(sql, "kfc_po");
                 //chk = p.RowNumber;
                 //chk = p.Code;

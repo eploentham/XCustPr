@@ -188,8 +188,10 @@ namespace XCustPr
             //lv1.Items.Add(AddToList((1), "", ""));
             //1. ดึงข้อมูลตาม group by filename เพราะ field filename เป็นตัวแบ่งข้อมูลแต่ละfile
             //2. ดึงข้อมูล where ตาม filename เพื่อ validate ถ้า validate ผ่าน ก็ update validate_flag = 'Y'
+                    // e.	ทำการหา Blanket Agreement Number 
             cRDPO.processGetTempTableToValidate(lv1, this, pB1);
-            // e.	ทำการหา Blanket Agreement Number 
+            
+            cRDPO.processInsertTable(lv1, this, pB1);
 
         }
         private void btnPrepare_Click(object sender, EventArgs e)
@@ -199,20 +201,21 @@ namespace XCustPr
             //cRDPO.processRDPO(filePO);
             //string zipPath = @cRDPO.initC.PathZip;
             //string extractPath = @cRDPO.initC.PathZipExtract;
-            var allFiles = Directory.GetFiles(@cRDPO.initC.PathZip, "*.zip", SearchOption.AllDirectories);
-            foreach(String file in allFiles)
-            {
-                using (ZipArchive archive = ZipFile.OpenRead(file))
-                {
-                    foreach (ZipArchiveEntry entry in archive.Entries)
-                    {
-                        if (entry.FullName.EndsWith(".txt", StringComparison.OrdinalIgnoreCase))
-                        {
-                            entry.ExtractToFile(Path.Combine(@cRDPO.initC.PathZipExtract, entry.FullName));
-                        }
-                    }
-                }
-            }
+            //var allFiles = Directory.GetFiles(@cRDPO.initC.PathZip, "*.zip", SearchOption.AllDirectories);
+            //foreach(String file in allFiles)
+            //{
+            //    using (ZipArchive archive = ZipFile.OpenRead(file))
+            //    {
+            //        foreach (ZipArchiveEntry entry in archive.Entries)
+            //        {
+            //            if (entry.FullName.EndsWith(".txt", StringComparison.OrdinalIgnoreCase))
+            //            {
+            //                entry.ExtractToFile(Path.Combine(@cRDPO.initC.PathZipExtract, entry.FullName));
+            //            }
+            //        }
+            //    }
+            //}
+            cRDPO.processGenCSV();
         }
         private void btnWebService_Click(object sender, EventArgs e)
         {

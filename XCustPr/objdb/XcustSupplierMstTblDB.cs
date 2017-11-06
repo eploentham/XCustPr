@@ -36,11 +36,35 @@ namespace XCustPr
             xCSMT.table = "XCUST_SUPPLIER_MST_TBL";
             xCSMT.pkField = "";
         }
+        public XcustSupplierMstTbl setData(DataRow row)
+        {
+            XcustSupplierMstTbl item;
+            item = new XcustSupplierMstTbl();
+            item.ATTRIBUTE1 = row[xCSMT.ATTRIBUTE1].ToString();            
+            item.ATTRIBUTE2 = row[xCSMT.ATTRIBUTE2].ToString();
+            item.ATTRIBUTE3 = row[xCSMT.ATTRIBUTE3].ToString();
+            item.ATTRIBUTE4 = row[xCSMT.ATTRIBUTE4].ToString();
+            item.ATTRIBUTE5 = row[xCSMT.ATTRIBUTE5].ToString();
+            item.CREATION_DATE = row[xCSMT.CREATION_DATE].ToString();            
+            item.SUPPLIER_NAME = row[xCSMT.SUPPLIER_NAME].ToString();
+            item.SUPPLIER_NUMBER = row[xCSMT.SUPPLIER_NUMBER].ToString();
+            item.LAST_UPDATE_DATE = row[xCSMT.LAST_UPDATE_DATE].ToString();
+            item.SUPPLIER_REG_ID = row[xCSMT.SUPPLIER_REG_ID].ToString();
+            item.VENDOR_ID = row[xCSMT.VENDOR_ID].ToString();
+            return item;
+        }
+        public DataTable selectAll()
+        {
+            DataTable dt = new DataTable();
+            String sql = "select * From " + xCSMT.table;
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
+        }
         public Boolean validateSupplierBySupplierCode(String suppCode)
         {
             DataTable dt = new DataTable();
             String chk = "";
-            String sql = "select * From " + xCSMT.table + " where " + xCSMT.SUPPLIER_NUMBER + "  = '" + suppCode + "'";
+            String sql = "Select * From " + xCSMT.table + " Where " + xCSMT.SUPPLIER_NUMBER + "  = '" + suppCode + "'";
             dt = conn.selectData(sql, "kfc_po");
             if (dt.Rows.Count > 0)
             {

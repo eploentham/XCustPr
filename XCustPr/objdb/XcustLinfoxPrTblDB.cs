@@ -48,6 +48,22 @@ namespace XCustPr
             //xCLFPT.REQUEST_TIME = "REQUEST_TIME";
             xCLFPT.REQUEST_TIME = "ORDER_TIME";
 
+            xCLFPT.diriver_to_organization = "diriver_to_organization";
+            xCLFPT.deriver_to_location = "deriver_to_location";
+            xCLFPT.subinventory_code = "subinventory_code";
+            xCLFPT.ERP_ITEM_CODE = "ERP_ITEM_CODE";
+            xCLFPT.AGREEEMENT_NUMBER = "AGREEEMENT_NUMBER";
+            xCLFPT.AGREEMENT_LINE_NUMBER = "AGREEMENT_LINE_NUMBER";
+            xCLFPT.PRICE = "PRICE";
+            xCLFPT.ITEM_CATEGORY_NAME = "ITEM_CATEGORY_NAME";
+            xCLFPT.SUPPLIER_SITE_CODE = "SUPPLIER_SITE_CODE";
+            xCLFPT.ACC_SEG1 = "ACC_SEG1";
+            xCLFPT.ACC_SEG2 = "ACC_SEG2";
+            xCLFPT.ACC_SEG3 = "ACC_SEG3";
+            xCLFPT.ACC_SEG4 = "ACC_SEG4";
+            xCLFPT.ACC_SEG5 = "ACC_SEG5";
+            xCLFPT.ACC_SEG6 = "ACC_SEG6";
+
             //xCLFPT.table = "xcust_linfox_pr_tbl";
             xCLFPT.table = "xcust_linfox_pr_int_tbl";
         }
@@ -69,6 +85,13 @@ namespace XCustPr
         {
             DataTable dt = new DataTable();
             String sql = "select * From " + xCLFPT.table + " Where " + xCLFPT.file_name+"='"+filename+"'";
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
+        }
+        public DataTable selectLinfoxEmptyRow()
+        {
+            DataTable dt = new DataTable();
+            String sql = "select * From " + xCLFPT.table + " Where " + xCLFPT.file_name + "='aaaaaaaaaa'";
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
@@ -132,6 +155,23 @@ namespace XCustPr
                     conn.ExecuteNonQuery(sql.ToString(), host);
                 }
             }
+        }
+        public String updateValidateFlag(String po_number, String line_number, String flag, String agreement_number, String host)
+        {
+            String sql = "";
+            sql = "Update "+xCLFPT.table +" Set "+xCLFPT.VALIDATE_FLAG+"='"+flag+"', "+xCLFPT.AGREEEMENT_NUMBER+" ='"+ agreement_number+"' "+
+                "Where " +xCLFPT.PO_NUMBER+" = '"+po_number+"' and "+xCLFPT.LINE_NUMBER+"='"+line_number+"'";
+            conn.ExecuteNonQuery(sql.ToString(), host);
+
+            return "";
+        }
+        
+        public DataTable selectValidateFlagYGroupByPoNumber()
+        {
+            DataTable dt = new DataTable();
+            String sql = "select * From " + xCLFPT.table + " Where " + xCLFPT.VALIDATE_FLAG + "='Y' Group By "+xCLFPT.PO_NUMBER;
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
         }
         //public static void BulkToMySQL()
         //{

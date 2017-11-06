@@ -33,6 +33,21 @@ namespace XCustPr
             xCVSMT.table = "XCUST_VALUE_SET_MST_TBL";
             xCVSMT.pkField = "";
         }
+        public XcustValueSetMstTbl setData(DataRow row)
+        {
+            XcustValueSetMstTbl item;
+            item = new XcustValueSetMstTbl();
+            item.CREATION_DATE = row[xCVSMT.CREATION_DATE].ToString();
+            item.DESCRIPTION = row[xCVSMT.DESCRIPTION].ToString();
+            item.ENABLED_FLAG = row[xCVSMT.ENABLED_FLAG].ToString();
+            item.LAST_UPDATE_DATE = row[xCVSMT.LAST_UPDATE_DATE].ToString();
+            item.VALUE = row[xCVSMT.VALUE].ToString();
+            item.VALUE_ID = row[xCVSMT.VALUE_ID].ToString();
+            item.VALUE_SET_CODE = row[xCVSMT.VALUE_SET_CODE].ToString();
+            item.VALUE_SET_ID = row[xCVSMT.VALUE_SET_ID].ToString();
+            
+            return item;
+        }
         public DataTable selectAll()
         {
             DataTable dt = new DataTable();

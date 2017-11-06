@@ -34,6 +34,21 @@ namespace XCustPr
             xCSIMT.table = "XCUST_SUBINVENTORY_MST_TBL";
             xCSIMT.pkField = "";
         }
+        public XcustSubInventoryMstTbl setData(DataRow row)
+        {
+            XcustSubInventoryMstTbl item;
+            item = new XcustSubInventoryMstTbl();
+            item.attribute1 = row[xCSIMT.attribute1].ToString();
+            item.attribute2 = row[xCSIMT.attribute2].ToString();
+            item.CREATION_DATE = row[xCSIMT.CREATION_DATE].ToString();
+            item.DESCRIPTION = row[xCSIMT.DESCRIPTION].ToString();
+            item.LAST_UPDATE_DATE = row[xCSIMT.LAST_UPDATE_DATE].ToString();
+            item.LOCATOR_TYPE = row[xCSIMT.LOCATOR_TYPE].ToString();
+            item.ORGAINZATION_ID = row[xCSIMT.ORGAINZATION_ID].ToString();
+            item.SECONDARY_INVENTORY_NAME = row[xCSIMT.SECONDARY_INVENTORY_NAME].ToString();
+            item.SUBINVENTORY_ID = row[xCSIMT.SUBINVENTORY_ID].ToString();
+            return item;
+        }
         public DataTable selectAll()
         {
             DataTable dt = new DataTable();

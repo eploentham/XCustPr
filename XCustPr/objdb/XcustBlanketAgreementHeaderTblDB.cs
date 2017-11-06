@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,7 +9,7 @@ namespace XCustPr
 {
     public class XcustBlanketAgreementHeaderTblDB
     {
-        XcustBlanketAgreementHeaderTbl xCBAHT;
+        public XcustBlanketAgreementHeaderTbl xCBAHT;
         ConnectDB conn;
         private InitC initC;
         public XcustBlanketAgreementHeaderTblDB(ConnectDB c, InitC initc)
@@ -37,9 +38,11 @@ namespace XCustPr
             xCBAHT.SUPPLIER = "SUPPLIER";
             xCBAHT.SUPPLIER_CODE = "SUPPLIER_CODE";
             xCBAHT.SUPPLIER_SITE = "SUPPLIER_SITE";
+            xCBAHT.PO_HEADER_ID = "PO_HEADER_ID";
 
             xCBAHT.table = "XCUST_BLANKET_AGREEMENT_HEADER_TBL";
             xCBAHT.pkField = "";
         }
+        
     }
 }
