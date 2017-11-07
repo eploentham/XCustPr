@@ -27,6 +27,7 @@ namespace XCustPr
         public String Subinventory_Code = "Locator";
         public String CURRENCY_CODE = "CURRENCY_CODE";
         public String PR_STATAUS = "";
+        public String LINE_TYPE = "";
 
         public String EmailPort = "3306";
         public String EmailCharset = "hisorc_ma";        //orc master

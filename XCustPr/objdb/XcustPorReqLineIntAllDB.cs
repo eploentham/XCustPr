@@ -10,7 +10,7 @@ namespace XCustPr
     public class XcustPorReqLineIntAllDB
     {
         ConnectDB conn;
-        XcustPorReqLineIntAll xCPRLIA;
+        public XcustPorReqLineIntAll xCPRLIA;
         private InitC initC;
         public XcustPorReqLineIntAllDB(ConnectDB c, InitC initc)
         {
@@ -107,6 +107,7 @@ namespace XCustPr
 
             xCPRLIA.LINE_TYPE = "LINE_TYPE";
             xCPRLIA.AGREEMENT_NUMBER = "AGREEMENT_NUMBER";
+            xCPRLIA.UOM_CODE = "UOM_CODE";
 
             xCPRLIA.table = "xcust_por_req_line_int_all";
         }
@@ -131,8 +132,16 @@ namespace XCustPr
             item.CURRENCY_UNIT_PRICE = "REQ_HEADER_INTERFACE_ID";//PO_NUMBER
             item.Price = row[xclfpt.PRICE].ToString();
             item.PROCESS_FLAG = "Y";
+            item.UOM_CODE = row[xclfpt.UOMCODE].ToString();
 
             return item;
+        }
+        public DataTable selectAll()
+        {
+            DataTable dt = new DataTable();
+            String sql = "select * From " + xCPRLIA.table;
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
         }
         public String insert(XcustPorReqLineIntAll p)
         {
@@ -145,6 +154,16 @@ namespace XCustPr
                 //}
                 //p.RowNumber = selectMaxRowNumber(p.YearId);
                 //p.Active = "1";
+                p.ATTRIBUTE_NUMBER1 = p.ATTRIBUTE_NUMBER1.Equals("") ? "0" : p.ATTRIBUTE_NUMBER1;
+                p.ATTRIBUTE_NUMBER2 = p.ATTRIBUTE_NUMBER2.Equals("") ? "0" : p.ATTRIBUTE_NUMBER2;
+                p.ATTRIBUTE_NUMBER3 = p.ATTRIBUTE_NUMBER3.Equals("") ? "0" : p.ATTRIBUTE_NUMBER3;
+                p.ATTRIBUTE_NUMBER4 = p.ATTRIBUTE_NUMBER4.Equals("") ? "0" : p.ATTRIBUTE_NUMBER4;
+                p.ATTRIBUTE_NUMBER5 = p.ATTRIBUTE_NUMBER5.Equals("") ? "0" : p.ATTRIBUTE_NUMBER5;
+                p.ATTRIBUTE_NUMBER6 = p.ATTRIBUTE_NUMBER6.Equals("") ? "0" : p.ATTRIBUTE_NUMBER6;
+                p.ATTRIBUTE_NUMBER7 = p.ATTRIBUTE_NUMBER7.Equals("") ? "0" : p.ATTRIBUTE_NUMBER7;
+                p.ATTRIBUTE_NUMBER8 = p.ATTRIBUTE_NUMBER8.Equals("") ? "0" : p.ATTRIBUTE_NUMBER8;
+                p.ATTRIBUTE_NUMBER9 = p.ATTRIBUTE_NUMBER9.Equals("") ? "0" : p.ATTRIBUTE_NUMBER9;
+                p.ATTRIBUTE_NUMBER10 = p.ATTRIBUTE_NUMBER10.Equals("") ? "0" : p.ATTRIBUTE_NUMBER10;
                 sql = "Insert Into " + xCPRLIA.table + "(" + xCPRLIA.ATTRIBUTE1 + "," + xCPRLIA.ATTRIBUTE_DATE1 + "," +
                     xCPRLIA.ATTRIBUTE_TIMESTAMP1 + "," + xCPRLIA.CATEGORY_NAME + "," +
                     xCPRLIA.CURRENCY_CODE + "," + xCPRLIA.DELIVER_TO_LOCATION_CODE + "," + xCPRLIA.DELIVER_TO_ORGANIZATION_CODE + "," +
@@ -172,8 +191,8 @@ namespace XCustPr
                     xCPRLIA.ATTRIBUTE_TIMESTAMP5 + "," + xCPRLIA.ATTRIBUTE_TIMESTAMP6 + "," + xCPRLIA.ATTRIBUTE_TIMESTAMP7 + "," +
                     xCPRLIA.ATTRIBUTE_TIMESTAMP8 + "," + xCPRLIA.ATTRIBUTE_TIMESTAMP9 + "," + xCPRLIA.ATTRIBUTE_TIMESTAMP10 + "," +
                     xCPRLIA.LAST_UPDATE_DATE + "," + xCPRLIA.CREATION_DATE + "," + xCPRLIA.CREATE_BY + "," +
-                    xCPRLIA.LAST_UPDATE_BY + "," + xCPRLIA.LINE_TYPE + "," + xCPRLIA.AGREEMENT_NUMBER + 
-                    ") " +
+                    xCPRLIA.LAST_UPDATE_BY + "," + xCPRLIA.LINE_TYPE + "," + xCPRLIA.AGREEMENT_NUMBER + +","+
+                    xCPRLIA.UOM_CODE+") " +
                     "Values('" + p.ATTRIBUTE1 + "','" + p.ATTRIBUTE_DATE1 + "'," +
                     "getdate(),'" + p.CATEGORY_NAME + "','" +
                     p.CURRENCY_CODE + "','" + p.DELIVER_TO_LOCATION_CODE + "','" + p.DELIVER_TO_ORGANIZATION_CODE + "','" +
@@ -200,9 +219,9 @@ namespace XCustPr
                     p.ATTRIBUTE_TIMESTAMP2 + "','" + p.ATTRIBUTE_TIMESTAMP3 + "','" + p.ATTRIBUTE_TIMESTAMP4 + "','" +
                     p.ATTRIBUTE_TIMESTAMP5 + "','" + p.ATTRIBUTE_TIMESTAMP6 + "','" + p.ATTRIBUTE_TIMESTAMP7 + "','" +
                     p.ATTRIBUTE_TIMESTAMP8 + "','" + p.ATTRIBUTE_TIMESTAMP9 + "','" + p.ATTRIBUTE_TIMESTAMP10 + "','" +
-                    p.LAST_UPDATE_DATE + "','" + p.CREATION_DATE + "','" + p.CREATE_BY + "','" +
-                    p.LAST_UPDATE_BY + "','" + p.LINE_TYPE + "','" + p.AGREEMENT_NUMBER + "'" +
-                    ") ";
+                    p.LAST_UPDATE_DATE + "',getdate(),'" + p.CREATE_BY + "','" +
+                    p.LAST_UPDATE_BY + "','" + p.LINE_TYPE + "','" + p.AGREEMENT_NUMBER + "','" +
+                    p.UOM_CODE+"') ";
                 chk = conn.ExecuteNonQueryAutoIncrement(sql, "kfc_po");
                 //chk = p.RowNumber;
                 //chk = p.Code;

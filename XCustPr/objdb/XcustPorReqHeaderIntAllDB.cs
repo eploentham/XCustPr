@@ -118,7 +118,18 @@ namespace XCustPr
             String sql = "", chk = "";
             try
             {
-                p.REQUITITION_NUMBER = p.REQUITITION_NUMBER + String.Concat("000000"+genRequisition_Number()).Substring(6);
+                String seq = "000000" + genRequisition_Number();
+                p.REQUITITION_NUMBER = p.REQUITITION_NUMBER + seq.Substring(seq.Length-6);
+                p.ATTRIBUTE_NUMBER1 = p.ATTRIBUTE_NUMBER1.Equals("") ? "0" : p.ATTRIBUTE_NUMBER1;
+                p.ATTRIBUTE_NUMBER2 = p.ATTRIBUTE_NUMBER2.Equals("") ? "0" : p.ATTRIBUTE_NUMBER2;
+                p.ATTRIBUTE_NUMBER3= p.ATTRIBUTE_NUMBER3.Equals("") ? "0" : p.ATTRIBUTE_NUMBER3;
+                p.ATTRIBUTE_NUMBER4 = p.ATTRIBUTE_NUMBER4.Equals("") ? "0" : p.ATTRIBUTE_NUMBER4;
+                p.ATTRIBUTE_NUMBER5 = p.ATTRIBUTE_NUMBER5.Equals("") ? "0" : p.ATTRIBUTE_NUMBER5;
+                p.ATTRIBUTE_NUMBER6 = p.ATTRIBUTE_NUMBER6.Equals("") ? "0" : p.ATTRIBUTE_NUMBER6;
+                p.ATTRIBUTE_NUMBER7 = p.ATTRIBUTE_NUMBER7.Equals("") ? "0" : p.ATTRIBUTE_NUMBER7;
+                p.ATTRIBUTE_NUMBER8 = p.ATTRIBUTE_NUMBER8.Equals("") ? "0" : p.ATTRIBUTE_NUMBER8;
+                p.ATTRIBUTE_NUMBER9 = p.ATTRIBUTE_NUMBER9.Equals("") ? "0" : p.ATTRIBUTE_NUMBER9;
+                p.ATTRIBUTE_NUMBER10 = p.ATTRIBUTE_NUMBER10.Equals("") ? "0" : p.ATTRIBUTE_NUMBER10;
                 //if (p.OrpChtNum.Equals(""))
                 //{
                 //    return "";
@@ -204,7 +215,7 @@ namespace XCustPr
                     xCPRHIA.LAST_UPDATE_BY +
                     ") " +
                     "Values('" + p.ATTRIBUTE1 + "','" + p.ATTRIBUTE_DATE1 + "','" +
-                    p.ATTRIBUTE_TIMESTAMP1 + "','" + p.BATCH_ID + "','" +
+                    p.ATTRIBUTE_TIMESTAMP1 + "'," + p.BATCH_ID + ",'" +
                     p.DESCRIPTIONS + "','" + p.REQUESTER_EMAIL_ADDR + "','" + p.INTERFACE_SOURCE_CODE + "','" +
                     p.ATTRIBUTE_CATEGORY + "','" + p.REQ_HEADER_INTERFACE_ID + "','" + p.PROCESS_FLAG + "','" +
                     p.APPROVER_EMAIL_ADDR + "','" + p.STATUS_CODE + "','" + p.REQ_BU_NAME + "','" +
@@ -215,11 +226,11 @@ namespace XCustPr
                     p.ATTRIBUTE11 + "','" + p.ATTRIBUTE12 + "','" + p.ATTRIBUTE13 + "','" +
                     p.ATTRIBUTE14 + "','" + p.ATTRIBUTE15 + "','" + p.ATTRIBUTE16 + "','" +
                     p.ATTRIBUTE17 + "','" + p.ATTRIBUTE18 + "','" + p.ATTRIBUTE19 + "','" +
-                    p.ATTRIBUTE20 + "','" +
-                    p.ATTRIBUTE_NUMBER1 + "','" + p.ATTRIBUTE_NUMBER2 + "','" + p.ATTRIBUTE_NUMBER3 + "','" +
-                    p.ATTRIBUTE_NUMBER4 + "','" + p.ATTRIBUTE_NUMBER5 + "','" + p.ATTRIBUTE_NUMBER6 + "','" +
-                    p.ATTRIBUTE_NUMBER7 + "','" + p.ATTRIBUTE_NUMBER8 + "','" + p.ATTRIBUTE_NUMBER9 + "','" +
-                    p.ATTRIBUTE_NUMBER10 + "','" +
+                    p.ATTRIBUTE20 + "'," +
+                    p.ATTRIBUTE_NUMBER1 + "," + p.ATTRIBUTE_NUMBER2 + "," + p.ATTRIBUTE_NUMBER3 + "," +
+                    p.ATTRIBUTE_NUMBER4 + "," + p.ATTRIBUTE_NUMBER5 + "," + p.ATTRIBUTE_NUMBER6 + "," +
+                    p.ATTRIBUTE_NUMBER7 + "," + p.ATTRIBUTE_NUMBER8 + "," + p.ATTRIBUTE_NUMBER9 + "," +
+                    p.ATTRIBUTE_NUMBER10 + ",'" +
                     p.ATTRIBUTE_DATE2 + "','" + p.ATTRIBUTE_DATE3 + "','" + p.ATTRIBUTE_DATE4 + "','" +
                     p.ATTRIBUTE_DATE5 + "','" + p.ATTRIBUTE_DATE6 + "','" + p.ATTRIBUTE_DATE7 + "','" +
                     p.ATTRIBUTE_DATE8 + "','" + p.ATTRIBUTE_DATE9 + "','" + p.ATTRIBUTE_DATE10 + "','" +

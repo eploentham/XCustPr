@@ -6,6 +6,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -54,6 +55,7 @@ namespace XCustPr
             initConfig();
             cTxtL = txtFileName.BackColor;
             cTxtE = Color.Yellow;
+            
         }
         private void initConfig()
         {
@@ -215,7 +217,7 @@ namespace XCustPr
             //        }
             //    }
             //}
-            cRDPO.processGenCSV();
+            cRDPO.processGenCSV(lv1, this, pB1);
         }
         private void btnWebService_Click(object sender, EventArgs e)
         {
@@ -224,6 +226,9 @@ namespace XCustPr
             //cRDPO.processRDPO(filePO);
             FtpWebRequest request;
             //cRDPO.validateOrderDateMinCurrDate("");
+            
+            EndpointAddress endpointAddress = new EndpointAddress(new Uri("https://host:port/icCnSetupCreditRulesPublicService/CreditRuleService"));
+             
         }
         private void btnFTP_Click(object sender, EventArgs e)
         {
