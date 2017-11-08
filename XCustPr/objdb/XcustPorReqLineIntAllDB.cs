@@ -191,7 +191,7 @@ namespace XCustPr
                     xCPRLIA.ATTRIBUTE_TIMESTAMP5 + "," + xCPRLIA.ATTRIBUTE_TIMESTAMP6 + "," + xCPRLIA.ATTRIBUTE_TIMESTAMP7 + "," +
                     xCPRLIA.ATTRIBUTE_TIMESTAMP8 + "," + xCPRLIA.ATTRIBUTE_TIMESTAMP9 + "," + xCPRLIA.ATTRIBUTE_TIMESTAMP10 + "," +
                     xCPRLIA.LAST_UPDATE_DATE + "," + xCPRLIA.CREATION_DATE + "," + xCPRLIA.CREATE_BY + "," +
-                    xCPRLIA.LAST_UPDATE_BY + "," + xCPRLIA.LINE_TYPE + "," + xCPRLIA.AGREEMENT_NUMBER + +","+
+                    xCPRLIA.LAST_UPDATE_BY + "," + xCPRLIA.LINE_TYPE + "," + xCPRLIA.AGREEMENT_NUMBER + ","+
                     xCPRLIA.UOM_CODE+") " +
                     "Values('" + p.ATTRIBUTE1 + "','" + p.ATTRIBUTE_DATE1 + "'," +
                     "getdate(),'" + p.CATEGORY_NAME + "','" +

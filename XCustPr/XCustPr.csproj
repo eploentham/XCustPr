@@ -52,7 +52,13 @@
     <Compile Include="Control\AnimationManager.cs" />
     <Compile Include="Control\Animations.cs" />
     <Compile Include="Control\ColorScheme.cs" />
+<<<<<<< HEAD
     <Compile Include="Control\ControlPO004.cs" />
+=======
+    <Compile Include="Control\ControlMain.cs" />
+    <Compile Include="Control\ControlPO004.cs" />
+    <Compile Include="Control\ControlPO005.cs" />
+>>>>>>> 4126006a8618219702ac1f4829a83afd96e4b4f3
     <Compile Include="Control\ControlRDPO.cs" />
     <Compile Include="Control\DrawHelper.cs" />
     <Compile Include="Control\IMaterialControl.cs" />
