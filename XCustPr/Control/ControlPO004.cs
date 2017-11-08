@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace XCustPr.Control
+namespace XCustPr
 {
     public class ControlPO004
     {
+
     }
 }

@@ -13,19 +13,21 @@ namespace XCustPr
 {
     public class ControlRDPO
     {
-        static String fontName = "Microsoft Sans Serif";
-        public String backColor1 = "#1E1E1E";
-        public String backColor2 = "#2D2D30";
-        public String foreColor1 = "#fff";
-        static float fontSize9 = 9.75f;
-        static float fontSize8 = 8.25f;
-        public Font fV1B, fV1;
-        public int tcW = 0, tcH = 0, tcWMinus = 25, tcHMinus = 70, formFirstLineX = 5, formFirstLineY = 5;
+        static String fontName = "Microsoft Sans Serif";        //standard
+        public String backColor1 = "#1E1E1E";        //standard
+        public String backColor2 = "#2D2D30";        //standard
+        public String foreColor1 = "#fff";        //standard
+        static float fontSize9 = 9.75f;        //standard
+        static float fontSize8 = 8.25f;        //standard
+        public Font fV1B, fV1;        //standard
+        public int tcW = 0, tcH = 0, tcWMinus = 25, tcHMinus = 70, formFirstLineX = 5, formFirstLineY = 5;        //standard
 
-        public ConnectDB conn;
+        public ControlMain Cm;
+        public ConnectDB conn;        //standard
 
-        private IniFile iniFile;
-        public InitC initC;
+        private IniFile iniFile;        //standard
+        public InitC initC;        //standard
+
         public XcustLinfoxPrTblDB xCLFPTDB;
         public XcustPorReqHeaderIntAllDB xCPRHIADB;
         public XcustPorReqLineIntAllDB xCPRLIADB;
@@ -58,15 +60,21 @@ namespace XCustPr
         private List<XcustValueSetMstTbl> listXcVSMT;
         private List<XcustUomMstTbl> listXcUMT;
 
-        public ControlRDPO()
+        public ControlRDPO(ControlMain cm)
         {
-            iniFile = new IniFile(Environment.CurrentDirectory + "\\" + Application.ProductName + ".ini");
-            initC = new InitC();
+            Cm = cm;
+            initConfig();
+        }
+        private void initConfig()
+        {
+            iniFile = new IniFile(Environment.CurrentDirectory + "\\" + Application.ProductName + ".ini");        //standard
+            initC = new InitC();        //standard
             vPrPo = new ValidatePrPo();
+            Cm.createFolderPO001();
+            //GetConfig();        //standard
 
-            GetConfig();
-
-            conn = new ConnectDB("kfc_po", initC);
+            //Cm = new ControlMain();     //standard
+            conn = new ConnectDB("kfc_po", initC);        //standard
             xCLFPTDB = new XcustLinfoxPrTblDB(conn, initC);
             xCPRHIADB = new XcustPorReqHeaderIntAllDB(conn);
             xCPRLIADB = new XcustPorReqLineIntAllDB(conn, initC);
@@ -74,7 +82,7 @@ namespace XCustPr
             xCBMTDB = new XcustBuMstTblDB(conn, initC);
             xCDLMTDB = new XcustDeriverLocatorMstTblDB(conn, initC);
             xCDOMTDB = new XcustDeriverOrganizationMstTblDB(conn, initC);
-            xCSIMTDB = new XcustSubInventoryMstTblDB(conn,initC);
+            xCSIMTDB = new XcustSubInventoryMstTblDB(conn, initC);
             xCIMTDB = new XcustItemMstTblDB(conn, initC);
             xCMTDB = new XcustCurrencyMstTblDB(conn, initC);
             xCSMTDB = new XcustSupplierMstTblDB(conn, initC);
@@ -83,10 +91,10 @@ namespace XCustPr
             xCBAHTDB = new XcustBlanketAgreementHeaderTblDB(conn, initC);
             xCBALTDB = new XcustBlanketAgreementLinesTblDB(conn, initC);
 
-            fontSize9 = 9.75f;
-            fontSize8 = 8.25f;
-            fV1B = new Font(fontName, fontSize9, FontStyle.Bold);
-            fV1 = new Font(fontName, fontSize8, FontStyle.Regular);
+            fontSize9 = 9.75f;        //standard
+            fontSize8 = 8.25f;        //standard
+            fV1B = new Font(fontName, fontSize9, FontStyle.Bold);        //standard
+            fV1 = new Font(fontName, fontSize8, FontStyle.Regular);        //standard
 
             listXcustPRHIA = new List<XcustPorReqHeaderIntAll>();
             listXcustPRLIA = new List<XcustPorReqLineIntAll>();
@@ -97,81 +105,80 @@ namespace XCustPr
             listXcSMT = new List<XcustSupplierMstTbl>();
             listXcVSMT = new List<XcustValueSetMstTbl>();
             listXcUMT = new List<XcustUomMstTbl>();
-
         }
-        public void GetConfig()
+        private void getConfig()
         {
-            initC.PathArchive = iniFile.Read("PathArchive");    //bit
-            initC.PathError = iniFile.Read("PathError");
-            initC.PathInitial = iniFile.Read("PathInitial");
-            initC.PathProcess = iniFile.Read("PathProcess");
-            initC.portDBBIT = iniFile.Read("portDBBIT");
 
-            initC.APPROVER_EMAIL = iniFile.Read("APPROVER_EMAIL");    //bit demo
-            initC.BU_NAME = iniFile.Read("BU_NAME");
-            initC.Requester = iniFile.Read("Requester");
-            initC.ImportSource = iniFile.Read("ImportSource");
-            initC.Company = iniFile.Read("Company");
-            initC.DELIVER_TO_LOCATTION = iniFile.Read("DELIVER_TO_LOCATTION");
-            initC.ORGANIZATION_code = iniFile.Read("ORGANIZATION_code");
-            initC.Locator = iniFile.Read("Locator");
-            initC.Subinventory_Code = iniFile.Read("Subinventory_Code");
-            initC.CURRENCY_CODE = iniFile.Read("CURRENCY_CODE");
-            initC.PR_STATAUS = iniFile.Read("PR_STATAUS");
-            initC.LINE_TYPE = iniFile.Read("LINE_TYPE");
-
-            initC.EmailPort = iniFile.Read("EmailPort");
-
-            initC.EmailCharset = iniFile.Read("EmailCharset");      //orc master
-            initC.EmailUsername = iniFile.Read("EmailUsername");
-            initC.EmailPassword = iniFile.Read("EmailPassword");
-            initC.EmailSMTPSecure = iniFile.Read("EmailSMTPSecure");
-            initC.PathLinfox = iniFile.Read("PathLinfox");
-
-            initC.EmailHost = iniFile.Read("EmailHost");        // orc backoffice
-            initC.EmailSender = iniFile.Read("EmailSender");
-            initC.FTPServer = iniFile.Read("FTPServer");
-            initC.PathZipExtract = iniFile.Read("PathZipExtract");
-            initC.PathZip = iniFile.Read("PathZip");
-
-            initC.databaseDBKFCPO = iniFile.Read("databaseDBKFCPO");        // orc BIT
-            initC.hostDBKFCPO = iniFile.Read("hostDBKFCPO");
-            initC.userDBKFCPO = iniFile.Read("userDBKFCPO");
-            initC.passDBKFCPO = iniFile.Read("passDBKFCPO");
-            initC.portDBKFCPO = iniFile.Read("portDBKFCPO");
-            //initC.quoLine6 = iniFile.Read("quotationline6");
-
-            //initC.grdQuoColor = iniFile.Read("gridquotationcolor");
-
-            //initC.HideCostQuotation = iniFile.Read("hidecostquotation");
-            //if (initC.grdQuoColor.Equals(""))
-            //{
-            //    initC.grdQuoColor = "#b7e1cd";
-            //}
-            //initC.Password = regE.getPassword();
         }
-        public void CreateIfMissing(String path)
-        {
-            bool folderExists = Directory.Exists(path);
-            if (!folderExists)
-                Directory.CreateDirectory(path);
-        }
-        public String[] getFileinFolder(String path)
-        {
-            string[] filePaths = Directory.GetFiles(@path);
-            return filePaths;
-        }
-        public void moveFile(String sourceFile, String destinationFile)
-        {
-            System.IO.File.Move(@sourceFile, @destinationFile);
-        }
-        public void deleteFile(String sourceFile)
-        {
-            if (System.IO.File.Exists(sourceFile))
-            {
-                System.IO.File.Delete(@sourceFile);
-            }
-        }
+        //public void GetConfig()
+        //{
+        //    initC.PathArchive = iniFile.Read("PathArchive");    //bit
+        //    initC.PathError = iniFile.Read("PathError");
+        //    initC.PathInitial = iniFile.Read("PathInitial");
+        //    initC.PathProcess = iniFile.Read("PathProcess");
+        //    initC.portDBBIT = iniFile.Read("portDBBIT");
+
+        //    initC.APPROVER_EMAIL = iniFile.Read("APPROVER_EMAIL");    //bit demo
+        //    initC.BU_NAME = iniFile.Read("BU_NAME");
+        //    initC.Requester = iniFile.Read("Requester");
+        //    initC.ImportSource = iniFile.Read("ImportSource");
+        //    initC.Company = iniFile.Read("Company");
+        //    initC.DELIVER_TO_LOCATTION = iniFile.Read("DELIVER_TO_LOCATTION");
+        //    initC.ORGANIZATION_code = iniFile.Read("ORGANIZATION_code");
+        //    initC.Locator = iniFile.Read("Locator");
+        //    initC.Subinventory_Code = iniFile.Read("Subinventory_Code");
+        //    initC.CURRENCY_CODE = iniFile.Read("CURRENCY_CODE");
+        //    initC.PR_STATAUS = iniFile.Read("PR_STATAUS");
+        //    initC.LINE_TYPE = iniFile.Read("LINE_TYPE");
+
+        //    initC.EmailPort = iniFile.Read("EmailPort");
+
+        //    initC.EmailCharset = iniFile.Read("EmailCharset");      //orc master
+        //    initC.EmailUsername = iniFile.Read("EmailUsername");
+        //    initC.EmailPassword = iniFile.Read("EmailPassword");
+        //    initC.EmailSMTPSecure = iniFile.Read("EmailSMTPSecure");
+        //    initC.PathLinfox = iniFile.Read("PathLinfox");
+
+        //    initC.EmailHost = iniFile.Read("EmailHost");        // orc backoffice
+        //    initC.EmailSender = iniFile.Read("EmailSender");
+        //    initC.FTPServer = iniFile.Read("FTPServer");
+        //    initC.PathZipExtract = iniFile.Read("PathZipExtract");
+        //    initC.PathZip = iniFile.Read("PathZip");
+
+        //    initC.databaseDBKFCPO = iniFile.Read("databaseDBKFCPO");        // orc BIT
+        //    initC.hostDBKFCPO = iniFile.Read("hostDBKFCPO");
+        //    initC.userDBKFCPO = iniFile.Read("userDBKFCPO");
+        //    initC.passDBKFCPO = iniFile.Read("passDBKFCPO");
+        //    initC.portDBKFCPO = iniFile.Read("portDBKFCPO");
+
+        //    initC.AutoRunPO001 = iniFile.Read("AutoRunPO001");
+
+        //    //initC.grdQuoColor = iniFile.Read("gridquotationcolor");
+
+        //    //initC.HideCostQuotation = iniFile.Read("hidecostquotation");
+        //    //if (initC.grdQuoColor.Equals(""))
+        //    //{
+        //    //    initC.grdQuoColor = "#b7e1cd";
+        //    //}
+        //    //initC.Password = regE.getPassword();
+        //}
+
+        //public String[] getFileinFolder(String path)
+        //{
+        //    string[] filePaths = Directory.GetFiles(@path);
+        //    return filePaths;
+        //}
+        //public void moveFile(String sourceFile, String destinationFile)
+        //{
+        //    System.IO.File.Move(@sourceFile, @destinationFile);
+        //}
+        //public void deleteFile(String sourceFile)
+        //{
+        //    if (System.IO.File.Exists(sourceFile))
+        //    {
+        //        System.IO.File.Delete(@sourceFile);
+        //    }
+        //}
         private void getListXcSIMT()
         {
             listXcSIMT.Clear();
@@ -736,7 +743,7 @@ namespace XCustPr
                     string col19 = "col19";     //Conversion Rate
                     string col20 = "col20";     //Conversion Date
 
-                    string col21 = row[xCPRHIADB.xCPRHIA.REQ_HEADER_INTERFACE_ID].ToString();       //Conversion Rate Type
+                    string col21 = "col21";       //Conversion Rate Type
                     string col22 = "col22";     //Secondary UOM Code
                     string col23 = "col23";     //Secondary Quantity
                     string col24 = "col24";     //amount
@@ -758,25 +765,25 @@ namespace XCustPr
                     string col39 = "col39";     //Negotiated
                     string col40 = "col40";     //Negotiation Required
 
-                    string col41 = row[xCPRHIADB.xCPRHIA.REQ_HEADER_INTERFACE_ID].ToString();       //Urgent
+                    string col41 = "col41";       //Urgent
                     string col42 = "col42";     //New Supplier
                     string col43 = "col43";     //Note to Buyer
                     string col44 = "col44";     //Note to Receiver
                     string col45 = "col45";     //Transaction Business Category
-                    string col46 = "col46";
-                    string col47 = "col47";
-                    string col48 = "col48";
-                    string col49 = "col49";
-                    string col50 = "col50";
+                    string col46 = "col46";     //Transaction Business Category Name
+                    string col47 = "col47";     //Product Type
+                    string col48 = "col48";     //Product Type Name
+                    string col49 = "col49";     //Product-Fiscal Classification
+                    string col50 = "col50";     //Product-Fiscal Classification Name
 
-                    string col51 = row[xCPRHIADB.xCPRHIA.REQ_HEADER_INTERFACE_ID].ToString();
-                    string col52 = "col52";
-                    string col53 = "col53";
-                    string col54 = "col54";
-                    string col55 = "col55";
-                    string col56 = "col56";
-                    string col57 = "col57";
-                    string col58 = "col58";
+                    string col51 = "col51";         //Product Category
+                    string col52 = "col52";         //Product Category Name
+                    string col53 = "col53";         //Intended Use
+                    string col54 = "col54";         //Intended Use Name
+                    string col55 = "col55";         //User-Defined Fiscal Classification
+                    string col56 = "col56";         //User-Defined Fiscal Classification Name
+                    string col57 = "col57";         //Tax Classification Code
+                    string col58 = "col58";         //Tax Classification Name
                     string col59 = "col59";         //Assessable Value
                     string col60 = row[xCPRLIADB.xCPRLIA.ATTRIBUTE1].ToString();
 
@@ -837,18 +844,18 @@ namespace XCustPr
 
                     string col111 = row[xCPRLIADB.xCPRLIA.ATTRIBUTE_CATEGORY].ToString();       //ATTRIBUTE_CATEGORY
                     string col112 = "col112";       //Supplier Number
-                    string col113 = "col113";
-                    string col114 = "col114";
-                    string col115 = "col115";
-                    string col116 = "col116";
-                    string col117 = "col117";
-                    string col118 = "col118";
-                    string col119 = "col119";
-                    string col120 = "col120";
+                    string col113 = "col113";       //Third-Party Tax Registration Number
+                    string col114 = "col114";       //Location of Final Discharge
+                    string col115 = "col115";       //Note To Supplier
+                    string col116 = "col116";       //Carrier
+                    string col117 = "col117";       //Mode Of Transport Code
+                    string col118 = "col118";       //Requested Ship Date
+                    string col119 = "col119";       //Service Level Code
+                    string col120 = "col120";       //Requested Delivery Date
 
-                    string col121 = "col121";
-                    string col122 = "col122";
-                    string col123 = "col123";
+                    string col121 = "col121";       //Orchestration Code
+                    string col122 = "col122";       //Work Order Product
+                    string col123 = "col123";       //Work Order ID
                     string col124 = "col124";       //Work Order Number
                     string col125 = row[xCPRLIADB.xCPRLIA.UOM_CODE].ToString();     //UOM
                     string col126 = "col126";       //Secondary UOM
@@ -1012,15 +1019,15 @@ namespace XCustPr
                     string col110 = "";
 
                     string col111 = "";
-                    string col112 = "";       //CHARGE_ACCOUNT_SEGMENT30
-                    string col113 = "col113";
-                    string col114 = "col114";
-                    string col115 = "col115";
-                    string col116 = "col116";
-                    string col117 = "col117";
-                    string col118 = "col118";
-                    string col119 = "col119";
-                    string col120 = "col120";
+                    string col112 = "";       //CHARGE_ACCOUNT_SEGMENT28
+                    string col113 = "";       //CHARGE_ACCOUNT_SEGMENT29
+                    string col114 = "";       //CHARGE_ACCOUNT_SEGMENT30
+                    string col115 = "col115";       //Work Type
+                    string col116 = "col116";       //Budget Date
+                    string col117 = "col117";       //Project Number
+                    string col118 = "col118";       //Contract Name
+                    string col119 = "col119";       //Contract Number
+                    string col120 = "col120";       //Funding Source Name
 
                     //string csvRow = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20}," +
                     //    "{21},{22},{23},{24},{25},{26},{27},{28},{29},{30},{31},{32},{33},{34},{35},{36},{37},{38},{39},{40}," +
@@ -1055,7 +1062,7 @@ namespace XCustPr
             addListView("create zip file " + initC.PathProcess, "Validate", lv1, form1);
             String filename = "", ilename2 = "", ilename3 = "";
             filename = initC.PathZip + "\\xcustpr.zip";
-            deleteFile(filename);
+            Cm.deleteFile(filename);
             ZipArchive zip = ZipFile.Open(filename, ZipArchiveMode.Create);
             var allFiles = Directory.GetFiles(@initC.PathArchive, "*.*", SearchOption.AllDirectories);
             foreach (String file in allFiles)
@@ -1359,13 +1366,13 @@ namespace XCustPr
             foreach (string aa in filePO)
             {
                 addListView("ย้าย file " + aa, "", lv1, form1);
-                moveFile(aa, initC.PathProcess + aa.Replace(initC.PathInitial, ""));
+                Cm.moveFile(aa, initC.PathProcess + aa.Replace(initC.PathInitial, ""));
             }
             addListView("Clear temp table", "", lv1, form1);
             xCLFPTDB.DeleteLinfoxTemp();//  clear temp table
             //c.	จากนัน Program ทำการอ่าน File ใน Folder Path Process มาไว้ยัง Table XCUST_LINFOX_PR_TBL ด้วย Validate Flag = ‘N’ ,PROCES_FLAG = ‘N’
             // insert XCUST_LINFOX_PR_TBL
-            filePOProcess = getFileinFolder(initC.PathProcess);
+            filePOProcess = Cm.getFileinFolder(initC.PathProcess);
             addListView("อ่าน file จาก " + initC.PathProcess, "", lv1, form1);
             foreach (string aa in filePOProcess)
             {

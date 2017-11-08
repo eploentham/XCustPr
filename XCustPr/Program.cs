@@ -17,8 +17,8 @@ namespace XCustPr
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            ControlRDPO cRDPO = new ControlRDPO();
-            Application.Run(new XCustPrToCloud(cRDPO));
+            ControlMain Cm = new ControlMain();
+            Application.Run(new XCustPrToCloud(Cm));
         }
     }
 }

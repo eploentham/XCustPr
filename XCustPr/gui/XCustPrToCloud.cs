@@ -45,20 +45,20 @@ namespace XCustPr
             this.ResumeLayout(false);
         }
         
-        public XCustPrToCloud(ControlRDPO crdpo)
+        public XCustPrToCloud(ControlMain cm)
         {
             //this.FormBorderStyle = FormBorderStyle.None;
             this.Size = new Size(formwidth, formheight);
-            this.StartPosition = FormStartPosition.CenterScreen;
-            cRDPO = crdpo;
+            this.StartPosition = FormStartPosition.CenterScreen;            
             
-            initConfig();
+            initConfig(cm);
             cTxtL = txtFileName.BackColor;
             cTxtE = Color.Yellow;
             
         }
-        private void initConfig()
+        private void initConfig(ControlMain cm)
         {
+            cRDPO = new ControlRDPO(cm);
             initCompoment();
             pB1.Visible = false;
             lvwColumnSorter = new ListViewColumnSorter();
@@ -66,11 +66,7 @@ namespace XCustPr
             lvwColumnSorter.SortColumn = 0;
             lv1.Sort();
             //txtFileName.Text = cRDPO.initC.PathInitial + "PR03102017.txt";
-            txtFileName.Text = cRDPO.initC.PathInitial ;
-            cRDPO.CreateIfMissing(cRDPO.initC.PathArchive);
-            cRDPO.CreateIfMissing(cRDPO.initC.PathError);
-            cRDPO.CreateIfMissing(cRDPO.initC.PathInitial);
-            cRDPO.CreateIfMissing(cRDPO.initC.PathProcess);
+            txtFileName.Text = cRDPO.Cm.initC.PathInitial;                      
 
             lv1.Columns.Add("NO", 50);
             lv1.Columns.Add("List File", formwidth - 50 - 40 - 100, HorizontalAlignment.Left);
@@ -78,7 +74,7 @@ namespace XCustPr
             lv1.ListViewItemSorter = lvwColumnSorter;
 
             int i = 1;
-            filePO = cRDPO.getFileinFolder(cRDPO.initC.PathInitial);
+            filePO = cRDPO.Cm.getFileinFolder(cRDPO.Cm.initC.PathInitial);
             foreach(string aa in filePO)
             {
                 lv1.Items.Add(AddToList((i++),aa,""));
@@ -185,7 +181,7 @@ namespace XCustPr
             //throw new NotImplementedException();
             // move file
             lv1.Items.Clear();
-            filePO = cRDPO.getFileinFolder(cRDPO.initC.PathInitial);
+            filePO = cRDPO.Cm.getFileinFolder(cRDPO.Cm.initC.PathInitial);
             cRDPO.processLinfoxPOtoErpPR(filePO, lv1, this, pB1);
             //lv1.Items.Add(AddToList((1), "", ""));
             //1. ดึงข้อมูลตาม group by filename เพราะ field filename เป็นตัวแบ่งข้อมูลแต่ละfile
