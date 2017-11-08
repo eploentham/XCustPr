@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -31,6 +32,20 @@ namespace XCustPr
                 Directory.CreateDirectory(path);
         }
         public void createFolderPO001()
+        {
+            createFolderPO001PathProcess();
+            createFolderPO001PathInitial();
+            createFolderPO001PathError();
+            createFolderPO001PathArchive();
+        }
+        public void createFolderPO004()
+        {
+            createFolderPO001PathProcess();
+            createFolderPO001PathInitial();
+            createFolderPO001PathError();
+            createFolderPO001PathArchive();
+        }
+        public void createFolderPO005()
         {
             createFolderPO001PathProcess();
             createFolderPO001PathInitial();
@@ -119,8 +134,11 @@ namespace XCustPr
             initC.portDBKFCPO = iniFile.Read("portDBKFCPO");
 
             initC.AutoRunPO001 = iniFile.Read("AutoRunPO001");
+            initC.AutoRunPO004 = iniFile.Read("AutoRunPO004");
+            initC.AutoRunPO005 = iniFile.Read("AutoRunPO005");
+            initC.PathMaster = iniFile.Read("PathMaster");
 
-            
+
             //initC.grdQuoColor = iniFile.Read("gridquotationcolor");
 
             //initC.HideCostQuotation = iniFile.Read("hidecostquotation");
@@ -130,5 +148,6 @@ namespace XCustPr
             //}
             //initC.Password = regE.getPassword();
         }
+        
     }
 }

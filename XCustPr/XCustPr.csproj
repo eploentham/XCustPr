@@ -36,6 +36,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -48,17 +49,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Connected Services\ServiceOracleCloud\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Control\AnimationDirection.cs" />
     <Compile Include="Control\AnimationManager.cs" />
     <Compile Include="Control\Animations.cs" />
     <Compile Include="Control\ColorScheme.cs" />
-<<<<<<< HEAD
-    <Compile Include="Control\ControlPO004.cs" />
-=======
     <Compile Include="Control\ControlMain.cs" />
     <Compile Include="Control\ControlPO004.cs" />
     <Compile Include="Control\ControlPO005.cs" />
->>>>>>> 4126006a8618219702ac1f4829a83afd96e4b4f3
     <Compile Include="Control\ControlRDPO.cs" />
     <Compile Include="Control\DrawHelper.cs" />
     <Compile Include="Control\IMaterialControl.cs" />
@@ -68,7 +70,9 @@
     <Compile Include="Control\MaterialContextMenuStrip.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Control\MaterialDivider.cs" />
+    <Compile Include="Control\MaterialDivider.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Control\MaterialFlatButton.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -90,17 +94,27 @@
     <Compile Include="Control\MaterialRaisedButton.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Control\MaterialSingleLineTextField.cs" />
+    <Compile Include="Control\MaterialSingleLineTextField.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Control\MaterialSkinManager.cs" />
     <Compile Include="Control\MaterialTabControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Control\MaterialTabSelector.cs" />
+    <Compile Include="Control\MaterialTabSelector.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="gui\XCustPO004.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="gui\XCustPO005.cs">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="gui\XCustPrToCloud.cs">
       <SubType>Form</SubType>
@@ -159,6 +173,130 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resource1.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="Connected Services\ServiceOracleCloud\PublicReportService.wsdl" />
+    <None Include="Connected Services\ServiceOracleCloud\XCustPr.ServiceOracleCloud.CatalogContents.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ServiceOracleCloud\XCustPr.ServiceOracleCloud.createReportInSessionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ServiceOracleCloud\XCustPr.ServiceOracleCloud.createReportResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ServiceOracleCloud\XCustPr.ServiceOracleCloud.createReportWithDataModelInSessionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ServiceOracleCloud\XCustPr.ServiceOracleCloud.createReportWithDataModelResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ServiceOracleCloud\XCustPr.ServiceOracleCloud.DeliveryServiceDefinition.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ServiceOracleCloud\XCustPr.ServiceOracleCloud.downloadReportObjectInSessionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ServiceOracleCloud\XCustPr.ServiceOracleCloud.downloadReportObjectResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ServiceOracleCloud\XCustPr.ServiceOracleCloud.getListOfScheduledReportsStatusInSessionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ServiceOracleCloud\XCustPr.ServiceOracleCloud.getListOfScheduledReportsStatusResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ServiceOracleCloud\XCustPr.ServiceOracleCloud.getObjectSecurityXMLResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ServiceOracleCloud\XCustPr.ServiceOracleCloud.getReportSampleDataInSessionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ServiceOracleCloud\XCustPr.ServiceOracleCloud.getReportSampleDataResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ServiceOracleCloud\XCustPr.ServiceOracleCloud.getTemplateInSessionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ServiceOracleCloud\XCustPr.ServiceOracleCloud.getTemplateParametersInSessionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ServiceOracleCloud\XCustPr.ServiceOracleCloud.getTemplateParametersResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ServiceOracleCloud\XCustPr.ServiceOracleCloud.getTemplateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ServiceOracleCloud\XCustPr.ServiceOracleCloud.getXDOSchemaInSessionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ServiceOracleCloud\XCustPr.ServiceOracleCloud.getXDOSchemaResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ServiceOracleCloud\XCustPr.ServiceOracleCloud.JobHistoryInfos.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ServiceOracleCloud\XCustPr.ServiceOracleCloud.JobInfos.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ServiceOracleCloud\XCustPr.ServiceOracleCloud.JobStatus.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ServiceOracleCloud\XCustPr.ServiceOracleCloud.JobStatusInfos.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ServiceOracleCloud\XCustPr.ServiceOracleCloud.ParamNameValue.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ServiceOracleCloud\XCustPr.ServiceOracleCloud.ParamNameValues.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ServiceOracleCloud\XCustPr.ServiceOracleCloud.ReportDataChunk.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ServiceOracleCloud\XCustPr.ServiceOracleCloud.ReportDefinition.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ServiceOracleCloud\XCustPr.ServiceOracleCloud.ReportResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ServiceOracleCloud\XCustPr.ServiceOracleCloud.updateTemplateForReportInSessionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ServiceOracleCloud\XCustPr.ServiceOracleCloud.updateTemplateForReportResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ServiceOracleCloud\XCustPr.ServiceOracleCloud.updateXLIFFForReportInSessionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ServiceOracleCloud\XCustPr.ServiceOracleCloud.updateXLIFFForReportResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ServiceOracleCloud\XCustPr.ServiceOracleCloud.uploadReportDataChunkResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ServiceOracleCloud\XCustPr.ServiceOracleCloud.uploadReportInSessionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ServiceOracleCloud\XCustPr.ServiceOracleCloud.uploadReportObjectInSessionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ServiceOracleCloud\XCustPr.ServiceOracleCloud.uploadReportObjectResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ServiceOracleCloud\XCustPr.ServiceOracleCloud.uploadReportResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ServiceOracleCloud\XCustPr.ServiceOracleCloud.uploadTemplateForReportInSessionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ServiceOracleCloud\XCustPr.ServiceOracleCloud.uploadTemplateForReportResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ServiceOracleCloud\XCustPr.ServiceOracleCloud.uploadXLIFFForReportInSessionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ServiceOracleCloud\XCustPr.ServiceOracleCloud.uploadXLIFFForReportResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -187,6 +325,21 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Connected Services\ServiceOracleCloud\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\ServiceOracleCloud\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\ServiceOracleCloud\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\ServiceOracleCloud\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

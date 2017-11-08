@@ -18,7 +18,23 @@ namespace XCustPr
             Application.SetCompatibleTextRenderingDefault(false);
 
             ControlMain Cm = new ControlMain();
-            Application.Run(new XCustPrToCloud(Cm));
+            if (System.Diagnostics.Process.GetCurrentProcess().ProcessName.ToLower().Equals("xcustpo001"))
+            {
+                Application.Run(new XCustPrToCloud(Cm));
+            }
+            else if(System.Diagnostics.Process.GetCurrentProcess().ProcessName.ToLower().Equals("xcustpo004"))
+            {
+                Application.Run(new XCustPO004(Cm));
+            }
+            else if (System.Diagnostics.Process.GetCurrentProcess().ProcessName.ToLower().Equals("xcustpo005"))
+            {
+                Application.Run(new XCustPO005(Cm));
+            }
+            else
+            {
+                Application.Run(new XCustPO004(Cm));
+                //Application.Run(new XCustPrToCloud(Cm));
+            }
         }
     }
 }

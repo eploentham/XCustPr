@@ -105,7 +105,7 @@ namespace XCustPr
             String sql = "Delete From " + xCLFPT.table + " Where " + xCLFPT.file_name + "='" + filename + "'";
             conn.ExecuteNonQuery(sql, "kfc_po");
         }
-
+        
         public void insertBluk(List<String> linfox, String filename, String host, MaterialProgressBar pB1)
         {
             int i = 0;

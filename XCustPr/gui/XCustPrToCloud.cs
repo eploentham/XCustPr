@@ -21,7 +21,7 @@ namespace XCustPr
 
         int formwidth = 860, formheight = 740;
 
-        MaterialLabel lb1;
+        MaterialLabel lb1, lb2;
         MaterialSingleLineTextField txtFileName;
         MaterialFlatButton btnRead, btnPrepare, btnWebService, btnFTP, btnEmail;
         MaterialListView lv1;
@@ -30,6 +30,7 @@ namespace XCustPr
         Color cTxtL, cTxtE, cForm;
 
         ControlRDPO cRDPO;
+        ControlMain Cm;
         String[] filePO;
 
         private ListViewColumnSorter lvwColumnSorter;
@@ -42,6 +43,7 @@ namespace XCustPr
             // 
             //this.ClientSize = new System.Drawing.Size(284, 261);
             this.Name = "XCustPrToCloud";
+            this.Text = "Last Update 2017-11-08 ";
             this.ResumeLayout(false);
         }
         
@@ -49,16 +51,16 @@ namespace XCustPr
         {
             //this.FormBorderStyle = FormBorderStyle.None;
             this.Size = new Size(formwidth, formheight);
-            this.StartPosition = FormStartPosition.CenterScreen;            
-            
-            initConfig(cm);
+            this.StartPosition = FormStartPosition.CenterScreen;
+            Cm = cm;
+            initConfig();
             cTxtL = txtFileName.BackColor;
             cTxtE = Color.Yellow;
             
         }
-        private void initConfig(ControlMain cm)
+        private void initConfig()
         {
-            cRDPO = new ControlRDPO(cm);
+            cRDPO = new ControlRDPO(Cm);
             initCompoment();
             pB1.Visible = false;
             lvwColumnSorter = new ListViewColumnSorter();
@@ -66,7 +68,8 @@ namespace XCustPr
             lvwColumnSorter.SortColumn = 0;
             lv1.Sort();
             //txtFileName.Text = cRDPO.initC.PathInitial + "PR03102017.txt";
-            txtFileName.Text = cRDPO.Cm.initC.PathInitial;                      
+            //txtFileName.Text = cRDPO.Cm.initC.PathInitial;
+            txtFileName.Text = cRDPO.Cm.initC.AutoRunPO001;
 
             lv1.Columns.Add("NO", 50);
             lv1.Columns.Add("List File", formwidth - 50 - 40 - 100, HorizontalAlignment.Left);
@@ -93,7 +96,7 @@ namespace XCustPr
 
             lb1 = new MaterialLabel();
             lb1.Font = cRDPO.fV1;
-            lb1.Text = "Text File";
+            lb1.Text = "Timer";
             lb1.AutoSize = true;
             Controls.Add(lb1);
             lb1.Location = new System.Drawing.Point(cRDPO.formFirstLineX, cRDPO.formFirstLineY + gapLine);
@@ -101,13 +104,19 @@ namespace XCustPr
             txtFileName = new MaterialSingleLineTextField();
             txtFileName.Font = cRDPO.fV1;
             txtFileName.Text = "";
-            txtFileName.Size = new System.Drawing.Size(800 - grd1-20-30, ControlHeight);
+            txtFileName.Size = new System.Drawing.Size(300 - grd1-20-30, ControlHeight);
             Controls.Add(txtFileName);
             txtFileName.Location = new System.Drawing.Point(grd1, cRDPO.formFirstLineY + gapLine);
             txtFileName.Hint = lb1.Text;
             txtFileName.Enter += txtFileName_Enter; ;
             txtFileName.Leave += txtFileName_Leave;
 
+            lb2 = new MaterialLabel();
+            lb2.Font = cRDPO.fV1;
+            lb2.Text = "Program Name XcustPO001";
+            lb2.AutoSize = true;
+            Controls.Add(lb2);
+            lb2.Location = new System.Drawing.Point(grd3, cRDPO.formFirstLineY + gapLine);
 
             btnRead = new MaterialFlatButton();
             btnRead.Font = cRDPO.fV1;
@@ -220,18 +229,20 @@ namespace XCustPr
             //throw new NotImplementedException();
             // move file
             //cRDPO.processRDPO(filePO);
-            FtpWebRequest request;
+            //FtpWebRequest request;
             //cRDPO.validateOrderDateMinCurrDate("");
-            
-            EndpointAddress endpointAddress = new EndpointAddress(new Uri("https://host:port/icCnSetupCreditRulesPublicService/CreditRuleService"));
-             
+
+            //EndpointAddress endpointAddress = new EndpointAddress(new Uri("https://host:port/icCnSetupCreditRulesPublicService/CreditRuleService"));
+            cRDPO.ImportMasterXCUST_VALUE_SET_MST_TBL();
+
+
         }
         private void btnFTP_Click(object sender, EventArgs e)
         {
-            var allFiles = Directory.GetFiles(@cRDPO.initC.PathZip, "*.zip", SearchOption.AllDirectories);
+            var allFiles = Directory.GetFiles(@Cm.initC.PathZip, "*.zip", SearchOption.AllDirectories);
             foreach (String file in allFiles)
             {
-                FtpWebRequest ftpRequest = (FtpWebRequest)WebRequest.Create("ftp://" + cRDPO.initC.FTPServer+"/"+ file.Replace(cRDPO.initC.PathZip,""));
+                FtpWebRequest ftpRequest = (FtpWebRequest)WebRequest.Create("ftp://" + Cm.initC.FTPServer+"/"+ file.Replace(Cm.initC.PathZip,""));
                 ftpRequest.Method = WebRequestMethods.Ftp.UploadFile;
                 ftpRequest.Credentials = new NetworkCredential("pop", "pop");
                 ftpRequest.UseBinary = true;
@@ -257,21 +268,21 @@ namespace XCustPr
         private void btnEmail_Click(object sender, EventArgs e)
         {
             var email = new MailMessage();
-            email.From = new MailAddress(cRDPO.initC.EmailSender);
+            email.From = new MailAddress(Cm.initC.EmailSender);
             email.Subject = "Test send Email";
-            email.To.Add(new MailAddress(cRDPO.initC.APPROVER_EMAIL));
+            email.To.Add(new MailAddress(Cm.initC.APPROVER_EMAIL));
             email.IsBodyHtml = true;
             email.BodyEncoding = System.Text.Encoding.UTF8;
 
             email.Body = "Body Test .....";
 
-            var smtp = new SmtpClient(cRDPO.initC.EmailHost);
-            var credential = new NetworkCredential(cRDPO.initC.EmailUsername, cRDPO.initC.EmailPassword);
-            smtp.Port = int.Parse(cRDPO.initC.EmailPort);
+            var smtp = new SmtpClient(Cm.initC.EmailHost);
+            var credential = new NetworkCredential(Cm.initC.EmailUsername, Cm.initC.EmailPassword);
+            smtp.Port = int.Parse(Cm.initC.EmailPort);
             smtp.Port = 465;
             //smtp.Credentials = new NetworkCredential(cRDPO.initC.EmailUsername, cRDPO.initC.EmailPassword);
             smtp.Credentials = credential;
-            smtp.Host = cRDPO.initC.EmailHost; // SMTP
+            smtp.Host = Cm.initC.EmailHost; // SMTP
             smtp.UseDefaultCredentials = false;
             smtp.EnableSsl = true;
             smtp.DeliveryMethod = System.Net.Mail.SmtpDeliveryMethod.Network;

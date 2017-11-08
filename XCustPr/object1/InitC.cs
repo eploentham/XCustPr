@@ -29,6 +29,9 @@ namespace XCustPr
         public String PR_STATAUS = "";
         public String LINE_TYPE = "";
         public String AutoRunPO001 = "";
+        public String AutoRunPO004 = "";
+        public String AutoRunPO005 = "";
+        public String PathMaster = "";
 
         public String EmailPort = "3306";
         public String EmailCharset = "hisorc_ma";        //orc master

@@ -9,7 +9,7 @@ namespace XCustPr
 {
     public class XcustValueSetMstTblDB
     {
-        XcustValueSetMstTbl xCVSMT;
+        public XcustValueSetMstTbl xCVSMT;
         ConnectDB conn;
         private InitC initC;
         public XcustValueSetMstTblDB(ConnectDB c, InitC initc)
@@ -52,6 +52,13 @@ namespace XCustPr
         {
             DataTable dt = new DataTable();
             String sql = "select * From " + xCVSMT.table;
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
+        }
+        public DataTable selectByPk(String value_set_id, String value_id)
+        {
+            DataTable dt = new DataTable();
+            String sql = "select * From " + xCVSMT.table+" Where "+xCVSMT.VALUE_SET_ID+"="+value_set_id+" and "+xCVSMT.VALUE_ID+"="+value_id+"";
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
@@ -150,6 +157,43 @@ namespace XCustPr
             {
                 return false;
             }
+        }
+        /*
+         * 1. Primary key คือ value_set_id ,value_id
+         * 2. กรณีเจอพบว่า PK ไม่เจอใน Table ต้องทำการ Insesrt
+         * 3. กรณีที่เจอว่า PK เจอใน Table ต้อง check last update date หาก เจอว่าไม่เหมือนกัน ให้ทำการ Update 2 Field คือ
+         * - Description
+         * - Enable_flag
+         */
+        public String insertFromText(String data, String host)
+        {
+            String chk = "";
+
+            int VALUE_SET_ID = 0, VALUE_SET_CODE = 1, VALUE_ID = 2, VALUE = 3, DESCRIPTION = 4, ENABLED_FLAG = 5, LAST_UPDATE_DATE = 6, CREATION_DATE = 7;
+
+
+            String sql = "";
+            String[] data1 = data.Split(',');
+
+            DataTable dt = selectByPk(data[VALUE_SET_ID].ToString(), data[VALUE_ID].ToString());
+            if (dt.Rows.Count>0)
+            {
+                sql = "Update "+xCVSMT.table+" Set "+xCVSMT.DESCRIPTION+"='"+data1[DESCRIPTION].ToString()+"', "+xCVSMT.ENABLED_FLAG+"='"+data1[ENABLED_FLAG].ToString()+"' "+
+                    "Where "+xCVSMT.VALUE_SET_ID+" = "+ data1[VALUE_SET_ID].ToString() + " and "+xCVSMT.VALUE_ID+" = "+ data1[VALUE_ID].ToString() + "";
+            }
+            else
+            {
+
+                sql = "Insert into " + xCVSMT.table + "(" + xCVSMT.CREATION_DATE + "," + xCVSMT.DESCRIPTION + "," + xCVSMT.ENABLED_FLAG + "," +
+                    xCVSMT.LAST_UPDATE_DATE + "," + xCVSMT.VALUE + "," + xCVSMT.VALUE_ID + "," +
+                    xCVSMT.VALUE_SET_CODE + "," + xCVSMT.VALUE_SET_ID + ") " +
+                    "Values ('" + data1[CREATION_DATE] + "','" + data1[DESCRIPTION] + "','" + data1[ENABLED_FLAG]
+                    + "','" + data1[LAST_UPDATE_DATE] + "','" + data1[VALUE] + "'," + data1[VALUE_ID]
+                    + ",'" + data1[VALUE_SET_CODE] + "'," + data1[VALUE_SET_ID] + ")";
+            }
+
+            chk = conn.ExecuteNonQuery(sql.ToString(), host);
+            return chk;
         }
     }
 }

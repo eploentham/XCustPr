@@ -107,6 +107,7 @@ namespace XCustPr
 
             xCPRLIA.LINE_TYPE = "LINE_TYPE";
             xCPRLIA.AGREEMENT_NUMBER = "AGREEMENT_NUMBER";
+            xCPRLIA.AGREEMENT_LINE_NUMBER = "AGREEMENT_LINE_NUMBER";
             xCPRLIA.UOM_CODE = "UOM_CODE";
 
             xCPRLIA.table = "xcust_por_req_line_int_all";

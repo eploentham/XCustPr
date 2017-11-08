@@ -105,6 +105,13 @@ namespace XCustPr
 
             return item;
         }
+        public DataTable selectAll()
+        {
+            DataTable dt = new DataTable();
+            String sql = "select * From " + xCPRDIA.table;
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
+        }
         public String insert(XcustPorReqDistIntAll p)
         {
             String sql = "", chk = "";

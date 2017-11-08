@@ -1,0 +1,1644 @@
+VALUE_SET_ID,VALUE_SET_CODE,VALUE_ID,VALUE,DESCRIPTION,ENABLED_FLAG,LAST_UPDATE_DATE,CREATION_DATE
+51137,ORA_PON_PRIV,50001,01,,Y,31-Oct-17,31-Oct-17
+51281,ORA_POQ_PRIV,51001,01,,Y,31-Oct-17,31-Oct-17
+51282,ORA_POR_PRIV,51002,01,,Y,31-Oct-17,31-Oct-17
+51283,ORA_POS_PRIV,51003,01,,Y,31-Oct-17,31-Oct-17
+51284,ORA_PO_PRIV,51004,01,,Y,31-Oct-17,31-Oct-17
+51333,ORA_PRC_METRICS,51005,NAMED_USERS_PO,Purchasing Cloud Service - Hosted Named Users,Y,31-Oct-17,31-Oct-17
+51333,ORA_PRC_METRICS,51006,NAMED_USERS_PON,Sourcing Cloud Service - Hosted Named Users,Y,31-Oct-17,31-Oct-17
+51333,ORA_PRC_METRICS,51007,NAMED_USERS_POQ,Supplier Qualification Cloud Service - Hosted Named Users,Y,31-Oct-17,31-Oct-17
+51333,ORA_PRC_METRICS,51008,NAMED_USERS_POR,Purchasing or Self Service Procurement Cloud Service - Hosted Named Users,Y,31-Oct-17,31-Oct-17
+51333,ORA_PRC_METRICS,51009,NAMED_USERS_POS,Supplier Portal Cloud Service - Hosted Named Users,Y,31-Oct-17,31-Oct-17
+51333,ORA_PRC_METRICS,51010,ORA_PO_ORDERS_COMM_ELECTRONICALLY,Purchase Orders Communicated Electronically,Y,31-Oct-17,31-Oct-17
+51333,ORA_PRC_METRICS,51011,ORA_PO_ORDERS_COMM_MANUALLY,Purchase Orders Communicated Manually,Y,31-Oct-17,31-Oct-17
+51333,ORA_PRC_METRICS,51012,ORA_PRC_ACTIVE_USERS_COUNT,Active Self Service Procurement Users,Y,31-Oct-17,31-Oct-17
+51333,ORA_PRC_METRICS,51013,ORA_PRC_PO_LINES_COUNT,Purchase Order Lines Created from Catalog Request,Y,31-Oct-17,31-Oct-17
+51334,ORA_PRC_METRICS_SETS,51014,PRC,Procurement,Y,31-Oct-17,31-Oct-17
+51448,ORA_HRA_PRIV,52027,08,,Y,31-Oct-17,31-Oct-17
+51448,ORA_HRA_PRIV,52028,09,,Y,31-Oct-17,31-Oct-17
+51448,ORA_HRA_PRIV,52029,10,,Y,31-Oct-17,31-Oct-17
+51448,ORA_HRA_PRIV,52030,11,,Y,31-Oct-17,31-Oct-17
+51448,ORA_HRA_PRIV,52031,12,,Y,31-Oct-17,31-Oct-17
+51449,ORA_HRG_PRIV,52032,01,,Y,31-Oct-17,31-Oct-17
+51450,ORA_HWR_PRIV,52033,01,,Y,31-Oct-17,31-Oct-17
+51450,ORA_HWR_PRIV,52034,02,,Y,31-Oct-17,31-Oct-17
+51450,ORA_HWR_PRIV,52035,03,,Y,31-Oct-17,31-Oct-17
+51450,ORA_HWR_PRIV,52036,04,,Y,31-Oct-17,31-Oct-17
+51450,ORA_HWR_PRIV,52037,05,,Y,31-Oct-17,31-Oct-17
+51450,ORA_HWR_PRIV,52038,06,,Y,31-Oct-17,31-Oct-17
+51450,ORA_HWR_PRIV,52039,07,,Y,31-Oct-17,31-Oct-17
+56263,OKC_XPRT_YES_NO,54003,No,No,Y,31-Oct-17,31-Oct-17
+56263,OKC_XPRT_YES_NO,54004,Yes,Yes,Y,31-Oct-17,31-Oct-17
+56294,ORA_GRANTS_MGMT_PRIV,54005,01,,Y,31-Oct-17,31-Oct-17
+56297,ORA_PRJ_METRICS,54006,NAMED_USERS_GRANTS_MGMT,Grants Management Cloud Service - Hosted Named Users,Y,31-Oct-17,31-Oct-17
+56297,ORA_PRJ_METRICS,54007,NAMED_USERS_PROJECT_BILLING,Project Billing Cloud Service - Hosted Named Users,Y,31-Oct-17,31-Oct-17
+56297,ORA_PRJ_METRICS,54008,NAMED_USERS_PROJECT_COSTING,Project Costing Cloud Service - Hosted Named Users,Y,31-Oct-17,31-Oct-17
+56297,ORA_PRJ_METRICS,54009,NAMED_USERS_PROJECT_MGMT,Project Management Cloud Service - Hosted Named Users,Y,31-Oct-17,31-Oct-17
+56297,ORA_PRJ_METRICS,54010,NAMED_USERS_PROJECT_TASK_MGMT,Task Management Cloud Service - Hosted Named Users,Y,31-Oct-17,31-Oct-17
+56297,ORA_PRJ_METRICS,54011,ORA_PRJ_EXP_ITEM_COUNT,Project Expenditure Items,Y,31-Oct-17,31-Oct-17
+56297,ORA_PRJ_METRICS,54012,ORA_PRJ_INVOICE_COUNT,Project Invoices,Y,31-Oct-17,31-Oct-17
+56297,ORA_PRJ_METRICS,54013,ORA_PRJ_PROJECT_COUNT,Projects,Y,31-Oct-17,31-Oct-17
+56298,ORA_PROJECT_BILLING_PRIV,54014,04,,Y,31-Oct-17,31-Oct-17
+56299,ORA_PROJECT_COSTING_PRIV,54015,02,,Y,31-Oct-17,31-Oct-17
+56299,ORA_PROJECT_COSTING_PRIV,54016,03,,Y,31-Oct-17,31-Oct-17
+56299,ORA_PROJECT_COSTING_PRIV,54017,07,,Y,31-Oct-17,31-Oct-17
+56299,ORA_PROJECT_COSTING_PRIV,54018,08,,Y,31-Oct-17,31-Oct-17
+56299,ORA_PROJECT_COSTING_PRIV,54019,09,,Y,31-Oct-17,31-Oct-17
+56301,ORA_PROJECT_MGMT_PRIV,54020,01,,Y,31-Oct-17,31-Oct-17
+56301,ORA_PROJECT_MGMT_PRIV,54021,03,,Y,31-Oct-17,31-Oct-17
+56302,ORA_PROJECT_TASK_MGMT_PRIV,54022,01,,Y,31-Oct-17,31-Oct-17
+56308,ORA_CST_CONS_OWNER_TYPE,54023,INTERNAL,Internal,N,31-Oct-17,31-Oct-17
+56308,ORA_CST_CONS_OWNER_TYPE,54024,SUPPLIER,Supplier,Y,31-Oct-17,31-Oct-17
+56354,ORA_FND_METRICS,54025,UNIQUE_USERS_DAILY,Unique Users - Daily,Y,31-Oct-17,31-Oct-17
+56354,ORA_FND_METRICS,54026,UNIQUE_USERS_WEEKLY,Unique Users - Weekly,Y,31-Oct-17,31-Oct-17
+53028,ORA_CZ_PRIV,53001,01,,Y,31-Oct-17,31-Oct-17
+53028,ORA_CZ_PRIV,53002,02,,Y,31-Oct-17,31-Oct-17
+53028,ORA_CZ_PRIV,53003,03,,Y,31-Oct-17,31-Oct-17
+53028,ORA_CZ_PRIV,53004,04,,Y,31-Oct-17,31-Oct-17
+53028,ORA_CZ_PRIV,53005,05,,Y,31-Oct-17,31-Oct-17
+53029,ORA_IMI_PRIV,53006,01,,Y,31-Oct-17,31-Oct-17
+53029,ORA_IMI_PRIV,53007,02,,Y,31-Oct-17,31-Oct-17
+53030,ORA_IM_PRIV,53008,01,,Y,31-Oct-17,31-Oct-17
+53030,ORA_IM_PRIV,53009,02,,Y,31-Oct-17,31-Oct-17
+53030,ORA_IM_PRIV,53010,03,,Y,31-Oct-17,31-Oct-17
+53030,ORA_IM_PRIV,53011,04,,Y,31-Oct-17,31-Oct-17
+53030,ORA_IM_PRIV,53012,05,,Y,31-Oct-17,31-Oct-17
+53030,ORA_IM_PRIV,53013,06,,Y,31-Oct-17,31-Oct-17
+53030,ORA_IM_PRIV,53014,07,,Y,31-Oct-17,31-Oct-17
+53030,ORA_IM_PRIV,53015,08,,Y,31-Oct-17,31-Oct-17
+53031,ORA_INV_PRIV,53016,01,,Y,31-Oct-17,31-Oct-17
+53031,ORA_INV_PRIV,53017,02,,Y,31-Oct-17,31-Oct-17
+53031,ORA_INV_PRIV,53018,03,,Y,31-Oct-17,31-Oct-17
+53031,ORA_INV_PRIV,53019,04,,Y,31-Oct-17,31-Oct-17
+53031,ORA_INV_PRIV,53020,05,,Y,31-Oct-17,31-Oct-17
+53031,ORA_INV_PRIV,53021,06,,Y,31-Oct-17,31-Oct-17
+53031,ORA_INV_PRIV,53022,07,,Y,31-Oct-17,31-Oct-17
+53031,ORA_INV_PRIV,53023,08,,Y,31-Oct-17,31-Oct-17
+53031,ORA_INV_PRIV,53024,09,,Y,31-Oct-17,31-Oct-17
+53031,ORA_INV_PRIV,53025,10,,Y,31-Oct-17,31-Oct-17
+53031,ORA_INV_PRIV,53026,11,,Y,31-Oct-17,31-Oct-17
+53032,ORA_MFG_PRIV,53027,01,,Y,31-Oct-17,31-Oct-17
+53032,ORA_MFG_PRIV,53028,02,,Y,31-Oct-17,31-Oct-17
+53033,ORA_MSC_PRIV,53029,01,,Y,31-Oct-17,31-Oct-17
+53034,ORA_MSP_PRIV,53030,01,,Y,31-Oct-17,31-Oct-17
+53035,ORA_OM_PRIV,53031,01,,Y,31-Oct-17,31-Oct-17
+53035,ORA_OM_PRIV,53032,02,,Y,31-Oct-17,31-Oct-17
+53035,ORA_OM_PRIV,53033,03,,Y,31-Oct-17,31-Oct-17
+53035,ORA_OM_PRIV,53034,04,,Y,31-Oct-17,31-Oct-17
+53035,ORA_OM_PRIV,53035,05,,Y,31-Oct-17,31-Oct-17
+53036,ORA_PD_PRIV,53036,01,,Y,31-Oct-17,31-Oct-17
+53036,ORA_PD_PRIV,53037,02,,Y,31-Oct-17,31-Oct-17
+53036,ORA_PD_PRIV,53038,03,,Y,31-Oct-17,31-Oct-17
+53036,ORA_PD_PRIV,53039,04,,Y,31-Oct-17,31-Oct-17
+53036,ORA_PD_PRIV,53040,05,,Y,31-Oct-17,31-Oct-17
+53036,ORA_PD_PRIV,53041,06,,Y,31-Oct-17,31-Oct-17
+53038,ORA_SCM_METRICS,53042,NAMED_USERS_CONFIG_MODELING,Configurator Modeling Cloud Service - Hosted Named Users,Y,31-Oct-17,31-Oct-17
+53038,ORA_SCM_METRICS,53043,NAMED_USERS_GLOBAL_ORDER_PROMISING,Global Order Promising User Cloud Service - Hosted Named Users,Y,31-Oct-17,31-Oct-17
+53038,ORA_SCM_METRICS,53044,NAMED_USERS_INNOV_MGMT,Innovation Management Cloud Service - Hosted Named Users,Y,31-Oct-17,31-Oct-17
+53038,ORA_SCM_METRICS,53045,NAMED_USERS_INNOV_MGMT_IDEATION,Innovation Management Ideation Cloud Service - Hosted Named Users,Y,31-Oct-17,31-Oct-17
+53038,ORA_SCM_METRICS,53046,NAMED_USERS_INV_MGMT,Inventory Management Cloud Service - Hosted Named Users,Y,31-Oct-17,31-Oct-17
+53038,ORA_SCM_METRICS,53047,NAMED_USERS_MFG,Manufacturing Cloud Service - Hosted Named Users,Y,31-Oct-17,31-Oct-17
+53038,ORA_SCM_METRICS,53048,NAMED_USERS_ORDER_MGMT,Order Management Cloud Service - Hosted Named Users,Y,31-Oct-17,31-Oct-17
+53038,ORA_SCM_METRICS,53049,NAMED_USERS_PLANNING_CENTRAL,Planning Central Cloud Service - Hosted Named Users,Y,31-Oct-17,31-Oct-17
+53038,ORA_SCM_METRICS,53050,NAMED_USERS_PRODUCT_DEVELOPMENT,Product Development Cloud Service - Hosted Named Users,Y,31-Oct-17,31-Oct-17
+56177,PJC_YES_NO,54001,N,No,Y,31-Oct-17,31-Oct-17
+56177,PJC_YES_NO,54002,Y,Yes,Y,31-Oct-17,31-Oct-17
+56355,ORA_PER_METRICS,54027,DB_RECORDS_HCM,Global Human Resources Base Cloud Service - Database Storage Records,Y,31-Oct-17,31-Oct-17
+56355,ORA_PER_METRICS,54028,HOSTED_EMPLOYEES,Global Human Resources Base Cloud Service - Hosted Employees,Y,31-Oct-17,31-Oct-17
+56355,ORA_PER_METRICS,54029,NAMED_USERS_CAREER,Career Development Cloud Service - Hosted Named Users,Y,31-Oct-17,31-Oct-17
+56355,ORA_PER_METRICS,54030,NAMED_USERS_CMP,Workforce Compensation Cloud Service - Hosted Named Users,Y,31-Oct-17,31-Oct-17
+56355,ORA_PER_METRICS,54031,NAMED_USERS_HRA,Performance Management Cloud Service - Hosted Named Users,Y,31-Oct-17,31-Oct-17
+51363,PER_ALLOW_EMPL_TERMS_OVERRIDE,52001,B,Set on Employment Terms,Y,31-Oct-17,31-Oct-17
+51363,PER_ALLOW_EMPL_TERMS_OVERRIDE,52003,N,No,Y,31-Oct-17,31-Oct-17
+51363,PER_ALLOW_EMPL_TERMS_OVERRIDE,52004,Y,Yes,Y,31-Oct-17,31-Oct-17
+51422,PER_EMPLOYMENT_MODEL_TIERS,52005,2NTMA,2 Tier - Multiple Assignment,Y,31-Oct-17,31-Oct-17
+51422,PER_EMPLOYMENT_MODEL_TIERS,52006,2NTSA,2 Tier - Single Assignment,Y,31-Oct-17,31-Oct-17
+51422,PER_EMPLOYMENT_MODEL_TIERS,52007,3MTMA,3 Tier - Multiple Employment Terms - Multiple Assignment,Y,31-Oct-17,31-Oct-17
+51422,PER_EMPLOYMENT_MODEL_TIERS,52008,3MTSA,3 Tier - Multiple Employment Terms - Single Assignment,Y,31-Oct-17,31-Oct-17
+51422,PER_EMPLOYMENT_MODEL_TIERS,52009,3STMA,3 Tier - Single Employment Terms - Multiple Assignment,Y,31-Oct-17,31-Oct-17
+51422,PER_EMPLOYMENT_MODEL_TIERS,52010,3STSA,3 Tier - Single Employment Terms - Single Assignment,Y,31-Oct-17,31-Oct-17
+51424,PER_EMP_NUMBER_GEN_METHOD,52011,AG,Automatic generation using Global Sequence,Y,31-Oct-17,31-Oct-17
+51424,PER_EMP_NUMBER_GEN_METHOD,52012,AL,Automatic generation using Legal Employer sequence,Y,31-Oct-17,31-Oct-17
+51424,PER_EMP_NUMBER_GEN_METHOD,52013,M,Manual,Y,31-Oct-17,31-Oct-17
+51424,PER_EMP_NUMBER_GEN_METHOD,52014,N,Not used,Y,31-Oct-17,31-Oct-17
+51440,PER_PERS_NUMBER_GEN_METHOD,52015,A,Automatic,Y,31-Oct-17,31-Oct-17
+51440,PER_PERS_NUMBER_GEN_METHOD,52016,AG,Automatic using Global Sequence,Y,31-Oct-17,31-Oct-17
+51440,PER_PERS_NUMBER_GEN_METHOD,52017,M,Manual,Y,31-Oct-17,31-Oct-17
+51441,PER_SALARY_LEVEL,52018,A,Assignment,Y,31-Oct-17,31-Oct-17
+51441,PER_SALARY_LEVEL,52019,T,Terms,Y,31-Oct-17,31-Oct-17
+51416,ORA_CAREER_PRIV,52002,01,,Y,31-Oct-17,31-Oct-17
+51448,ORA_HRA_PRIV,52020,01,,Y,31-Oct-17,31-Oct-17
+51448,ORA_HRA_PRIV,52021,02,,Y,31-Oct-17,31-Oct-17
+51448,ORA_HRA_PRIV,52022,03,,Y,31-Oct-17,31-Oct-17
+51448,ORA_HRA_PRIV,52023,04,,Y,31-Oct-17,31-Oct-17
+51448,ORA_HRA_PRIV,52024,05,,Y,31-Oct-17,31-Oct-17
+51448,ORA_HRA_PRIV,52025,06,,Y,31-Oct-17,31-Oct-17
+51448,ORA_HRA_PRIV,52026,07,,Y,31-Oct-17,31-Oct-17
+56484,VRM Value Band Set,54053,5 millions and above,5 millions and above,Y,31-Oct-17,31-Oct-17
+56484,VRM Value Band Set,54054,Up to 1 million,Up to 1 million,Y,31-Oct-17,31-Oct-17
+56484,VRM Value Band Set,54055,Up to 5 millions,Up to 5 millions,Y,31-Oct-17,31-Oct-17
+56486,VRM Volume Band Set,54056,High,High,Y,31-Oct-17,31-Oct-17
+56486,VRM Volume Band Set,54057,Low,Low,Y,31-Oct-17,31-Oct-17
+56486,VRM Volume Band Set,54058,Medium,Medium,Y,31-Oct-17,31-Oct-17
+56488,VRM Zone Band Set,54059,Asia-Pacific,Asia-Pacific,Y,31-Oct-17,31-Oct-17
+56488,VRM Zone Band Set,54060,European Union,European Union,Y,31-Oct-17,31-Oct-17
+56488,VRM Zone Band Set,54061,North America,North America,Y,31-Oct-17,31-Oct-17
+56599,EGP_TRADE_ITEM_DESC,54062,BASE_UNIT_OR_EACH,,Y,31-Oct-17,31-Oct-17
+56599,EGP_TRADE_ITEM_DESC,54063,CASE,,Y,31-Oct-17,31-Oct-17
+56599,EGP_TRADE_ITEM_DESC,54064,DISPLAY_SHIPPER,,Y,31-Oct-17,31-Oct-17
+56599,EGP_TRADE_ITEM_DESC,54065,MIXED_MODULE,,Y,31-Oct-17,31-Oct-17
+56599,EGP_TRADE_ITEM_DESC,54066,MULTIPACK,,Y,31-Oct-17,31-Oct-17
+56599,EGP_TRADE_ITEM_DESC,54067,PACK_OR_INNER_PACK,,Y,31-Oct-17,31-Oct-17
+56599,EGP_TRADE_ITEM_DESC,54068,PALLET,,Y,31-Oct-17,31-Oct-17
+56599,EGP_TRADE_ITEM_DESC,54069,PREPACK,,N,31-Oct-17,31-Oct-17
+56599,EGP_TRADE_ITEM_DESC,54070,PREPACK_ASSORTMENT,,N,31-Oct-17,31-Oct-17
+56599,EGP_TRADE_ITEM_DESC,54071,SETPACK,,Y,31-Oct-17,31-Oct-17
+56443,HWM_DD_BLDG_BLK_TYPE,54049,Measure,Measure,N,31-Oct-17,31-Oct-17
+56443,HWM_DD_BLDG_BLK_TYPE,54050,Range,Range,N,31-Oct-17,31-Oct-17
+56444,HWM_DD_RESOURCE_TYPE,54051,Person,Person,N,31-Oct-17,31-Oct-17
+56445,HWM_DD_UNIT_OF_MEASURE,54052,Hours,Hours,N,31-Oct-17,31-Oct-17
+56355,ORA_PER_METRICS,54032,NAMED_USERS_HRG,Goal Management Cloud Service - Hosted Named Users,Y,31-Oct-17,31-Oct-17
+56355,ORA_PER_METRICS,54033,NAMED_USERS_HRR,Talent Review and Succession Management Cloud Service - Hosted Named Users,Y,31-Oct-17,31-Oct-17
+56355,ORA_PER_METRICS,54034,NAMED_USERS_HWR,Workforce Reputation Management Cloud Service - Hosted Named Users,Y,31-Oct-17,31-Oct-17
+56355,ORA_PER_METRICS,54035,NAMED_USERS_HXT,Time and Labor Cloud Service - Hosted Named Users,Y,31-Oct-17,31-Oct-17
+56355,ORA_PER_METRICS,54036,NAMED_USERS_PAY,Global Payroll Cloud Service - Hosted Named Users,Y,31-Oct-17,31-Oct-17
+56355,ORA_PER_METRICS,54037,BEN_WORKERS_DEFAULTED,Benefits Cloud Service - Open Enrollment Status -Workers Defaulted,Y,31-Oct-17,31-Oct-17
+56355,ORA_PER_METRICS,54038,BEN_WORKERS_ELECTIONS, Benefits Cloud Service - Open Enrollment Status -Workers with Elections,Y,31-Oct-17,31-Oct-17
+56355,ORA_PER_METRICS,54039,BEN_WORKERS_ELIGIBLE,Benefits Cloud Service - Open Enrollment Status - Workers Eligible,Y,31-Oct-17,31-Oct-17
+56355,ORA_PER_METRICS,54040,BEN_WORKERS_FINALIZED,Benefits Cloud Service - Open Enrollment Status -Workers Finalized,Y,31-Oct-17,31-Oct-17
+56358,ORA_PER_METRICS_SETS,54041,FIN,Financials,Y,31-Oct-17,31-Oct-17
+56358,ORA_PER_METRICS_SETS,54042,FND,Applications Core,Y,31-Oct-17,31-Oct-17
+56358,ORA_PER_METRICS_SETS,54043,PER,Human Capital Management,Y,31-Oct-17,31-Oct-17
+56358,ORA_PER_METRICS_SETS,54044,PRC,Procurement,Y,31-Oct-17,31-Oct-17
+56358,ORA_PER_METRICS_SETS,54045,PRJ,Projects,Y,31-Oct-17,31-Oct-17
+56358,ORA_PER_METRICS_SETS,54046,SCM,Supply Chain Management,Y,31-Oct-17,31-Oct-17
+56359,ORA_PER_METRIC_FREQUENCY,54047,D,Daily,Y,31-Oct-17,31-Oct-17
+56359,ORA_PER_METRIC_FREQUENCY,54048,M,Monthly,Y,31-Oct-17,31-Oct-17
+56777,ORA_HXT_PRIV,55001,01,,Y,31-Oct-17,31-Oct-17
+56777,ORA_HXT_PRIV,55002,02,,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56091,123130,PP&E LHI Rest Cap Int,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56092,123140,PP&E LHI Rest Deimaging Exp,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56093,123200,PP&E LHI Office,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56094,123210,PP&E LHI Office,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56095,123220,PP&E LHI Office IDC,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56096,123300,PP&E Restaurant Equip,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56097,123310,PP&E Restaurant Equip,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56098,123320,PP&E Restaurant Equip Impair,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56099,123330,PP&E Restaurant Office Equip,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56100,123400,PP&E Office Equipment,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56101,123410,PP&E Office Equipment,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56102,123500,PP&E Office Computer Equipment,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56103,123510,PP&E Office Computer Equipment,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56104,123600,PP&E Office F&F,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56105,123610,PP&E Office F&F,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56106,123700,PP&E Transport Equip Office,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56107,123710,PP&E Transport Equip Office,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56108,123720,PP&E Transport Equip Rest,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56109,123800,CIP Construction,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56110,123810,CIP Construction in Progress,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56111,123820,CIP Internal Development Costs,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56112,123900,PP&E Cap Lease,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56113,123910,PP&E Cap Lease Buildings,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56114,123920,PP&E Cap Lease Bldg Impair,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56115,124000,Accumulated Depreciation,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56116,124100,Accum Depr LHI Restaurant,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56117,124110,Accum Depr LHI Restaurant,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56118,124120,Accum Depr LHI Rest Impair,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56119,124130,Accum Depr LHI Rest Cap Int,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56120,124140,Accum Depr LHI Rest Deimag Exp,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56121,124200,Accum Depr LHI Office,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56122,124210,Accum Depr LHI Office,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56123,124220,Accum Depr LHI Office IDC,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56124,124300,Accum Depr Rest Equip,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56125,124310,Accum Depr Rest Equip,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56126,124311,Accum Depr Rest Equip Impair,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56127,124400,Accum Depr Rest Office Equip,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56128,124410,Accum Depr Rest Office Equip,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56129,124411,Accum Depr Rest F&F,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56130,124500,Accum Depr Office Equipment,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56131,124510,Accum Depr Office Equipment,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56132,124600,Accum Depr Office Comp Equip,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56133,124610,Accum Depr Office Comp Equip,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56134,124700,Accum Depr Office F&F,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56135,124710,Accum Depr Office F&F,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56136,126000,"Intangible Assets,net",Y,31-Oct-17,31-Oct-17
+57002,Account RD,56137,127000,Other non-current Asset,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56138,127100,Goodwill,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56139,127110,Goodwill,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56140,127120,Goodwill Amortization,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56141,127200,Other Asset,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56142,127210,Allowance for Fixed Assets Disposal,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56143,127220,Deferred Tax Assets,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56144,127230,Investment in Affiliates,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56145,127300,Long Term ,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56146,127310,LT Store Lease Deposits,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56147,127320,LT Other Lease Deposits,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56148,127330,LT Other Deposits,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56149,127340,LT Other Assets,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56150,127350,LT Key Money Refundable,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56151,127351,LT KM Nonrefundable Finite,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56152,127360,LT KM Reundable Impair,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56153,127370,LT KM Amort Nonrefund Finite impair,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56154,127380,LT KM Amort Impairment,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56155,127390,LT Other Assets Amortisation,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56156,200000,LIABILITIES,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56157,210000,Current liabilities,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56158,211000,Bank overdrafts and short term loans from bank,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56159,211100,Bank overdrafts and short term loans from bank,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56160,211110,Bank overdrafts and short term loans from bank,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56161,212000,Accounts payable - related company,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56162,212100,Accounts payable - related company,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56163,212110,AP Business Acquisition,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56164,213000,Accounts payable - Trade,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56165,213100,Accounts payable - Trade,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56166,213110,Accounts Payable,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56167,214000,Accounts payable - Other,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56168,214100,Accounts payable - Other,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56169,214110,AP - VAT Installment,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56170,215000,Current Portion of Long Term Loan,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56171,216000,Accrued Expenses,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56172,216100,Accrued Expenses,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56173,216102,Accr Other Non Income Tax,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56174,216103,Accr Payroll,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56175,216104,Accrued Payroll,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56176,216105,Accr Vacation & Holiday,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56177,216106,Accr Bonus Field RSC,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56178,216107,Accr Bonus Store Level,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56179,216108,Accr Medical Insurance,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56180,216109,Accr Pension Benefits Other,Y,31-Oct-17,31-Oct-17
+57001,Company RD,56001,01,"RESTAURANTS DEVELOPMENT CO., LTD",N,31-Oct-17,31-Oct-17
+57001,Company RD,56002,99,"RESTAURANTS DEVELOPMENT CO., LTD",Y,31-Oct-17,31-Oct-17
+57002,Account RD,56003,100000,ASSET,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56004,110000,Current Asset,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56005,111000,Cash in Hand & At Bank & Depos,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56006,111100,Cash at bank,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56007,111101,Cash on Hand,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56008,111102,Petty Cash,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56009,111103,Float,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56010,111200,Current Account,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56011,111210,Citibank Current Account,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56012,111220,Kbank Current Account,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56013,111230,BBL Current Account,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56014,111240,SCB Current Account,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56015,111300,Saving Account,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56016,111310,Citibank Saving Account,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56017,111320,Kbank Saving Account-7006,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56018,111321,Kbank Saving Account-7189,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56019,111322,Kbank Saving Account-7138,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56020,111323,Kbank Saving Account-5295,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56021,111330,BBL Saving Account,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56022,111340,SCB Saving Account,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56023,112000,Amount Due From Related==>1120000,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56024,112100,Amount Due From Related==>1120000,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56025,112110,Inter-Co AR,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56026,112120,AR Control Interco (Issued Invoice),Y,31-Oct-17,31-Oct-17
+57002,Account RD,56027,112130,Inter-Co AR- Loan-Sweep,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56028,113000,Account Receivable,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56029,113100,AR - TRADE,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56030,113101,AR - CASH,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56031,113102,AR - CREDIT CARD,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56032,113200,AR - OTHER,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56033,113201,Accounts Receivable,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56034,113202,Shareholders Receivable,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56035,113203,NonFR AR Employee Loan,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56036,113204,Credit Card (VISA),Y,31-Oct-17,31-Oct-17
+57002,Account RD,56037,113205,NonFR AR Vendors,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56038,113206,VAT Refundable,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56039,113207,NonFR AR Insurance,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56040,113208,NonFR AR Meal Vouchers,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56041,113209,NonFR AR Beverage Rebate,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56042,113210,NonFR AR Other,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56043,113211,NonFR AR Dept Store or Kiosk,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56044,113212,NonFR Interest Receivable,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56045,113213,NonFR AFDA Leases,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56046,113214,NonFR AFDA Other,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56047,116000,Prepaid Expenses,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56048,116100,Prepaid Expenses,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56049,116101,PPD Marketing,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56050,116102,PPD Insurance,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56051,116103,PPD Property Insurance,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56052,116104,PPD Workers Compensation,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56053,116105,PPD Maintenance,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56054,116106,PPD Software Maintenance,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56055,116107,PPD Rent Functional Curr,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56056,116108,PPD Svc Chg Funct Curr,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56057,116109,PPD Step Rent Functional Curr,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56058,116110,PPD Software,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56059,116111,PPD Maintenance & Cleaning,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56060,116112,PPD Operating Supplies,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56061,116113,PPD COS Inventory,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56062,116114,PPD Uniform,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56063,116115,PPD Car Expense,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56064,116116,PPD School Fees,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56065,116117,PPD Membership & Dues,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56066,116118,PPD Expense Other,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56067,116119,PPD Call Center Expenses,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56068,116120,PPD Initial Fee,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56069,116200,Prepaid Taxes,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56070,116201,PPD Business Tax,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56071,116202,PPD Withholding Tax,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56072,117000,Inventory,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56073,117100,Inventory - Food,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56074,117101,Inventory - Food,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56075,117102,Inventory - Reserve,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56076,117200,Inventory - Equipment,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56077,117201,Inventory - Equipment,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56078,118000,Other Current Asset,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56079,118100,Other Current Asset,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56080,118110,OCA Lease Deposits,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56081,118120,Ad Coop Assets Restricted,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56082,118130,WHT Receivable,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56083,118140,Suspense Account,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56084,120000,Non-Current Asset,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56085,121000,Long term Loans to  Related,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56086,122000,Investment,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56087,123000,"Property,plant and equipment,net",Y,31-Oct-17,31-Oct-17
+57002,Account RD,56088,123100,PP&E LHI Restaurant,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56089,123110,PP&E LHI Restaurant,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56090,123120,PP&E LHI Rest Impairment,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56271,511610,Food Cost Price Variance,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56272,511700,Transportation & Distrib Costs,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56273,511710,Transportation & Distrib Costs,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56274,511720,SCM Fees,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56275,501800,Obsolete Stock,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56276,511810,Obsolete Stock,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56277,511820,Provision Inventory,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56278,511900,Obsolete Stock,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56279,511910,Obsolete Stock,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56280,512000,Personal Expenses (COL),Y,31-Oct-17,31-Oct-17
+57002,Account RD,56281,512100,Salary,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56282,512110,Salary - Management,N,31-Oct-17,31-Oct-17
+57002,Account RD,56283,512120,Salary - Fulltime,N,31-Oct-17,31-Oct-17
+57002,Account RD,56284,512130,Salary - Parttime,N,31-Oct-17,31-Oct-17
+57002,Account RD,56285,512140,Salary - Crew & Wow,N,31-Oct-17,31-Oct-17
+57002,Account RD,56286,512200,Overtime,N,31-Oct-17,31-Oct-17
+57002,Account RD,56287,512210,Overtime - Management,N,31-Oct-17,31-Oct-17
+57002,Account RD,56288,512220,Overtime - Fulltime,N,31-Oct-17,31-Oct-17
+57002,Account RD,56289,512230,Overtime - Parttime,N,31-Oct-17,31-Oct-17
+57002,Account RD,56290,512240,Overtime - Crew & Wow,N,31-Oct-17,31-Oct-17
+57002,Account RD,56291,512300,Incentive,N,31-Oct-17,31-Oct-17
+57002,Account RD,56292,512310,Incentive - Management,N,31-Oct-17,31-Oct-17
+57002,Account RD,56293,512320,Incentive - Fulltime,N,31-Oct-17,31-Oct-17
+57002,Account RD,56294,512330,Incentive - Parttime,N,31-Oct-17,31-Oct-17
+57002,Account RD,56295,512340,Incentive - Crew & Wow,N,31-Oct-17,31-Oct-17
+57002,Account RD,56296,512400,Other Staff Benefit,N,31-Oct-17,31-Oct-17
+57002,Account RD,56297,512410,Provident Fund Contribution,N,31-Oct-17,31-Oct-17
+57002,Account RD,56298,512420,Social Security Contribution,N,31-Oct-17,31-Oct-17
+57002,Account RD,56299,512430,Workmans Compensation,N,31-Oct-17,31-Oct-17
+57002,Account RD,56300,512440,Other Staff Benefit,N,31-Oct-17,31-Oct-17
+57002,Account RD,56301,512450,Insurance Medical,N,31-Oct-17,31-Oct-17
+57002,Account RD,56302,512460,Insurance Life,N,31-Oct-17,31-Oct-17
+57002,Account RD,56303,512470,Insurance Accident,N,31-Oct-17,31-Oct-17
+57002,Account RD,56304,512480,Insurance Other,N,31-Oct-17,31-Oct-17
+57002,Account RD,56305,512490,Employee Meals,N,31-Oct-17,31-Oct-17
+57002,Account RD,56306,512500,Staff Trainning,N,31-Oct-17,31-Oct-17
+57002,Account RD,56307,512600,Staff Allowance,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56308,513000,Operating Expenses,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56309,513100,Operating Expenses,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56310,513101,Electricity,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56311,513102,Water,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56312,513103,Gas,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56313,513104,Landlord & Property Insurance,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56314,513105,Vehicle Insurance,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56315,513106,Business Insurance,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56316,513107,Insurance Recoveries,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56317,513108,Maint Department Fee,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56318,513109,Other Equip Maint Controllable,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56319,513110,IT and Technical Support,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56320,513111,Other Service Fee (Store Level),Y,31-Oct-17,31-Oct-17
+57002,Account RD,56321,513112,Bank Fees (585000.100),Y,31-Oct-17,31-Oct-17
+57002,Account RD,56322,513113,In Store Music,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56323,513114,Telephone (585000.550),Y,31-Oct-17,31-Oct-17
+57002,Account RD,56324,513115,Champs Expense,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56325,513116,Cleaning Supplies,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56326,513117,Other Operating Supplies,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56327,513118,Other Office Supplies,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56328,513119,Uniforms,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56329,513120,Cash Variance Cash,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56330,513121,Call Center Costs,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56331,513122,Other Travel & Expense,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56332,513123,Billboard Tax,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56333,513124,Staff Recruitment,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56334,513125,Employee Engagement Expense,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56335,513126,Employee Events,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56336,513127,Other Semi Variables,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56337,514000,Advertising Marketing & PRExpenses,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56338,514100,Advertising Marketing & PRExpenses,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56339,514110,Local Store Advertising,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56340,514120,Ad Coop Contribution,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56341,514130,Royalty Fee - Store level,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56342,514140,Menu Board Production,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56343,515000,Repair & maintenance,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56344,516000,Professional Fee & Other fee,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56345,517000,Rental Expenses,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56346,518000,Admin & General Expenses,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56347,519000,Non Operating Expenses,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56348,520000,Depreciation & Amortization,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56349,521000,Financial Cost,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56350,522000,Corporate Tax,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56351,700000,G&A,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56352,710000,G&A,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56353,711000,Employee,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56354,711100,Employee,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56355,711101,Salaries,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56356,711102,Overtime,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56357,711200,Housing Allowance-RSC,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56358,711201,Housing Allowance-RSC,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56359,711300,Other Incentive,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56360,711301,Other Incentive,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56361,711400,Other Benefit - RSC,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56362,711410,Social Security Tax,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56363,711420,Workmen Compensation,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56364,711430,Provident Fund (710500.100),Y,31-Oct-17,31-Oct-17
+57002,Account RD,56365,711440,Medical Insurance,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56366,711450,Other Benefits (710500.380),Y,31-Oct-17,31-Oct-17
+57002,Account RD,56367,711460,Allowance for Employee Benefits,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56368,711470,Bonus,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56369,712000,Severance Expense,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56370,720000,Other Dead Site Expense,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56371,730000,Fees,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56372,731000,Fees,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56373,731100,Fees,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56374,731110,Audit Fees,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56375,731120,Legal Fees,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56376,731130,Consulting Fees,N,31-Oct-17,31-Oct-17
+57002,Account RD,56377,731140,Quality Assurance Fees,N,31-Oct-17,31-Oct-17
+57002,Account RD,56378,731150,Professional Fees,N,31-Oct-17,31-Oct-17
+57002,Account RD,56379,731160,Accounting,N,31-Oct-17,31-Oct-17
+57002,Account RD,56380,731170,Payroll,N,31-Oct-17,31-Oct-17
+57002,Account RD,56381,731180,SCM Fees (73000.800),N,31-Oct-17,31-Oct-17
+57002,Account RD,56382,731190,Temporary Contract Labor,N,31-Oct-17,31-Oct-17
+57002,Account RD,56383,731200,Other Service Fee,N,31-Oct-17,31-Oct-17
+57002,Account RD,56384,738800,Interest Income,N,31-Oct-17,31-Oct-17
+57002,Account RD,56385,732000,Charitable Contributions,N,31-Oct-17,31-Oct-17
+57002,Account RD,56386,732100,Charitable Contributions,N,31-Oct-17,31-Oct-17
+57002,Account RD,56387,732101,Charitable Contributions,N,31-Oct-17,31-Oct-17
+57002,Account RD,56388,745000,TEST,N,31-Oct-17,31-Oct-17
+57002,Account RD,56389,745100,Transportation Expense,N,31-Oct-17,31-Oct-17
+57002,Account RD,56390,745101,Taxis & Cabs,N,31-Oct-17,31-Oct-17
+57002,Account RD,56181,216110,Accr National Payroll Tax,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56182,216111,Accr Other Comp Related,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56183,216112,Accr Insurance Other,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56184,216113,Accr Local Advertising,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56185,216114,Accr LSM Fund,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56186,216115,Accr Coupons,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56187,216116,Accr Payments Ad Coop,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56188,216117,Accr Pay to Operating Co,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56189,216118,Accr Royalty,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56190,216119,Accr Electricity Above Store,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56191,216120,Accr Water Above Store,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56192,216121,Accr Audit Fees,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56193,216122,Accr Other Deposits,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56194,216123,Accr Gift Card Liability,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56195,216124,Accr G&A Invoices,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56196,216125,Accr Training,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56197,216126,Accr Travel,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56198,216127,Accr Deadsite Reserve,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56199,216128,Accr Charitable Contributions,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56200,216129,Accr Conferences & Events,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56201,216130,Accr Cleaning,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56202,216131,Accr Repairs & Maintenance,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56203,216132,Accr Other Above Store,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56204,216133,Accr Other - Store level,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56205,216134,Accr Other Benefit,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56206,216135,Accr Rent Functional Currency,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56207,216136,Accr Rent Percent of Sales,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56208,216137,Accr Rent CAM Funct Curr,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56209,216138,Accr Equipment & Other Rent,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56210,216139,Accr Step Rent Funct Curr,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56211,216140,Accr Equipment Maintenance,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56212,216141,Accr Water Store Level,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56213,216142,Accr Telephone Store Level,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56214,216143,Accr Electricity Store Level,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56215,216144,Accr Interest Expense,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56216,216145,Accr Retention Control,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56217,217000,Accrued Tax,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56218,217100,Accrued Tax,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56219,217110,Accr Property Tax,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56220,217120,VAT,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56221,217130,VAT Payable,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56222,217140,Accr Royalty Witholding Tax,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56223,217150,Withholding tax - PND 53,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56224,217160,Accr Business Tax,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56225,217170,Withholding tax - PND 3,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56226,217180,Withholding tax - PND 54,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56227,218000,Corporate Income tax payable,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56228,219000,Other Current Liabilities,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56229,220000,Non current Liability,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56230,221000,Short Term Loan,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56231,221100,Short Term Loan,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56232,221110,Short Term Loan,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56233,222000,Long Term Loan,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56234,222100,Long Term Loan,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56235,222110,Long Term Loan,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56236,300000,SHAREHOLDERS'EQUITY,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56237,310000,Share Capital,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56238,311000,Share Capital,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56239,312000,Other Equity account,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56240,320000,Retained earnings,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56241,321000,Retained earnings,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56242,321100,Retained earnings,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56243,321110,Retained earnings,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56244,322000,Statutory/ Legal Reserve,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56245,323000,Dividend paid,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56246,330000,Minority Interest - BS,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56247,400000,REVENUE,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56248,410000,Revenue - Sales,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56249,411000,Revenue - Sales,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56250,411100,Revenue - Sales,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56251,411110,In Store Sales VAT 0%,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56252,411120,Carry Out Sales VAT 0%,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56253,411130,Delivery Sales VAT 0%,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56254,411140,Delivery Charges,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56255,411200,Discounts,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56256,411210,Discounts,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56257,500000,DIRECT COST,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56258,510000,COST OF SALES,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56259,511000,COST OF SALES,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56260,511100,COST OF SALES - CHECKEN,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56261,511110,Chicken on the Bone,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56262,511200,COST OF SALES - SOFTSERVE,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56263,511210,COST OF SALES - SOFTSERVE,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56264,511300,COST OF SALES - OTHER FOOD,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56265,511310,COST OF SALES - OTHER FOOD,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56266,511400,COST OF SALES - DESSERT,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56267,511410,COST OF SALES - DESSERT,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56268,511500,COST OF SALES - PAPER,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56269,511510,COST OF SALES - PAPER,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56270,511600,Food Cost Price Variance,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56481,811110,TEST,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56482,811120,TEST,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56483,811130,TEST,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56484,811140,TEST,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56485,811150,TEST,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56486,811160,TEST,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56487,900000,CLEARING Account,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56488,910000,CLEARING Account,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56489,911000,TEST,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56490,911100,TEST,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56491,911110,Clearing Account (Recharge Expenses to Store),Y,31-Oct-17,31-Oct-17
+57002,Account RD,56492,911120,Clearing Account (KBank),Y,31-Oct-17,31-Oct-17
+57002,Account RD,56493,911130,Clearing Account (Kbank Payment),Y,31-Oct-17,31-Oct-17
+57002,Account RD,56494,911140,Clearing Account (SCB),Y,31-Oct-17,31-Oct-17
+57002,Account RD,56495,911150,Clearing Account (BBL),Y,31-Oct-17,31-Oct-17
+57002,Account RD,56496,911160,Clearing Account (COGS),Y,31-Oct-17,31-Oct-17
+57002,Account RD,56497,911170,Clearing Account (Citibank),Y,31-Oct-17,31-Oct-17
+57002,Account RD,56498,911180,Clearing Account (Bank Transfer),Y,31-Oct-17,31-Oct-17
+57003,Store RD,56499,BANGK,Bangkok,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56500,01219,Paradise Park,N,31-Oct-17,31-Oct-17
+57003,Store RD,56501,01228,Seacon Square,N,31-Oct-17,31-Oct-17
+57003,Store RD,56502,01264,The Mall 3,N,31-Oct-17,31-Oct-17
+57003,Store RD,56503,01293,Jusco Sukhumvit 71,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56504,01312,The Old Siam Plaza,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56505,01346,Lotus Sukhumvit 50,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56506,01379,Lotus Bangna,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56507,01397,Number One - RU2 (S),Y,31-Oct-17,31-Oct-17
+57003,Store RD,56508,01402,Klong Tom,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56509,01407,Lotus Ladprao Satellite,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56510,01433,Hi Mall Samsen,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56511,01439,Seacon Square Satellite,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56512,01445,Lotus China Town Satellite,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56513,01490,Union Mall,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56514,01570,Water Front,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56515,01584,Mega Bangna,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56516,01595,The Scene Town in Town,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56517,01607,JJ Mall,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56518,01609,Sena Festival (Charoennakorn),Y,31-Oct-17,31-Oct-17
+57003,Store RD,56519,01616,Soho,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56520,01668,Yodpiman,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56521,01671,Ramkhamhaeng,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56522,01683,Lotus Pattanakarn,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56523,01721,Wanghin,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56524,02213,Fortune Ratchadaphisek,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56525,02234,Major Cineplex Sukhumvit,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56526,02235,Major Cineplex Ratchayothin,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56527,83003,Lotus Kuchinarai,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56528,83004,Lotus Prakonchai,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56529,BKKNE,Bangkok & Northeast,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56530,83005,Lotus Lam Pai Mat,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56531,83008,La Salle SV105,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56532,83012,Big C Suwannaphum,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56533,BKKF1,BKKF1,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56534,01344,Lotus Rama 4,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56535,01373,Lotus Rama 3,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56536,01414,Silom 64,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56537,01423,Lotus Rama I (Charoenphal),Y,31-Oct-17,31-Oct-17
+57003,Store RD,56538,01453,Siam Paragon,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56539,01485,Indra Square Satellite,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56540,01562,Terminal 21,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56541,01593,Digital Gateway Ekamai,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56542,01619,The Up Rama 3,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56543,01689,Emquartier,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56544,01733,Tree on Three,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56545,SOUTH,South,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56546,01208,Diana 2,N,31-Oct-17,31-Oct-17
+57003,Store RD,56547,01239,Ocean Nakornsrithamarat,N,31-Oct-17,31-Oct-17
+57003,Store RD,56548,01257,Ocean Shopping Phuket,N,31-Oct-17,31-Oct-17
+57003,Store RD,56549,01266,Siriban Trang,N,31-Oct-17,31-Oct-17
+57003,Store RD,56550,01322,Lotus Suratthani,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56551,01324,Ocean Chumporn,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56552,01331,Lotus Phuket,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56553,01380,Lotus Hadyai,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56554,01393,Vouge Krabi,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56555,01396,Lotus Trang,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56556,01458,Lotus Nakhon Sri Thammarat,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56557,01467,Thung Song,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56558,01468,Lotus Samui,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56559,01473,Lotus Krabi,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56560,01484,Coliseum Cineplex Pattalung,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56561,01491,Lotus Pattalung,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56562,01492,Coliseum Suratthani,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56563,01493,Lotus Thungsong,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56564,01511,HomePro Phuket,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56565,01524,Big C Chumporn,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56566,01534,Langu,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56567,01551,Lotus Samui Lamai,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56568,01557,Lotus Satun,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56569,01559,Lotus Hadyai 2,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56570,01561,Lotus Chumporn,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56571,01563,Lotus Thalang,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56572,01569,Siam Nakarin Hadyai,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56573,01587,Lotus Langsuan,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56574,01602,Lotus Pha Ngan,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56575,01603,Bangla Mall,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56576,01606,Big C Satun,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56577,01613,Lotus Sadao,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56578,01632,Lotus Thasala,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56579,01640,Lotus Wieng Sra,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56580,01647,PTT Songkla Rattaphum,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56581,01650,Big C Trang,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56582,01653,Lotus Songkla,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56583,01654,Lotus Chalong,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56584,01657,Sahathai Garden Plaza,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56585,01664,Lotus Jana,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56586,01670,Lotus Chaiya,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56587,01674,Lotus Mae Kri,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56588,01678,Takuapa Square,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56589,01694,Lotus Chandee,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56590,01698,Lotus Sichon,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56591,01702,Chaofah,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56592,01713,Bukis Phuket,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56593,01716,PTT Phang Nga,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56594,01741,Big C Nathawi,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56595,83001,PTT Ronpiboon,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56596,83002,PTT CO-OP Suratthani,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56597,83006,Lee Subsin,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56598,83009,PTT Tha-sae,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56599,83010,Phuket Grocery,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56600,83011,Lotus Baan Takhun,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56601,WEST1,West,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56602,01202,The Mall 6,N,31-Oct-17,31-Oct-17
+57003,Store RD,56603,01247,Major Hollywood Pakkred,N,31-Oct-17,31-Oct-17
+57003,Store RD,56604,01292,Lotus Pakkred,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56605,01311,Makro Charansanitwong 37,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56606,01340,Lotus Ramintra,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56607,01345,Lotus Chaengwattana,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56608,01347,Lotus Laksi,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56609,01369,Lotus Rattanathibeth,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56610,01377,Lotus Prachachearn,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56611,01419,Lotus Charansanitwong (S),Y,31-Oct-17,31-Oct-17
+57003,Store RD,56612,01437,Lotus Baan Fha Piyarom,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56613,01443,Pantip Ngamwongwan,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56614,01452,Huahin Market Village,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56615,01459,New Southern Bus Terminal,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56616,01465,Lotus Merry King Pinklao,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56617,01472,Phet Phaiboon Plaza,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56618,01479,Impact Muangthongthani,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56619,01498,Lotus Pranburi,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56620,01512,PTT Ratchapreuk 4,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56621,01545,Lotus Lumlooka,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56622,01555,Big C Lum Look Ka Klong 4,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56623,01556,Esplanade Rattantibeth (S),Y,31-Oct-17,31-Oct-17
+57003,Store RD,56624,01558,PTT Rama 2 Inbound,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56625,01560,Lotus Prachuab,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56626,01566,PTT Wangmanao DT,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56627,01579,KFC Mall 6 (S),Y,31-Oct-17,31-Oct-17
+57003,Store RD,56628,01581,T-square,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56629,01583,Lotus  Thayang,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56630,01634,Plearnary Mall,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56391,745102,Overseas Transportation,N,31-Oct-17,31-Oct-17
+57002,Account RD,56392,745103,Overseas Airfare,N,31-Oct-17,31-Oct-17
+57002,Account RD,56393,745104,Entertainment Deductible,N,31-Oct-17,31-Oct-17
+57002,Account RD,56394,745105,Travel Other,N,31-Oct-17,31-Oct-17
+57002,Account RD,56395,746000,TEST,N,31-Oct-17,31-Oct-17
+57002,Account RD,56396,746100,TEST,N,31-Oct-17,31-Oct-17
+57002,Account RD,56397,746101,Meetings,N,31-Oct-17,31-Oct-17
+57002,Account RD,56398,746102,Automobile Repair & Maint,N,31-Oct-17,31-Oct-17
+57002,Account RD,56399,746103,Automobile Expense Other,N,31-Oct-17,31-Oct-17
+57002,Account RD,56400,746200,TEST,N,31-Oct-17,31-Oct-17
+57002,Account RD,56401,746201,Car Leasing,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56402,746202,Computer Leasing,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56403,746300,TEST,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56404,746301,Postage,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56405,746302,Courier,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56406,746400,TEST,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56407,746401,Dues & Memberships,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56408,746402,Subscriptions,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56409,746500,TEST,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56410,746501,Depr LHI Office,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56411,746502,Depr Office Equipment,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56412,746503,Depr Office F&F,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56413,746504,Depr Office Computer Equipment,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56414,746505,Depr Transportation Equipment,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56415,746600,TEST,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56416,746601,Bank Fees (746600.100),Y,31-Oct-17,31-Oct-17
+57002,Account RD,56417,746602,Finance Cost,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56418,746700,TEST,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56419,746701,Stationery & Printing,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56420,746702,Office Supplies,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56421,746800,TEST,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56422,746801,Storage Service,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56423,746900,TEST,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56424,746901,Recruitment Expense,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56425,747000,TEST,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56426,747100,TEST,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56427,747101,Training,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56428,747102,Telephone (747200.120),Y,31-Oct-17,31-Oct-17
+57002,Account RD,56429,747103,Cell Phone Expense,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56430,747104,Computer Hardware Maintenance,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56431,747105,Software Maintenance,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56432,748000,TEST,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56433,748100,TEST,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56434,748101,Non Refundable VAT,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56435,748102,Licenses & Fees,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56436,748103,Property Insurance,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56437,748104,Electricity Expense,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56438,748105,Water Expense,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56439,748106,Building Repair & Maintenance,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56440,748107,Building Rent (748500.100),Y,31-Oct-17,31-Oct-17
+57002,Account RD,56441,748108,Building Step Rent,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56442,748109,Above Store Rent CAM,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56443,748110,Above Store Step Rent CAM,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56444,748111,Parking Rent,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56445,748112,Copier Rent,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56446,748113,Above Store Other Equip Rent,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56447,748114,Other Rent - Printer,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56448,748115,Other Rent - MMX Software,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56449,748116,Other  Income,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56450,749000,TEST,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56451,749100,TEST,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56452,749101,NonFR Bad Debt Expense,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56453,751000,TEST,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56454,751100,TEST,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56455,751101,Recognition Awards Non Taxable,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56456,751102,Cleaning Expense,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56457,751103,Fines & Penalties,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56458,751104,Non Deductible Expenses,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56459,751105,Other General Expense,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56460,752000,TEST,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56461,752100,TEST,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56462,752101,Other expense - Stores (Adjustment),Y,31-Oct-17,31-Oct-17
+57002,Account RD,56463,759000,TEST,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56464,759100,TEST,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56465,759101,Provision for Fixed Assets Disposal,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56466,759102,Provision Inventory (HO),Y,31-Oct-17,31-Oct-17
+57002,Account RD,56467,760000,TEST,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56468,761000,TEST,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56469,761100,TEST,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56470,761101,Realised Currency Gains,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56471,761102,Unrealised Currency Gains,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56472,761103,Bank Revaluations,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56473,761104,Realized Currency Gains,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56474,761105,Realized Currency Losses,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56475,761106,Unrealized Currency Gains,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56476,761107,Unrealized Currency Losses,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56477,800000,TEST,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56478,810000,TEST,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56479,811000,TEST,Y,31-Oct-17,31-Oct-17
+57002,Account RD,56480,811100,TEST,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59061,01239,Ocean Nakornsrithamarat,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59062,01257,Ocean Shopping Phuket,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59063,01266,Siriban Trang,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59064,01322,Lotus Suratthani,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59065,01324,Ocean Chumporn,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59066,01331,Lotus Phuket,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59067,01380,Lotus Hadyai,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59068,01393,Vouge Krabi,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59069,01396,Lotus Trang,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59070,01458,Lotus Nakhon Sri Thammarat,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59071,01467,Thung Song,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59072,01468,Lotus Samui,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59073,01473,Lotus Krabi,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59074,01484,Coliseum Cineplex Pattalung,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59075,01491,Lotus Pattalung,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59076,01492,Coliseum Suratthani,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59077,01493,Lotus Thungsong,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59078,01511,HomePro Phuket,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59079,01524,Big C Chumporn,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59080,01534,Langu,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59081,01551,Lotus Samui Lamai,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59082,01557,Lotus Satun,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59083,01559,Lotus Hadyai 2,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59084,01561,Lotus Chumporn,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59085,01563,Lotus Thalang,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59086,01569,Siam Nakarin Hadyai,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59087,01587,Lotus Langsuan,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59088,01602,Lotus Pha Ngan,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59089,01603,Bangla Mall,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59090,01606,Big C Satun,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59091,01613,Lotus Sadao,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59092,01632,Lotus Thasala,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59093,01640,Lotus Wieng Sra,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59094,01647,PTT Songkla Rattaphum,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59095,01650,Big C Trang,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59096,01653,Lotus Songkla,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59097,01654,Lotus Chalong,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59098,01657,Sahathai Garden Plaza,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59099,01664,Lotus Jana,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59100,01670,Lotus Chaiya,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59101,01674,Lotus Mae Kri,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59102,01678,Takuapa Square,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59103,01694,Lotus Chandee,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59104,01698,Lotus Sichon,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59105,01702,Chaofah,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59106,01713,Bukis Phuket,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59107,01716,PTT Phang Nga,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59108,01741,Big C Nathawi,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59109,83001,PTT Ronpiboon,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59110,83002,PTT CO-OP Suratthani,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59111,83006,Lee Subsin,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59112,83009,PTT Tha-sae,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59113,83010,Phuket Grocery,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59114,83011,Lotus Baan Takhun,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59115,WEST1,West,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59116,01202,The Mall 6,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59117,01247,Major Hollywood Pakkred,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59118,01292,Lotus Pakkred,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59119,01311,Makro Charansanitwong 37,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59120,01340,Lotus Ramintra,Y,31-Oct-17,31-Oct-17
+61001,RD_PO_HEADER_SOURCE,65002,CEDAR-PJC,PO From Cedar-Project,Y,31-Oct-17,31-Oct-17
+61001,RD_PO_HEADER_SOURCE,64002,CEDAR-NPJC,PO From Cedar-Non Project,Y,31-Oct-17,31-Oct-17
+53038,ORA_SCM_METRICS,69005,NAMED_USERS_DEMAND_MGMT,Demand Management Cloud Service - Hosted Named Users,Y,31-Oct-17,31-Oct-17
+53038,ORA_SCM_METRICS,69006,NAMED_USERS_MNT,Maintenance Cloud Service - Hosted Named Users,Y,31-Oct-17,31-Oct-17
+53038,ORA_SCM_METRICS,69007,NAMED_USERS_SALES_OPERATIONS_PLANNING,Sales and Operations Planning Cloud Service - Hosted Named Users,Y,31-Oct-17,31-Oct-17
+53038,ORA_SCM_METRICS,69008,NAMED_USERS_SUPPLY_PLANNING,Supply Planning Cloud Service - Hosted Named Users,Y,31-Oct-17,31-Oct-17
+53038,ORA_SCM_METRICS,69009,NAMED_USERS_VCS,Supply Chain Collaboration Cloud Service - Hosted Named Users,Y,31-Oct-17,31-Oct-17
+65018,ORA_SOP_PRIV,69010,01,,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59121,01345,Lotus Chaengwattana,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59122,01347,Lotus Laksi,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59123,01369,Lotus Rattanathibeth,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59124,01377,Lotus Prachachearn,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59125,01419,Lotus Charansanitwong (S),Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59126,01437,Lotus Baan Fha Piyarom,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59127,01443,Pantip Ngamwongwan,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59128,01452,Huahin Market Village,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59129,01459,New Southern Bus Terminal,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59130,01465,Lotus Merry King Pinklao,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59131,01472,Phet Phaiboon Plaza,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59132,01479,Impact Muangthongthani,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59133,01498,Lotus Pranburi,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59134,01512,PTT Ratchapreuk 4,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59135,01545,Lotus Lumlooka,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59136,01555,Big C Lum Look Ka Klong 4,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59137,01556,Esplanade Rattantibeth (S),Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59138,01558,PTT Rama 2 Inbound,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59139,01560,Lotus Prachuab,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59140,01566,PTT Wangmanao DT,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59141,01579,KFC Mall 6 (S),Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59142,01581,T-square,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59143,01583,Lotus  Thayang,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59144,01634,Plearnary Mall,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59145,01638,Big C Samutsongkhram,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59146,01642,PTT Hua Hin,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59147,01643,Lotus Samutsongkhram,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59148,01652,Pure Place Ratchapruek,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59149,01665,Paseo Kanchanapisek,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59150,01686,The One Bangyai,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59151,01707,FSDT PTT Cha-am Nampu,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59152,01727,Donmuang Airport,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59153,02219,Imperial World Ladprao,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59154,02222,Major Cineplex Pinklao,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59155,WESTC,Westcoast,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59156,83007,Lotus Wang Nam Yen,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59157,DPTHO,Department - Head Office,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59158,90001,Executive,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59159,90002,Finance and Accounting,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59160,90003,Operations,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59161,90004,Supply Chain,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59162,90005,Human Resource,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59163,90006,Marketing,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59164,90007,Information Technology,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59165,90008,Development and Construction,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59166,90009,Adminitration,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59167,90010,Innovation & Restaurant Systems ,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59168,90011,Non-Operating ,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59169,WEREH,Warehouse,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59170,100000,ASSET,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56631,01638,Big C Samutsongkhram,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56632,01642,PTT Hua Hin,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56633,01643,Lotus Samutsongkhram,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56634,01652,Pure Place Ratchapruek,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56635,01665,Paseo Kanchanapisek,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56636,01686,The One Bangyai,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56637,01707,FSDT PTT Cha-am Nampu,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56638,01727,Donmuang Airport,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56639,02219,Imperial World Ladprao,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56640,02222,Major Cineplex Pinklao,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56641,WESTC,Westcoast,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56642,83007,Lotus Wang Nam Yen,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56643,DPTHO,Department - Head Office,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56644,90001,Executive,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56645,90002,Finance and Accounting,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56646,90003,Operations,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56647,90004,Supply Chain,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56648,90005,Human Resource,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56649,90006,Marketing,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56650,90007,Information Technology,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56651,90008,Development and Construction,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56652,90009,Adminitration,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56653,90010,Innovation & Restaurant Systems ,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56654,90011,Non-Operating ,Y,31-Oct-17,31-Oct-17
+57003,Store RD,56655,WEREH,Warehouse,Y,31-Oct-17,31-Oct-17
+57004,Project RD,56656,PJ0000,N/A,N,31-Oct-17,31-Oct-17
+57004,Project RD,56657,000000,N/A,N,31-Oct-17,31-Oct-17
+57005,Future1 RD,56658,TT,Total,Y,31-Oct-17,31-Oct-17
+57005,Future1 RD,56659,00,N/A,N,31-Oct-17,31-Oct-17
+57006,Future2 RD,56660,TOTA,Total,Y,31-Oct-17,31-Oct-17
+57006,Future2 RD,56661,0000,N/A,N,31-Oct-17,31-Oct-17
+57003,Store RD,57001,00000,N/A,N,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,65005,219100,OUTPUT TAX,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,66006,219110,ACCOUNT PAYABLE REVENUE DEPARTMENT,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,66007,219120,OUTPUT TAX,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,65007,219130,SUSPENSE OUTPUT TAX,Y,31-Oct-17,31-Oct-17
+65006,ORA_DM_PRIV,69001,01,,Y,31-Oct-17,31-Oct-17
+65017,ORA_MNT_PRIV,69002,01,,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59014,01219,Paradise Park,Y,31-Oct-17,31-Oct-17
+53033,ORA_MSC_PRIV,69003,02,,Y,31-Oct-17,31-Oct-17
+58004,COMPANY RD CLOUD,59011,10,RESTAURANTS DEVELOPMENT COMPANY LIMITED,Y,31-Oct-17,31-Oct-17
+58004,COMPANY RD CLOUD,59012,11,RESTAURANTS DEVELOPMENT COMPANY LIMITED,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59013,BANGK,Bangkok,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59015,01228,Seacon Square,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59016,01264,The Mall 3,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59017,01293,Jusco Sukhumvit 71,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59018,01312,The Old Siam Plaza,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59019,01346,Lotus Sukhumvit 50,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59020,01379,Lotus Bangna,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59021,01397,Number One - RU2 (S),Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59022,01402,Klong Tom,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59023,01407,Lotus Ladprao Satellite,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59024,01433,Hi Mall Samsen,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59025,01439,Seacon Square Satellite,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59026,01445,Lotus China Town Satellite,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59027,01490,Union Mall,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59028,01570,Water Front,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59029,01584,Mega Bangna,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59030,01595,The Scene Town in Town,Y,31-Oct-17,31-Oct-17
+53033,ORA_MSC_PRIV,69004,03,,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59031,01607,JJ Mall,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59032,01609,Sena Festival (Charoennakorn),Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59033,01616,Soho,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59034,01668,Yodpiman,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59035,01671,Ramkhamhaeng,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59036,01683,Lotus Pattanakarn,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59037,01721,Wanghin,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59038,02213,Fortune Ratchadaphisek,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59039,02234,Major Cineplex Sukhumvit,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59040,02235,Major Cineplex Ratchayothin,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59041,83003,Lotus Kuchinarai,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59042,83004,Lotus Prakonchai,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59043,BKKNE,Bangkok & Northeast,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59044,83005,Lotus Lam Pai Mat,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59045,83008,La Salle SV105,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59046,83012,Big C Suwannaphum,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59047,BKKF1,BKKF1,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59048,01344,Lotus Rama 4,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59049,01373,Lotus Rama 3,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59050,01414,Silom 64,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59051,01423,Lotus Rama I (Charoenphal),Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59052,01453,Siam Paragon,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59053,01485,Indra Square Satellite,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59054,01562,Terminal 21,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59055,01593,Digital Gateway Ekamai,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59056,01619,The Up Rama 3,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59057,01689,Emquartier,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59058,01733,Tree on Three,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59059,SOUTH,South,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,59060,01208,Diana 2,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59287,124140,Accum Depr LHI Rest Deimag Exp,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59288,124200,Accum Depr LHI Office,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59289,124210,Accum Depr LHI Office,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59290,124220,Accum Depr LHI Office IDC,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59291,124300,Accum Depr Rest Equip,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59292,124310,Accum Depr Rest Equip,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59293,124311,Accum Depr Rest Equip Impair,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59294,124400,Accum Depr Rest Office Equip,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59295,124410,Accum Depr Rest Office Equip,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59296,124411,Accum Depr Rest F&F,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59297,124500,Accum Depr Office Equipment,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59298,124510,Accum Depr Office Equipment,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59299,124600,Accum Depr Office Comp Equip,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59300,124610,Accum Depr Office Comp Equip,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59301,124700,Accum Depr Office F&F,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59302,124710,Accum Depr Office F&F,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59303,126000,"Intangible Assets,net",Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59304,127000,Other non-current Asset,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59305,127100,Goodwill,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59306,127110,Goodwill,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59307,127120,Goodwill Amortization,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59308,127200,Other Asset,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59309,127210,Allowance for Fixed Assets Disposal,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59310,127220,Deferred Tax Assets,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59311,127230,Investment in Affiliates,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59312,127300,Long Term ,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59313,127310,LT Store Lease Deposits,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59314,127320,LT Other Lease Deposits,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59315,127330,LT Other Deposits,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59316,127340,LT Other Assets,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59317,127350,LT Key Money Refundable,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59318,127351,LT KM Nonrefundable Finite,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59319,127360,LT KM Reundable Impair,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59320,127370,LT KM Amort Nonrefund Finite impair,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59321,127380,LT KM Amort Impairment,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59322,127390,LT Other Assets Amortisation,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59323,200000,LIABILITIES,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59324,210000,Current liabilities,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59325,211000,Bank overdrafts and short term loans from bank,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59326,211100,Bank overdrafts and short term loans from bank,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59327,211110,Bank overdrafts and short term loans from bank,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59328,212000,Accounts payable - related company,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59329,212100,Accounts payable - related company,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59330,212110,AP Business Acquisition,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59331,213000,Accounts payable - Trade,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59332,213100,Accounts payable - Trade,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59333,213110,Accounts Payable,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59334,214000,Accounts payable - Other,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59335,214100,Accounts payable - Other,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59336,214110,AP - VAT Installment,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59337,215000,Current Portion of Long Term Loan,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59338,216000,Accrued Expenses,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59339,216100,Accrued Expenses,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59340,216102,Accr Other Non Income Tax,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59341,216103,Accr Payroll,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59342,216104,Accrued Payroll,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59343,216105,Accr Vacation & Holiday,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59344,216106,Accr Bonus Field RSC,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59345,216107,Accr Bonus Store Level,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59346,216108,Accr Medical Insurance,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59347,216109,Accr Pension Benefits Other,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59348,216110,Accr National Payroll Tax,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59349,216111,Accr Other Comp Related,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59350,216112,Accr Insurance Other,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59351,216113,Accr Local Advertising,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59352,216114,Accr LSM Fund,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59353,216115,Accr Coupons,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59354,216116,Accr Payments Ad Coop,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59355,216117,Accr Pay to Operating Co,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59356,216118,Accr Royalty,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59357,216119,Accr Electricity Above Store,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59358,216120,Accr Water Above Store,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59359,216121,Accr Audit Fees,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59360,216122,Accr Other Deposits,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59361,216123,Accr Gift Card Liability,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59362,216124,Accr G&A Invoices,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59363,216125,Accr Training,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59364,216126,Accr Travel,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59365,216127,Accr Deadsite Reserve,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59366,216128,Accr Charitable Contributions,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59367,216129,Accr Conferences & Events,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59368,216130,Accr Cleaning,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59369,216131,Accr Repairs & Maintenance,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59370,216132,Accr Other Above Store,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59371,216133,Accr Other - Store level,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59372,216134,Accr Other Benefit,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59373,216135,Accr Rent Functional Currency,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59374,216136,Accr Rent Percent of Sales,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59375,216137,Accr Rent CAM Funct Curr,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59376,216138,Accr Equipment & Other Rent,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59377,216139,Accr Step Rent Funct Curr,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59378,216140,Accr Equipment Maintenance,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59379,216141,Accr Water Store Level,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59380,216142,Accr Telephone Store Level,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59381,216143,Accr Electricity Store Level,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59382,216144,Accr Interest Expense,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59383,216145,Accr Retention Control,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59384,217000,Accrued Tax,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59385,217100,Accrued Tax,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59386,217110,Accr Property Tax,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59387,217120,VAT,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59388,217130,VAT Payable,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59389,217140,Accr Royalty Witholding Tax,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59390,217150,Withholding tax - PND 53,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59391,217160,Accr Business Tax,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59392,217170,Withholding tax - PND 3,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59393,217180,Withholding tax - PND 54,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59394,218000,Corporate Income tax payable,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59395,219000,Other Current Liabilities,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59396,220000,Non current Liability,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59397,221000,Short Term Loan,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59398,221100,Short Term Loan,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59399,221110,Short Term Loan,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59400,222000,Long Term Loan,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59401,222100,Long Term Loan,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59402,222110,Long Term Loan,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59171,110000,Current Asset,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59172,111000,Cash in Hand & At Bank & Depos,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59173,111100,Cash at bank,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59174,111101,Cash on Hand,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59175,111102,Petty Cash,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59176,111103,Float,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59177,111200,Current Account,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59178,111210,Citibank Current Account,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59179,111220,Kbank Current Account,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59180,111230,BBL Current Account,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59181,111240,SCB Current Account,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59182,111300,Saving Account,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59183,111310,Citibank Saving Account,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59184,111320,Kbank Saving Account-7006,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59185,111321,Kbank Saving Account-7189,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59186,111322,Kbank Saving Account-7138,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59187,111323,Kbank Saving Account-5295,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59188,111330,BBL Saving Account,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59189,111340,SCB Saving Account,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59190,112000,Amount Due From Related==>1120000,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59191,112100,Amount Due From Related==>1120000,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59192,112110,Inter-Co AR,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59193,112120,AR Control Interco (Issued Invoice),Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59194,112130,Inter-Co AR- Loan-Sweep,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59195,113000,Account Receivable,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59196,113100,AR - TRADE,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59197,113101,AR - CASH,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59198,113102,AR - CREDIT CARD,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59199,113200,AR - OTHER,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59200,113201,Accounts Receivable,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59201,113202,Shareholders Receivable,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59202,113203,NonFR AR Employee Loan,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59203,113204,Credit Card (VISA),Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59204,113205,NonFR AR Vendors,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59205,113206,VAT Refundable,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59206,113207,NonFR AR Insurance,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59207,113208,NonFR AR Meal Vouchers,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59208,113209,NonFR AR Beverage Rebate,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59209,113210,NonFR AR Other,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59210,113211,NonFR AR Dept Store or Kiosk,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59211,113212,NonFR Interest Receivable,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59212,113213,NonFR AFDA Leases,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59213,113214,NonFR AFDA Other,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59214,116000,Prepaid Expenses,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59215,116100,Prepaid Expenses,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59216,116101,PPD Marketing,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59217,116102,PPD Insurance,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59218,116103,PPD Property Insurance,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59219,116104,PPD Workers Compensation,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59220,116105,PPD Maintenance,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59221,116106,PPD Software Maintenance,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59222,116107,PPD Rent Functional Curr,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59223,116108,PPD Svc Chg Funct Curr,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59224,116109,PPD Step Rent Functional Curr,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59225,116110,PPD Software,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59226,116111,PPD Maintenance & Cleaning,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59227,116112,PPD Operating Supplies,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59228,116113,PPD COS Inventory,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59229,116114,PPD Uniform,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59230,116115,PPD Car Expense,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59231,116116,PPD School Fees,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59232,116117,PPD Membership & Dues,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59233,116118,PPD Expense Other,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59234,116119,PPD Call Center Expenses,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59235,116120,PPD Initial Fee,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59236,116200,Prepaid Taxes,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59237,116201,PPD Business Tax,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59238,116202,PPD Withholding Tax,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59239,117000,Inventory,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59240,117100,Inventory - Food,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59241,117101,Inventory - Food,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59242,117102,Inventory - Reserve,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59243,117200,Inventory - Equipment,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59244,117201,Inventory - Equipment,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59245,118000,Other Current Asset,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59246,118100,Other Current Asset,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59247,118110,OCA Lease Deposits,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59248,118120,Ad Coop Assets Restricted,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59249,118130,WHT Receivable,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59250,118140,Suspense Account,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59251,120000,Non-Current Asset,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59252,121000,Long term Loans to  Related,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59253,122000,Investment,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59254,123000,"Property,plant and equipment,net",Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59255,123100,PP&E LHI Restaurant,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59256,123110,PP&E LHI Restaurant,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59257,123120,PP&E LHI Rest Impairment,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59258,123130,PP&E LHI Rest Cap Int,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59259,123140,PP&E LHI Rest Deimaging Exp,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59260,123200,PP&E LHI Office,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59261,123210,PP&E LHI Office,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59262,123220,PP&E LHI Office IDC,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59263,123300,PP&E Restaurant Equip,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59264,123310,PP&E Restaurant Equip,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59265,123320,PP&E Restaurant Equip Impair,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59266,123330,PP&E Restaurant Office Equip,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59267,123400,PP&E Office Equipment,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59268,123410,PP&E Office Equipment,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59269,123500,PP&E Office Computer Equipment,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59270,123510,PP&E Office Computer Equipment,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59271,123600,PP&E Office F&F,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59272,123610,PP&E Office F&F,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59273,123700,PP&E Transport Equip Office,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59274,123710,PP&E Transport Equip Office,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59275,123720,PP&E Transport Equip Rest,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59276,123800,CIP Construction,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59277,123810,CIP Construction in Progress,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59278,123820,CIP Internal Development Costs,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59279,123900,PP&E Cap Lease,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59280,123910,PP&E Cap Lease Buildings,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59281,123920,PP&E Cap Lease Bldg Impair,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59282,124000,Accumulated Depreciation,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59283,124100,Accum Depr LHI Restaurant,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59284,124110,Accum Depr LHI Restaurant,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59285,124120,Accum Depr LHI Rest Impair,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59286,124130,Accum Depr LHI Rest Cap Int,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59490,513114,Telephone (585000.550),Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59491,513115,Champs Expense,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59492,513116,Cleaning Supplies,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59493,513117,Other Operating Supplies,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59494,513118,Other Office Supplies,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59495,513119,Uniforms,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59496,513120,Cash Variance Cash,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59497,513121,Call Center Costs,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59498,513122,Other Travel & Expense,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59499,513123,Billboard Tax,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59500,513124,Staff Recruitment,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59501,513125,Employee Engagement Expense,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59502,513126,Employee Events,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59503,513127,Other Semi Variables,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59504,514000,Advertising Marketing & PRExpenses,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59505,514100,Advertising Marketing & PRExpenses,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59506,514110,Local Store Advertising,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59507,514120,Ad Coop Contribution,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59508,514130,Royalty Fee - Store level,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59509,514140,Menu Board Production,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59510,515000,Repair & maintenance,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59511,516000,Professional Fee & Other fee,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59512,517000,Rental Expenses,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59513,518000,Admin & General Expenses,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59514,519000,Non Operating Expenses,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59515,520000,Depreciation & Amortization,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59516,521000,Financial Cost,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59517,522000,Corporate Tax,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59518,700000,G&A,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59519,710000,G&A,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59520,711000,Employee,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59521,711100,Employee,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59522,711101,Salaries,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59523,711102,Overtime,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59524,711200,Housing Allowance-RSC,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59525,711201,Housing Allowance-RSC,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59526,711300,Other Incentive,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59527,711301,Other Incentive,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59528,711400,Other Benefit - RSC,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59529,711410,Social Security Tax,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59530,711420,Workmen Compensation,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59531,711430,Provident Fund (710500.100),Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59532,711440,Medical Insurance,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59533,711450,Other Benefits (710500.380),Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59534,711460,Allowance for Employee Benefits,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59535,711470,Bonus,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59536,712000,Severance Expense,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59537,720000,Other Dead Site Expense,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59538,730000,Fees,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59539,731000,Fees,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59540,731100,Fees,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59541,731110,Audit Fees,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59542,731120,Legal Fees,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59543,731130,Consulting Fees,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59544,731140,Quality Assurance Fees,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59545,731150,Professional Fees,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59546,731160,Accounting,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59547,731170,Payroll,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59548,731180,SCM Fees (73000.800),Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59549,731190,Temporary Contract Labor,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59550,731200,Other Service Fee,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59551,738800,Interest Income,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59552,732000,TEST,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59553,732100,Charitable Contributions,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59554,732101,Charitable Contributions,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59555,745000,Transportation Expense,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59556,745100,Transportation Expense,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59557,745101,Taxis & Cabs,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59558,745102,Overseas Transportation,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59559,745103,Overseas Airfare,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59560,745104,Entertainment Deductible,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59561,745105,Travel Other,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59562,746000,TEST,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59563,746100,Meetings,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59564,746101,Meetings,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59565,746102,Automobile Repair & Maint,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59566,746103,Automobile Expense Other,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59567,746200,Automobile Repair & Maint,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59568,746201,Car Leasing,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59569,746202,Computer Leasing,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59570,746300,Postage,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59571,746301,Postage,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59572,746302,Courier,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59573,746400,Dues & Memberships,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59574,746401,Dues & Memberships,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59575,746402,Subscriptions,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59576,746500,Depr LHI Office,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59577,746501,Depr LHI Office,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59578,746502,Depr Office Equipment,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59579,746503,Depr Office F&F,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59580,746504,Depr Office Computer Equipment,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59581,746505,Depr Transportation Equipment,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59582,746600,Finance Cost,N,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59583,746601,Bank Fees (746600.100),N,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59584,746602,Finance Cost,N,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59585,746700,Stationery & Printing,N,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59586,746701,Stationery & Printing,N,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59587,746702,Office Supplies,N,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59588,746800,Storage Service,N,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59589,746801,Storage Service,N,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59590,746900,Recruitment Expense,N,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59591,746901,Recruitment Expense,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59592,747000,Expense,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59593,747100,Expense,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59594,747101,Training,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59595,747102,Telephone (747200.120),Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59596,747103,Cell Phone Expense,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59597,747104,Computer Hardware Maintenance,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59598,747105,Software Maintenance,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59599,748000,Non Refundable VAT,N,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59600,748100,Licenses & Fees,N,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59601,748101,Non Refundable VAT,N,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59602,748102,Licenses & Fees,N,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59603,748103,Property Insurance,N,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59604,748104,Electricity Expense,N,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59605,748105,Water Expense,N,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59403,300000,SHAREHOLDERS'EQUITY,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59404,310000,Share Capital,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59405,311000,Share Capital,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59406,312000,Other Equity account,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59407,320000,Retained earnings,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59408,321000,Retained earnings,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59409,321100,Retained earnings,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59410,321110,Retained earnings,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59411,322000,Statutory/ Legal Reserve,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59412,323000,Dividend paid,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59413,330000,Minority Interest - BS,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59414,400000,REVENUE,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59415,410000,Revenue - Sales,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59416,411000,Revenue - Sales,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59417,411100,Revenue - Sales,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59418,411110,In Store Sales VAT 0%,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59419,411120,Carry Out Sales VAT 0%,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59420,411130,Delivery Sales VAT 0%,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59421,411140,Delivery Charges,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59422,411200,Discounts,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59423,411210,Discounts,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59424,500000,DIRECT COST,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59425,510000,COST OF SALES,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59426,511000,COST OF SALES,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59427,511100,COST OF SALES - CHECKEN,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59428,511110,Chicken on the Bone,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59429,511200,COST OF SALES - SOFTSERVE,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59430,511210,COST OF SALES - SOFTSERVE,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59431,511300,COST OF SALES - OTHER FOOD,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59432,511310,COST OF SALES - OTHER FOOD,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59433,511400,COST OF SALES - DESSERT,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59434,511410,COST OF SALES - DESSERT,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59435,511500,COST OF SALES - PAPER,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59436,511510,COST OF SALES - PAPER,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59437,511600,Food Cost Price Variance,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59438,511610,Food Cost Price Variance,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59439,511700,Transportation & Distrib Costs,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59440,511710,Transportation & Distrib Costs,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59441,511720,SCM Fees,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59442,501800,Obsolete Stock,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59443,511810,Obsolete Stock,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59444,511820,Provision Inventory,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59445,511900,Obsolete Stock,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59446,511910,Obsolete Stock,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59447,512000,Personal Expenses (COL),Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59448,512100,Salary,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59449,512110,Salary - Management,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59450,512120,Salary - Fulltime,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59451,512130,Salary - Parttime,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59452,512140,Salary - Crew & Wow,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59453,512200,Overtime,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59454,512210,Overtime - Management,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59455,512220,Overtime - Fulltime,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59456,512230,Overtime - Parttime,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59457,512240,Overtime - Crew & Wow,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59458,512300,Incentive,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59459,512310,Incentive - Management,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59460,512320,Incentive - Fulltime,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59461,512330,Incentive - Parttime,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59462,512340,Incentive - Crew & Wow,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59463,512400,Other Staff Benefit,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59464,512410,Provident Fund Contribution,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59465,512420,Social Security Contribution,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59466,512430,Workmans Compensation,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59467,512440,Other Staff Benefit,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59468,512450,Insurance Medical,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59469,512460,Insurance Life,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59470,512470,Insurance Accident,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59471,512480,Insurance Other,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59472,512490,Employee Meals,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59473,512500,Staff Trainning,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59474,512600,Staff Allowance,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59475,513000,Operating Expenses,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59476,513100,Operating Expenses,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59477,513101,Electricity,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59478,513102,Water,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59479,513103,Gas,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59480,513104,Landlord & Property Insurance,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59481,513105,Vehicle Insurance,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59482,513106,Business Insurance,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59483,513107,Insurance Recoveries,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59484,513108,Maint Department Fee,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59485,513109,Other Equip Maint Controllable,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59486,513110,IT and Technical Support,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59487,513111,Other Service Fee (Store Level),Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59488,513112,Bank Fees (585000.100),Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59489,513113,In Store Music,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,74008,517100,Rental Expenses,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,74009,517110,Rental Expenses,Y,31-Oct-17,31-Oct-17
+71005,RD_SUB_CAT_IC,74015,Foods,Foods,Y,31-Oct-17,31-Oct-17
+71005,RD_SUB_CAT_IC,74016,Vegetable,Vegetable,Y,31-Oct-17,31-Oct-17
+71005,RD_SUB_CAT_IC,76006,Ready To Use,Ready To Use,Y,31-Oct-17,31-Oct-17
+73001,RD_MAIN_CAT_IC,76007,Smallware,Smallware,Y,31-Oct-17,31-Oct-17
+73001,RD_MAIN_CAT_IC,74017,Cleaning Supply,Cleaning Supply,Y,31-Oct-17,31-Oct-17
+73001,RD_MAIN_CAT_IC,76008,Chemical,Chemical,Y,31-Oct-17,31-Oct-17
+73001,RD_MAIN_CAT_IC,74018,Uniform,Uniform,Y,31-Oct-17,31-Oct-17
+73001,RD_MAIN_CAT_IC,74019,Stationary,Stationary,Y,31-Oct-17,31-Oct-17
+73001,RD_MAIN_CAT_IC,76009,Miscellaneous,Miscellaneous,Y,31-Oct-17,31-Oct-17
+73001,RD_MAIN_CAT_IC,74020,Spare Parts,Spare Parts,Y,31-Oct-17,31-Oct-17
+73001,RD_MAIN_CAT_IC,76010,Fixed Asset,Fixed Asset,Y,31-Oct-17,31-Oct-17
+73001,RD_MAIN_CAT_IC,74021,Equipment,Equipment,Y,31-Oct-17,31-Oct-17
+73001,RD_MAIN_CAT_IC,74022,Maintenance,Maintenance,Y,31-Oct-17,31-Oct-17
+71005,RD_SUB_CAT_IC,76011,Packaging,Packaging,Y,31-Oct-17,31-Oct-17
+71005,RD_SUB_CAT_IC,74023,Other Foods,Other Foods,Y,31-Oct-17,31-Oct-17
+71005,RD_SUB_CAT_IC,76012,Finished Goods,Finished Goods,Y,31-Oct-17,31-Oct-17
+71005,RD_SUB_CAT_IC,76013,Smallware,Smallware,Y,31-Oct-17,31-Oct-17
+71005,RD_SUB_CAT_IC,76014,Cleaning Supply,Cleaning Supply,Y,31-Oct-17,31-Oct-17
+71005,RD_SUB_CAT_IC,74024,Chemical,Chemical,Y,31-Oct-17,31-Oct-17
+71005,RD_SUB_CAT_IC,76015,Uniform,Uniform,Y,31-Oct-17,31-Oct-17
+71005,RD_SUB_CAT_IC,76016,Stationary,Stationary,Y,31-Oct-17,31-Oct-17
+71005,RD_SUB_CAT_IC,76017,Miscellaneous,Miscellaneous,Y,31-Oct-17,31-Oct-17
+71005,RD_SUB_CAT_IC,76018,Premium,Premium,Y,31-Oct-17,31-Oct-17
+71005,RD_SUB_CAT_IC,74025,Spare Parts,Spare Parts,Y,31-Oct-17,31-Oct-17
+71005,RD_SUB_CAT_IC,74026,Fixed Asset,Fixed Asset,Y,31-Oct-17,31-Oct-17
+71005,RD_SUB_CAT_IC,76019,Equipment,Equipment,Y,31-Oct-17,31-Oct-17
+71005,RD_SUB_CAT_IC,76020,Expense,Expense,Y,31-Oct-17,31-Oct-17
+59005,FA_LOCATION_STORE,61003,90000,Headquater,Y,31-Oct-17,31-Oct-17
+59005,FA_LOCATION_STORE,59673,90001,Excecutive,Y,31-Oct-17,31-Oct-17
+59005,FA_LOCATION_STORE,59674,83001,PTT Ronpiboon,Y,31-Oct-17,31-Oct-17
+59005,FA_LOCATION_STORE,61004,01202,Mall 6,Y,31-Oct-17,31-Oct-17
+59009,RD_FA_MINOR_CATEGORY,59682,COMPUTER,COMPUTER,Y,31-Oct-17,31-Oct-17
+59009,RD_FA_MINOR_CATEGORY,62005,SOFTWARE,,Y,31-Oct-17,31-Oct-17
+59009,RD_FA_MINOR_CATEGORY,62006,NONE,NONE,Y,31-Oct-17,31-Oct-17
+59009,RD_FA_MINOR_CATEGORY,59683,NONE,NONE,Y,31-Oct-17,31-Oct-17
+59009,RD_FA_MINOR_CATEGORY,62007,NONE,NONE,Y,31-Oct-17,31-Oct-17
+59009,RD_FA_MINOR_CATEGORY,62008,NONE,NONE,Y,31-Oct-17,31-Oct-17
+59009,RD_FA_MINOR_CATEGORY,62009,NONE,NONE,Y,31-Oct-17,31-Oct-17
+59009,RD_FA_MINOR_CATEGORY,62010,NONE,NONE,Y,31-Oct-17,31-Oct-17
+59009,RD_FA_MINOR_CATEGORY,62011,NONE,,Y,31-Oct-17,31-Oct-17
+68004,THL_WT_PND_TYPE,74001,54,ภงด 54,Y,31-Oct-17,31-Oct-17
+71005,RD_SUB_CAT_IC,74027,Capital Expenditure,Capital Expenditure,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,77002,931110,Pool Balance,Y,31-Oct-17,31-Oct-17
+58007,PROJECT RD CLOUD,78001,PJ0001,Project 1,Y,31-Oct-17,31-Oct-17
+58007,PROJECT RD CLOUD,78002,PJ0002,Project 2,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,78003,941110,Bill Payment,Y,31-Oct-17,31-Oct-17
+58007,PROJECT RD CLOUD,80003,PJ1001,Parent Project,Y,31-Oct-17,31-Oct-17
+58011,RD_FA_ASSET_KEY,59675,00000000,None,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,76003,921110,Reserved for Encumbrance,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,80001,931120,Pool Account,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,81001,951110,Suspense,Y,31-Oct-17,31-Oct-17
+58007,PROJECT RD CLOUD,80002,PJ0003,Project 3,Y,31-Oct-17,31-Oct-17
+68004,THL_WT_PND_TYPE,72001,3,ภงด 3,Y,31-Oct-17,31-Oct-17
+68004,THL_WT_PND_TYPE,73001,53,ภงด 53,Y,31-Oct-17,31-Oct-17
+58010,FA_LOCATION_DEPARTMENT/ZONE,61005,000,None,Y,31-Oct-17,31-Oct-17
+58010,FA_LOCATION_DEPARTMENT/ZONE,61006,000,None,Y,31-Oct-17,31-Oct-17
+58010,FA_LOCATION_DEPARTMENT/ZONE,61007,000,None,Y,31-Oct-17,31-Oct-17
+58010,FA_LOCATION_DEPARTMENT/ZONE,61008,000,None,Y,31-Oct-17,31-Oct-17
+66008,ORA_FIN_METRICS,70001,NAMED_USERS_FUN,Financials Cloud Service - Hosted Named Users,Y,31-Oct-17,31-Oct-17
+58005,STORE RD CLOUD,63001,00000,N/A,Y,31-Oct-17,31-Oct-17
+66008,ORA_FIN_METRICS,70002,NAMED_USERS_IEX,Advanced Collections Cloud Service - Hosted Named Users,Y,31-Oct-17,31-Oct-17
+66014,ORA_FIN_METRICS_SETS,70003,FIN,Financials Family Set,Y,31-Oct-17,31-Oct-17
+66015,ORA_FIN_PRIV,70004,01,,Y,31-Oct-17,31-Oct-17
+66015,ORA_FIN_PRIV,70005,02,,Y,31-Oct-17,31-Oct-17
+66015,ORA_FIN_PRIV,70006,03,,Y,31-Oct-17,31-Oct-17
+66015,ORA_FIN_PRIV,70007,04,,Y,31-Oct-17,31-Oct-17
+66015,ORA_FIN_PRIV,70008,05,,Y,31-Oct-17,31-Oct-17
+66015,ORA_FIN_PRIV,70009,06,,Y,31-Oct-17,31-Oct-17
+66015,ORA_FIN_PRIV,70010,07,,Y,31-Oct-17,31-Oct-17
+66015,ORA_FIN_PRIV,70011,08,,Y,31-Oct-17,31-Oct-17
+66015,ORA_FIN_PRIV,70012,09,,Y,31-Oct-17,31-Oct-17
+66015,ORA_FIN_PRIV,70013,10,,Y,31-Oct-17,31-Oct-17
+66016,ORA_IEX_PRIV,70014,01,,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59606,748106,Building Repair & Maintenance,N,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59607,748107,Building Rent (748500.100),N,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59608,748108,Building Step Rent,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59609,748109,Above Store Rent CAM,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59610,748110,Above Store Step Rent CAM,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59611,748111,Parking Rent,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59612,748112,Copier Rent,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59613,748113,Above Store Other Equip Rent,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59614,748114,Other Rent - Printer,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59615,748115,Other Rent - MMX Software,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59616,748116,Other  Income,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59617,749000,TEST,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59618,749100,TEST,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59619,749101,NonFR Bad Debt Expense,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59620,751000,General Expense,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59621,751100,General Expense,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59622,751101,Recognition Awards Non Taxable,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59623,751102,Cleaning Expense,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59624,751103,Fines & Penalties,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59625,751104,Non Deductible Expenses,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59626,751105,Other General Expense,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59627,752000,Other expense - Stores (Adjustment),Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59628,752100,Other expense - Stores (Adjustment),Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59629,752101,Other expense - Stores (Adjustment),Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59630,759000,Provision Expense,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59631,759100,Provision for Fixed Assets Disposal,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59632,759101,Provision for Fixed Assets Disposal,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59633,759102,Provision Inventory (HO),Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59634,760000,Realised Gains/Losses,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59635,761000,Realised Gains/Losses,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59636,761100,Realised Gains/Losses,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59637,761101,Realised Currency Gains,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59638,761102,Unrealised Currency Gains,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59639,761103,Bank Revaluations,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59640,761104,Realized Currency Gains,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59641,761105,Realized Currency Losses,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59642,761106,Unrealized Currency Gains,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59643,761107,Unrealized Currency Losses,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59644,800000,Expense,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59645,810000,Expense,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59646,811000,Expense,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59647,811100,Expense,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59648,811110,Initial Fee Expense,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59649,811120,Royalty Fee,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59650,811130,Management Fee,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59651,811140,Deferred Tax Expenses,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59652,811150,Interest Expense - Bank,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59653,811160,Interest Expense - Shareholders,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59654,900000,CLEARING Account,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59655,910000,CLEARING Account,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59656,911000,CLEARING Account,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59657,911100,CLEARING Account,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59658,911110,Clearing Account (Recharge Expenses to Store),Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59659,911120,Clearing Account (KBank),Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59660,911130,Clearing Account (Kbank Payment),Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59661,911140,Clearing Account (SCB),Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59662,911150,Clearing Account (BBL),Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59663,911160,Clearing Account (COGS),Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59664,911170,Clearing Account (Citibank),Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,59665,911180,Clearing Account (Bank Transfer),Y,31-Oct-17,31-Oct-17
+58007,PROJECT RD CLOUD,59666,PJ0000,N/A,Y,31-Oct-17,31-Oct-17
+58007,PROJECT RD CLOUD,59667,000000,N/A,Y,31-Oct-17,31-Oct-17
+58008,FUTURE1 RD CLOUD,59668,TT,Total,Y,31-Oct-17,31-Oct-17
+58008,FUTURE1 RD CLOUD,59669,00,N/A,Y,31-Oct-17,31-Oct-17
+58009,FUTURE2 RD CLOUD,59670,TT,Total,Y,31-Oct-17,31-Oct-17
+58009,FUTURE2 RD CLOUD,59671,0000,N/A,Y,31-Oct-17,31-Oct-17
+61001,RD_PO_HEADER_SOURCE,64001,LINFOX,PR Linfox,Y,31-Oct-17,31-Oct-17
+61001,RD_PO_HEADER_SOURCE,65001,MMX,PR MMX,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,66002,119000,INPUT VAT,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,66003,119100,INPUT VAT,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,66004,119110,REVENUE DEPARTMENT RECEIVABLE ACCOUNT,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,65003,119120,INPUT TAX,Y,31-Oct-17,31-Oct-17
+58006,ACCOUNT RD CLOUD,65004,119130,SUSPENSE INPUT TAX,Y,31-Oct-17,31-Oct-17
+65019,ORA_SP_PRIV,69011,01,,Y,31-Oct-17,31-Oct-17
+65020,ORA_VCS_PRIV,69012,01,,Y,31-Oct-17,31-Oct-17
+65020,ORA_VCS_PRIV,69013,02,,Y,31-Oct-17,31-Oct-17
+65020,ORA_VCS_PRIV,69014,03,,Y,31-Oct-17,31-Oct-17
+65020,ORA_VCS_PRIV,69015,04,,Y,31-Oct-17,31-Oct-17
+65020,ORA_VCS_PRIV,69016,06,,Y,31-Oct-17,31-Oct-17
+65020,ORA_VCS_PRIV,69017,07,,Y,31-Oct-17,31-Oct-17
+65020,ORA_VCS_PRIV,69018,08,,Y,31-Oct-17,31-Oct-17
+65020,ORA_VCS_PRIV,69019,09,,Y,31-Oct-17,31-Oct-17
+65020,ORA_VCS_PRIV,69020,10,,Y,31-Oct-17,31-Oct-17
+65020,ORA_VCS_PRIV,69021,11,,Y,31-Oct-17,31-Oct-17
+65020,ORA_VCS_PRIV,69022,12,,Y,31-Oct-17,31-Oct-17
+65020,ORA_VCS_PRIV,69023,5,,Y,31-Oct-17,31-Oct-17
+68005,THL_WT_REVENUE_TYPE,73002,1,เงินเดือน ค่าจ้าง เบี้ยเลี้ยง โบนัส ฯลฯ ตามมาตรา 40 (1),Y,31-Oct-17,31-Oct-17
+68005,THL_WT_REVENUE_TYPE,73003,2,ค่าธรรมเนียม ค่านายหน้า ฯลฯ ตามมาตรา 40 (2),Y,31-Oct-17,31-Oct-17
+59008,RD_FA_MAJOR_CATEGORY,59678,EQ,Equipment,Y,31-Oct-17,31-Oct-17
+59008,RD_FA_MAJOR_CATEGORY,59679,LH,Lease Hold,Y,31-Oct-17,31-Oct-17
+59008,RD_FA_MAJOR_CATEGORY,59680,FF,Furniture and Fixture,Y,31-Oct-17,31-Oct-17
+59008,RD_FA_MAJOR_CATEGORY,62001,SP,Spare Part,Y,31-Oct-17,31-Oct-17
+59008,RD_FA_MAJOR_CATEGORY,59681,IT,IT,Y,31-Oct-17,31-Oct-17
+59008,RD_FA_MAJOR_CATEGORY,62002,SW,Small Ware,Y,31-Oct-17,31-Oct-17
+59008,RD_FA_MAJOR_CATEGORY,62003,KM,Key Money,Y,31-Oct-17,31-Oct-17
+68005,THL_WT_REVENUE_TYPE,72002,3,ค่าแห่งลิขสิทธิ์ ฯลฯ ตามมาตรา 40 (3),Y,31-Oct-17,31-Oct-17
+68005,THL_WT_REVENUE_TYPE,73004,4 (ก),ดอกเบี้ย ฯลฯ ตามมาตรา 40 (4) (ก),Y,31-Oct-17,31-Oct-17
+68005,THL_WT_REVENUE_TYPE,73005,5,การจ่ายเงินได้ที่ต้องหักภาษี ณ ที่จ่าย ตามคำสั่งกรมสรรพากรที่ออกตามมาตรา 3 เตรส,Y,31-Oct-17,31-Oct-17
+68005,THL_WT_REVENUE_TYPE,73006,6,อื่น ๆ,Y,31-Oct-17,31-Oct-17
+72001,THL_WT_REVENUE_NAME,75001,ค่าบริการ,ค่าบริการ,Y,31-Oct-17,31-Oct-17
+72001,THL_WT_REVENUE_NAME,74002,ค่าเช่า,ค่าเช่า,Y,31-Oct-17,31-Oct-17
+72001,THL_WT_REVENUE_NAME,74003,ค่าขนส่ง,ค่าขนส่ง,Y,31-Oct-17,31-Oct-17
+72001,THL_WT_REVENUE_NAME,75002,ค่าธรรมเนียม,ค่าธรรมเนียม,Y,31-Oct-17,31-Oct-17
+72001,THL_WT_REVENUE_NAME,74004,ค่าจ้างทำของ,ค่าจ้างทำของ,Y,31-Oct-17,31-Oct-17
+72001,THL_WT_REVENUE_NAME,74005,ค่าโฆษณา,ค่าโฆษณา,Y,31-Oct-17,31-Oct-17
+72001,THL_WT_REVENUE_NAME,74006,ค่าลิขสิทธิ์,ค่าลิขสิทธิ์,Y,31-Oct-17,31-Oct-17
+72001,THL_WT_REVENUE_NAME,75003,ดอกเบี้ย,ดอกเบี้ย,Y,31-Oct-17,31-Oct-17
+72001,THL_WT_REVENUE_NAME,75004,เงินปันผล,เงินปันผล,Y,31-Oct-17,31-Oct-17
+72001,THL_WT_REVENUE_NAME,75005,ค่านายหน้า,ค่านายหน้า,Y,31-Oct-17,31-Oct-17
+72001,THL_WT_REVENUE_NAME,75006,เงินรางวัล,เงินรางวัล,Y,31-Oct-17,31-Oct-17
+72001,THL_WT_REVENUE_NAME,74007,ส่วนลดจากการส่งเสริมการขาย,ส่วนลดจากการส่งเสริมการขาย,Y,31-Oct-17,31-Oct-17
+73001,RD_MAIN_CAT_IC,74011,Chicken,Chicken,Y,31-Oct-17,31-Oct-17
+73001,RD_MAIN_CAT_IC,74012,Foods,Foods,Y,31-Oct-17,31-Oct-17
+73001,RD_MAIN_CAT_IC,74013,Softserve,Softserve,Y,31-Oct-17,31-Oct-17
+73001,RD_MAIN_CAT_IC,74014,Packaging,Packaging,Y,31-Oct-17,31-Oct-17
+73001,RD_MAIN_CAT_IC,76004,Finish Goods,Finish Goods,Y,31-Oct-17,31-Oct-17
+71005,RD_SUB_CAT_IC,76005,Chicken,Chicken,Y,31-Oct-17,31-Oct-17
+9.4809823E7,,9.5865177E7,,,,,

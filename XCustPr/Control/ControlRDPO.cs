@@ -26,7 +26,7 @@ namespace XCustPr
         public ConnectDB conn;        //standard
 
         private IniFile iniFile;        //standard
-        public InitC initC;        //standard
+        //public InitC initC;        //standard
 
         public XcustLinfoxPrTblDB xCLFPTDB;
         public XcustPorReqHeaderIntAllDB xCPRHIADB;
@@ -68,28 +68,28 @@ namespace XCustPr
         private void initConfig()
         {
             iniFile = new IniFile(Environment.CurrentDirectory + "\\" + Application.ProductName + ".ini");        //standard
-            initC = new InitC();        //standard
+            //initC = new InitC();        //standard
             vPrPo = new ValidatePrPo();
             Cm.createFolderPO001();
             //GetConfig();        //standard
 
             //Cm = new ControlMain();     //standard
-            conn = new ConnectDB("kfc_po", initC);        //standard
-            xCLFPTDB = new XcustLinfoxPrTblDB(conn, initC);
+            conn = new ConnectDB("kfc_po", Cm.initC);        //standard
+            xCLFPTDB = new XcustLinfoxPrTblDB(conn, Cm.initC);
             xCPRHIADB = new XcustPorReqHeaderIntAllDB(conn);
-            xCPRLIADB = new XcustPorReqLineIntAllDB(conn, initC);
+            xCPRLIADB = new XcustPorReqLineIntAllDB(conn, Cm.initC);
             xCPRDIADB = new XcustPorReqDistIntAllDB(conn);
-            xCBMTDB = new XcustBuMstTblDB(conn, initC);
-            xCDLMTDB = new XcustDeriverLocatorMstTblDB(conn, initC);
-            xCDOMTDB = new XcustDeriverOrganizationMstTblDB(conn, initC);
-            xCSIMTDB = new XcustSubInventoryMstTblDB(conn, initC);
-            xCIMTDB = new XcustItemMstTblDB(conn, initC);
-            xCMTDB = new XcustCurrencyMstTblDB(conn, initC);
-            xCSMTDB = new XcustSupplierMstTblDB(conn, initC);
-            xCUMTDB = new XcustUomMstTblDB(conn, initC);
-            xCVSMTDB = new XcustValueSetMstTblDB(conn, initC);
-            xCBAHTDB = new XcustBlanketAgreementHeaderTblDB(conn, initC);
-            xCBALTDB = new XcustBlanketAgreementLinesTblDB(conn, initC);
+            xCBMTDB = new XcustBuMstTblDB(conn, Cm.initC);
+            xCDLMTDB = new XcustDeriverLocatorMstTblDB(conn, Cm.initC);
+            xCDOMTDB = new XcustDeriverOrganizationMstTblDB(conn, Cm.initC);
+            xCSIMTDB = new XcustSubInventoryMstTblDB(conn, Cm.initC);
+            xCIMTDB = new XcustItemMstTblDB(conn, Cm.initC);
+            xCMTDB = new XcustCurrencyMstTblDB(conn, Cm.initC);
+            xCSMTDB = new XcustSupplierMstTblDB(conn, Cm.initC);
+            xCUMTDB = new XcustUomMstTblDB(conn, Cm.initC);
+            xCVSMTDB = new XcustValueSetMstTblDB(conn, Cm.initC);
+            xCBAHTDB = new XcustBlanketAgreementHeaderTblDB(conn, Cm.initC);
+            xCBALTDB = new XcustBlanketAgreementLinesTblDB(conn, Cm.initC);
 
             fontSize9 = 9.75f;        //standard
             fontSize8 = 8.25f;        //standard
@@ -253,9 +253,9 @@ namespace XCustPr
                 String seq = String.Concat("00" + listXcustPRHIA.Count);
                 XcustPorReqHeaderIntAll xcprhia1 = new XcustPorReqHeaderIntAll();
                 xcprhia1.ATTRIBUTE1 = po_number;
-                xcprhia1.IMPORT_SOURCE = initC.ImportSource;
-                xcprhia1.REQ_BU_NAME = initC.BU_NAME;
-                xcprhia1.STATUS_CODE = initC.PR_STATAUS;
+                xcprhia1.IMPORT_SOURCE = Cm.initC.ImportSource;
+                xcprhia1.REQ_BU_NAME = Cm.initC.BU_NAME;
+                xcprhia1.STATUS_CODE = Cm.initC.PR_STATAUS;
                 xcprhia1.REQ_HEADER_INTERFACE_ID = po_number;
                 xcprhia1.BATCH_ID = curr_date.Replace("-","") + seq.Substring(seq.Length-2);
                 xcprhia1.REQUITITION_NUMBER = "PR"+curr_date.Substring(2,2);
@@ -272,7 +272,7 @@ namespace XCustPr
             item.REQ_LINE_INTERFACE_ID = row[xCLFPTDB.xCLFPT.LINE_NUMBER].ToString();
             item.DESTINATION_TYPE_CODE = "";
             item.PRC_BU_NAME = "";
-            item.DELIVER_TO_ORGANIZATION_CODE = initC.ORGANIZATION_code;
+            item.DELIVER_TO_ORGANIZATION_CODE = Cm.initC.ORGANIZATION_code;
             item.DELIVER_TO_LOCATION_CODE = row[xCLFPTDB.xCLFPT.deriver_to_location].ToString();
             item.DESTINATION_SUBINVENTORY = row[xCLFPTDB.xCLFPT.subinventory_code].ToString();
             item.CATEGORY_NAME = row[xCLFPTDB.xCLFPT.ITEM_CATEGORY_NAME].ToString();
@@ -281,7 +281,7 @@ namespace XCustPr
             item.LINE_TYPE = "";
 
             item.QTY = row[xCLFPTDB.xCLFPT.QTY].ToString();
-            item.CURRENCY_CODE = initC.CURRENCY_CODE;
+            item.CURRENCY_CODE = Cm.initC.CURRENCY_CODE;
             item.AGREEMENT_NUMBER = row[xCLFPTDB.xCLFPT.AGREEEMENT_NUMBER].ToString();
             item.CURRENCY_UNIT_PRICE = "REQ_HEADER_INTERFACE_ID";//PO_NUMBER
             item.Price = row[xCLFPTDB.xCLFPT.PRICE].ToString();
@@ -589,8 +589,7 @@ namespace XCustPr
         }
         public void processGetBlanketAgreement(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
         {
-            addListView("หา Blanket Agreement " + initC.PathProcess, "Blanket", lv1, form1);
-
+            addListView("หา Blanket Agreement " + Cm.initC.PathProcess, "Blanket", lv1, form1);
         }
         public void processGenCSV(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
         {
@@ -605,7 +604,7 @@ namespace XCustPr
         }
         public void processGenCSVxCPRHIA(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
         {
-            var file = initC.PathArchive+ "PorReqHeadersInterfaceAl.csv";
+            var file = Cm.initC.PathArchive+ "PorReqHeadersInterfaceAl.csv";
             DataTable dt = xCPRHIADB.selectAll();
             addListView("processGenCSVxCPRHIA จำนวนข้อมูล "+dt.Rows.Count, "CVS", lv1, form1);
             using (var stream = File.CreateText(file))
@@ -714,7 +713,7 @@ namespace XCustPr
         }
         public void processGenCSVxCPRLIA(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
         {
-            var file = initC.PathArchive + "PorReqLinesInterfaceAl.csv";
+            var file = Cm.initC.PathArchive + "PorReqLinesInterfaceAl.csv";
             DataTable dt = xCPRLIADB.selectAll();
             addListView("processGenCSVxCPRLIA จำนวนข้อมูล " + dt.Rows.Count, "CVS", lv1, form1);
             using (var stream = File.CreateText(file))
@@ -736,10 +735,11 @@ namespace XCustPr
                     string col12 = row[xCPRLIADB.xCPRLIA.ITEM_CODE].ToString();
                     string col13 = "col13";         //Revision
                     string col14 = row[xCPRLIADB.xCPRLIA.UOM_CODE].ToString();         //UOM Code
-                    string col15 = initC.LINE_TYPE;
+                    string col15 = Cm.initC.LINE_TYPE;
                     string col16 = row[xCPRLIADB.xCPRLIA.QTY].ToString();
                     string col17 = row[xCPRLIADB.xCPRLIA.CURRENCY_CODE].ToString();
-                    string col18 = row[xCPRLIADB.xCPRLIA.Price].ToString();
+                    //string col18 = row[xCPRLIADB.xCPRLIA.Price].ToString();
+                    string col18 = row[xCPRLIADB.xCPRLIA.ATTRIBUTE_NUMBER10].ToString();// ใน table ไม่มี filed price เลยเอามาฝาก ใส่ ATTRIBUTE_NUMBER10 ไปก่อน
                     string col19 = "col19";     //Conversion Rate
                     string col20 = "col20";     //Conversion Date
 
@@ -890,15 +890,15 @@ namespace XCustPr
         }
         public void processGenCSVxCPRDIA(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
         {
-            var file = initC.PathArchive + "PorReqDistInterfaceAl.csv";
-            DataTable dt = xCPRHIADB.selectAll();
+            var file = Cm.initC.PathArchive + "PorReqDistInterfaceAl.csv";
+            DataTable dt = xCPRDIADB.selectAll();
             addListView("processGenCSVxCPRDIA จำนวนข้อมูล " + dt.Rows.Count, "CVS", lv1, form1);
             using (var stream = File.CreateText(file))
             {
                 foreach (DataRow row in dt.Rows)
                 {
                     string col01 = row[xCPRDIADB.xCPRDIA.REQ_HEADER_INTERFACE_ID].ToString();
-                    string col02 = row[xCPRDIADB.xCPRDIA.REQ_LINE_INTERFACE_ID].ToString();
+                    string col02 = row[xCPRDIADB.xCPRDIA.REQ_LINE_INTERFACE_ID].ToString(); //REQ_LINE_INTERFACE_ID
                     string col03 = "col03";     //Percentage
                     string col04 = row[xCPRDIADB.xCPRDIA.REQ_DIST_INTERFACE_ID].ToString();     //Distribution
                     string col05 = row[xCPRDIADB.xCPRDIA.QTY].ToString();         //Quantity
@@ -988,7 +988,8 @@ namespace XCustPr
                     string col81 = row[xCPRDIADB.xCPRDIA.ATTRIBUTE_NUMBER8].ToString();
                     string col82 = row[xCPRDIADB.xCPRDIA.ATTRIBUTE_NUMBER9].ToString();
                     string col83 = row[xCPRDIADB.xCPRDIA.ATTRIBUTE_NUMBER10].ToString();
-                    string col84 = row[xCPRDIADB.xCPRDIA.ATTRIBUTE_CATEGORY].ToString();        //ATTRIBUTE_CATEGORY
+                    //string col84 = row[xCPRDIADB.xCPRDIA.ATTRIBUTE_CATEGORY].ToString();        //ATTRIBUTE_CATEGORY
+                    string col84 = "";      // ในtable ไม่มี field นี้
                     string col85 = row[xCPRDIADB.xCPRDIA.CHARGE_ACCOUNT_SEGMENT1].ToString();
                     string col86 = row[xCPRDIADB.xCPRDIA.CHARGE_ACCOUNT_SEGMENT2].ToString();
                     string col87 = row[xCPRDIADB.xCPRDIA.CHARGE_ACCOUNT_SEGMENT3].ToString();
@@ -1059,12 +1060,12 @@ namespace XCustPr
         }
         public void processGenZIP(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
         {
-            addListView("create zip file " + initC.PathProcess, "Validate", lv1, form1);
+            addListView("create zip file " + Cm.initC.PathProcess, "Validate", lv1, form1);
             String filename = "", ilename2 = "", ilename3 = "";
-            filename = initC.PathZip + "\\xcustpr.zip";
+            filename = Cm.initC.PathZip + "\\xcustpr.zip";
             Cm.deleteFile(filename);
             ZipArchive zip = ZipFile.Open(filename, ZipArchiveMode.Create);
-            var allFiles = Directory.GetFiles(@initC.PathArchive, "*.*", SearchOption.AllDirectories);
+            var allFiles = Directory.GetFiles(@Cm.initC.PathArchive, "*.*", SearchOption.AllDirectories);
             foreach (String file in allFiles)
             {
                 //using (ZipArchive archive = ZipFile.OpenRead(file))
@@ -1088,7 +1089,7 @@ namespace XCustPr
          */
         public void processInsertTable(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
         {
-            addListView("insert table " + initC.PathProcess, "Validate", lv1, form1);
+            addListView("insert table " + Cm.initC.PathProcess, "Validate", lv1, form1);
             String date = System.DateTime.Now.ToString("yyyy-MM-dd");
             String time = System.DateTime.Now.ToString("HH:mm:ss");
             foreach (XcustPorReqHeaderIntAll xcprhia in listXcustPRHIA)
@@ -1119,7 +1120,7 @@ namespace XCustPr
          */
         public void processGetTempTableToValidate(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
         {
-            addListView("อ่าน file จาก " + initC.PathProcess, "Validate", lv1, form1);
+            addListView("อ่าน file จาก " + Cm.initC.PathProcess, "Validate", lv1, form1);
             pB1.Visible = true;
             Boolean chk = false;
             DataTable dtGroupBy = new DataTable();
@@ -1140,30 +1141,30 @@ namespace XCustPr
 
             buCode = xCBMTDB.selectActive1();
             //Error PO001-004 : Invalid Requisitioning BU
-            if (!buCode.Equals(initC.BU_NAME.Trim()))
+            if (!buCode.Equals(Cm.initC.BU_NAME.Trim()))
             {
                 chk = false;
             }
             //Error PO001-008 : Invalid Deliver To Location
             locator = xCDLMTDB.selectLocator1();
-            if (!locator.Equals(initC.Locator.Trim()))
+            if (!locator.Equals(Cm.initC.Locator.Trim()))
             {
                 chk = false;
             }
             //Error PO001-009 : Invalid Deliver-to Organization
             Org = xCDOMTDB.selectActive1();
-            if (!Org.Equals(initC.ORGANIZATION_code.Trim()))
+            if (!Org.Equals(Cm.initC.ORGANIZATION_code.Trim()))
             {
                 chk = false;
             }
 
             //Error PO001-013 : Invalid Currency Code
-            if (!xCMTDB.validateCurrencyCodeBycurrCode(initC.CURRENCY_CODE))
+            if (!xCMTDB.validateCurrencyCodeBycurrCode(Cm.initC.CURRENCY_CODE))
             {
                 chk = false;
             }
             //Error PO001-014 : Invalid Procurement BU
-            if (!buCode.Equals(initC.BU_NAME.Trim()))
+            if (!buCode.Equals(Cm.initC.BU_NAME.Trim()))
             {
                 chk = false;
             }
@@ -1215,13 +1216,13 @@ namespace XCustPr
                     }
                     //Error PO001-010 : Invalid Subinventory Code
                     //subInv_code = xCSIMTDB.validateSubInventoryCode1(initC.ORGANIZATION_code.Trim(), row[xCLFPTDB.xCLFPT.store_code].ToString().Trim());
-                    subInv_code = validateSubInventoryCode(initC.ORGANIZATION_code.Trim(), row[xCLFPTDB.xCLFPT.store_code].ToString().Trim());
+                    subInv_code = validateSubInventoryCode(Cm.initC.ORGANIZATION_code.Trim(), row[xCLFPTDB.xCLFPT.store_code].ToString().Trim());
                     if (subInv_code.Equals(""))
                     {
                         vPP = new ValidatePrPo();
                         vPP.Filename = rowG[xCLFPTDB.xCLFPT.file_name].ToString().Trim();
                         vPP.Message = "Error PO001-010 ";
-                        vPP.Validate = "row " + row1 + " store_code =" + row[xCLFPTDB.xCLFPT.store_code].ToString().Trim() + " ORGANIZATION_code " + initC.ORGANIZATION_code.Trim();
+                        vPP.Validate = "row " + row1 + " store_code =" + row[xCLFPTDB.xCLFPT.store_code].ToString().Trim() + " ORGANIZATION_code " + Cm.initC.ORGANIZATION_code.Trim();
                         lVPr.Add(vPP);
                     }
 
@@ -1362,18 +1363,18 @@ namespace XCustPr
             Boolean chk = false;
 
             // b.	Program ทำการ Move File มาไว้ที่ Path ตาม Parameter Path Process
-            addListView("อ่าน fileจาก" + initC.PathInitial, "", lv1, form1);
+            addListView("อ่าน fileจาก" + Cm.initC.PathInitial, "", lv1, form1);
             foreach (string aa in filePO)
             {
                 addListView("ย้าย file " + aa, "", lv1, form1);
-                Cm.moveFile(aa, initC.PathProcess + aa.Replace(initC.PathInitial, ""));
+                Cm.moveFile(aa, Cm.initC.PathProcess + aa.Replace(Cm.initC.PathInitial, ""));
             }
             addListView("Clear temp table", "", lv1, form1);
             xCLFPTDB.DeleteLinfoxTemp();//  clear temp table
             //c.	จากนัน Program ทำการอ่าน File ใน Folder Path Process มาไว้ยัง Table XCUST_LINFOX_PR_TBL ด้วย Validate Flag = ‘N’ ,PROCES_FLAG = ‘N’
             // insert XCUST_LINFOX_PR_TBL
-            filePOProcess = Cm.getFileinFolder(initC.PathProcess);
-            addListView("อ่าน file จาก " + initC.PathProcess, "", lv1, form1);
+            filePOProcess = Cm.getFileinFolder(Cm.initC.PathProcess);
+            addListView("อ่าน file จาก " + Cm.initC.PathProcess, "", lv1, form1);
             foreach (string aa in filePOProcess)
             {
                 List<String> linfox = rd.ReadTextFile(aa);
@@ -1451,9 +1452,9 @@ namespace XCustPr
             xCPRLIA.ATTRIBUTE_NUMBER1 = "";
             xCPRLIA.ATTRIBUTE_TIMESTAMP1 = date + " " + time;
             xCPRLIA.CATEGORY_NAME = row[xCLFPTDB.xCLFPT.ITEM_CATEGORY_NAME].ToString().Trim();
-            xCPRLIA.CURRENCY_CODE = initC.CURRENCY_CODE;
+            xCPRLIA.CURRENCY_CODE = Cm.initC.CURRENCY_CODE;
             xCPRLIA.DELIVER_TO_LOCATION_CODE = row[xCLFPTDB.xCLFPT.store_code].ToString().Trim();
-            xCPRLIA.DELIVER_TO_ORGANIZATION_CODE = initC.ORGANIZATION_code;
+            xCPRLIA.DELIVER_TO_ORGANIZATION_CODE = Cm.initC.ORGANIZATION_code;
             xCPRLIA.Goods = "";
             xCPRLIA.DESTINATION_TYPE_CODE = "INVENTORY";
             xCPRLIA.ITEM_CODE = row[xCLFPTDB.xCLFPT.ITEM_CODE].ToString().Trim();
@@ -1461,20 +1462,20 @@ namespace XCustPr
             xCPRLIA.NEED_BY_DATE = row[xCLFPTDB.xCLFPT.ORDER_DATE].ToString().Trim();
             xCPRLIA.REQ_LINE_INTERFACE_ID = row[xCLFPTDB.xCLFPT.LINE_NUMBER].ToString().Trim();
             xCPRLIA.REQ_HEADER_INTERFACE_ID = row[xCLFPTDB.xCLFPT.PO_NUMBER].ToString().Trim();
-            xCPRLIA.Price = row[xCLFPTDB.xCLFPT.PRICE].ToString().Trim(); ;
+            xCPRLIA.Price = row[xCLFPTDB.xCLFPT.PRICE].ToString().Trim();
             xCPRLIA.PROCESS_FLAG = "N";
             xCPRLIA.PRC_BU_NAME = "";
             xCPRLIA.PR_APPROVER = "";
             xCPRLIA.QTY = row[xCLFPTDB.xCLFPT.QTY].ToString().Trim();
-            xCPRLIA.REQUESTER_EMAIL_ADDR = initC.Requester;
-            xCPRLIA.Requisitioning_BU = initC.BU_NAME;
+            xCPRLIA.REQUESTER_EMAIL_ADDR = Cm.initC.Requester;
+            xCPRLIA.Requisitioning_BU = Cm.initC.BU_NAME;
             xCPRLIA.DESTINATION_SUBINVENTORY = row[xCLFPTDB.xCLFPT.subinventory_code].ToString().Trim();
             xCPRLIA.SUGGESTED_VENDOR_NAME = row[xCLFPTDB.xCLFPT.SUPPLIER_CODE].ToString().Trim();
             xCPRLIA.SUGGESTED_VENDOR_SITE = "";
-            xCPRLIA.LINE_TYPE = initC.LINE_TYPE;
+            xCPRLIA.LINE_TYPE = Cm.initC.LINE_TYPE;
             xCPRLIA.AGREEMENT_NUMBER = row[xCLFPTDB.xCLFPT.AGREEEMENT_NUMBER].ToString();
             //xCPRLIA.DESTINATION_SUBINVENTORY = "";
-            
+            xCPRLIA.ATTRIBUTE_NUMBER10 = row[xCLFPTDB.xCLFPT.PRICE].ToString().Trim();
             //xCPRLIA.REQ_HEADER_INTERFACE_ID
 
             xCPRLIADB.insert(xCPRLIA);
@@ -1597,5 +1598,37 @@ namespace XCustPr
             }
             return chk;
         }
+        public void ImportMasterXCUST_VALUE_SET_MST_TBL()
+        {
+            String sql = "", col = "", sql1 = "", chk="";
+            
+            DataTable dt = new DataTable();
+            String[] filePOProcess;
+            int i = 0;
+            //conn.ExecuteNonQuery(sql, "orc_bit");            
+
+            //อ่าน text file cvs
+            filePOProcess = Cm.getFileinFolder(Cm.initC.PathMaster);
+            ReadText rd = new ReadText();
+            foreach (string filename in filePOProcess)//อ่าน file ใน folder
+            {
+                if (filename.Replace(Cm.initC.PathMaster,"").Equals("XCUST_MAS_VALUE_SET_REP_XCUST_MAS_VALUE_SET_REP (1).csv"))
+                {
+                    List<String> masterFile = rd.ReadTextFile(filename);
+                    i = 0;
+                    foreach(String data in masterFile)
+                    {
+                        i++;
+                        if (i == 1)
+                        {
+                            continue;
+                        }                        
+                        chk = xCVSMTDB.insertFromText(data, "kfc_po");
+                    }
+                }
+            }            
+            
+        }
+        
     }
 }
