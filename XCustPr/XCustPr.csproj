@@ -36,6 +36,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -51,6 +52,7 @@
     <Compile Include="Control\AnimationManager.cs" />
     <Compile Include="Control\Animations.cs" />
     <Compile Include="Control\ColorScheme.cs" />
+    <Compile Include="Control\ControlPO004.cs" />
     <Compile Include="Control\ControlRDPO.cs" />
     <Compile Include="Control\DrawHelper.cs" />
     <Compile Include="Control\IMaterialControl.cs" />
@@ -60,9 +62,7 @@
     <Compile Include="Control\MaterialContextMenuStrip.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Control\MaterialDivider.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Control\MaterialDivider.cs" />
     <Compile Include="Control\MaterialFlatButton.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -84,16 +84,12 @@
     <Compile Include="Control\MaterialRaisedButton.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Control\MaterialSingleLineTextField.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Control\MaterialSingleLineTextField.cs" />
     <Compile Include="Control\MaterialSkinManager.cs" />
     <Compile Include="Control\MaterialTabControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Control\MaterialTabSelector.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Control\MaterialTabSelector.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
