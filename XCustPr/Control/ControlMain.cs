@@ -13,6 +13,9 @@ namespace XCustPr
     {
         public InitC initC;        //standard
         private IniFile iniFile;        //standard
+        private StringBuilder sYear = new StringBuilder();
+        private StringBuilder sMonth = new StringBuilder();
+        private StringBuilder sDay = new StringBuilder();
 
         public ControlMain()
         {
@@ -138,6 +141,11 @@ namespace XCustPr
             initC.AutoRunPO005 = iniFile.Read("AutoRunPO005");
             initC.PathMaster = iniFile.Read("PathMaster");
 
+            initC.PO005PathArchive = iniFile.Read("PO005PathArchive");    //bit
+            initC.PO005PathError = iniFile.Read("PO005PathError");
+            initC.PO005PathInitial = iniFile.Read("PO005PathInitial");
+            initC.PO005PathProcess = iniFile.Read("PO005PathProcess");
+
 
             //initC.grdQuoColor = iniFile.Read("gridquotationcolor");
 
@@ -148,6 +156,57 @@ namespace XCustPr
             //}
             //initC.Password = regE.getPassword();
         }
-        
+        /*
+         * check qty ว่า data type ถูกต้องไหม
+         * ที่ใช้ int.tryparse เพราะ ใน database เป็น decimal(18,0)
+         * Error PO001-006 : Invalid data type
+         */
+        public Boolean validateQTY(String qty)
+        {
+            Boolean chk = false;
+            int i = 0;
+            chk = int.TryParse(qty, out i);
+            return chk;
+        }
+        public Boolean validateDate(String date)
+        {
+            Boolean chk = false;
+            if (date.Length == 8)
+            {
+                sYear.Clear();
+                sMonth.Clear();
+                sDay.Clear();
+                try
+                {
+                    sYear.Append(date.Substring(0, 4));
+                    sMonth.Append(date.Substring(4, 2));
+                    sDay.Append(date.Substring(6, 2));
+                    if ((int.Parse(sYear.ToString()) > 2000) && (int.Parse(sYear.ToString()) < 2100))
+                    {
+                        if ((int.Parse(sMonth.ToString()) >= 1) && (int.Parse(sMonth.ToString()) <= 12))
+                        {
+                            if ((int.Parse(sDay.ToString()) >= 1) && (int.Parse(sDay.ToString()) <= 31))
+                            {
+                                chk = true;
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    chk = false;
+                }
+                finally
+                {
+
+                }
+
+            }
+            else
+            {
+                chk = false;
+            }
+            return chk;
+        }
     }
 }

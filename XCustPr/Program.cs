@@ -32,7 +32,8 @@ namespace XCustPr
             }
             else
             {
-                Application.Run(new XCustPO004(Cm));
+                //Application.Run(new XCustPO004(Cm));
+                Application.Run(new XCustPO005(Cm));
                 //Application.Run(new XCustPrToCloud(Cm));
             }
         }

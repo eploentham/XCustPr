@@ -51,5 +51,9 @@ namespace XCustPr
         public String userDBKFCPO = "root";
         public String passDBKFCPO = "Ekartc2c5";
         public String portDBKFCPO = "3306";
+
+        public String PO005PathInitial = "", PO005PathProcess = "", PO005PathError = "", PO005PathArchive = "";
+
+
     }
 }

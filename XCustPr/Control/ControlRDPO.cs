@@ -29,6 +29,7 @@ namespace XCustPr
         //public InitC initC;        //standard
 
         public XcustLinfoxPrTblDB xCLFPTDB;
+
         public XcustPorReqHeaderIntAllDB xCPRHIADB;
         public XcustPorReqLineIntAllDB xCPRLIADB;
         public XcustPorReqDistIntAllDB xCPRDIADB;
@@ -179,6 +180,9 @@ namespace XCustPr
         //        System.IO.File.Delete(@sourceFile);
         //    }
         //}
+        /*
+         * Method นี้ ไม่แน่ใจว่า จะแยกหรือ รวม
+         */
         private void getListXcSIMT()
         {
             listXcSIMT.Clear();
@@ -190,6 +194,9 @@ namespace XCustPr
                 listXcSIMT.Add(item);
             }
         }
+        /*
+         * Method นี้ ไม่แน่ใจว่า จะแยกหรือ รวม
+         */
         private void getListXcIMT()
         {
             listXcIMT.Clear();
@@ -201,6 +208,9 @@ namespace XCustPr
                 listXcIMT.Add(item);
             }
         }
+        /*
+         * Method นี้ ไม่แน่ใจว่า จะแยกหรือ รวม
+         */
         private void getListXcSMT()
         {
             listXcSMT.Clear();
@@ -212,6 +222,9 @@ namespace XCustPr
                 listXcSMT.Add(item);
             }
         }
+        /*
+         * Method นี้ ไม่แน่ใจว่า จะแยกหรือ รวม
+         */
         private void getListXcVSMT()
         {
             listXcVSMT.Clear();
@@ -223,6 +236,9 @@ namespace XCustPr
                 listXcVSMT.Add(item);
             }
         }
+        /*
+         * Method นี้ ไม่แน่ใจว่า จะแยกหรือ รวม
+         */
         private void getListXcUMT()
         {
             listXcUMT.Clear();
@@ -1132,6 +1148,7 @@ namespace XCustPr
             List<ValidatePrPo> lVPr = new List<ValidatePrPo>();
             listXcustPRHIA.Clear();
             listXcustPRLIA.Clear();
+            listXcustPRDIA.Clear();
             getListXcSIMT();
             getListXcIMT();
             getListXcSMT();
@@ -1196,6 +1213,7 @@ namespace XCustPr
                         vPP.Validate = "row "+ row1 + " QTY=" + row[xCLFPTDB.xCLFPT.QTY].ToString();
                         lVPr.Add(vPP);
                     }
+                    //Error PO001-002 : Invalid data type
                     chk = validateDate(row[xCLFPTDB.xCLFPT.ORDER_DATE].ToString());
                     if (!chk)
                     {
@@ -1622,11 +1640,11 @@ namespace XCustPr
                         if (i == 1)
                         {
                             continue;
-                        }                        
+                        }
                         chk = xCVSMTDB.insertFromText(data, "kfc_po");
                     }
                 }
-            }            
+            }
             
         }
         

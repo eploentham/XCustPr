@@ -128,6 +128,7 @@
     <Compile Include="objdb\XcustDeriverOrganizationMstTblDB.cs" />
     <Compile Include="objdb\XcustItemMstTblDB.cs" />
     <Compile Include="objdb\XcustLinfoxPrTblDB.cs" />
+    <Compile Include="objdb\XcustMmxPrIntTblDB.cs" />
     <Compile Include="objdb\XcustPorReqDistIntAllDB.cs" />
     <Compile Include="objdb\XcustPorReqHeaderIntAllDB.cs" />
     <Compile Include="objdb\XcustPorReqLineIntAllDB.cs" />
@@ -149,6 +150,7 @@
     <Compile Include="object1\XcustDeriverOrganizationMstTbl.cs" />
     <Compile Include="object1\XcustItemMstTbl.cs" />
     <Compile Include="object1\XcustLinfoxPrTbl.cs" />
+    <Compile Include="object1\XcustMmxPrIntTbl.cs" />
     <Compile Include="object1\XcustPorReqDistIntAll.cs" />
     <Compile Include="object1\XcustPorReqHeaderIntAll.cs" />
     <Compile Include="object1\XcustPorReqLineIntAll.cs" />

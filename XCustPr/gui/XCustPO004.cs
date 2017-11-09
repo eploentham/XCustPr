@@ -98,7 +98,7 @@ namespace XCustPr
             Controls.Add(txtFileName);
             txtFileName.Location = new System.Drawing.Point(grd1, cPo004.formFirstLineY + gapLine);
             txtFileName.Hint = lb1.Text;
-            txtFileName.Enter += txtFileName_Enter; ;
+            txtFileName.Enter += txtFileName_Enter;
             txtFileName.Leave += txtFileName_Leave;
 
 

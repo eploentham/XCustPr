@@ -159,7 +159,13 @@ namespace XCustPr
         }
         private void btnRead_Click(object sender, EventArgs e)
         {
+            //lv1.Items.Clear();
+            //filePO = cPo005.Cm.getFileinFolder(cPo005.Cm.initC.PO005PathInitial);
+            //cPo005.processMMXPOtoErpPR(filePO, lv1, this, pB1);
 
+            //cPo005.processGetTempTableToValidate(lv1, this, pB1);
+
+            //cPo005.processInsertTable(lv1, this, pB1);
         }
         private void btnPrepare_Click(object sender, EventArgs e)
         {
