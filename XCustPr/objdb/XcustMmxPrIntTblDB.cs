@@ -89,6 +89,18 @@ namespace XCustPr
             String sql = "Delete From " + xCMPIT.table;
             conn.ExecuteNonQuery(sql, "kfc_po");
         }
+        public String dateYearShortToDB(String date)
+        {
+            String chk = "", year = "", month = "", day = "";
+
+            year = date.Substring(date.Length - 2);
+            day = date.Substring(4, 2);
+            month = date.Substring(0, 2);
+
+            chk = "20" + year + "-" + month + "-" + day;
+
+            return chk;
+        }
         public void insertBluk(List<String> mmx, String filename, String host, MaterialProgressBar pB1)
         {
             int i = 0;
@@ -96,7 +108,9 @@ namespace XCustPr
             String date = System.DateTime.Now.ToString("yyyy-MM-dd");
             String time = System.DateTime.Now.ToString("HH:mm:ss");
 
-            String ConnectionString = "", errMsg = "", processFlag = "", validateFlag = "", createBy = "0", createDate = "GETDATE()", lastUpdateBy = "0", lastUpdateTime = "null";
+            String ConnectionString = "", errMsg = "", processFlag = "", validateFlag = "", createBy = "0", createDate = "GETDATE()", last_update_by = "0", lastUpdateTime = "null";
+            String DELIVERY_INSTRUCTION = "", diriver_to_organization="", ERP_ITEM_CODE="", erp_subinventory_code="", ITEM_CATEGORY_NAME="", uom_code="";
+            String orderDate = "", deliDate="", confDate="";
             if (host == "kfc_po")
             {
                 ConnectionString = conn.connKFC.ConnectionString;
@@ -116,6 +130,9 @@ namespace XCustPr
                     errMsg = "";
                     processFlag = "N";
                     validateFlag = "N";
+                    orderDate = dateYearShortToDB(aaa[8]);
+                    deliDate = dateYearShortToDB(aaa[3]);
+                    confDate = dateYearShortToDB(aaa[10]);
                     //bbb += "('" + aaa[0] + "','" +
                     //aaa[11] + "','" + errMsg + "','" + aaa[6] + "','" +
                     //aaa[2] + "','" + aaa[4] + "','" + aaa[5] + "','" +
@@ -138,19 +155,28 @@ namespace XCustPr
                         .Append(aaa[0]).Append("','").Append(aaa[0]).Append("','").Append(aaa[2])
                         .Append("','").Append(aaa[3]).Append("',").Append(aaa[4]).Append(",'").Append(aaa[5])
                         .Append("','").Append(aaa[7]).Append("',").Append(aaa[8]).Append(",'").Append(aaa[6]/*CONFIRM  QTY*/)
-                        .Append("','").Append(aaa[10]/*CONF_DILIVERY_DATE*/).Append("','").Append(validateFlag).Append("','").Append(processFlag)
-                        .Append("','").Append(aaa[3]/*PO_NUMBER*/).Append("','").Append(createBy).Append("',").Append(createDate)
-                        .Append(",'").Append(lastUpdateBy).Append("',").Append(lastUpdateTime).Append(",'").Append(filename.Trim().Replace(initC.PathProcess, ""))
-                        .Append(",'").Append(errMsg/*errMsg*/).Append("',").Append(lastUpdateTime).Append(",'").Append(filename.Trim().Replace(initC.PathProcess, ""))
-                        .Append(",'").Append(aaa[7]/*ITEM_CODE*/).Append("',").Append(lastUpdateTime).Append(",'").Append(filename.Trim().Replace(initC.PathProcess, ""))
-                        .Append(",'").Append(aaa[8]/*ORDER_DATE*/).Append("',").Append(aaa[5]/*ORDER_QTY*/).Append(",'").Append(aaa[1]/*PO_NUMBER*/)
-                        .Append(",'").Append(aaa[9]/*.PO_STATUS*/).Append("',").Append(lastUpdateTime).Append(",'").Append(validateFlag)
-                        .Append(",'").Append(lastUpdateBy).Append("',").Append(aaa[0]/*STRORE_NO*/).Append(",'").Append(aaa[4]/*Subinventory Code*/)
-                        .Append(",'").Append(aaa[2]/*SUPPLIER_CODE*/).Append("',").Append(lastUpdateTime).Append(",'").Append(filename.Trim().Replace(initC.PathProcess, ""))
+                        .Append("','").Append(confDate/*CONF_DILIVERY_DATE*/).Append("','").Append(createBy).Append("',getdate()")
+                        .Append(",'").Append(deliDate/*delivery_date*/).Append("','").Append(DELIVERY_INSTRUCTION).Append("','").Append(initC.DELIVER_TO_LOCATTION)
+                        .Append("','").Append(diriver_to_organization).Append("','").Append(ERP_ITEM_CODE).Append("','").Append(erp_subinventory_code)
+                        .Append(",'").Append(errMsg/*errMsg*/).Append("','").Append(filename.Trim().Replace(initC.PO005PathProcess, "")).Append("','").Append(ITEM_CATEGORY_NAME)
+                        .Append(",'").Append(aaa[7]/*ITEM_CODE*/).Append("','").Append(last_update_by).Append("',").Append(lastUpdateTime)
+                        .Append(",'").Append(orderDate/*ORDER_DATE*/).Append("',").Append(aaa[5]/*ORDER_QTY*/).Append(",'").Append(aaa[1]/*PO_NUMBER*/)
+                        .Append(",'").Append(aaa[9]/*.PO_STATUS*/).Append("',0,'").Append(processFlag)
+                        .Append("','").Append(orderDate).Append("','").Append(aaa[0]/*STRORE_NO*/).Append("','").Append(aaa[4]/*Subinventory Code*/)
+                        .Append(",'").Append(aaa[2]/*SUPPLIER_CODE*/).Append("','','").Append(uom_code)
                         .Append("','").Append(validateFlag).Append("') ");
                     conn.ExecuteNonQuery(sql.ToString(), host);
                 }
             }
+        }
+        public String updateValidateFlag(String po_number, String line_number, String flag, String agreement_number, String host)
+        {
+            String sql = "";
+            sql = "Update " + xCMPIT.table + " Set " + xCMPIT.Validate_flag + "='" + flag + "', " + xCMPIT.AGREEEMENT_NUMBER + " ='" + agreement_number + "' " +
+                "Where " + xCMPIT.po_number + " = '" + po_number + "' and " + xCMPIT.AGREEMENT_LINE_NUMBER + "='" + line_number + "'";
+            conn.ExecuteNonQuery(sql.ToString(), host);
+
+            return "";
         }
     }
 }

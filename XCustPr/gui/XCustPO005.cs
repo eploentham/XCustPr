@@ -56,9 +56,10 @@ namespace XCustPr
             lv1.Columns.Add("List File", formwidth - 50 - 40 - 100, HorizontalAlignment.Left);
             lv1.Columns.Add("   process   ", 100, HorizontalAlignment.Center);
             lv1.ListViewItemSorter = lvwColumnSorter;
+            txtFileName.Text = Cm.initC.AutoRunPO005;
 
             int i = 1;
-            filePO = cPo005.Cm.getFileinFolder(cPo005.Cm.initC.PathInitial);
+            filePO = cPo005.Cm.getFileinFolder(cPo005.Cm.initC.PO005PathInitial);
             foreach (string aa in filePO)
             {
                 lv1.Items.Add(AddToList((i++), aa, ""));
@@ -159,9 +160,9 @@ namespace XCustPr
         }
         private void btnRead_Click(object sender, EventArgs e)
         {
-            //lv1.Items.Clear();
-            //filePO = cPo005.Cm.getFileinFolder(cPo005.Cm.initC.PO005PathInitial);
-            //cPo005.processMMXPOtoErpPR(filePO, lv1, this, pB1);
+            lv1.Items.Clear();
+            filePO = cPo005.Cm.getFileinFolder(cPo005.Cm.initC.PO005PathInitial);
+            cPo005.processMMXPOtoErpPR(filePO, lv1, this, pB1);
 
             //cPo005.processGetTempTableToValidate(lv1, this, pB1);
 
