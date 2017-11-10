@@ -145,7 +145,7 @@ namespace XCustPr
             initC.PO005PathError = iniFile.Read("PO005PathError");
             initC.PO005PathInitial = iniFile.Read("PO005PathInitial");
             initC.PO005PathProcess = iniFile.Read("PO005PathProcess");
-
+            initC.PO005ImportSource = iniFile.Read("PO005ImportSource");
 
             //initC.grdQuoColor = iniFile.Read("gridquotationcolor");
 
@@ -166,6 +166,18 @@ namespace XCustPr
             Boolean chk = false;
             int i = 0;
             chk = int.TryParse(qty, out i);
+            return chk;
+        }
+        public String dateYearShortToDB(String date)
+        {
+            String chk = "", year = "", month="", day="";
+
+            year = date.Substring(date.Length - 2);
+            day = date.Substring(4, 2);
+            month = date.Substring(0, 2);
+
+            chk = "20" + year + "-" + month + "-" + day;
+
             return chk;
         }
         public Boolean validateDate(String date)
@@ -208,5 +220,178 @@ namespace XCustPr
             }
             return chk;
         }
+        public String validateSubInventoryCode(String ordId, String StoreCode, List<XcustSubInventoryMstTbl> listXcSIMT)
+        {
+            String chk = "";
+            foreach (XcustSubInventoryMstTbl item in listXcSIMT)
+            {
+                if (item.ORGAINZATION_ID.Equals(ordId.Trim()))
+                {
+                    if (item.attribute1.Equals(StoreCode.Trim()))
+                    {
+                        chk = item.SECONDARY_INVENTORY_NAME;
+                        break;
+                    }
+                }
+            }
+            return chk;
+        }
+        public Boolean validateItemCodeByOrgRef(String ordId, String item_code, List<XcustItemMstTbl> listXcIMT)
+        {
+            Boolean chk = false;
+            foreach (XcustItemMstTbl item in listXcIMT)
+            {
+                if (item.ORGAINZATION_ID.Equals(ordId.Trim()))
+                {
+                    if (item.ITEM_REFERENCE1.Equals(item_code.Trim()))
+                    {
+                        chk = true;
+                        break;
+                    }
+                }
+            }
+            return chk;
+        }
+        public Boolean validateSupplierBySupplierCode(String supplier_code, List<XcustSupplierMstTbl> listXcSMT)
+        {
+            Boolean chk = false;
+            foreach (XcustSupplierMstTbl item in listXcSMT)
+            {
+                if (item.SUPPLIER_NUMBER.Equals(supplier_code.Trim()))
+                {
+                    chk = true;
+                    break;
+                }
+            }
+            return chk;
+        }
+        public Boolean validateUOMCodeByUOMCode(String uomCode, List<XcustUomMstTbl> listXcUMT)
+        {
+            Boolean chk = false;
+            foreach (XcustUomMstTbl item in listXcUMT)
+            {
+                if (item.UOM_CODE.Equals(uomCode.Trim()))
+                {
+                    chk = true;
+                    break;
+                }
+            }
+            return chk;
+        }
+        public Boolean validateValueBySegment1(String valuesetcode, String enableflag, String value,List<XcustValueSetMstTbl> listXcVSMT)
+        {
+            Boolean chk = false;
+            foreach (XcustValueSetMstTbl item in listXcVSMT)
+            {
+                if (item.VALUE_SET_CODE.Equals(valuesetcode.Trim()))
+                {
+                    if (item.ENABLED_FLAG.Equals(enableflag.Trim()))
+                    {
+                        if (item.VALUE.Equals(value.Trim()))
+                        {
+                            chk = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            return chk;
+        }
+        public Boolean validateValueBySegment2(String valuesetcode, String enableflag, String value, List<XcustValueSetMstTbl> listXcVSMT)
+        {
+            Boolean chk = false;
+            foreach (XcustValueSetMstTbl item in listXcVSMT)
+            {
+                if (item.VALUE_SET_CODE.Equals(valuesetcode.Trim()))
+                {
+                    if (item.ENABLED_FLAG.Equals(enableflag.Trim()))
+                    {
+                        if (item.VALUE.Equals(value.Trim()))
+                        {
+                            chk = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            return chk;
+        }
+        public Boolean validateValueBySegment3(String valuesetcode, String enableflag, String value, List<XcustValueSetMstTbl> listXcVSMT)
+        {
+            Boolean chk = false;
+            foreach (XcustValueSetMstTbl item in listXcVSMT)
+            {
+                if (item.VALUE_SET_CODE.Equals(valuesetcode.Trim()))
+                {
+                    if (item.ENABLED_FLAG.Equals(enableflag.Trim()))
+                    {
+                        if (item.VALUE.Equals(value.Trim()))
+                        {
+                            chk = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            return chk;
+        }
+        public Boolean validateValueBySegment4(String valuesetcode, String enableflag, String value, List<XcustValueSetMstTbl> listXcVSMT)
+        {
+            Boolean chk = false;
+            foreach (XcustValueSetMstTbl item in listXcVSMT)
+            {
+                if (item.VALUE_SET_CODE.Equals(valuesetcode.Trim()))
+                {
+                    if (item.ENABLED_FLAG.Equals(enableflag.Trim()))
+                    {
+                        if (item.VALUE.Equals(value.Trim()))
+                        {
+                            chk = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            return chk;
+        }
+        public Boolean validateValueBySegment5(String valuesetcode, String enableflag, String value, List<XcustValueSetMstTbl> listXcVSMT)
+        {
+            Boolean chk = false;
+            foreach (XcustValueSetMstTbl item in listXcVSMT)
+            {
+                if (item.VALUE_SET_CODE.Equals(valuesetcode.Trim()))
+                {
+                    if (item.ENABLED_FLAG.Equals(enableflag.Trim()))
+                    {
+                        if (item.VALUE.Equals(value.Trim()))
+                        {
+                            chk = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            return chk;
+        }
+        public Boolean validateValueBySegment6(String valuesetcode, String enableflag, String value, List<XcustValueSetMstTbl> listXcVSMT)
+        {
+            Boolean chk = false;
+            foreach (XcustValueSetMstTbl item in listXcVSMT)
+            {
+                if (item.VALUE_SET_CODE.Equals(valuesetcode.Trim()))
+                {
+                    if (item.ENABLED_FLAG.Equals(enableflag.Trim()))
+                    {
+                        if (item.VALUE.Equals(value.Trim()))
+                        {
+                            chk = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            return chk;
+        }
+
     }
 }
