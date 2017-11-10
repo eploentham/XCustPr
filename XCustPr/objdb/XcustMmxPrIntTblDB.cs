@@ -110,7 +110,7 @@ namespace XCustPr
 
             String ConnectionString = "", errMsg = "", processFlag = "", validateFlag = "", createBy = "0", createDate = "GETDATE()", last_update_by = "0", lastUpdateTime = "null";
             String DELIVERY_INSTRUCTION = "", diriver_to_organization="", ERP_ITEM_CODE="", erp_subinventory_code="", ITEM_CATEGORY_NAME="", uom_code="";
-            String orderDate = "", deliDate="", confDate="";
+            String orderDate = "", deliDate="", confDate="", ACC_SEG1="", ACC_SEG2="", ACC_SEG3="", ACC_SEG4="", ACC_SEG5="", ACC_SEG6="", AGREEEMENT_NUMBER="", AGREEMENT_LINE_NUMBER="";
             if (host == "kfc_po")
             {
                 ConnectionString = conn.connKFC.ConnectionString;
@@ -152,18 +152,18 @@ namespace XCustPr
                         .Append(",").Append(xCMPIT.supplier_code).Append(",").Append(xCMPIT.SUPPLIER_SITE_CODE).Append(",").Append(xCMPIT.uom_code)
                         .Append(",").Append(xCMPIT.Validate_flag).Append(",")
                         .Append(") Values ('")
-                        .Append(aaa[0]).Append("','").Append(aaa[0]).Append("','").Append(aaa[2])
-                        .Append("','").Append(aaa[3]).Append("',").Append(aaa[4]).Append(",'").Append(aaa[5])
-                        .Append("','").Append(aaa[7]).Append("',").Append(aaa[8]).Append(",'").Append(aaa[6]/*CONFIRM  QTY*/)
+                        .Append(ACC_SEG1).Append("','").Append(ACC_SEG2).Append("','").Append(ACC_SEG3)
+                        .Append("','").Append(ACC_SEG4).Append("','").Append(ACC_SEG5).Append("','").Append(ACC_SEG6)
+                        .Append("','").Append(AGREEEMENT_NUMBER).Append("',").Append(AGREEMENT_LINE_NUMBER).Append(",'").Append(aaa[6]/*CONFIRM  QTY*/)
                         .Append("','").Append(confDate/*CONF_DILIVERY_DATE*/).Append("','").Append(createBy).Append("',getdate()")
                         .Append(",'").Append(deliDate/*delivery_date*/).Append("','").Append(DELIVERY_INSTRUCTION).Append("','").Append(initC.DELIVER_TO_LOCATTION)
                         .Append("','").Append(diriver_to_organization).Append("','").Append(ERP_ITEM_CODE).Append("','").Append(erp_subinventory_code)
                         .Append(",'").Append(errMsg/*errMsg*/).Append("','").Append(filename.Trim().Replace(initC.PO005PathProcess, "")).Append("','").Append(ITEM_CATEGORY_NAME)
                         .Append(",'").Append(aaa[7]/*ITEM_CODE*/).Append("','").Append(last_update_by).Append("',").Append(lastUpdateTime)
-                        .Append(",'").Append(orderDate/*ORDER_DATE*/).Append("',").Append(aaa[5]/*ORDER_QTY*/).Append(",'").Append(aaa[1]/*PO_NUMBER*/)
+                        .Append(",'").Append(orderDate/*ORDER_DATE*/).Append("','").Append(aaa[5]/*ORDER_QTY*/).Append("','").Append(aaa[1]/*PO_NUMBER*/)
                         .Append(",'").Append(aaa[9]/*.PO_STATUS*/).Append("',0,'").Append(processFlag)
                         .Append("','").Append(orderDate).Append("','").Append(aaa[0]/*STRORE_NO*/).Append("','").Append(aaa[4]/*Subinventory Code*/)
-                        .Append(",'").Append(aaa[2]/*SUPPLIER_CODE*/).Append("','','").Append(uom_code)
+                        .Append("','").Append(aaa[2]/*SUPPLIER_CODE*/).Append("','','").Append(uom_code)
                         .Append("','").Append(validateFlag).Append("') ");
                     conn.ExecuteNonQuery(sql.ToString(), host);
                 }
