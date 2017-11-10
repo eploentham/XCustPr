@@ -139,6 +139,8 @@ namespace XCustPr
             initC.AutoRunPO001 = iniFile.Read("AutoRunPO001");
             initC.AutoRunPO004 = iniFile.Read("AutoRunPO004");
             initC.AutoRunPO005 = iniFile.Read("AutoRunPO005");
+            initC.AutoRunPO003 = iniFile.Read("AutoRunPO003");
+
             initC.PathMaster = iniFile.Read("PathMaster");
 
             initC.PO005PathArchive = iniFile.Read("PO005PathArchive");    //bit
@@ -146,6 +148,12 @@ namespace XCustPr
             initC.PO005PathInitial = iniFile.Read("PO005PathInitial");
             initC.PO005PathProcess = iniFile.Read("PO005PathProcess");
             initC.PO005ImportSource = iniFile.Read("PO005ImportSource");
+
+            initC.PO003PathArchive = iniFile.Read("PO003PathArchive");    //bit
+            initC.PO003PathError = iniFile.Read("PO003PathError");
+            initC.PO003PathInitial = iniFile.Read("PO003PathInitial");
+            initC.PO003PathProcess = iniFile.Read("PO003PathProcess");
+            initC.PO003ImportSource = iniFile.Read("PO003ImportSource");
 
             //initC.grdQuoColor = iniFile.Read("gridquotationcolor");
 
@@ -218,6 +226,46 @@ namespace XCustPr
             {
                 chk = false;
             }
+            return chk;
+        }
+        public Boolean validateDate1(DateTime date)
+        {
+            Boolean chk = false;
+            //if (date.Length == 8)
+            //{
+            //    sYear.Clear();
+            //    sMonth.Clear();
+            //    sDay.Clear();
+            //    try
+            //    {
+            //        sYear.Append(date.Substring(0, 4));
+            //        sMonth.Append(date.Substring(4, 2));
+            //        sDay.Append(date.Substring(6, 2));
+            //        if ((int.Parse(sYear.ToString()) > 2000) && (int.Parse(sYear.ToString()) < 2100))
+            //        {
+            //            if ((int.Parse(sMonth.ToString()) >= 1) && (int.Parse(sMonth.ToString()) <= 12))
+            //            {
+            //                if ((int.Parse(sDay.ToString()) >= 1) && (int.Parse(sDay.ToString()) <= 31))
+            //                {
+            //                    chk = true;
+            //                }
+            //            }
+            //        }
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        chk = false;
+            //    }
+            //    finally
+            //    {
+
+            //    }
+
+            //}
+            //else
+            //{
+            //    chk = false;
+            //}
             return chk;
         }
         public String validateSubInventoryCode(String ordId, String StoreCode, List<XcustSubInventoryMstTbl> listXcSIMT)

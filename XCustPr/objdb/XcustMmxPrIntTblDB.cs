@@ -94,10 +94,22 @@ namespace XCustPr
             String chk = "", year = "", month = "", day = "";
 
             year = date.Substring(date.Length - 2);
-            day = date.Substring(4, 2);
+            day = date.Substring(3, 2);
             month = date.Substring(0, 2);
 
             chk = "20" + year + "-" + month + "-" + day;
+
+            return chk;
+        }
+        public String dateYearShortToDBTemp(String date)
+        {
+            String chk = "", year = "", month = "", day = "";
+
+            year = date.Substring(date.Length - 2);
+            day = date.Substring(3, 2);
+            month = date.Substring(0, 2);
+
+            chk = "20" + year + month + day;
 
             return chk;
         }
@@ -130,9 +142,9 @@ namespace XCustPr
                     errMsg = "";
                     processFlag = "N";
                     validateFlag = "N";
-                    orderDate = dateYearShortToDB(aaa[8]);
-                    deliDate = dateYearShortToDB(aaa[3]);
-                    confDate = dateYearShortToDB(aaa[10]);
+                    orderDate = dateYearShortToDBTemp(aaa[8]);
+                    deliDate = dateYearShortToDBTemp(aaa[3]);
+                    confDate = dateYearShortToDBTemp(aaa[10]);
                     //bbb += "('" + aaa[0] + "','" +
                     //aaa[11] + "','" + errMsg + "','" + aaa[6] + "','" +
                     //aaa[2] + "','" + aaa[4] + "','" + aaa[5] + "','" +
@@ -150,18 +162,18 @@ namespace XCustPr
                         .Append(",").Append(xCMPIT.po_status).Append(",").Append(xCMPIT.PRICE).Append(",").Append(xCMPIT.process_flag)
                         .Append(",").Append(xCMPIT.request_date).Append(",").Append(xCMPIT.store_code).Append(",").Append(xCMPIT.subinventory_code)
                         .Append(",").Append(xCMPIT.supplier_code).Append(",").Append(xCMPIT.SUPPLIER_SITE_CODE).Append(",").Append(xCMPIT.uom_code)
-                        .Append(",").Append(xCMPIT.Validate_flag).Append(",")
+                        .Append(",").Append(xCMPIT.Validate_flag).Append(" ")
                         .Append(") Values ('")
                         .Append(ACC_SEG1).Append("','").Append(ACC_SEG2).Append("','").Append(ACC_SEG3)
                         .Append("','").Append(ACC_SEG4).Append("','").Append(ACC_SEG5).Append("','").Append(ACC_SEG6)
-                        .Append("','").Append(AGREEEMENT_NUMBER).Append("',").Append(AGREEMENT_LINE_NUMBER).Append(",'").Append(aaa[6]/*CONFIRM  QTY*/)
+                        .Append("','").Append(AGREEEMENT_NUMBER).Append("','").Append(AGREEMENT_LINE_NUMBER).Append("','").Append(aaa[6]/*CONFIRM  QTY*/)
                         .Append("','").Append(confDate/*CONF_DILIVERY_DATE*/).Append("','").Append(createBy).Append("',getdate()")
                         .Append(",'").Append(deliDate/*delivery_date*/).Append("','").Append(DELIVERY_INSTRUCTION).Append("','").Append(initC.DELIVER_TO_LOCATTION)
                         .Append("','").Append(diriver_to_organization).Append("','").Append(ERP_ITEM_CODE).Append("','").Append(erp_subinventory_code)
-                        .Append(",'").Append(errMsg/*errMsg*/).Append("','").Append(filename.Trim().Replace(initC.PO005PathProcess, "")).Append("','").Append(ITEM_CATEGORY_NAME)
-                        .Append(",'").Append(aaa[7]/*ITEM_CODE*/).Append("','").Append(last_update_by).Append("',").Append(lastUpdateTime)
+                        .Append("','").Append(errMsg/*errMsg*/).Append("','").Append(filename.Trim().Replace(initC.PO005PathProcess, "")).Append("','").Append(ITEM_CATEGORY_NAME)
+                        .Append("','").Append(aaa[7]/*ITEM_CODE*/).Append("','").Append(last_update_by).Append("',").Append(lastUpdateTime)
                         .Append(",'").Append(orderDate/*ORDER_DATE*/).Append("','").Append(aaa[5]/*ORDER_QTY*/).Append("','").Append(aaa[1]/*PO_NUMBER*/)
-                        .Append(",'").Append(aaa[9]/*.PO_STATUS*/).Append("',0,'").Append(processFlag)
+                        .Append("','").Append(aaa[9]/*.PO_STATUS*/).Append("',0,'").Append(processFlag)
                         .Append("','").Append(orderDate).Append("','").Append(aaa[0]/*STRORE_NO*/).Append("','").Append(aaa[4]/*Subinventory Code*/)
                         .Append("','").Append(aaa[2]/*SUPPLIER_CODE*/).Append("','','").Append(uom_code)
                         .Append("','").Append(validateFlag).Append("') ");

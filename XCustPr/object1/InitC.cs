@@ -31,6 +31,8 @@ namespace XCustPr
         public String AutoRunPO001 = "";
         public String AutoRunPO004 = "";
         public String AutoRunPO005 = "";
+        public String AutoRunPO003 = "";
+
         public String PathMaster = "";
 
         public String EmailPort = "3306";
@@ -53,7 +55,7 @@ namespace XCustPr
         public String portDBKFCPO = "3306";
 
         public String PO005PathInitial = "", PO005PathProcess = "", PO005PathError = "", PO005PathArchive = "", PO005ImportSource="";
-
+        public String PO003PathInitial = "", PO003PathProcess = "", PO003PathError = "", PO003PathArchive = "", PO003ImportSource = "";
 
     }
 }

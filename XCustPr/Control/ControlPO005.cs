@@ -63,6 +63,21 @@ namespace XCustPr
             conn = new ConnectDB("kfc_po", Cm.initC);        //standard
 
             xCMPITDB = new XcustMmxPrIntTblDB(conn, Cm.initC);
+            xCPRHIADB = new XcustPorReqHeaderIntAllDB(conn);
+            xCPRLIADB = new XcustPorReqLineIntAllDB(conn, Cm.initC);
+            xCPRDIADB = new XcustPorReqDistIntAllDB(conn);
+            xCBMTDB = new XcustBuMstTblDB(conn, Cm.initC);
+            xCDLMTDB = new XcustDeriverLocatorMstTblDB(conn, Cm.initC);
+            xCDOMTDB = new XcustDeriverOrganizationMstTblDB(conn, Cm.initC);
+            xCSIMTDB = new XcustSubInventoryMstTblDB(conn, Cm.initC);
+            xCIMTDB = new XcustItemMstTblDB(conn, Cm.initC);
+            xCMTDB = new XcustCurrencyMstTblDB(conn, Cm.initC);
+            xCSMTDB = new XcustSupplierMstTblDB(conn, Cm.initC);
+            xCUMTDB = new XcustUomMstTblDB(conn, Cm.initC);
+            xCVSMTDB = new XcustValueSetMstTblDB(conn, Cm.initC);
+            xCBAHTDB = new XcustBlanketAgreementHeaderTblDB(conn, Cm.initC);
+            xCBALTDB = new XcustBlanketAgreementLinesTblDB(conn, Cm.initC);
+
             Cm.createFolderPO005();
             fontSize9 = 9.75f;        //standard
             fontSize8 = 8.25f;        //standard
@@ -70,6 +85,15 @@ namespace XCustPr
             fV1 = new Font(fontName, fontSize8, FontStyle.Regular);        //standard
 
             listXcSIMT = new List<XcustSubInventoryMstTbl>();
+            listXcustPRHIA = new List<XcustPorReqHeaderIntAll>();
+            listXcustPRLIA = new List<XcustPorReqLineIntAll>();
+            listXcustPRDIA = new List<XcustPorReqDistIntAll>();
+
+            listXcSIMT = new List<XcustSubInventoryMstTbl>();
+            listXcIMT = new List<XcustItemMstTbl>();
+            listXcSMT = new List<XcustSupplierMstTbl>();
+            listXcVSMT = new List<XcustValueSetMstTbl>();
+            listXcUMT = new List<XcustUomMstTbl>();
 
         }
         /*
@@ -201,13 +225,13 @@ namespace XCustPr
                     row1++;
                     pB1.Value = row1;
                     //Error PO001-006 : Invalid data type
-                    chk = Cm.validateQTY(row[xCMPITDB.xCMPIT.order_date].ToString());
+                    chk = Cm.validateQTY(row[xCMPITDB.xCMPIT.order_qty].ToString());
                     if (!chk)
                     {
                         vPP = new ValidatePrPo();
                         vPP.Filename = rowG[xCMPITDB.xCMPIT.file_name].ToString().Trim();
                         vPP.Message = "Error PO005-006 ";
-                        vPP.Validate = "row " + row1 + " order_date=" + row[xCMPITDB.xCMPIT.order_date].ToString();
+                        vPP.Validate = "row " + row1 + " order_qty=" + row[xCMPITDB.xCMPIT.order_qty].ToString();
                         lVPr.Add(vPP);
                     }
                     chk = Cm.validateQTY(row[xCMPITDB.xCMPIT.confirm_qty].ToString());
@@ -361,7 +385,7 @@ namespace XCustPr
                     {
                         vPP = new ValidatePrPo();
                         vPP.Filename = rowG[xCMPITDB.xCMPIT.file_name].ToString().Trim();
-                        vPP.Message = "Error PO001-" + blanketAgreement.Replace("flase", "");
+                        vPP.Message = "Error PO005-" + blanketAgreement.Replace("flase", "");
                         vPP.Validate = "row " + row1 + " store_code=" + row[xCMPITDB.xCMPIT.store_code].ToString().Trim() + " CHARGE_ACCOUNT_SEGMENT6 ";
                         lVPr.Add(vPP);
                         xCMPITDB.updateValidateFlag(row[xCMPITDB.xCMPIT.po_number].ToString().Trim(), row[xCMPITDB.xCMPIT.AGREEMENT_LINE_NUMBER].ToString().Trim(), "E", "", "kfc_po");
@@ -381,8 +405,59 @@ namespace XCustPr
             }
         }
         /*
+         * g.	กรณีที่ Validat ผ่าน จะเอาข้อมูล Insert ลง table XCUST_POR_REQ_HEADER_INT_ALL
+         * ,XCUST_POR_REQ_LINE_INT_ALL ,XCUST_POR_REQ_DIST_INT_ALLและ Update Validate_flag = ‘Y’
+         */
+        public void processInsertTable(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
+        {
+            addListView("insert table " + Cm.initC.PO005PathProcess, "Validate", lv1, form1);
+            String date = System.DateTime.Now.ToString("yyyy-MM-dd");
+            String time = System.DateTime.Now.ToString("HH:mm:ss");
+            foreach (XcustPorReqHeaderIntAll xcprhia in listXcustPRHIA)
+            {
+                if (insertXcustPorReqHeaderIntAll(xcprhia, date, time).Equals("1"))
+                {
+                    foreach (XcustPorReqLineIntAll xcprlia in listXcustPRLIA)
+                    {
+                        //XcustPorReqLineIntAll xcprlia = xCPRLIADB.setData(row, xCLFPTDB.xCLFPT);
+                        String chk = xCPRLIADB.insert(xcprlia);
+                    }
+                    foreach (XcustPorReqDistIntAll xcprdia in listXcustPRDIA)
+                    {
+                        //XcustPorReqLineIntAll xcprlia = xCPRLIADB.setData(row, xCLFPTDB.xCLFPT);
+                        String chk = xCPRDIADB.insert(xcprdia);
+                    }
+                }
+            }
+        }
+        private String insertXcustPorReqHeaderIntAll(XcustPorReqHeaderIntAll xcprhia, String date, String time)
+        {//row[dc].ToString().Trim().
+            String chk = "";
+            XcustPorReqHeaderIntAll xCPRHIA = new XcustPorReqHeaderIntAll();
+            xCPRHIA.ATTRIBUTE1 = xcprhia.ATTRIBUTE1.Trim();
+
+            xCPRHIA.ATTRIBUTE_DATE1 = date;
+            xCPRHIA.ATTRIBUTE_TIMESTAMP1 = date + " " + time;
+            xCPRHIA.BATCH_ID = xcprhia.BATCH_ID;
+            xCPRHIA.DESCRIPTIONS = xcprhia.DESCRIPTIONS.Trim();
+            xCPRHIA.REQUESTER_EMAIL_ADDR = "";
+            xCPRHIA.INTERFACE_SOURCE_CODE = "";
+            xCPRHIA.ATTRIBUTE_CATEGORY = xcprhia.ATTRIBUTE_CATEGORY;
+            xCPRHIA.REQ_HEADER_INTERFACE_ID = xcprhia.REQ_HEADER_INTERFACE_ID.Trim();
+            xCPRHIA.PROCESS_FLAG = "N";
+            xCPRHIA.APPROVER_EMAIL_ADDR = "";
+            xCPRHIA.ATTRIBUTE2 = xcprhia.ATTRIBUTE2;
+            xCPRHIA.REQUITITION_NUMBER = xcprhia.REQUITITION_NUMBER;
+            xCPRHIA.IMPORT_SOURCE = xcprhia.IMPORT_SOURCE;
+            xCPRHIA.ATTRIBUTE1 = xcprhia.ATTRIBUTE1;
+            xCPRHIA.REQ_BU_NAME = xcprhia.REQ_BU_NAME;
+            xCPRHIA.STATUS_CODE = xcprhia.STATUS_CODE;
+            chk = xCPRHIADB.insert(xCPRHIA);
+            return chk;
+        }
+        /*
          * Method นี้ ไม่แน่ใจว่า จะแยกหรือ รวม
-         */ 
+         */
         private void getListXcSIMT()
         {
             listXcSIMT.Clear();
@@ -540,7 +615,7 @@ namespace XCustPr
                 String seq = String.Concat("00" + listXcustPRHIA.Count);
                 XcustPorReqHeaderIntAll xcprhia1 = new XcustPorReqHeaderIntAll();
                 xcprhia1.ATTRIBUTE1 = po_number;
-                xcprhia1.IMPORT_SOURCE = Cm.initC.ImportSource;
+                xcprhia1.IMPORT_SOURCE = Cm.initC.PO005ImportSource;
                 xcprhia1.REQ_BU_NAME = Cm.initC.BU_NAME;
                 xcprhia1.STATUS_CODE = Cm.initC.PR_STATAUS;
                 xcprhia1.REQ_HEADER_INTERFACE_ID = po_number;
