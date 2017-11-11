@@ -50,6 +50,8 @@ namespace XCustPr
         private List<XcustSupplierMstTbl> listXcSMT;
         private List<XcustValueSetMstTbl> listXcVSMT;
         private List<XcustUomMstTbl> listXcUMT;
+        private List<XcustBlanketAgreementHeaderTbl> listXcBAHT;
+        private List<XcustBlanketAgreementLinesTbl> listXcBALT;
 
         public ControlPO005(ControlMain cm)
         {
@@ -94,6 +96,8 @@ namespace XCustPr
             listXcSMT = new List<XcustSupplierMstTbl>();
             listXcVSMT = new List<XcustValueSetMstTbl>();
             listXcUMT = new List<XcustUomMstTbl>();
+            listXcBAHT = new List<XcustBlanketAgreementHeaderTbl>();
+            listXcBALT = new List<XcustBlanketAgreementLinesTbl>();
 
         }
         /*
@@ -177,11 +181,15 @@ namespace XCustPr
             listXcustPRHIA.Clear();
             listXcustPRLIA.Clear();
             listXcustPRDIA.Clear();
+
             getListXcSIMT();
             getListXcIMT();
             getListXcSMT();
             getListXcVSMT();
             getListXcUMT();
+            getListXcBAHT();
+            getListXcBALT();
+
             int row1 = 0;
 
             buCode = xCBMTDB.selectActive1();
@@ -374,9 +382,11 @@ namespace XCustPr
 
                     blanketAgreement = getBlanketAgreement(row[xCMPITDB.xCMPIT.supplier_code].ToString().Trim(),
                         row[xCMPITDB.xCMPIT.item_code].ToString().Trim(), row[xCMPITDB.xCMPIT.confirm_qty].ToString().Trim());
-                    String[] aa = blanketAgreement.Split(',');
+                    //blanketAgreement = Cm.getBlanketAgreement(row[xCMPITDB.xCMPIT.supplier_code].ToString().Trim(),
+                    //    row[xCMPITDB.xCMPIT.item_code].ToString().Trim(), row[xCMPITDB.xCMPIT.confirm_qty].ToString().Trim(), listXcBAHT, listXcBALT);
+                    String[] aa = blanketAgreement.Split('@');
                     String price = "";
-                    if (aa.Length > 0)
+                    if (aa.Length == 2)
                     {
                         blanketAgreement = aa[0];
                         price = aa[1];
@@ -526,6 +536,34 @@ namespace XCustPr
             }
         }
         /*
+         * Method นี้ ไม่แน่ใจว่า จะแยกหรือ รวม xCBALT
+         */
+        private void getListXcBALT()
+        {
+            listXcBALT.Clear();
+            DataTable dt = xCBALTDB.selectAll();
+            foreach (DataRow row in dt.Rows)
+            {
+                XcustBlanketAgreementLinesTbl item = new XcustBlanketAgreementLinesTbl();
+                item = xCBALTDB.setData(row);
+                listXcBALT.Add(item);
+            }
+        }
+        /*
+         * Method นี้ ไม่แน่ใจว่า จะแยกหรือ รวม xCBALT
+         */
+        private void getListXcBAHT()
+        {
+            listXcBAHT.Clear();
+            DataTable dt = xCBAHTDB.selectAll();
+            foreach (DataRow row in dt.Rows)
+            {
+                XcustBlanketAgreementHeaderTbl item = new XcustBlanketAgreementHeaderTbl();
+                item = xCBAHTDB.setData(row);
+                listXcBAHT.Add(item);
+            }
+        }
+        /*
          * 
          * e.	ทำการหา Blanket Agreement Number โดยใช้ Supplier Code กับ Item Code หาค่า Blanket Agreement ที่ Active อยู่ ณ เวลานั้น 
          * มี Status เป็น Approved -> OPEN  กรณีไม่เจอ หรือเจอมากกว่า 1 ค่าให้ Validatte ไม่ผ่าน -> return false
@@ -535,12 +573,12 @@ namespace XCustPr
         public String getBlanketAgreement(String supp_code, String item_code, String qty)
         {
             DataTable dt = new DataTable();
-            String chk = "false,", sql = "";
+            String chk = "false@", sql = "";
             int min = 0, amt = 0;
             double qty1 = 0, price1 = 0;
             if (!double.TryParse(qty, out qty1))
             {
-                return "false,";
+                return "false@";
             }
             //if (!double.TryParse(price, out price1))
             //{
@@ -570,33 +608,33 @@ namespace XCustPr
                                 {
                                     if ((price1 * qty1) >= min)
                                     {
-                                        chk = dt.Rows[0][xCBAHTDB.xCBAHT.AGREEMENT_NUMBER].ToString().Trim() + "," + price1;
+                                        chk = dt.Rows[0][xCBAHTDB.xCBAHT.AGREEMENT_NUMBER].ToString().Trim() + "@" + price1;
                                     }
                                     else
                                     {
-                                        chk = "false,026";
+                                        chk = "false@026";
                                     }
                                 }
                                 else
                                 {
-                                    chk = "false,025";
+                                    chk = "false@025";
                                 }
                             }
                             else
                             {
-                                chk = "false,";
+                                chk = "false@";
                             }
                         }
                     }
                 }
                 else
                 {
-                    chk = "false,024";
+                    chk = "false@024";
                 }
             }
             else
             {
-                chk = "false,023";
+                chk = "false@023";
             }
             return chk;
         }

@@ -43,6 +43,37 @@ namespace XCustPr
             xCBAHT.table = "XCUST_BLANKET_AGREEMENT_HEADER_TBL";
             xCBAHT.pkField = "";
         }
-        
+        public DataTable selectAll()
+        {
+            DataTable dt = new DataTable();
+            String sql = "select * From " + xCBAHT.table;
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
+        }
+        public XcustBlanketAgreementHeaderTbl setData(DataRow row)
+        {
+            XcustBlanketAgreementHeaderTbl item;
+            item = new XcustBlanketAgreementHeaderTbl();
+            item.AGREEMENT_AMT = row[xCBAHT.AGREEMENT_AMT].ToString();
+            item.AGREEMENT_NUMBER = row[xCBAHT.AGREEMENT_NUMBER].ToString();
+            item.BUYER = row[xCBAHT.BUYER].ToString();
+            item.COMUNICATION_METHOD = row[xCBAHT.COMUNICATION_METHOD].ToString();
+            item.CREATION_DATE = row[xCBAHT.CREATION_DATE].ToString();
+            item.DESCRIPTION = row[xCBAHT.DESCRIPTION].ToString();
+            item.EMAIL = row[xCBAHT.EMAIL].ToString();
+            item.END_DATE = row[xCBAHT.END_DATE].ToString();
+            item.LAST_UPDATE_DATE = row[xCBAHT.LAST_UPDATE_DATE].ToString();
+            item.MIN_RELEASE_AMT = row[xCBAHT.MIN_RELEASE_AMT].ToString();
+            item.POCUMENT_BU = row[xCBAHT.POCUMENT_BU].ToString();
+            item.RELEASE_AMT = row[xCBAHT.RELEASE_AMT].ToString();
+            item.START_DATE = row[xCBAHT.START_DATE].ToString();
+            item.STATUS = row[xCBAHT.STATUS].ToString();
+            item.SUPPLIER = row[xCBAHT.SUPPLIER].ToString();
+            item.SUPPLIER_CODE = row[xCBAHT.SUPPLIER_CODE].ToString();
+            item.SUPPLIER_SITE = row[xCBAHT.SUPPLIER_SITE].ToString();
+            item.PO_HEADER_ID = row[xCBAHT.PO_HEADER_ID].ToString();
+
+            return item;
+        }
     }
 }

@@ -212,7 +212,7 @@ namespace XCustPr
                     xCPRHIA.ATTRIBUTE_TIMESTAMP5 + "," + xCPRHIA.ATTRIBUTE_TIMESTAMP6 + "," + xCPRHIA.ATTRIBUTE_TIMESTAMP7 + "," +
                     xCPRHIA.ATTRIBUTE_TIMESTAMP8 + "," + xCPRHIA.ATTRIBUTE_TIMESTAMP9 + "," + xCPRHIA.ATTRIBUTE_TIMESTAMP10 + "," +
                     xCPRHIA.LAST_UPDATE_DATE + "," + xCPRHIA.CREATION_DATE + "," + xCPRHIA.IMPORT_SOURCE + "," +
-                    xCPRHIA.LAST_UPDATE_BY +","+ xCPRHIA.ATTRIBUTE_DATE1+
+                    xCPRHIA.LAST_UPDATE_BY +
                     ") " +
                     "Values('" + p.ATTRIBUTE1 + "','" + p.ATTRIBUTE_DATE1 + "','" +
                     p.ATTRIBUTE_TIMESTAMP1 + "'," + p.BATCH_ID + ",'" +
@@ -238,7 +238,7 @@ namespace XCustPr
                     p.ATTRIBUTE_TIMESTAMP5 + "','" + p.ATTRIBUTE_TIMESTAMP6 + "','" + p.ATTRIBUTE_TIMESTAMP7 + "','" +
                     p.ATTRIBUTE_TIMESTAMP8 + "','" + p.ATTRIBUTE_TIMESTAMP9 + "','" + p.ATTRIBUTE_TIMESTAMP10 + "','" +
                     p.LAST_UPDATE_DATE + "','" + p.CREATION_DATE + "','" + p.IMPORT_SOURCE + "','" +
-                    p.LAST_UPDATE_BY + "','" + p.ATTRIBUTE_DATE1 +
+                    p.LAST_UPDATE_BY +
                     "') ";
                 chk = conn.ExecuteNonQuery(sql, "kfc_po");
                 //chk = p.RowNumber;

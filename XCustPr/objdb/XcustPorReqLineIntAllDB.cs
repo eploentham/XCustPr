@@ -165,6 +165,10 @@ namespace XCustPr
                 p.ATTRIBUTE_NUMBER8 = p.ATTRIBUTE_NUMBER8.Equals("") ? "0" : p.ATTRIBUTE_NUMBER8;
                 p.ATTRIBUTE_NUMBER9 = p.ATTRIBUTE_NUMBER9.Equals("") ? "0" : p.ATTRIBUTE_NUMBER9;
                 p.ATTRIBUTE_NUMBER10 = p.ATTRIBUTE_NUMBER10.Equals("") ? "0" : p.ATTRIBUTE_NUMBER10;
+                p.LAST_UPDATE_BY = p.LAST_UPDATE_BY.Equals("") ? "0" : p.LAST_UPDATE_BY;
+                p.CREATE_BY = p.CREATE_BY.Equals("") ? "0" : p.CREATE_BY;
+                p.LAST_UPDATE_DATE = p.LAST_UPDATE_DATE.Equals("") ? "null" : p.LAST_UPDATE_DATE;
+
                 sql = "Insert Into " + xCPRLIA.table + "(" + xCPRLIA.ATTRIBUTE1 + "," + xCPRLIA.ATTRIBUTE_DATE1 + "," +
                     xCPRLIA.ATTRIBUTE_TIMESTAMP1 + "," + xCPRLIA.CATEGORY_NAME + "," +
                     xCPRLIA.CURRENCY_CODE + "," + xCPRLIA.DELIVER_TO_LOCATION_CODE + "," + xCPRLIA.DELIVER_TO_ORGANIZATION_CODE + "," +
@@ -220,7 +224,7 @@ namespace XCustPr
                     p.ATTRIBUTE_TIMESTAMP2 + "','" + p.ATTRIBUTE_TIMESTAMP3 + "','" + p.ATTRIBUTE_TIMESTAMP4 + "','" +
                     p.ATTRIBUTE_TIMESTAMP5 + "','" + p.ATTRIBUTE_TIMESTAMP6 + "','" + p.ATTRIBUTE_TIMESTAMP7 + "','" +
                     p.ATTRIBUTE_TIMESTAMP8 + "','" + p.ATTRIBUTE_TIMESTAMP9 + "','" + p.ATTRIBUTE_TIMESTAMP10 + "','" +
-                    p.LAST_UPDATE_DATE + "',getdate(),'" + p.CREATE_BY + "','" +
+                    p.LAST_UPDATE_DATE + ",getdate(),'" + p.CREATE_BY + "'," +
                     p.LAST_UPDATE_BY + "','" + p.LINE_TYPE + "','" + p.AGREEMENT_NUMBER + "','" +
                     p.UOM_CODE+"') ";
                 chk = conn.ExecuteNonQueryAutoIncrement(sql, "kfc_po");

@@ -268,6 +268,76 @@ namespace XCustPr
             //}
             return chk;
         }
+        public String getBlanketAgreement(String supplirecode, String itemcode, String qty, List<XcustBlanketAgreementHeaderTbl> listXcBAHT, List<XcustBlanketAgreementLinesTbl> listXcBALT)
+        {
+            String chk = "false@023", sql="";
+            int min = 0, amt = 0, cnt=0;
+            double qty1 = 0, price1 = 0;
+            if (!double.TryParse(qty, out qty1))
+            {
+                return "false@";
+            }
+            foreach (XcustBlanketAgreementHeaderTbl itemH in listXcBAHT)
+            {
+                if (itemH.SUPPLIER_CODE.Equals(supplirecode.Trim()))
+                {
+                    foreach (XcustBlanketAgreementLinesTbl itemL in listXcBALT)
+                    {
+                        if (itemH.PO_HEADER_ID.Equals(itemL.PO_HEADER_ID))
+                        {
+                            if (itemL.ITEM_CODE.Equals(itemcode.Trim()))
+                            {
+                                cnt++;
+                            }
+                        }
+                    }
+                }
+            }
+            if(cnt >= 2)
+            {
+                return "false@024";
+            }
+            if (itemcode.Equals("THF2152"))
+            {
+                sql = "";
+            }
+            foreach (XcustBlanketAgreementHeaderTbl itemH in listXcBAHT)
+            {
+                if (itemH.SUPPLIER_CODE.Equals(supplirecode.Trim()))
+                {
+                    foreach (XcustBlanketAgreementLinesTbl itemL in listXcBALT)
+                    {
+                        if (itemcode.Equals("THF2152"))
+                        {
+                            sql = "";
+                        }
+                        if (itemL.ITEM_CODE.Equals(itemcode.Trim()))
+                        {
+                            int.TryParse(itemH.MIN_RELEASE_AMT, out min);
+                            int.TryParse(itemH.AGREEMENT_AMT, out amt);
+                            double.TryParse(itemL.PRICE.Trim(), out price1);
+                            if ((price1 * qty1) <= amt)
+                            {
+                                if ((price1 * qty1) >= min)
+                                {
+                                    chk = itemH.AGREEMENT_NUMBER.Trim() + "@" + itemL.PRICE;
+                                }
+                                else
+                                {
+                                    chk = "false@026";
+                                }
+                            }
+                            else
+                            {
+                                chk = "false@025";
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
+            return chk;
+        }
         public String validateSubInventoryCode(String ordId, String StoreCode, List<XcustSubInventoryMstTbl> listXcSIMT)
         {
             String chk = "";
