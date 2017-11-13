@@ -75,5 +75,20 @@ namespace XCustPr
                 return false;
             }
         }
+        public Boolean getDirectSupplierBySupplierCode(String suppCode)
+        {
+            DataTable dt = new DataTable();
+            String chk = "";
+            String sql = "Select * From " + xCSMT.table + " Where " + xCSMT.SUPPLIER_NUMBER + "  = '" + suppCode + "' and "+xCSMT.ATTRIBUTE1 +"='YES'";
+            dt = conn.selectData(sql, "kfc_po");
+            if (dt.Rows.Count > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

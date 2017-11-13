@@ -468,5 +468,17 @@ namespace XCustPr
                 //}
             }
         }
+        public String dateYearShortToDBTemp(String date)
+        {
+            String chk = "", year = "", month = "", day = "";
+
+            year = date.Substring(date.Length - 2);
+            day = date.Substring(3, 2);
+            month = date.Substring(0, 2);
+
+            chk = "20" + year + month + day;
+
+            return chk;
+        }
     }
 }

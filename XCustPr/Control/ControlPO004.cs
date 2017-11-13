@@ -25,9 +25,10 @@ namespace XCustPr
 
         public ValidatePrPo vPrPo;
 
-        public XcustPorReqHeaderIntAllDB xCPRHIADB;
-        public XcustPorReqLineIntAllDB xCPRLIADB;
-        public XcustPorReqDistIntAllDB xCPRDIADB;
+        //public XcustPorReqHeaderIntAllDB xCPRHIADB;
+        //public XcustPorReqLineIntAllDB xCPRLIADB;
+        //public XcustPorReqDistIntAllDB xCPRDIADB;
+
         public XcustBuMstTblDB xCBMTDB;
         public XcustDeriverLocatorMstTblDB xCDLMTDB;
         public XcustDeriverOrganizationMstTblDB xCDOMTDB;
@@ -38,9 +39,11 @@ namespace XCustPr
         public XcustUomMstTblDB xCUMTDB;
         public XcustValueSetMstTblDB xCVSMTDB;
 
-        public XcustRcvHeadersIntAllDB xCRHIADB;
-        public XcustRcvTransactionsIntAllDB xCRTIADB;
-        public XcustInvTransactionLostsIntTblDB xITLITDB;
+        public XcustRcvHeadersIntAllDB xCRHIADB;        //ใช้ table เดียวกับ PO003
+        public XcustRcvTransactionsIntAllDB xCRTIADB;        //ใช้ table เดียวกับ PO003
+        public XcustInvTransactionLostsIntTblDB xITLITDB;        //ใช้ table เดียวกับ PO003
+
+        public XcustMmxPoRcpIntTblDB xCMPoRITDB;       //table temp
 
         //public XcustBlanketAgreementHeaderTblDB xCBAHTDB;
         //public XcustBlanketAgreementLinesTblDB xCBALTDB;
@@ -72,9 +75,9 @@ namespace XCustPr
             fV1 = new Font(fontName, fontSize8, FontStyle.Regular);        //standard
 
             
-            xCPRHIADB = new XcustPorReqHeaderIntAllDB(conn);
-            xCPRLIADB = new XcustPorReqLineIntAllDB(conn, Cm.initC);
-            xCPRDIADB = new XcustPorReqDistIntAllDB(conn);
+            //xCPRHIADB = new XcustPorReqHeaderIntAllDB(conn);
+            //xCPRLIADB = new XcustPorReqLineIntAllDB(conn, Cm.initC);
+            //xCPRDIADB = new XcustPorReqDistIntAllDB(conn);
             xCBMTDB = new XcustBuMstTblDB(conn, Cm.initC);
             xCDLMTDB = new XcustDeriverLocatorMstTblDB(conn, Cm.initC);
             xCDOMTDB = new XcustDeriverOrganizationMstTblDB(conn, Cm.initC);
@@ -85,6 +88,7 @@ namespace XCustPr
             xCUMTDB = new XcustUomMstTblDB(conn, Cm.initC);
             xCVSMTDB = new XcustValueSetMstTblDB(conn, Cm.initC);
 
+            xCMPoRITDB = new XcustMmxPoRcpIntTblDB(conn, Cm.initC);
             xCRHIADB = new XcustRcvHeadersIntAllDB(conn);
             xCRTIADB = new XcustRcvTransactionsIntAllDB(conn);
             xITLITDB = new XcustInvTransactionLostsIntTblDB(conn);
@@ -151,7 +155,7 @@ namespace XCustPr
                 addListView("insert temp table " + aa, "", lv1, form1);
                 //conn.BulkToMySQL("kfc_po", linfox);       // ย้ายจาก MySQL ไป MSSQL   
                 pB1.Visible = true;
-                //xCLPRITDB.insertBluk(rcv, aa, "kfc_po", pB1);
+                xCMPoRITDB.insertBluk(rcv, aa, "kfc_po", pB1);
                 pB1.Visible = false;
             }
         }

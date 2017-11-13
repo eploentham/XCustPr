@@ -199,6 +199,17 @@ namespace XCustPr
              
             return filePaths;
         }
+        public String[] getFileinFolder(String path, String app)
+        {
+            string[] filePaths = null;
+            String filename = "";
+            if (Directory.Exists(path))
+            {
+                filePaths = Directory.GetFiles(@path, "*"+app+"*");
+            }
+
+            return filePaths;
+        }
         public void moveFile(String sourceFile, String destinationFile)
         {
             System.IO.File.Move(@sourceFile, @destinationFile);
@@ -278,6 +289,11 @@ namespace XCustPr
             initC.PO004PathProcess = iniFile.Read("PO004PathProcess").Trim();
             initC.PO004ImportSource = iniFile.Read("PO004ImportSource").Trim();
             initC.PO004ZipFileSearch = iniFile.Read("PO004ZipFileSearch").Trim();
+            initC.PO004FileType = iniFile.Read("PO004FileType").Trim();
+
+            initC.ExtractZipPathZipExtractRead = iniFile.Read("ExtractZipPathZipExtractRead").Trim();
+            initC.ExtractZipPathZipExtract = iniFile.Read("ExtractZipPathZipExtract").Trim();
+            initC.AutoRunExtractZip = iniFile.Read("AutoRunExtractZip").Trim();
 
             //initC.grdQuoColor = iniFile.Read("gridquotationcolor");
 
@@ -637,25 +653,28 @@ namespace XCustPr
         public void logProcess(String programname, List<ValidatePrPo> lVPr, String startdatetime, List<ValidateFileName> listfile)
         {
             String line1 = "", parameter="", programstart="", filename="", recordError="", txt="";
-            int cntErr = 0;
+            int cntErr = 0, err=0;
             if (programname.ToLower().Equals("xcustpo001"))
             {
-                line1 = "Program : XCUST Interface PR<Linfox>To PO(ERP)\n\r";
+                line1 = "Program : XCUST Interface PR<Linfox>To PO(ERP)" + Environment.NewLine;
             }
-            parameter = "Parameter : \n\r";
-            parameter += "           Path Initial :" + initC.PathInitial+"\n\r";
-            parameter += "           Path Process :" + initC.PathProcess + "\n\r";
-            parameter += "           Path Error :" + initC.PathError + "\n\r";
-            parameter += "           Import Source :" + initC.ImportSource + "\n\r";
-            programstart = "Program Start : " + startdatetime + "\n\r";
+            parameter = "Parameter : "+Environment.NewLine;
+            parameter += "           Path Initial :" + initC.PathInitial + Environment.NewLine;
+            parameter += "           Path Process :" + initC.PathProcess + Environment.NewLine;
+            parameter += "           Path Error :" + initC.PathError + Environment.NewLine;
+            parameter += "           Import Source :" + initC.ImportSource + Environment.NewLine;
+            programstart = "Program Start : " + startdatetime + Environment.NewLine;
             if (listfile.Count > 0)
             {
                 foreach (ValidateFileName vF in listfile)
                 {
-                    filename += "Filename " + vF.fileName + ", Total = " + vF.recordTotal + ", Validate pass = " + vF.validatePass + ", Record Error = " + vF.recordError+", Total Error = "+vF.totalError + "\n\r";
-                    if (int.Parse(vF.recordError)>0)
+                    filename += "Filename " + vF.fileName + ", Total = " + vF.recordTotal + ", Validate pass = " + vF.validatePass + ", Record Error = " + vF.recordError+", Total Error = "+vF.totalError + Environment.NewLine;
+                    if (int.TryParse(vF.recordError, out err))
                     {
-                        cntErr++;
+                        if (int.Parse(vF.recordError) > 0)
+                        {
+                            cntErr++;
+                        }
                     }
                 }
             }
@@ -663,25 +682,25 @@ namespace XCustPr
             {
                 foreach(ValidatePrPo vPr in lVPr)
                 {
-                    recordError += "FileName " + vPr.Filename + "\n\r";
-                    recordError += "==>" + vPr.Validate + "\n\r";
-                    recordError += "     ====>Error"+vPr.Message+"\n\r";
+                    recordError += "FileName " + vPr.Filename + Environment.NewLine;
+                    recordError += "==>" + vPr.Validate + Environment.NewLine;
+                    recordError += "     ====>Error"+vPr.Message + Environment.NewLine;
                 }
             }
             using (var stream = File.CreateText(Environment.CurrentDirectory + "\\" + programname+"_"+ startdatetime.Replace("-","_").Replace(":","_") + ".log"))
             {
                 txt = line1;
                 txt += parameter;
-                txt += programstart+"\n\r";
-                txt += "File \n\r";
-                txt += "--------------------------------------------------------------------------\n\r";
-                txt += filename + "\n\r";
-                txt += "File Error \n\r";
-                txt += "--------------------------------------------------------------------------\n\r";
-                txt += recordError + "\n\r";
-                txt += "Total "+ listfile.Count + "\n\r";
-                txt += "Complete " + (listfile.Count-cntErr) + "\n\r";
-                txt += "Error " + cntErr + "\n\r";
+                txt += programstart + Environment.NewLine;
+                txt += "File " + Environment.NewLine;
+                txt += "--------------------------------------------------------------------------" + Environment.NewLine;
+                txt += filename + Environment.NewLine;
+                txt += "File Error " + Environment.NewLine;
+                txt += "--------------------------------------------------------------------------" + Environment.NewLine;
+                txt += recordError + Environment.NewLine;
+                txt += "Total "+ listfile.Count + Environment.NewLine;
+                txt += "Complete " + (listfile.Count-cntErr) + Environment.NewLine;
+                txt += "Error " + cntErr + Environment.NewLine;
                 stream.WriteLine(txt);
             }
         }

@@ -10,7 +10,7 @@ namespace XCustPr
 {
     public class XcustMmxPoRcpIntTblDB
     {
-        public XcustMmxPoRcpIntTbl xCMPRIT;
+        public XcustMmxPoRcpIntTbl xCMPoRIT;
         ConnectDB conn;
         private InitC initC;
 
@@ -18,49 +18,50 @@ namespace XCustPr
         {
             conn = c;
             initC = initc;
+            initConfig();
         }
         private void initConfig()
         {
-            xCMPRIT = new XcustMmxPoRcpIntTbl();
-            xCMPRIT.creation_by = "creation_by";
-            xCMPRIT.creation_date = "creation_date";
-            xCMPRIT.date_of_record = "date_of_record";
-            xCMPRIT.erp_item_code = "erp_item_code";
-            xCMPRIT.erp_locator = "erp_locator";
-            xCMPRIT.erp_qty = "erp_qty";
-            xCMPRIT.erp_subinventory_code = "erp_subinventory_code";
-            xCMPRIT.erp_supplier_code = "erp_supplier_code";
-            xCMPRIT.erp_supplier_site_code = "erp_supplier_site_code";
-            xCMPRIT.erp_uom = "erp_uom";
-            xCMPRIT.error_message = "error_message";
-            xCMPRIT.file_name = "file_name";
-            xCMPRIT.INVOICE_AMT = "INVOICE_AMT";
-            xCMPRIT.INVOICE_NO = "INVOICE_NO";
-            xCMPRIT.item_code = "item_code";
-            xCMPRIT.last_update_by = "last_update_by";
-            xCMPRIT.last_update_date = "last_update_date";
-            xCMPRIT.lot_number = "lot_number";
-            xCMPRIT.po_line_number = "po_line_number";
-            xCMPRIT.po_number = "po_number";
-            xCMPRIT.process_flag = "process_flag";
-            xCMPRIT.RECEIVE_QTY = "RECEIVE_QTY";
-            xCMPRIT.serial_number = "serial_number";
-            xCMPRIT.store_cocde = "store_cocde";
-            xCMPRIT.supplier_code = "supplier_code";
-            xCMPRIT.validate_flag = "validate_flag";
+            xCMPoRIT = new XcustMmxPoRcpIntTbl();
+            xCMPoRIT.creation_by = "creation_by";
+            xCMPoRIT.creation_date = "creation_date";
+            xCMPoRIT.date_of_record = "date_of_record";
+            xCMPoRIT.erp_item_code = "erp_item_code";
+            xCMPoRIT.erp_locator = "erp_locator";
+            xCMPoRIT.erp_qty = "erp_qty";
+            xCMPoRIT.erp_subinventory_code = "erp_subinventory_code";
+            xCMPoRIT.erp_supplier_code = "erp_supplier_code";
+            xCMPoRIT.erp_supplier_site_code = "erp_supplier_site_code";
+            xCMPoRIT.erp_uom = "erp_uom";
+            xCMPoRIT.error_message = "error_message";
+            xCMPoRIT.file_name = "file_name";
+            xCMPoRIT.INVOICE_AMT = "INVOICE_AMT";
+            xCMPoRIT.INVOICE_NO = "INVOICE_NO";
+            xCMPoRIT.item_code = "item_code";
+            xCMPoRIT.last_update_by = "last_update_by";
+            xCMPoRIT.last_update_date = "last_update_date";
+            xCMPoRIT.lot_number = "lot_number";
+            xCMPoRIT.po_line_number = "po_line_number";
+            xCMPoRIT.po_number = "po_number";
+            xCMPoRIT.process_flag = "process_flag";
+            xCMPoRIT.RECEIVE_QTY = "RECEIVE_QTY";
+            xCMPoRIT.serial_number = "serial_number";
+            xCMPoRIT.store_cocde = "store_cocde";
+            xCMPoRIT.supplier_code = "supplier_code";
+            xCMPoRIT.validate_flag = "validate_flag";
 
-            xCMPRIT.table = "xcust_mmx_po_rcp_int_tbl";
-            xCMPRIT.pkField = "";
+            xCMPoRIT.table = "xcust_mmx_po_rcp_int_tbl";
+            xCMPoRIT.pkField = "";
         }
         public void DeleteMmxTemp()
         {
-            String sql = "Delete From " + xCMPRIT.table;
+            String sql = "Delete From " + xCMPoRIT.table;
             conn.ExecuteNonQuery(sql, "kfc_po");
         }
         public DataTable selectAll()
         {
             DataTable dt = new DataTable();
-            String sql = "select * From " + xCMPRIT.table;
+            String sql = "select * From " + xCMPoRIT.table;
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
@@ -84,35 +85,48 @@ namespace XCustPr
                 List<string> Rows = new List<string>();
                 foreach (String bbb in linfox)
                 {
+                    String store_cocde = "", item_code = "", date_of_record = "", RECEIVE_QTY = "", INVOICE_NO = "", INVOICE_AMT = "", supplier_code = "", lot_number = "";
+                    String serial_number = "", validate_flag = "", process_flag = "", error_message = "", creation_by = "0", creation_date = "getdate()", last_update_date = "", last_update_by = "0";
+                    String file_name = "", erp_supplier_code = "", erp_supplier_site_code = "", erp_item_code = "", po_number = "", po_line_number = "", erp_subinventory_code = "", erp_locator = "";
+                    String erp_qty = "0", erp_uom = "";
                     i++;
                     sql.Clear();
                     pB1.Value = i;
-                    String[] aaa = bbb.Split('|');
+                    String[] aaa = bbb.Split(',');
                     errMsg = "";
                     processFlag = "N";
                     validateFlag = "N";
+                    store_cocde = aaa[0];
+                    item_code = aaa[1];
+                    date_of_record = conn.dateYearShortToDBTemp(aaa[2]);
+                    RECEIVE_QTY = aaa[3].Trim();
+                    INVOICE_NO = aaa[4];
+                    INVOICE_AMT = aaa[5];
+                    supplier_code = aaa[6];
                     //bbb += "('" + aaa[0] + "','" +
                     //aaa[11] + "','" + errMsg + "','" + aaa[6] + "','" +
                     //aaa[2] + "','" + aaa[4] + "','" + aaa[5] + "','" +
                     //aaa[1] + "','" + processFlag + "','" + aaa[7] + "','" +
                     //aaa[3] + "','" + aaa[8] + "','" + validateFlag + "'),";
-                    sql.Append("Insert Into ").Append(xCMPRIT.table).Append(" (").Append(xCMPRIT.creation_by).Append(",").Append(xCMPRIT.creation_date).Append(",").Append(xCMPRIT.date_of_record)
-                        .Append(",").Append(xCMPRIT.erp_item_code).Append(",").Append(xCMPRIT.erp_locator).Append(",").Append(xCMPRIT.erp_qty)
-                        .Append(",").Append(xCMPRIT.erp_subinventory_code).Append(",").Append(xCMPRIT.erp_supplier_code).Append(",").Append(xCMPRIT.erp_supplier_site_code)
-                        .Append(",").Append(xCMPRIT.erp_uom).Append(",").Append(xCMPRIT.error_message).Append(",").Append(xCMPRIT.file_name)
-                        .Append(",").Append(xCMPRIT.INVOICE_AMT).Append(",").Append(xCMPRIT.INVOICE_NO).Append(",").Append(xCMPRIT.item_code)
-                        .Append(",").Append(xCMPRIT.last_update_by).Append(",").Append(xCMPRIT.last_update_date).Append(",").Append(xCMPRIT.lot_number)
-                        .Append(",").Append(xCMPRIT.po_line_number).Append(",").Append(xCMPRIT.po_number).Append(",").Append(xCMPRIT.process_flag)
-                        .Append(",").Append(xCMPRIT.RECEIVE_QTY).Append(",").Append(xCMPRIT.serial_number).Append(",").Append(xCMPRIT.store_cocde)
-                        .Append(",").Append(xCMPRIT.supplier_code).Append(",").Append(xCMPRIT.validate_flag)
+                    sql.Append("Insert Into ").Append(xCMPoRIT.table).Append(" (").Append(xCMPoRIT.creation_by).Append(",").Append(xCMPoRIT.creation_date).Append(",").Append(xCMPoRIT.date_of_record)
+                        .Append(",").Append(xCMPoRIT.erp_item_code).Append(",").Append(xCMPoRIT.erp_locator).Append(",").Append(xCMPoRIT.erp_qty)
+                        .Append(",").Append(xCMPoRIT.erp_subinventory_code).Append(",").Append(xCMPoRIT.erp_supplier_code).Append(",").Append(xCMPoRIT.erp_supplier_site_code)
+                        .Append(",").Append(xCMPoRIT.erp_uom).Append(",").Append(xCMPoRIT.error_message).Append(",").Append(xCMPoRIT.file_name)
+                        .Append(",").Append(xCMPoRIT.INVOICE_AMT).Append(",").Append(xCMPoRIT.INVOICE_NO).Append(",").Append(xCMPoRIT.item_code)
+                        .Append(",").Append(xCMPoRIT.last_update_by).Append(",").Append(xCMPoRIT.last_update_date).Append(",").Append(xCMPoRIT.lot_number)
+                        .Append(",").Append(xCMPoRIT.po_line_number).Append(",").Append(xCMPoRIT.po_number).Append(",").Append(xCMPoRIT.process_flag)
+                        .Append(",").Append(xCMPoRIT.RECEIVE_QTY).Append(",").Append(xCMPoRIT.serial_number).Append(",").Append(xCMPoRIT.store_cocde)
+                        .Append(",").Append(xCMPoRIT.supplier_code).Append(",").Append(xCMPoRIT.validate_flag)
                         .Append(") Values ('")
-                        .Append(aaa[0]).Append("','").Append(aaa[1]).Append("','").Append(aaa[2])
-                        .Append("','").Append(aaa[3]).Append("',").Append(aaa[4]).Append(",'").Append(aaa[5])
-                        .Append("','").Append(aaa[7]).Append("',").Append(aaa[8]).Append(",'").Append(aaa[9])
-                        .Append("','").Append(aaa[10]).Append("','").Append(validateFlag).Append("','").Append(processFlag)
-                        .Append("','").Append(errMsg).Append("','").Append(createBy).Append("',").Append(createDate)
-                        .Append(",'").Append(lastUpdateBy).Append("',").Append(lastUpdateTime).Append(",'").Append(filename.Trim().Replace(initC.PathProcess, ""))
-                        .Append("','").Append(aaa[11]).Append("','").Append(aaa[6]).Append("') ");
+                        .Append(creation_by).Append("',").Append(creation_date).Append(",'").Append(date_of_record)
+                        .Append("','").Append(erp_item_code).Append("','").Append(erp_locator).Append("','").Append(erp_qty)
+                        .Append("','").Append(erp_subinventory_code).Append("','").Append(erp_supplier_code).Append("','").Append(erp_supplier_site_code)
+                        .Append("','").Append(erp_uom).Append("','").Append(validateFlag).Append("','").Append(filename.Trim().Replace(initC.PO004PathProcess, ""))
+                        .Append("','").Append(INVOICE_AMT).Append("','").Append(INVOICE_NO).Append("','").Append(item_code)
+                        .Append("','").Append(last_update_by).Append("','").Append(last_update_date).Append("','").Append(lot_number)
+                        .Append("','").Append(po_line_number).Append("','").Append(po_number).Append("','").Append(process_flag)
+                        .Append("','").Append(RECEIVE_QTY).Append("','").Append(lastUpdateTime).Append("','").Append(store_cocde)
+                        .Append("','").Append(supplier_code).Append("','").Append(validate_flag).Append("') ");
                     conn.ExecuteNonQuery(sql.ToString(), host);
                 }
             }

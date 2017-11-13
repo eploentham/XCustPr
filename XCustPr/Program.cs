@@ -30,12 +30,21 @@ namespace XCustPr
             {
                 Application.Run(new XCustPO005(Cm));
             }
+            else if (System.Diagnostics.Process.GetCurrentProcess().ProcessName.ToLower().Equals("xcustpo003"))
+            {
+                Application.Run(new XCustPO003(Cm));
+            }
+            else if (System.Diagnostics.Process.GetCurrentProcess().ProcessName.ToLower().Equals("xcustextractzip"))
+            {
+                Application.Run(new XCustExtractZip(Cm));
+            }
             else
             {
-                //Application.Run(new XCustPO004(Cm));
+                Application.Run(new XCustPO004(Cm));
                 //Application.Run(new XCustPO005(Cm));
                 //Application.Run(new XCustPO003(Cm));
-                Application.Run(new XCustPrToCloud(Cm));
+                //Application.Run(new XCustPrToCloud(Cm));
+                //Application.Run(new XCustExtractZip(Cm));
             }
         }
     }
