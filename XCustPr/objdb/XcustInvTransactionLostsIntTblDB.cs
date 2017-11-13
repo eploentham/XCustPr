@@ -62,6 +62,7 @@ namespace XCustPr
             xCITLIT.ATTRIBUTE_NUMBER9 = "ATTRIBUTE_NUMBER9";
             xCITLIT.ATTRIBUTE_NUMBER10 = "ATTRIBUTE_NUMBER10";
 
+            xCITLIT.ATTRIBUTE_DATE1 = "ATTRIBUTE_DATE1";
             xCITLIT.ATTRIBUTE_DATE2 = "ATTRIBUTE_DATE2";
             xCITLIT.ATTRIBUTE_DATE3 = "ATTRIBUTE_DATE3";
             xCITLIT.ATTRIBUTE_DATE4 = "ATTRIBUTE_DATE4";
@@ -86,6 +87,8 @@ namespace XCustPr
             xCITLIT.IMPORT_SOURCE = "IMPORT_SOURCE";
             xCITLIT.CREATE_BY = "CREATE_BY";
             xCITLIT.LAST_UPDATE_BY = "LAST_UPDATE_BY";
+
+            xCITLIT.table = "XCUST_INV_TRANSACTION_LOTS_INT_TBL";
         }
         public DataTable selectAll()
         {
@@ -111,7 +114,7 @@ namespace XCustPr
                 p.ATTRIBUTE_NUMBER9 = p.ATTRIBUTE_NUMBER9.Equals("") ? "0" : p.ATTRIBUTE_NUMBER9;
                 p.ATTRIBUTE_NUMBER10 = p.ATTRIBUTE_NUMBER10.Equals("") ? "0" : p.ATTRIBUTE_NUMBER10;
 
-                sql = "Insert Into ("+ xCITLIT.ATTRIBUTE_CATEGORY+","+ xCITLIT.HEADER_INTERFACE_NUMBER+","+ xCITLIT.LINE_NUMBER+","+
+                sql = "Insert Into  " + xCITLIT.table + "(" + xCITLIT.ATTRIBUTE_CATEGORY+","+ xCITLIT.HEADER_INTERFACE_NUMBER+","+ xCITLIT.LINE_NUMBER+","+
                     xCITLIT.LOT_EXPIRATION_DATE+","+ xCITLIT.LOT_NUMBER+","+ xCITLIT.PRIMARY_QUANTITY+","+ 
                     xCITLIT.TRANSACTION_QUANTITY+","+ xCITLIT.ATTRIBUTE1+","+
                     xCITLIT.ATTRIBUTE2 + "," + xCITLIT.ATTRIBUTE3 + "," + xCITLIT.ATTRIBUTE4 + "," +
@@ -156,6 +159,7 @@ namespace XCustPr
                     p.ATTRIBUTE_TIMESTAMP8 + "','" + p.ATTRIBUTE_TIMESTAMP9 + "','" + p.ATTRIBUTE_TIMESTAMP10 + "','" +
                     p.LAST_UPDATE_DATE + "','" + p.CREATION_DATE + "','" + p.IMPORT_SOURCE + "','" +
                     p.LAST_UPDATE_BY +"')";
+                chk = conn.ExecuteNonQuery(sql, "kfc_po");
             }
             catch (Exception ex)
             {

@@ -36,6 +36,26 @@ namespace XCustPr
         }
         public void createFolderPO001()
         {
+            if (initC.PathError.Equals(""))
+            {
+                MessageBox.Show("Path PO001PathError empty", "createFolderPO001");
+                return;
+            }
+            if (initC.PathInitial.Equals(""))
+            {
+                MessageBox.Show("Path PO001PathInitial empty", "createFolderPO001");
+                return;
+            }
+            if (initC.PathProcess.Equals(""))
+            {
+                MessageBox.Show("Path PO001PathProcess empty", "createFolderPO001");
+                return;
+            }
+            if (initC.PathArchive.Equals(""))
+            {
+                MessageBox.Show("Path PO001PathArchive empty", "createFolderPO001");
+                return;
+            }
             createFolderPO001PathProcess();
             createFolderPO001PathInitial();
             createFolderPO001PathError();
@@ -43,18 +63,108 @@ namespace XCustPr
         }
         public void createFolderPO004()
         {
-            createFolderPO001PathProcess();
-            createFolderPO001PathInitial();
-            createFolderPO001PathError();
-            createFolderPO001PathArchive();
+            if (initC.PO004PathError.Equals(""))
+            {
+                MessageBox.Show("Path PO004PathError empty", "createFolderPO004");
+                return;
+            }
+            if (initC.PO004PathInitial.Equals(""))
+            {
+                MessageBox.Show("Path PO004PathInitial empty", "createFolderPO004");
+                return;
+            }
+            if (initC.PO004PathProcess.Equals(""))
+            {
+                MessageBox.Show("Path PO004PathProcess empty", "createFolderPO004");
+                return;
+            }
+            //createFolder(initC.PO004PathArchive);
+            createFolder(initC.PO004PathError);
+            createFolder(initC.PO004PathInitial);
+            createFolder(initC.PO004PathProcess);
         }
         public void createFolderPO005()
         {
-            createFolderPO001PathProcess();
-            createFolderPO001PathInitial();
-            createFolderPO001PathError();
-            createFolderPO001PathArchive();
+            if (initC.PO005PathError.Equals(""))
+            {
+                MessageBox.Show("Path PO005PathError empty", "createFolderPO005");
+                return;
+            }
+            if (initC.PO005PathInitial.Equals(""))
+            {
+                MessageBox.Show("Path PO005PathInitial empty", "createFolderPO005");
+                return;
+            }
+            if (initC.PO005PathProcess.Equals(""))
+            {
+                MessageBox.Show("Path PO005PathProcess empty", "createFolderPO005");
+                return;
+            }
+            if (initC.PO005PathArchive.Equals(""))
+            {
+                MessageBox.Show("Path PO005PathArchive empty", "createFolderPO005");
+                return;
+            }
+            createFolder(initC.PO005PathArchive);
+            createFolder(initC.PO005PathError);
+            createFolder(initC.PO005PathInitial);
+            createFolder(initC.PO005PathProcess);
         }
+        public void createFolderPO003()
+        {
+            if (initC.PO003PathError.Equals(""))
+            {
+                MessageBox.Show("Path PO003PathError empty", "createFolderPO003");
+                return;
+            }
+            if (initC.PO003PathInitial.Equals(""))
+            {
+                MessageBox.Show("Path PO003PathInitial empty", "createFolderPO003");
+                return;
+            }
+            if (initC.PO003PathProcess.Equals(""))
+            {
+                MessageBox.Show("Path PO003PathProcess empty", "createFolderPO003");
+                return;
+            }
+            if (initC.PO003PathArchive.Equals(""))
+            {
+                MessageBox.Show("Path PO003PathArchive empty", "createFolderPO003");
+                return;
+            }
+            createFolder(initC.PO003PathArchive);
+            createFolder(initC.PO003PathError);
+            createFolder(initC.PO003PathInitial);
+            createFolder(initC.PO003PathProcess);
+        }
+        public void createFolderPO008()
+        {
+            if (initC.PO008PathError.Equals(""))
+            {
+                MessageBox.Show("Path PO008PathError empty", "createFolderPO008");
+                return;
+            }
+            if (initC.PO008PathInitial.Equals(""))
+            {
+                MessageBox.Show("Path PO008PathInitial empty", "createFolderPO008");
+                return;
+            }
+            if (initC.PO008PathProcess.Equals(""))
+            {
+                MessageBox.Show("Path PO008PathProcess empty", "createFolderPO008");
+                return;
+            }
+            //if (initC.PO008PathArchive.Equals(""))
+            //{
+            //    MessageBox.Show("Path PO003PathArchive empty", "createFolderPO003");
+            //    return;
+            //}
+            //createFolder(initC.PO008PathArchive);
+            createFolder(initC.PO008PathError);
+            createFolder(initC.PO008PathInitial);
+            createFolder(initC.PO008PathProcess);
+        }
+
         public void createFolderPO001PathProcess()
         {
             bool folderExists = Directory.Exists(initC.PathProcess);
@@ -81,7 +191,12 @@ namespace XCustPr
         }
         public String[] getFileinFolder(String path)
         {
-            string[] filePaths = Directory.GetFiles(@path);
+            string[] filePaths = null;
+            if (Directory.Exists(path))
+            {
+                filePaths = Directory.GetFiles(@path);
+            }
+             
             return filePaths;
         }
         public void moveFile(String sourceFile, String destinationFile)
@@ -143,17 +258,26 @@ namespace XCustPr
 
             initC.PathMaster = iniFile.Read("PathMaster");
 
-            initC.PO005PathArchive = iniFile.Read("PO005PathArchive");    //bit
-            initC.PO005PathError = iniFile.Read("PO005PathError");
-            initC.PO005PathInitial = iniFile.Read("PO005PathInitial");
-            initC.PO005PathProcess = iniFile.Read("PO005PathProcess");
-            initC.PO005ImportSource = iniFile.Read("PO005ImportSource");
+            initC.PO005PathArchive = iniFile.Read("PO005PathArchive").Trim();    //bit
+            initC.PO005PathError = iniFile.Read("PO005PathError").Trim();
+            initC.PO005PathInitial = iniFile.Read("PO005PathInitial").Trim();
+            initC.PO005PathProcess = iniFile.Read("PO005PathProcess").Trim();
+            initC.PO005ImportSource = iniFile.Read("PO005ImportSource").Trim();
 
-            initC.PO003PathArchive = iniFile.Read("PO003PathArchive");    //bit
-            initC.PO003PathError = iniFile.Read("PO003PathError");
-            initC.PO003PathInitial = iniFile.Read("PO003PathInitial");
-            initC.PO003PathProcess = iniFile.Read("PO003PathProcess");
-            initC.PO003ImportSource = iniFile.Read("PO003ImportSource");
+            initC.PO003PathArchive = iniFile.Read("PO003PathArchive").Trim();    //bit
+            initC.PO003PathError = iniFile.Read("PO003PathError").Trim();
+            initC.PO003PathInitial = iniFile.Read("PO003PathInitial").Trim();
+            initC.PO003PathProcess = iniFile.Read("PO003PathProcess").Trim();
+            initC.PO003ImportSource = iniFile.Read("PO003ImportSource").Trim();
+            initC.PO003RECEIPT_SOURCE = iniFile.Read("PO003RECEIPT_SOURCE").Trim();
+            initC.PO003TRANSACTION_TYPE = iniFile.Read("PO003TRANSACTION_TYPE").Trim();
+
+            //initC.PO004PathArchive = iniFile.Read("PO004PathArchive").Trim();    //bit
+            initC.PO004PathError = iniFile.Read("PO004PathError").Trim();
+            initC.PO004PathInitial = iniFile.Read("PO004PathInitial").Trim();
+            initC.PO004PathProcess = iniFile.Read("PO004PathProcess").Trim();
+            initC.PO004ImportSource = iniFile.Read("PO004ImportSource").Trim();
+            initC.PO004ZipFileSearch = iniFile.Read("PO004ZipFileSearch").Trim();
 
             //initC.grdQuoColor = iniFile.Read("gridquotationcolor");
 
@@ -510,6 +634,56 @@ namespace XCustPr
             }
             return chk;
         }
-
+        public void logProcess(String programname, List<ValidatePrPo> lVPr, String startdatetime, List<ValidateFileName> listfile)
+        {
+            String line1 = "", parameter="", programstart="", filename="", recordError="", txt="";
+            int cntErr = 0;
+            if (programname.ToLower().Equals("xcustpo001"))
+            {
+                line1 = "Program : XCUST Interface PR<Linfox>To PO(ERP)\n\r";
+            }
+            parameter = "Parameter : \n\r";
+            parameter += "           Path Initial :" + initC.PathInitial+"\n\r";
+            parameter += "           Path Process :" + initC.PathProcess + "\n\r";
+            parameter += "           Path Error :" + initC.PathError + "\n\r";
+            parameter += "           Import Source :" + initC.ImportSource + "\n\r";
+            programstart = "Program Start : " + startdatetime + "\n\r";
+            if (listfile.Count > 0)
+            {
+                foreach (ValidateFileName vF in listfile)
+                {
+                    filename += "Filename " + vF.fileName + ", Total = " + vF.recordTotal + ", Validate pass = " + vF.validatePass + ", Record Error = " + vF.recordError+", Total Error = "+vF.totalError + "\n\r";
+                    if (int.Parse(vF.recordError)>0)
+                    {
+                        cntErr++;
+                    }
+                }
+            }
+            if (lVPr.Count > 0)
+            {
+                foreach(ValidatePrPo vPr in lVPr)
+                {
+                    recordError += "FileName " + vPr.Filename + "\n\r";
+                    recordError += "==>" + vPr.Validate + "\n\r";
+                    recordError += "     ====>Error"+vPr.Message+"\n\r";
+                }
+            }
+            using (var stream = File.CreateText(Environment.CurrentDirectory + "\\" + programname+"_"+ startdatetime.Replace("-","_").Replace(":","_") + ".log"))
+            {
+                txt = line1;
+                txt += parameter;
+                txt += programstart+"\n\r";
+                txt += "File \n\r";
+                txt += "--------------------------------------------------------------------------\n\r";
+                txt += filename + "\n\r";
+                txt += "File Error \n\r";
+                txt += "--------------------------------------------------------------------------\n\r";
+                txt += recordError + "\n\r";
+                txt += "Total "+ listfile.Count + "\n\r";
+                txt += "Complete " + (listfile.Count-cntErr) + "\n\r";
+                txt += "Error " + cntErr + "\n\r";
+                stream.WriteLine(txt);
+            }
+        }
     }
 }

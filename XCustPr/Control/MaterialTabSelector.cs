@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace XCustPr
 {
-    public class MaterialTabSelector : Control, IMaterialControl
+    public class MaterialTabSelector : TabControl, IMaterialControl
     {
         [Browsable(false)]
         public int Depth { get; set; }

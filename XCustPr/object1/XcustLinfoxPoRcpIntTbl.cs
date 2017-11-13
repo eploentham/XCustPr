@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace XCustPr
 {
-    public class XcustLinfoxRcvPrIntTbl:Persistent
+    public class XcustLinfoxPoRcpIntTbl:Persistent
     {
         public String company_code = "", branch_plant = "", order_number = "", doc_type = "", order_company = "", line_number = "";
         public String qty_receipt = "", item_code = "", uom_code = "", lot_number = "", lot_expire_date = "", reference1 = "", vendor_remark = "";

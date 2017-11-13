@@ -91,7 +91,7 @@ namespace XCustPr
             xCRHIA.IMPORT_SOURCE = "IMPORT_SOURCE";
             xCRHIA.CREATE_BY = "CREATE_BY";
             xCRHIA.LAST_UPDATE_BY = "LAST_UPDATE_BY";
-            //xCRHIA.IMPORT_SOURCE = "IMPORT_SOURCE";
+            xCRHIA.ATTRIBUTE_CATEGORY = "ATTRIBUTE_CATEGORY";
 
             xCRHIA.pkField = "";
             xCRHIA.table = "XCUST_RCV_HEADERS_INT_ALL";
@@ -121,7 +121,7 @@ namespace XCustPr
                 p.ATTRIBUTE_NUMBER10 = p.ATTRIBUTE_NUMBER10.Equals("") ? "0" : p.ATTRIBUTE_NUMBER10;
 
                 sql = "Insert Into " + xCRHIA.table + "(" + xCRHIA.ASN_TYPE + "," + xCRHIA.ATTRIBUTE1 + "," + xCRHIA.ATTRIBUTE_CATEGORY + "," +
-                    xCRHIA.BUSINESS_UNIT + "," + xCRHIA.CREATE_BY + "," + xCRHIA.CREATION_DATE + "," +
+                    xCRHIA.BUSINESS_UNIT + "," + xCRHIA.CREATE_BY + "," +
                     xCRHIA.HEADER_INTERFACE_NUMBER + "," + xCRHIA.PROCESS_FLAG + "," + xCRHIA.RECEIPT_NUM + "," +
                     xCRHIA.RECEIPT_SOURCE_CODE + "," + xCRHIA.SHIPTO_ORGANIZATION_CODE + "," + xCRHIA.TRANSACTION_DATE + "," +
                     xCRHIA.TRANSACTION_TYPE + "," + xCRHIA.VENDOR_NUM + "," + xCRHIA.VENDOR_SITE_CODE + "," +
@@ -146,7 +146,7 @@ namespace XCustPr
                     xCRHIA.LAST_UPDATE_BY + 
                     ") "+
                     "Values ('"+ p.ASN_TYPE + "','" + p.ATTRIBUTE1 + "','" + p.ATTRIBUTE_CATEGORY + "','" +
-                    p.BUSINESS_UNIT + "','" + p.CREATE_BY + "','" + p.CREATION_DATE + "','" +
+                    p.BUSINESS_UNIT + "','" + p.CREATE_BY + "','" + 
                     p.HEADER_INTERFACE_NUMBER + "','" + p.PROCESS_FLAG + "','" + p.RECEIPT_NUM + "','" +
                     p.RECEIPT_SOURCE_CODE + "','" + p.SHIPTO_ORGANIZATION_CODE + "','" + p.TRANSACTION_DATE + "','" +
                     p.TRANSACTION_TYPE + "','" + p.VENDOR_NUM + "','" + p.VENDOR_SITE_CODE + "','" +
@@ -167,8 +167,10 @@ namespace XCustPr
                     p.ATTRIBUTE_TIMESTAMP3 + "','" + p.ATTRIBUTE_TIMESTAMP4 + "','" +
                     p.ATTRIBUTE_TIMESTAMP5 + "','" + p.ATTRIBUTE_TIMESTAMP6 + "','" + p.ATTRIBUTE_TIMESTAMP7 + "','" +
                     p.ATTRIBUTE_TIMESTAMP8 + "','" + p.ATTRIBUTE_TIMESTAMP9 + "','" + p.ATTRIBUTE_TIMESTAMP10 + "','" +
-                    p.LAST_UPDATE_DATE + "','" + p.CREATION_DATE + "','" + p.IMPORT_SOURCE + "','" +
-                    p.LAST_UPDATE_BY + "')";
+                    p.LAST_UPDATE_DATE + "',getdate(),'" + p.IMPORT_SOURCE + "'" +
+                    p.LAST_UPDATE_BY + 
+                    ")";
+                chk = conn.ExecuteNonQuery(sql, "kfc_po");
             }
             catch (Exception ex)
             {

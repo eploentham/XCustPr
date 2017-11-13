@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
+
 namespace XCustPr
 {
     public class MaterialSingleLineTextField : Control, IMaterialControl
@@ -320,6 +321,7 @@ namespace XCustPr
             add
             {
                 _baseTextBox.Enter += value;
+                _baseTextBox.BackColor = Color.Yellow;
             }
             remove
             {

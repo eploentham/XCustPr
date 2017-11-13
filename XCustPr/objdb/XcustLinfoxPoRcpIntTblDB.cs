@@ -8,16 +8,16 @@ using System.Threading.Tasks;
 
 namespace XCustPr
 {
-    public class XcustLinfoxRcvPrIntTblDB
+    public class XcustLinfoxPoRcpIntTblDB
     {
-        public XcustLinfoxRcvPrIntTbl xCLRPIT;
+        public XcustLinfoxPoRcpIntTbl xCLPRIT;
         ConnectDB conn;
         private InitC initC;
 
         private StringBuilder sYear = new StringBuilder();
         private StringBuilder sMonth = new StringBuilder();
         private StringBuilder sDay = new StringBuilder();
-        public XcustLinfoxRcvPrIntTblDB(ConnectDB c, InitC initc)
+        public XcustLinfoxPoRcpIntTblDB(ConnectDB c, InitC initc)
         {
             conn = c;
             initC = initc;
@@ -25,70 +25,70 @@ namespace XCustPr
         }
         private void initConfig()
         {
-            xCLRPIT = new XcustLinfoxRcvPrIntTbl();
-            xCLRPIT.branch_plant = "branch_plant";
-            xCLRPIT.company_code = "company_code";
-            xCLRPIT.creation_by = "creation_by";
-            xCLRPIT.creation_date = "creation_date";
-            xCLRPIT.DOCUMENT_LINE_NUMBER = "DOCUMENT_LINE_NUMBER";
-            xCLRPIT.DOCUMENT_NUMBER = "DOCUMENT_NUMBER";
-            xCLRPIT.doc_type = "doc_type";
-            xCLRPIT.ERP_ITEM_CODE = "ERP_ITEM_CODE";
-            xCLRPIT.error_message = "error_message";
-            xCLRPIT.file_name = "file_name";
-            xCLRPIT.item_code = "item_code";
-            xCLRPIT.last_update_by = "last_update_by";
-            xCLRPIT.last_update_date = "last_update_date";
-            xCLRPIT.line_number = "line_number";
-            xCLRPIT.location = "location";
-            xCLRPIT.LOCATOR = "LOCATOR";
-            xCLRPIT.lot_expire_date = "lot_expire_date";
-            xCLRPIT.lot_number = "lot_number";
-            xCLRPIT.order_company = "order_company";
-            xCLRPIT.order_number = "order_number";
-            xCLRPIT.process_flag = "process_flag";
-            xCLRPIT.qty_receipt = "qty_receipt";
-            xCLRPIT.reason_code = "reason_code";
-            xCLRPIT.receipt_date = "receipt_date";
-            xCLRPIT.receipt_time = "receipt_time";
-            xCLRPIT.reference1 = "reference1";
-            xCLRPIT.subinventory_code = "subinventory_code";
-            xCLRPIT.supplier_code = "supplier_code";
-            xCLRPIT.SUPPLIER_SITE_CODE = "SUPPLIER_SITE_CODE";
-            xCLRPIT.uom_code = "uom_code";
-            xCLRPIT.uom_code1 = "uom_code1";
-            xCLRPIT.uom_code2 = "uom_code2";
-            xCLRPIT.validate_flag = "validate_flag";
-            xCLRPIT.vendor_remark = "vendor_remark";
+            xCLPRIT = new XcustLinfoxPoRcpIntTbl();
+            xCLPRIT.branch_plant = "branch_plant";
+            xCLPRIT.company_code = "company_code";
+            xCLPRIT.creation_by = "creation_by";
+            xCLPRIT.creation_date = "creation_date";
+            xCLPRIT.DOCUMENT_LINE_NUMBER = "DOCUMENT_LINE_NUMBER";
+            xCLPRIT.DOCUMENT_NUMBER = "DOCUMENT_NUMBER";
+            xCLPRIT.doc_type = "doc_type";
+            xCLPRIT.ERP_ITEM_CODE = "ERP_ITEM_CODE";
+            xCLPRIT.error_message = "error_message";
+            xCLPRIT.file_name = "file_name";
+            xCLPRIT.item_code = "item_code";
+            xCLPRIT.last_update_by = "last_update_by";
+            xCLPRIT.last_update_date = "last_update_date";
+            xCLPRIT.line_number = "line_number";
+            xCLPRIT.location = "location";
+            xCLPRIT.LOCATOR = "LOCATOR";
+            xCLPRIT.lot_expire_date = "lot_expire_date";
+            xCLPRIT.lot_number = "lot_number";
+            xCLPRIT.order_company = "order_company";
+            xCLPRIT.order_number = "order_number";
+            xCLPRIT.process_flag = "process_flag";
+            xCLPRIT.qty_receipt = "qty_receipt";
+            xCLPRIT.reason_code = "reason_code";
+            xCLPRIT.receipt_date = "receipt_date";
+            xCLPRIT.receipt_time = "receipt_time";
+            xCLPRIT.reference1 = "reference1";
+            xCLPRIT.subinventory_code = "subinventory_code";
+            xCLPRIT.supplier_code = "supplier_code";
+            xCLPRIT.SUPPLIER_SITE_CODE = "SUPPLIER_SITE_CODE";
+            xCLPRIT.uom_code = "uom_code";
+            xCLPRIT.uom_code1 = "uom_code1";
+            xCLPRIT.uom_code2 = "uom_code2";
+            xCLPRIT.validate_flag = "validate_flag";
+            xCLPRIT.vendor_remark = "vendor_remark";
             
 
-            xCLRPIT.table = "xcust_linfox_po_rcp_int_tbl";
-            xCLRPIT.pkField = "";
+            xCLPRIT.table = "xcust_linfox_po_rcp_int_tbl";
+            xCLPRIT.pkField = "";
         }
         public DataTable selectAll()
         {
             DataTable dt = new DataTable();
-            String sql = "select * From " + xCLRPIT.table;
+            String sql = "select * From " + xCLPRIT.table;
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
         public DataTable selectMmxGroupByFilename()
         {
             DataTable dt = new DataTable();
-            String sql = "select " + xCLRPIT.file_name + " From " + xCLRPIT.table + " Group By " + xCLRPIT.file_name;
+            String sql = "select " + xCLPRIT.file_name + " From " + xCLPRIT.table + " Group By " + xCLPRIT.file_name;
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
         public DataTable selectMmxByFilename(String filename)
         {
             DataTable dt = new DataTable();
-            String sql = "select * From " + xCLRPIT.table + " Where " + xCLRPIT.file_name + "='" + filename + "'";
+            String sql = "select * From " + xCLPRIT.table + " Where " + xCLPRIT.file_name + "='" + filename + "'";
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
         public void DeleteMmxTemp()
         {
-            String sql = "Delete From " + xCLRPIT.table;
+            String sql = "Delete From " + xCLPRIT.table;
             conn.ExecuteNonQuery(sql, "kfc_po");
         }
         public String dateYearShortToDB(String date)
@@ -147,18 +147,18 @@ namespace XCustPr
                     //aaa[2] + "','" + aaa[4] + "','" + aaa[5] + "','" +
                     //aaa[1] + "','" + processFlag + "','" + aaa[7] + "','" +
                     //aaa[3] + "','" + aaa[8] + "','" + validateFlag + "'),";
-                    sql.Append("Insert Into ").Append(xCLRPIT.table).Append(" (").Append(xCLRPIT.branch_plant).Append(",").Append(xCLRPIT.company_code).Append(",").Append(xCLRPIT.creation_by)
-                        .Append(",").Append(xCLRPIT.creation_date).Append(",").Append(xCLRPIT.DOCUMENT_LINE_NUMBER).Append(",").Append(xCLRPIT.DOCUMENT_NUMBER)
-                        .Append(",").Append(xCLRPIT.doc_type).Append(",").Append(xCLRPIT.ERP_ITEM_CODE).Append(",").Append(xCLRPIT.error_message)
-                        .Append(",").Append(xCLRPIT.file_name).Append(",").Append(xCLRPIT.item_code).Append(",").Append(xCLRPIT.last_update_by)
-                        .Append(",").Append(xCLRPIT.last_update_date).Append(",").Append(xCLRPIT.line_number).Append(",").Append(xCLRPIT.location)
-                        .Append(",").Append(xCLRPIT.LOCATOR).Append(",").Append(xCLRPIT.lot_expire_date).Append(",").Append(xCLRPIT.lot_number)
-                        .Append(",").Append(xCLRPIT.order_company).Append(",").Append(xCLRPIT.order_number).Append(",").Append(xCLRPIT.process_flag)
-                        .Append(",").Append(xCLRPIT.qty_receipt).Append(",").Append(xCLRPIT.reason_code).Append(",").Append(xCLRPIT.receipt_date)
-                        .Append(",").Append(xCLRPIT.receipt_time).Append(",").Append(xCLRPIT.reference1).Append(",").Append(xCLRPIT.subinventory_code)
-                        .Append(",").Append(xCLRPIT.supplier_code).Append(",").Append(xCLRPIT.SUPPLIER_SITE_CODE).Append(",").Append(xCLRPIT.uom_code)
-                        .Append(",").Append(xCLRPIT.uom_code1).Append(",").Append(xCLRPIT.uom_code2).Append(",").Append(xCLRPIT.validate_flag)
-                        .Append(",").Append(xCLRPIT.vendor_remark).Append(" ")
+                    sql.Append("Insert Into ").Append(xCLPRIT.table).Append(" (").Append(xCLPRIT.branch_plant).Append(",").Append(xCLPRIT.company_code).Append(",").Append(xCLPRIT.creation_by)
+                        .Append(",").Append(xCLPRIT.creation_date).Append(",").Append(xCLPRIT.DOCUMENT_LINE_NUMBER).Append(",").Append(xCLPRIT.DOCUMENT_NUMBER)
+                        .Append(",").Append(xCLPRIT.doc_type).Append(",").Append(xCLPRIT.ERP_ITEM_CODE).Append(",").Append(xCLPRIT.error_message)
+                        .Append(",").Append(xCLPRIT.file_name).Append(",").Append(xCLPRIT.item_code).Append(",").Append(xCLPRIT.last_update_by)
+                        .Append(",").Append(xCLPRIT.last_update_date).Append(",").Append(xCLPRIT.line_number).Append(",").Append(xCLPRIT.location)
+                        .Append(",").Append(xCLPRIT.LOCATOR).Append(",").Append(xCLPRIT.lot_expire_date).Append(",").Append(xCLPRIT.lot_number)
+                        .Append(",").Append(xCLPRIT.order_company).Append(",").Append(xCLPRIT.order_number).Append(",").Append(xCLPRIT.process_flag)
+                        .Append(",").Append(xCLPRIT.qty_receipt).Append(",").Append(xCLPRIT.reason_code).Append(",").Append(xCLPRIT.receipt_date)
+                        .Append(",").Append(xCLPRIT.receipt_time).Append(",").Append(xCLPRIT.reference1).Append(",").Append(xCLPRIT.subinventory_code)
+                        .Append(",").Append(xCLPRIT.supplier_code).Append(",").Append(xCLPRIT.SUPPLIER_SITE_CODE).Append(",").Append(xCLPRIT.uom_code)
+                        .Append(",").Append(xCLPRIT.uom_code1).Append(",").Append(xCLPRIT.uom_code2).Append(",").Append(xCLPRIT.validate_flag)
+                        .Append(",").Append(xCLPRIT.vendor_remark).Append(" ")
                         .Append(") Values ('")
                         .Append(branch_plant).Append("','").Append(company_code).Append("','").Append(creation_by)
                         .Append("','").Append(creation_date).Append("','").Append(DOCUMENT_LINE_NUMBER).Append("','").Append(DOCUMENT_NUMBER)
@@ -176,6 +176,14 @@ namespace XCustPr
                 }
             }
         }
-        
+        public String updateValidateFlag(String po_number, String line_number, String flag, String agreement_number, String host)
+        {
+            String sql = "";
+            //sql = "Update " + xCLRPIT.table + " Set " + xCLRPIT.Validate_flag + "='" + flag + "', " + xCLRPIT.AGREEEMENT_NUMBER + " ='" + agreement_number + "' " +
+            //    "Where " + xCLRPIT.po_number + " = '" + po_number + "' and " + xCLRPIT.AGREEMENT_LINE_NUMBER + "='" + line_number + "'";
+            //conn.ExecuteNonQuery(sql.ToString(), host);
+
+            return "";
+        }
     }
 }
