@@ -227,37 +227,31 @@ namespace XCustPr
         }
         private void btnWebService_Click(object sender, EventArgs e)
         {
-            String uri = "";
+            String uri = "", dump="";
             HttpWebRequest request = CreateWebRequest();
             XmlDocument soapEnvelopeXml = new XmlDocument();
+            const Int32 BufferSize = 128;
+            String[] filePO;
+            filePO = Cm.getFileinFolder(cPo004.Cm.initC.PathZip);
+            String text = System.IO.File.ReadAllText(filePO[0]);
+            //byte[] byteArraytext = Encoding.UTF8.GetBytes(text);
+            byte[] toEncodeAsBytestext = System.Text.ASCIIEncoding.ASCII.GetBytes(text);
+            String Arraytext = System.Convert.ToBase64String(toEncodeAsBytestext);
+
             uri = @" <soapenv:Envelope xmlns:soapenv ='http://schemas.xmlsoap.org/soap/envelope/' xmlns:typ='http://xmlns.oracle.com/oracle/apps/fnd/applcore/webservices/types/' xmlns:web='http://xmlns.oracle.com/oracle/apps/fnd/applcore/webservices/'> "+
-          "<soapenv:Header/> "+
-           "<soapenv:Body> "+
-           
+                    "<soapenv:Header/> "+
+                        "<soapenv:Body> "+
                          "<typ:uploadFiletoUCM> " +
                    "<typ:document> " +
                        "<!--Optional:--> " +
-                        "<web:fileName> PorImportRequisitions_amo.zip </web:fileName> " +
+                        "<web:fileName>xcustpr.zip</web:fileName> " +
                              "<!--Optional:--> " +
-                              "<web:contentType> application / zip </web:contentType> " +
+                              "<web:contentType>application/zip</web:contentType> " +
                                      "<!--Optional:--> " +
-                                      "<web:content> UEsDBBQAAAAIAKRiZ0tLgrW4eAAAAMYAAAAdAAAAUG9yUmVxSGVhZGVyc0ludGVyZmFjZUFsbC5j " +
-"c3YzNNPx8fRz84 / QCXINDnEMDXL0CwlWcHENc / XxD / B19QtRcPb3DXD0i1Tw8fT1DHF10TE00zE0 " +
-"MNBxDAgI8g8D8ovzixKLE7MdilJKMhIzcxLzUvSS83NxCevoBKUWlmYWl2Tm5yk4Z2cmZ6fm6ZAP " +
-"InVc / Vx4uQBQSwMEFAAAAAgApWJnS8jtihWnAAAAGwEAABsAAABQb3JSZXFMaW5lc0ludGVyZmFj " +
-"ZUFsbC5jc3a1jtEKgjAARd + D / sEPuMZWZD2mc6mUU3QJPg6VFM2R0 / 8vij6h83zgHOqAOkAkCi5k " +
-"kpUIG1U / FzXNzWRACAWMnpRR / Wmq51Z1gxrrTaUfYG1X9c2IcwBk / oV8XARa1wZ7QiBDD3RH8CPj " +
-"uXRvmStkbvm84Nckjd9NiyVx6orSukZxJLmPIygixi2mR7MMczfe4XoM / 2JL6MFOmLTpdzVlOcCF " +
-  "v169AFBLAwQUAAAACACmYmdL8SPCeS4AAACmAAAAGwAAAFBvclJlcURpc3RzSW50ZXJmYWNlQWxs " +
-"LmNzdjM00zEEIgMDHR0TUwMdQ2MDPRCbqsDQUMcABIAMc0MDKMdAB4wIWubq58LLBQBQSwECFAAU " +
-"AAAACACkYmdLS4K1uHgAAADGAAAAHQAAAAAAAAABACAAAAAAAAAAUG9yUmVxSGVhZGVyc0ludGVy " +
-"ZmFjZUFsbC5jc3ZQSwECFAAUAAAACAClYmdLyO2KFacAAAAbAQAAGwAAAAAAAAABACAAAACzAAAA " +
-"UG9yUmVxTGluZXNJbnRlcmZhY2VBbGwuY3N2UEsBAhQAFAAAAAgApmJnS / EjwnkuAAAApgAAABsA " +
-"AAAAAAAAAQAgAAAAkwEAAFBvclJlcURpc3RzSW50ZXJmYWNlQWxsLmNzdlBLBQYAAAAAAwADAN0A " +
-"AAD6AQAAAAA = " +
-"</web:content> " +
+                                        "<web:content>" + Arraytext +
+                                        "</web:content> " +
              "<!--Optional:--> " +
-              "<web:documentAccount> prc$/ requisition$/ import$</web:documentAccount> " +
+              "<web:documentAccount>prc$/requisition$/import$</web:documentAccount> " +
                     "<!--Optional:--> " +
                      "<web:documentTitle> amo_test_load </web:documentTitle> " +
                        "</typ:document> " +
@@ -265,80 +259,6 @@ namespace XCustPr
                    "</soapenv:Body> " +
                  "</soapenv:Envelope>";
             
-            //    soapEnvelopeXml.LoadXml(uri);
-
-            //try
-            //{
-            //    using (Stream stream = request.GetRequestStream())
-            //    {
-            //        soapEnvelopeXml.Save(stream);
-            //    }
-
-            //    using (WebResponse response = request.GetResponse())
-            //    {
-            //        using (StreamReader rd = new StreamReader(response.GetResponseStream()))
-            //        {
-            //            string soapResult = rd.ReadToEnd();
-            //            Console.WriteLine(soapResult);
-            //        }
-            //    }
-            //}
-            //catch(WebException we)
-            //{
-            //    System.Diagnostics.Debug.Write("Error : " + we.Message);
-            //    Console.WriteLine("Error: {0}", we.Message);
-            //}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            // Construct xml payload to invoke the service. In this example, it is a hard coded string.
-    //        string envelope = "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" " +
-    //                            "xmlns:xsi=\"http ://www.w3.org/2001/XMLSchema-instance\" " +
-    //                            "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">" +
-    //                          "<soap:Body>" +
-    //                            "<findRule
-    //xmlns =\"http://xmlns.oracle.com/apps/incentiveCompensation/cn/creditSetup/creditRule/creditRuleService/types/\">" +
-    //                         "<findCriteria>" +
-    //                           "<fetchStart
-    //xmlns =\"http://xmlns.oracle.com/adf/svc/types/\">0</fetchStart>" +
-    //                           "<fetchSize xmlns=\"http://xmlns.oracle.com/adf/svc/types/\">-1</fetchSize>" +
-    //                           "<filter xmlns=\"http://xmlns.oracle.com/adf/svc/types/\">" +
-    //                             "<group>" +
-    //                               "<upperCaseCompare>false</upperCaseCompare>" +
-    //                               "<item>" +
-    //                                 "<upperCaseCompare>false</upperCaseCompare>" +
-    //                                 "<attribute>RuleId</attribute>" +
-    //                                 "<operator>=</operator>" +
-    //                                 "<value>300000000851162</value>" +
-    //                               "</item>" +
-    //                             "</group>" +
-    //                           "</filter>" +
-    //                           "<excludeAttribute
-    //xmlns =\"http://xmlns.oracle.com/adf/svc/types/\">false</excludeAttribute>" +
-    //                           "</findCriteria>" +
-    //                           "<findControl>" +
-    //                             "<retrieveAllTranslations
-    //xmlns =\"http://xmlns.oracle.com/adf/svc/types/\">false</retrieveAllTranslations>" +
-    //                           "</findControl>" +
-    //                     "</findRule>" +
-    //                   "</soap:Body>" +
-    //                 "</soap:Envelope>";
             //byte[] byteArray = Encoding.UTF8.GetBytes(envelope);
             byte[] byteArray = Encoding.UTF8.GetBytes(uri);
 
@@ -366,42 +286,30 @@ namespace XCustPr
             dataStream.Close();
 
             // Get the response and process it; In this example, we simply print out the response XDocument doc;
+            string actNumber = "";
             XDocument doc;
             using (WebResponse response = request1.GetResponse())
             {
                 using (Stream stream = response.GetResponseStream())
                 {
                     doc = XDocument.Load(stream);
+                    foreach (XNode node in doc.DescendantNodes())
+                    {
+                        if (node is XElement)
+                        {
+                            XElement element = (XElement)node;
+                            if (element.Name.LocalName.Equals("result"))
+                            {
+                                actNumber = element.ToString().Replace("http://xmlns.oracle.com/oracle/apps/fnd/applcore/webservices/types/", "");
+                                actNumber = actNumber.Replace("result xmlns=", "").Replace("</result>", "").Replace(@"""", "").Replace("<>","");
+                            }
+                        }
+                    }
                 }
             }
             Console.WriteLine(doc);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            
 
 
         }

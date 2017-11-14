@@ -440,7 +440,7 @@ namespace XCustPr
                 lVfile.Add(vF);   // gen log
             }
             pB1.Visible = false;
-            Cm.logProcess("xcustpo001", lVPr, dateStart, lVfile);   // gen log
+            Cm.logProcess("xcustpo005", lVPr, dateStart, lVfile);   // gen log
         }
         /*
          * g.	กรณีที่ Validat ผ่าน จะเอาข้อมูล Insert ลง table XCUST_POR_REQ_HEADER_INT_ALL

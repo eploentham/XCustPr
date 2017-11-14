@@ -84,7 +84,7 @@ namespace XCustPr
                 //    }
                 //    archive.Dispose();
                 //}
-                //zip.CreateEntryFromFile(file, Path.GetFileName(file), CompressionLevel.Optimal);
+                ////zip.CreateEntryFromFile(file, Path.GetFileName(file), CompressionLevel.Optimal);
                 //zip.CreateEntryFromFile(file, Path.GetFileName(file));
             }
             //zip.Dispose();

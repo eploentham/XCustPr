@@ -142,6 +142,7 @@
     <Compile Include="objdb\XcustBlanketAgreementHeaderTblDB.cs" />
     <Compile Include="objdb\XcustBlanketAgreementLinesTblDB.cs" />
     <Compile Include="objdb\XcustBuMstTblDB.cs" />
+    <Compile Include="objdb\XcustCedarPoIntTblDB.cs" />
     <Compile Include="objdb\XcustCurrencyMstTblDB.cs" />
     <Compile Include="objdb\XcustDeriverLocatorMstTblDB.cs" />
     <Compile Include="objdb\XcustDeriverOrganizationMstTblDB.cs" />
@@ -152,6 +153,10 @@
     <Compile Include="objdb\XcustMmxPoRcpIntTblDB.cs" />
     <Compile Include="objdb\XcustMmxPrIntTblDB.cs" />
     <Compile Include="objdb\XcustMmxPrRcpIntTblDB.cs" />
+    <Compile Include="objdb\XcustPoDistIntTblDB.cs" />
+    <Compile Include="objdb\XcustPoHeaderIntTblDB.cs" />
+    <Compile Include="objdb\XcustPoLineIntTblDB.cs" />
+    <Compile Include="objdb\XcustPoLineLocIntTblDB.cs" />
     <Compile Include="objdb\XcustPorReqDistIntAllDB.cs" />
     <Compile Include="objdb\XcustPorReqHeaderIntAllDB.cs" />
     <Compile Include="objdb\XcustPorReqLineIntAllDB.cs" />
@@ -172,6 +177,7 @@
     <Compile Include="object1\XcustBlanketAgreementHeaderTbl.cs" />
     <Compile Include="object1\XcustBlanketAgreementLinesTbl.cs" />
     <Compile Include="object1\XcustBuMstTbl.cs" />
+    <Compile Include="object1\XcustCedarPoIntTbl.cs" />
     <Compile Include="object1\XcustCurrencyMstTbl.cs" />
     <Compile Include="object1\XcustDeriverLocatorMstTbl.cs" />
     <Compile Include="object1\XcustDeriverOrganizationMstTbl.cs" />
@@ -182,6 +188,10 @@
     <Compile Include="object1\XcustMmxPoRcpIntTbl.cs" />
     <Compile Include="object1\XcustMmxPrIntTbl.cs" />
     <Compile Include="object1\XcustMmxPrRcpIntTbl.cs" />
+    <Compile Include="object1\XcustPoDistIntTbl.cs" />
+    <Compile Include="object1\XcustPoHeaderIntTbl.cs" />
+    <Compile Include="object1\XcustPoLineIntTbl.cs" />
+    <Compile Include="object1\XcustPoLineLocIntTbl.cs" />
     <Compile Include="object1\XcustPorReqDistIntAll.cs" />
     <Compile Include="object1\XcustPorReqHeaderIntAll.cs" />
     <Compile Include="object1\XcustPorReqLineIntAll.cs" />

@@ -201,6 +201,7 @@ namespace XCustPr
                 addListView("ดึงข้อมูล  " + rowG[xCLPRITDB.xCLPRIT.file_name].ToString().Trim(), "Validate", lv1, form1);
                 dt = xCLPRITDB.selectMmxByFilename(rowG[xCLPRITDB.xCLPRIT.file_name].ToString().Trim());    // ข้อมูลใน file
                 row1 = 0;
+                cntErr = 0;     //gen log
                 pB1.Minimum = 0;
                 pB1.Maximum = dt.Rows.Count;
 
@@ -221,6 +222,7 @@ namespace XCustPr
                         vPP.Message = "Error PO001-002 ";
                         vPP.Validate = "row " + row1 + " conf_delivery_date=" + row[xCLPRITDB.xCLPRIT.lot_expire_date].ToString();
                         lVPr.Add(vPP);
+                        cntErr++;       // gen log
                     }
                     //Error PO003-0054 : Invalid  Supplier Code
                     if (Cm.validateSupplierBySupplierCode(row[xCLPRITDB.xCLPRIT.supplier_code].ToString().Trim(), listXcSMT))
@@ -230,6 +232,7 @@ namespace XCustPr
                         vPP.Message = "Error PO001-015 ";
                         vPP.Validate = "row " + row1 + "  supplier_code " + row[xCLPRITDB.xCLPRIT.supplier_code].ToString().Trim();
                         lVPr.Add(vPP);
+                        cntErr++;       // gen log
                     }
                     //Error PO003-0065 : Invalid data type
                     chk = Cm.validateQTY(row[xCLPRITDB.xCLPRIT.qty_receipt].ToString());
@@ -240,6 +243,7 @@ namespace XCustPr
                         vPP.Message = "Error PO005-006 ";
                         vPP.Validate = "row " + row1 + " order_qty=" + row[xCLPRITDB.xCLPRIT.qty_receipt].ToString();
                         lVPr.Add(vPP);
+                        cntErr++;       // gen log
                     }
                     //Error PO003-0110 : Item No. not found in PO No.
                     if (Cm.validateItemCodeByOrgRef("300000000949654", row[xCLPRITDB.xCLPRIT.item_code].ToString().Trim(), listXcIMT))// ต้องแก้ Fix code อยู่
@@ -249,6 +253,11 @@ namespace XCustPr
                         vPP.Message = "Error PO001-011 ";
                         vPP.Validate = "row " + row1 + "  item_code " + row[xCLPRITDB.xCLPRIT.item_code].ToString().Trim();
                         lVPr.Add(vPP);
+                        cntErr++;       // gen log
+                    }
+                    if (cntErr > 0)   // gen log
+                    {
+                        cntFileErr++;
                     }
                     addXcustListHeader(row[xCLPRITDB.xCLPRIT.reference1].ToString().Trim(), row[xCLPRITDB.xCLPRIT.supplier_code].ToString().Trim()
                         , row[xCLPRITDB.xCLPRIT.SUPPLIER_SITE_CODE].ToString().Trim());//ทำ รอไว้ เพื่อ process ช้า
@@ -260,7 +269,12 @@ namespace XCustPr
                     addXcustListDist(row);
                     xCLPRITDB.updateValidateFlag("", "", "Y","", "kfc_po");
                 }
+                vF.recordError = cntFileErr.ToString();   // gen log
+                vF.totalError = cntErr.ToString();   // gen log
+                lVfile.Add(vF);   // gen log
             }
+            pB1.Visible = false;
+            Cm.logProcess("xcustpo003", lVPr, dateStart, lVfile);   // gen log
         }
         private void addXcustListHeader(String ref1, String supplier_code, String SUPPLIER_SITE_CODE)
         {
