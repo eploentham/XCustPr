@@ -95,7 +95,7 @@ namespace XCustPr
             //xCBAHTDB = new XcustBlanketAgreementHeaderTblDB(conn, Cm.initC);
             //xCBALTDB = new XcustBlanketAgreementLinesTblDB(conn, Cm.initC);
 
-            Cm.createFolderPO003();
+            Cm.createFolderPO004();
             fontSize9 = 9.75f;        //standard
             fontSize8 = 8.25f;        //standard
             fV1B = new Font(fontName, fontSize9, FontStyle.Bold);        //standard

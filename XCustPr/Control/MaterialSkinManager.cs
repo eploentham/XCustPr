@@ -237,10 +237,10 @@ namespace XCustPr
 
         private MaterialSkinManager()
         {
-            ROBOTO_MEDIUM_12 = new Font(LoadFont(Resource1.Roboto_Medium), 12f);
-            ROBOTO_MEDIUM_10 = new Font(LoadFont(Resource1.Roboto_Medium), 10f);
-            ROBOTO_REGULAR_11 = new Font(LoadFont(Resource1.Roboto_Regular), 11f);
-            ROBOTO_MEDIUM_11 = new Font(LoadFont(Resource1.Roboto_Medium), 11f);
+            ROBOTO_MEDIUM_12 = new Font(LoadFont(Properties.Resource1.Roboto_Medium), 12f);
+            ROBOTO_MEDIUM_10 = new Font(LoadFont(Properties.Resource1.Roboto_Medium), 10f);
+            ROBOTO_REGULAR_11 = new Font(LoadFont(Properties.Resource1.Roboto_Regular), 11f);
+            ROBOTO_MEDIUM_11 = new Font(LoadFont(Properties.Resource1.Roboto_Medium), 11f);
             Theme = Themes.LIGHT;
             ColorScheme = new ColorScheme(Primary.BlueGrey800, Primary.BlueGrey900, Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
         }

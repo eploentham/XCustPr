@@ -50,8 +50,7 @@ namespace XCustPr
         private List<XcustSupplierMstTbl> listXcSMT;
         private List<XcustValueSetMstTbl> listXcVSMT;
         private List<XcustUomMstTbl> listXcUMT;
-        private List<XcustBlanketAgreementHeaderTbl> listXcBAHT;
-        private List<XcustBlanketAgreementLinesTbl> listXcBALT;
+        private String dateStart = "";      //gen log
 
         public ControlPO005(ControlMain cm)
         {
@@ -96,8 +95,6 @@ namespace XCustPr
             listXcSMT = new List<XcustSupplierMstTbl>();
             listXcVSMT = new List<XcustValueSetMstTbl>();
             listXcUMT = new List<XcustUomMstTbl>();
-            listXcBAHT = new List<XcustBlanketAgreementHeaderTbl>();
-            listXcBALT = new List<XcustBlanketAgreementLinesTbl>();
 
         }
         /*
@@ -114,6 +111,8 @@ namespace XCustPr
             String[] filePOProcess;
             DataTable dt = new DataTable();
             Boolean chk = false;
+
+            dateStart = date + " " + time;       //gen log
 
             // b.	Program ทำการ Move File มาไว้ที่ Path ตาม Parameter Path Process 
             addListView("อ่าน fileจาก" + Cm.initC.PO005PathInitial, "", lv1, form1);
@@ -175,22 +174,21 @@ namespace XCustPr
             DataTable dt1 = new DataTable();
             String currDate = System.DateTime.Now.ToString("yyyy-MM-dd");
             String buCode = "", locator = "", Org = "", subInv_code = "", currencyCode = "", blanketAgreement = "";
-            ValidatePrPo vPP = new ValidatePrPo();
-            List<ValidatePrPo> lVPr = new List<ValidatePrPo>();
+
+            ValidatePrPo vPP = new ValidatePrPo();   // gen log
+            List<ValidatePrPo> lVPr = new List<ValidatePrPo>();   // gen log
+            List<ValidateFileName> lVfile = new List<ValidateFileName>();   // gen log
 
             listXcustPRHIA.Clear();
             listXcustPRLIA.Clear();
             listXcustPRDIA.Clear();
-
             getListXcSIMT();
             getListXcIMT();
             getListXcSMT();
             getListXcVSMT();
             getListXcUMT();
-            getListXcBAHT();
-            getListXcBALT();
-
             int row1 = 0;
+            int cntErr = 0, cntFileErr = 0;   // gen log
 
             buCode = xCBMTDB.selectActive1();
             //Error PO005-004 : Invalid Requisitioning BU
@@ -225,7 +223,13 @@ namespace XCustPr
             {
                 addListView("ดึงข้อมูล  " + rowG[xCMPITDB.xCMPIT.file_name].ToString().Trim(), "Validate", lv1, form1);
                 dt = xCMPITDB.selectMmxByFilename(rowG[xCMPITDB.xCMPIT.file_name].ToString().Trim());    // ข้อมูลใน file
+
+                ValidateFileName vF = new ValidateFileName();   // gen log
+                vF.fileName = rowG[xCMPITDB.xCMPIT.file_name].ToString().Trim();   // gen log
+                vF.recordTotal = dt.Rows.Count.ToString();   // gen log
+
                 row1 = 0;
+                cntErr = 0;     //gen log
                 pB1.Minimum = 0;
                 pB1.Maximum = dt.Rows.Count;
                 foreach (DataRow row in dt.Rows)
@@ -241,6 +245,7 @@ namespace XCustPr
                         vPP.Message = "Error PO005-006 ";
                         vPP.Validate = "row " + row1 + " order_qty=" + row[xCMPITDB.xCMPIT.order_qty].ToString();
                         lVPr.Add(vPP);
+                        cntErr++;       // gen log
                     }
                     chk = Cm.validateQTY(row[xCMPITDB.xCMPIT.confirm_qty].ToString());
                     if (!chk)
@@ -250,6 +255,7 @@ namespace XCustPr
                         vPP.Message = "Error PO005-006 ";
                         vPP.Validate = "row " + row1 + " confirm_qty=" + row[xCMPITDB.xCMPIT.confirm_qty].ToString();
                         lVPr.Add(vPP);
+                        cntErr++;       // gen log
                     }
                     //Error PO005-002 : Date Format not correct 
                     chk = Cm.validateDate(row[xCMPITDB.xCMPIT.conf_delivery_date].ToString());
@@ -260,6 +266,7 @@ namespace XCustPr
                         vPP.Message = "Error PO001-002 ";
                         vPP.Validate = "row " + row1 + " conf_delivery_date=" + row[xCMPITDB.xCMPIT.conf_delivery_date].ToString();
                         lVPr.Add(vPP);
+                        cntErr++;       // gen log
                     }
                     chk = Cm.validateDate(row[xCMPITDB.xCMPIT.order_date].ToString());
                     if (!chk)
@@ -269,6 +276,7 @@ namespace XCustPr
                         vPP.Message = "Error PO001-002 ";
                         vPP.Validate = "row " + row1 + " delivery_date=" + row[xCMPITDB.xCMPIT.order_date].ToString();
                         lVPr.Add(vPP);
+                        cntErr++;       // gen log
                     }
                     chk = Cm.validateDate(row[xCMPITDB.xCMPIT.conf_delivery_date].ToString());
                     if (!chk)
@@ -278,6 +286,7 @@ namespace XCustPr
                         vPP.Message = "Error PO001-002 ";
                         vPP.Validate = "row " + row1 + " order_date=" + row[xCMPITDB.xCMPIT.conf_delivery_date].ToString();
                         lVPr.Add(vPP);
+                        cntErr++;       // gen log
                     }
                     chk = Cm.validateDate(row[xCMPITDB.xCMPIT.request_date].ToString());
                     if (!chk)
@@ -287,6 +296,7 @@ namespace XCustPr
                         vPP.Message = "Error PO001-002 ";
                         vPP.Validate = "row " + row1 + " request_date=" + row[xCMPITDB.xCMPIT.request_date].ToString();
                         lVPr.Add(vPP);
+                        cntErr++;       // gen log
                     }
                     //Error PO005-010 : Invalid Subinventory Code
                     subInv_code = Cm.validateSubInventoryCode(Cm.initC.ORGANIZATION_code.Trim(), row[xCMPITDB.xCMPIT.store_code].ToString().Trim(), listXcSIMT);
@@ -297,6 +307,7 @@ namespace XCustPr
                         vPP.Message = "Error PO001-010 ";
                         vPP.Validate = "row " + row1 + " store_code =" + row[xCMPITDB.xCMPIT.store_code].ToString().Trim() + " ORGANIZATION_code " + Cm.initC.ORGANIZATION_code.Trim();
                         lVPr.Add(vPP);
+                        cntErr++;       // gen log
                     }
                     //Error PO005-011 : Invalid Item Number
                     if (Cm.validateItemCodeByOrgRef("300000000949654", row[xCMPITDB.xCMPIT.item_code].ToString().Trim(),listXcIMT))// ต้องแก้ Fix code อยู่
@@ -306,6 +317,7 @@ namespace XCustPr
                         vPP.Message = "Error PO001-011 ";
                         vPP.Validate = "row " + row1 + " store_code=" + row[xCMPITDB.xCMPIT.store_code].ToString().Trim() + " item_code " + row[xCMPITDB.xCMPIT.item_code].ToString().Trim();
                         lVPr.Add(vPP);
+                        cntErr++;       // gen log
                     }
                     //Error PO005-015 : Invalid Supplier
                     if (Cm.validateSupplierBySupplierCode(row[xCMPITDB.xCMPIT.supplier_code].ToString().Trim(), listXcSMT))
@@ -315,6 +327,7 @@ namespace XCustPr
                         vPP.Message = "Error PO001-015 ";
                         vPP.Validate = "row " + row1 + " store_code=" + row[xCMPITDB.xCMPIT.store_code].ToString().Trim() + " supplier_code " + row[xCMPITDB.xCMPIT.supplier_code].ToString().Trim();
                         lVPr.Add(vPP);
+                        cntErr++;       // gen log
                     }
                     //Error PO005-016 : Invalid UOM
                     if (Cm.validateUOMCodeByUOMCode(row[xCMPITDB.xCMPIT.uom_code].ToString().Trim(), listXcUMT))
@@ -324,6 +337,7 @@ namespace XCustPr
                         vPP.Message = "Error PO001-016 ";
                         vPP.Validate = "row " + row1 + " store_code=" + row[xCMPITDB.xCMPIT.store_code].ToString().Trim() + " uom_code " + row[xCMPITDB.xCMPIT.uom_code].ToString().Trim();
                         lVPr.Add(vPP);
+                        cntErr++;       // gen log
                     }
                     //Error PO005-017 : Invalid CHARGE_ACCOUNT_SEGMENT1
                     if (Cm.validateValueBySegment1("COMPANY RD CLOUD", "Y", "11", listXcVSMT))// ต้องแก้ Fix code อยู่
@@ -333,6 +347,7 @@ namespace XCustPr
                         vPP.Message = "Error PO001-017 ";
                         vPP.Validate = "row " + row1 + " store_code=" + row[xCMPITDB.xCMPIT.store_code].ToString().Trim() + " CHARGE_ACCOUNT_SEGMENT1 ";
                         lVPr.Add(vPP);
+                        cntErr++;       // gen log
                     }
                     //Error PO005-018 : Invalid CHARGE_ACCOUNT_SEGMENT2
                     if (Cm.validateValueBySegment2("STORE RD CLOUD", "Y", "00000", listXcVSMT))// ต้องแก้ Fix code อยู่
@@ -342,6 +357,7 @@ namespace XCustPr
                         vPP.Message = "Error PO001-018 ";
                         vPP.Validate = "row " + row1 + " store_code=" + row[xCMPITDB.xCMPIT.store_code].ToString().Trim() + " CHARGE_ACCOUNT_SEGMENT2 ";
                         lVPr.Add(vPP);
+                        cntErr++;       // gen log
                     }
                     //Error PO005-018 : Invalid CHARGE_ACCOUNT_SEGMENT3
                     if (Cm.validateValueBySegment3("COMPANY RD CLOUD", "Y", "11", listXcVSMT))// ต้องแก้ Fix code อยู่
@@ -351,6 +367,7 @@ namespace XCustPr
                         vPP.Message = "Error PO001-017 ";
                         vPP.Validate = "row " + row1 + " store_code=" + row[xCMPITDB.xCMPIT.store_code].ToString().Trim() + " CHARGE_ACCOUNT_SEGMENT3 ";
                         lVPr.Add(vPP);
+                        cntErr++;       // gen log
                     }
                     //Error PO005-018 : Invalid CHARGE_ACCOUNT_SEGMENT4
                     if (Cm.validateValueBySegment4("STORE RD CLOUD", "Y", "00000", listXcVSMT))// ต้องแก้ Fix code อยู่
@@ -360,6 +377,7 @@ namespace XCustPr
                         vPP.Message = "Error PO001-018 ";
                         vPP.Validate = "row " + row1 + " store_code=" + row[xCMPITDB.xCMPIT.store_code].ToString().Trim() + " CHARGE_ACCOUNT_SEGMENT4 ";
                         lVPr.Add(vPP);
+                        cntErr++;       // gen log
                     }
                     //Error PO005-018 : Invalid CHARGE_ACCOUNT_SEGMENT5
                     if (Cm.validateValueBySegment5("COMPANY RD CLOUD", "Y", "11", listXcVSMT))// ต้องแก้ Fix code อยู่
@@ -369,6 +387,7 @@ namespace XCustPr
                         vPP.Message = "Error PO001-017 ";
                         vPP.Validate = "row " + row1 + " store_code=" + row[xCMPITDB.xCMPIT.store_code].ToString().Trim() + " CHARGE_ACCOUNT_SEGMENT5 ";
                         lVPr.Add(vPP);
+                        cntErr++;       // gen log
                     }
                     //Error PO005-018 : Invalid CHARGE_ACCOUNT_SEGMENT6
                     if (Cm.validateValueBySegment6("STORE RD CLOUD", "Y", "00000", listXcVSMT))// ต้องแก้ Fix code อยู่
@@ -378,15 +397,14 @@ namespace XCustPr
                         vPP.Message = "Error PO001-018 ";
                         vPP.Validate = "row " + row1 + " store_code=" + row[xCMPITDB.xCMPIT.store_code].ToString().Trim() + " CHARGE_ACCOUNT_SEGMENT6 ";
                         lVPr.Add(vPP);
+                        cntErr++;       // gen log
                     }
 
                     blanketAgreement = getBlanketAgreement(row[xCMPITDB.xCMPIT.supplier_code].ToString().Trim(),
                         row[xCMPITDB.xCMPIT.item_code].ToString().Trim(), row[xCMPITDB.xCMPIT.confirm_qty].ToString().Trim());
-                    //blanketAgreement = Cm.getBlanketAgreement(row[xCMPITDB.xCMPIT.supplier_code].ToString().Trim(),
-                    //    row[xCMPITDB.xCMPIT.item_code].ToString().Trim(), row[xCMPITDB.xCMPIT.confirm_qty].ToString().Trim(), listXcBAHT, listXcBALT);
-                    String[] aa = blanketAgreement.Split('@');
+                    String[] aa = blanketAgreement.Split(',');
                     String price = "";
-                    if (aa.Length == 2)
+                    if (aa.Length > 0)
                     {
                         blanketAgreement = aa[0];
                         price = aa[1];
@@ -399,6 +417,7 @@ namespace XCustPr
                         vPP.Validate = "row " + row1 + " store_code=" + row[xCMPITDB.xCMPIT.store_code].ToString().Trim() + " CHARGE_ACCOUNT_SEGMENT6 ";
                         lVPr.Add(vPP);
                         xCMPITDB.updateValidateFlag(row[xCMPITDB.xCMPIT.po_number].ToString().Trim(), row[xCMPITDB.xCMPIT.AGREEMENT_LINE_NUMBER].ToString().Trim(), "E", "", "kfc_po");
+                        cntErr++;       // gen log
                     }
                     else
                     {
@@ -411,8 +430,17 @@ namespace XCustPr
                         addXcustPRDIAFromxCLFPT(row);
                         xCMPITDB.updateValidateFlag(row[xCMPITDB.xCMPIT.po_number].ToString().Trim(), row[xCMPITDB.xCMPIT.AGREEMENT_LINE_NUMBER].ToString().Trim(), "Y", blanketAgreement, "kfc_po");
                     }
+                    if (cntErr > 0)
+                    {
+                        cntFileErr++;
+                    }
                 }
+                vF.recordError = cntFileErr.ToString();   // gen log
+                vF.totalError = cntErr.ToString();   // gen log
+                lVfile.Add(vF);   // gen log
             }
+            pB1.Visible = false;
+            Cm.logProcess("xcustpo001", lVPr, dateStart, lVfile);   // gen log
         }
         /*
          * g.	กรณีที่ Validat ผ่าน จะเอาข้อมูล Insert ลง table XCUST_POR_REQ_HEADER_INT_ALL
@@ -536,34 +564,6 @@ namespace XCustPr
             }
         }
         /*
-         * Method นี้ ไม่แน่ใจว่า จะแยกหรือ รวม xCBALT
-         */
-        private void getListXcBALT()
-        {
-            listXcBALT.Clear();
-            DataTable dt = xCBALTDB.selectAll();
-            foreach (DataRow row in dt.Rows)
-            {
-                XcustBlanketAgreementLinesTbl item = new XcustBlanketAgreementLinesTbl();
-                item = xCBALTDB.setData(row);
-                listXcBALT.Add(item);
-            }
-        }
-        /*
-         * Method นี้ ไม่แน่ใจว่า จะแยกหรือ รวม xCBALT
-         */
-        private void getListXcBAHT()
-        {
-            listXcBAHT.Clear();
-            DataTable dt = xCBAHTDB.selectAll();
-            foreach (DataRow row in dt.Rows)
-            {
-                XcustBlanketAgreementHeaderTbl item = new XcustBlanketAgreementHeaderTbl();
-                item = xCBAHTDB.setData(row);
-                listXcBAHT.Add(item);
-            }
-        }
-        /*
          * 
          * e.	ทำการหา Blanket Agreement Number โดยใช้ Supplier Code กับ Item Code หาค่า Blanket Agreement ที่ Active อยู่ ณ เวลานั้น 
          * มี Status เป็น Approved -> OPEN  กรณีไม่เจอ หรือเจอมากกว่า 1 ค่าให้ Validatte ไม่ผ่าน -> return false
@@ -573,12 +573,12 @@ namespace XCustPr
         public String getBlanketAgreement(String supp_code, String item_code, String qty)
         {
             DataTable dt = new DataTable();
-            String chk = "false@", sql = "";
+            String chk = "false,", sql = "";
             int min = 0, amt = 0;
             double qty1 = 0, price1 = 0;
             if (!double.TryParse(qty, out qty1))
             {
-                return "false@";
+                return "false,";
             }
             //if (!double.TryParse(price, out price1))
             //{
@@ -608,33 +608,33 @@ namespace XCustPr
                                 {
                                     if ((price1 * qty1) >= min)
                                     {
-                                        chk = dt.Rows[0][xCBAHTDB.xCBAHT.AGREEMENT_NUMBER].ToString().Trim() + "@" + price1;
+                                        chk = dt.Rows[0][xCBAHTDB.xCBAHT.AGREEMENT_NUMBER].ToString().Trim() + "," + price1;
                                     }
                                     else
                                     {
-                                        chk = "false@026";
+                                        chk = "false,026";
                                     }
                                 }
                                 else
                                 {
-                                    chk = "false@025";
+                                    chk = "false,025";
                                 }
                             }
                             else
                             {
-                                chk = "false@";
+                                chk = "false,";
                             }
                         }
                     }
                 }
                 else
                 {
-                    chk = "false@024";
+                    chk = "false,024";
                 }
             }
             else
             {
-                chk = "false@023";
+                chk = "false,023";
             }
             return chk;
         }

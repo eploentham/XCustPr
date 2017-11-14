@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace XCustPr
 {
@@ -60,16 +61,16 @@ namespace XCustPr
             lv1.ListViewItemSorter = lvwColumnSorter;
 
             int i = 1;
-            if (cPo004.Cm.initC.PO004PathInitial.Equals(""))
+            if (Cm.initC.PO004PathInitial.Equals(""))
             {
-                MessageBox.Show("Path Config PO003 ไม่ถูกต้อง", "");
+                MessageBox.Show("Path Config PO004 ไม่ถูกต้อง", "");
                 disableBtn();
                 return;
             }
-            filePO = cPo004.Cm.getFileinFolder(cPo004.Cm.initC.PO004PathInitial, Cm.initC.PO004FileType);
+            filePO = Cm.getFileinFolder(cPo004.Cm.initC.PO004PathInitial, Cm.initC.PO004FileType);
             if (filePO == null)
             {
-                MessageBox.Show("Folder PO003 ไม่ถูกต้อง", "");
+                MessageBox.Show("Folder PO004 ไม่ถูกต้อง", "");
                 disableBtn();
                 return;
             }
@@ -186,6 +187,21 @@ namespace XCustPr
             webRequest.ContentType = "text/xml;charset=\"utf-8\"";
             webRequest.Accept = "text/xml";
             webRequest.Method = "POST";
+            CredentialCache cache = new CredentialCache();
+            
+            cache.Add(new Uri("https://eglj-test.fa.us2.oraclecloud.com/xmlpserver/services/PublicReportService?WSDL"), "Basic", new NetworkCredential("icetech", "icetech@2017"));
+
+            string credentials = String.Format("{0}:{1}", "icetech", "icetech@2017");
+            byte[] bytes = Encoding.ASCII.GetBytes(credentials);
+            string base64 = Convert.ToBase64String(bytes);
+            string authorization = String.Concat("basic ", base64);
+            webRequest.Headers.Add("Authorization", authorization);
+
+            //webRequest.Credentials = new NetworkCredential("icetech", "icetech@2017");
+            //webRequest.Credentials = cache;
+            webRequest.UseDefaultCredentials = true;
+            //webRequest.ContinueDelegate =
+            webRequest.PreAuthenticate = true;
             return webRequest;
         }
        //WSDL : https:// eglj-test.fa.us2.oraclecloud.com:443/fndAppCoreServices/FndManageImportExportFilesService?WSDL
@@ -248,22 +264,146 @@ namespace XCustPr
                      "</typ:uploadFiletoUCM> " +
                    "</soapenv:Body> " +
                  "</soapenv:Envelope>";
+            
+            //    soapEnvelopeXml.LoadXml(uri);
 
-                soapEnvelopeXml.LoadXml(uri);
+            //try
+            //{
+            //    using (Stream stream = request.GetRequestStream())
+            //    {
+            //        soapEnvelopeXml.Save(stream);
+            //    }
 
-            using (Stream stream = request.GetRequestStream())
+            //    using (WebResponse response = request.GetResponse())
+            //    {
+            //        using (StreamReader rd = new StreamReader(response.GetResponseStream()))
+            //        {
+            //            string soapResult = rd.ReadToEnd();
+            //            Console.WriteLine(soapResult);
+            //        }
+            //    }
+            //}
+            //catch(WebException we)
+            //{
+            //    System.Diagnostics.Debug.Write("Error : " + we.Message);
+            //    Console.WriteLine("Error: {0}", we.Message);
+            //}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            // Construct xml payload to invoke the service. In this example, it is a hard coded string.
+    //        string envelope = "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" " +
+    //                            "xmlns:xsi=\"http ://www.w3.org/2001/XMLSchema-instance\" " +
+    //                            "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">" +
+    //                          "<soap:Body>" +
+    //                            "<findRule
+    //xmlns =\"http://xmlns.oracle.com/apps/incentiveCompensation/cn/creditSetup/creditRule/creditRuleService/types/\">" +
+    //                         "<findCriteria>" +
+    //                           "<fetchStart
+    //xmlns =\"http://xmlns.oracle.com/adf/svc/types/\">0</fetchStart>" +
+    //                           "<fetchSize xmlns=\"http://xmlns.oracle.com/adf/svc/types/\">-1</fetchSize>" +
+    //                           "<filter xmlns=\"http://xmlns.oracle.com/adf/svc/types/\">" +
+    //                             "<group>" +
+    //                               "<upperCaseCompare>false</upperCaseCompare>" +
+    //                               "<item>" +
+    //                                 "<upperCaseCompare>false</upperCaseCompare>" +
+    //                                 "<attribute>RuleId</attribute>" +
+    //                                 "<operator>=</operator>" +
+    //                                 "<value>300000000851162</value>" +
+    //                               "</item>" +
+    //                             "</group>" +
+    //                           "</filter>" +
+    //                           "<excludeAttribute
+    //xmlns =\"http://xmlns.oracle.com/adf/svc/types/\">false</excludeAttribute>" +
+    //                           "</findCriteria>" +
+    //                           "<findControl>" +
+    //                             "<retrieveAllTranslations
+    //xmlns =\"http://xmlns.oracle.com/adf/svc/types/\">false</retrieveAllTranslations>" +
+    //                           "</findControl>" +
+    //                     "</findRule>" +
+    //                   "</soap:Body>" +
+    //                 "</soap:Envelope>";
+            //byte[] byteArray = Encoding.UTF8.GetBytes(envelope);
+            byte[] byteArray = Encoding.UTF8.GetBytes(uri);
+
+            // Construct the base 64 encoded string used as credentials for the service call
+            byte[] toEncodeAsBytes = System.Text.ASCIIEncoding.ASCII.GetBytes("icetech@iceconsulting.co.th" + ":" + "icetech@2017");
+            string credentials = System.Convert.ToBase64String(toEncodeAsBytes);
+
+            // Create HttpWebRequest connection to the service
+            HttpWebRequest request1 = (HttpWebRequest)WebRequest.Create("https://eglj-test.fa.us2.oraclecloud.com:443/fndAppCoreServices/FndManageImportExportFilesService?WSDL");
+
+            // Configure the request content type to be xml, HTTP method to be POST, and set the content length
+            request1.Method = "POST";
+            request1.ContentType = "text/xml;charset=UTF-8";
+            request1.ContentLength = byteArray.Length;
+
+            // Configure the request to use basic authentication, with base64 encoded user name and password, to invoke the service.
+            request1.Headers.Add("Authorization", "Basic " + credentials);
+
+            // Set the SOAP action to be invoked; while the call works without this, the value is expected to be set based as per standards
+            request1.Headers.Add("SOAPAction", "http://xmlns.oracle.com/apps/incentiveCompensation/cn/creditSetup/creditRule/creditRuleService/findRule");
+
+            // Write the xml payload to the request
+            Stream dataStream = request1.GetRequestStream();
+            dataStream.Write(byteArray, 0, byteArray.Length);
+            dataStream.Close();
+
+            // Get the response and process it; In this example, we simply print out the response XDocument doc;
+            XDocument doc;
+            using (WebResponse response = request1.GetResponse())
             {
-                soapEnvelopeXml.Save(stream);
-            }
-
-            using (WebResponse response = request.GetResponse())
-            {
-                using (StreamReader rd = new StreamReader(response.GetResponseStream()))
+                using (Stream stream = response.GetResponseStream())
                 {
-                    string soapResult = rd.ReadToEnd();
-                    Console.WriteLine(soapResult);
+                    doc = XDocument.Load(stream);
                 }
             }
+            Console.WriteLine(doc);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         }
         private void btnFTP_Click(object sender, EventArgs e)
         {

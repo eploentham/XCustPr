@@ -60,7 +60,7 @@ namespace XCustPr
         private List<XcustSupplierMstTbl> listXcSMT;
         private List<XcustValueSetMstTbl> listXcVSMT;
         private List<XcustUomMstTbl> listXcUMT;
-        private String dateStart = "";
+        private String dateStart = "";      //gen log
 
         public ControlRDPO(ControlMain cm)
         {
@@ -1081,24 +1081,24 @@ namespace XCustPr
             String filename = "", ilename2 = "", ilename3 = "";
             filename = Cm.initC.PathZip + "\\xcustpr.zip";
             Cm.deleteFile(filename);
-            ZipArchive zip = ZipFile.Open(filename, ZipArchiveMode.Create);
-            var allFiles = Directory.GetFiles(@Cm.initC.PathArchive, "*.*", SearchOption.AllDirectories);
-            foreach (String file in allFiles)
-            {
-                //using (ZipArchive archive = ZipFile.OpenRead(file))
-                //{
-                //    foreach (ZipArchiveEntry entry in archive.Entries)
-                //    {
-                //        if (entry.FullName.EndsWith(".txt", StringComparison.OrdinalIgnoreCase))
-                //        {
-                //            entry.ExtractToFile(Path.Combine(@initC.PathZipExtract, entry.FullName));
-                //        }
-                //    }
-                //}
-                //zip.CreateEntryFromFile(file, Path.GetFileName(file), CompressionLevel.Optimal);
-                zip.CreateEntryFromFile(file, Path.GetFileName(file));
-            }
-            zip.Dispose();
+            //ZipArchive zip = ZipFile.Open(filename, ZipArchiveMode.Create);
+            //var allFiles = Directory.GetFiles(@Cm.initC.PathArchive, "*.*", SearchOption.AllDirectories);
+            //foreach (String file in allFiles)
+            //{
+            //    //using (ZipArchive archive = ZipFile.OpenRead(file))
+            //    //{
+            //    //    foreach (ZipArchiveEntry entry in archive.Entries)
+            //    //    {
+            //    //        if (entry.FullName.EndsWith(".txt", StringComparison.OrdinalIgnoreCase))
+            //    //        {
+            //    //            entry.ExtractToFile(Path.Combine(@initC.PathZipExtract, entry.FullName));
+            //    //        }
+            //    //    }
+            //    //}
+            //    //zip.CreateEntryFromFile(file, Path.GetFileName(file), CompressionLevel.Optimal);
+            //    zip.CreateEntryFromFile(file, Path.GetFileName(file));
+            //}
+            //zip.Dispose();
         }
         /*
          * g.	กรณีที่ Validat ผ่าน จะเอาข้อมูล Insert ลง table XCUST_POR_REQ_HEADER_INT_ALL
@@ -1145,9 +1145,11 @@ namespace XCustPr
             DataTable dt1 = new DataTable();
             String currDate = System.DateTime.Now.ToString("yyyy-MM-dd");
             String buCode = "", locator="", Org="", subInv_code="", currencyCode="", blanketAgreement="";
-            ValidatePrPo vPP = new ValidatePrPo();
-            List<ValidatePrPo> lVPr = new List<ValidatePrPo>();
-            List<ValidateFileName> lVfile = new List<ValidateFileName>();
+
+            ValidatePrPo vPP = new ValidatePrPo();   // gen log
+            List<ValidatePrPo> lVPr = new List<ValidatePrPo>();   // gen log
+            List<ValidateFileName> lVfile = new List<ValidateFileName>();   // gen log
+
             listXcustPRHIA.Clear();
             listXcustPRLIA.Clear();
             listXcustPRDIA.Clear();
@@ -1156,7 +1158,8 @@ namespace XCustPr
             getListXcSMT();
             getListXcVSMT();
             getListXcUMT();
-            int row1 = 0, cntErr=0, cntFileErr=0;
+            int row1 = 0;
+            int cntErr =0, cntFileErr=0;   // gen log
 
             buCode = xCBMTDB.selectActive1();
             //Error PO001-004 : Invalid Requisitioning BU
@@ -1197,12 +1200,12 @@ namespace XCustPr
                 //filename.Append(row[xCLFPTDB.xCLFPT.file_name].ToString().Trim());
                 //dt = xCLFPTDB.selectLinfoxByFilename(filename.ToString());        // for test
                 //pB1.Value = 0;
-                ValidateFileName vF = new ValidateFileName();
-                vF.fileName = rowG[xCLFPTDB.xCLFPT.file_name].ToString().Trim();
-                vF.recordTotal = dt.Rows.Count.ToString();
+                ValidateFileName vF = new ValidateFileName();   // gen log
+                vF.fileName = rowG[xCLFPTDB.xCLFPT.file_name].ToString().Trim();   // gen log
+                vF.recordTotal = dt.Rows.Count.ToString();   // gen log
                 dt = xCLFPTDB.selectLinfoxByFilename(rowG[xCLFPTDB.xCLFPT.file_name].ToString().Trim());    // ข้อมูลใน file
                 row1 = 0;
-                cntErr = 0;
+                cntErr = 0;     //gen log
                 pB1.Minimum = 0;
                 pB1.Maximum = dt.Rows.Count;
                 foreach (DataRow row in dt.Rows)
@@ -1218,7 +1221,7 @@ namespace XCustPr
                         vPP.Message = "Error PO001-006 ";
                         vPP.Validate = "row "+ row1 + " QTY=" + row[xCLFPTDB.xCLFPT.QTY].ToString();
                         lVPr.Add(vPP);
-                        cntErr++;
+                        cntErr++;       // gen log
                     }
                     //Error PO001-002 : Invalid data type
                     chk = validateDate(row[xCLFPTDB.xCLFPT.ORDER_DATE].ToString());
@@ -1229,7 +1232,7 @@ namespace XCustPr
                         vPP.Message = "Error PO001-002 ";
                         vPP.Validate = "row " + row1 + " ORDER_DATE=" + row[xCLFPTDB.xCLFPT.ORDER_DATE].ToString();
                         lVPr.Add(vPP);
-                        cntErr++;
+                        cntErr++;       // gen log
                     }
                     chk = validateDate(row[xCLFPTDB.xCLFPT.REQUEST_DATE].ToString());//ต้องแก้ไข เพราะ agreement เข้า method มีค่าเป็น date
                     if (!chk)
@@ -1370,6 +1373,7 @@ namespace XCustPr
                         vPP.Validate = "row " + row1 + " store_code=" + row[xCLFPTDB.xCLFPT.store_code].ToString().Trim() + " CHARGE_ACCOUNT_SEGMENT6 ";
                         lVPr.Add(vPP);
                         xCLFPTDB.updateValidateFlag(row[xCLFPTDB.xCLFPT.PO_NUMBER].ToString().Trim(), row[xCLFPTDB.xCLFPT.LINE_NUMBER].ToString().Trim(), "E","", "kfc_po");
+                        cntErr++;       // gen log
                     }
                     else
                     {
@@ -1382,18 +1386,18 @@ namespace XCustPr
                         addXcustPRDIAFromxCLFPT(row);
                         xCLFPTDB.updateValidateFlag(row[xCLFPTDB.xCLFPT.PO_NUMBER].ToString().Trim(), row[xCLFPTDB.xCLFPT.LINE_NUMBER].ToString().Trim(),"Y", blanketAgreement, "kfc_po");
                     }
-                    if (cntErr > 0)
+                    if (cntErr > 0)   // gen log
                     {
                         cntFileErr++;
                     }
                     //dt.Rows[0][xc xCBMT.BU_ID].ToString();xCVSMTDB
                 }
-                vF.recordError = cntFileErr.ToString();
-                vF.totalError = cntErr.ToString();
-                lVfile.Add(vF);
+                vF.recordError = cntFileErr.ToString();   // gen log
+                vF.totalError = cntErr.ToString();   // gen log
+                lVfile.Add(vF);   // gen log
             }
             pB1.Visible = false;
-            Cm.logProcess("xcustpo001", lVPr, dateStart, lVfile);
+            Cm.logProcess("xcustpo001", lVPr, dateStart, lVfile);   // gen log
         }
         public void processLinfoxPOtoErpPR(String[] filePO, MaterialListView lv1, Form form1, MaterialProgressBar pB1)
         {
@@ -1405,7 +1409,7 @@ namespace XCustPr
             String[] filePOProcess;
             DataTable dt = new DataTable();
             Boolean chk = false;
-            dateStart = date + " "+ time;
+            dateStart = date + " "+ time;       //gen log
             // b.	Program ทำการ Move File มาไว้ที่ Path ตาม Parameter Path Process
             addListView("อ่าน fileจาก" + Cm.initC.PathInitial, "", lv1, form1);
             foreach (string aa in filePO)

@@ -57,6 +57,8 @@ namespace XCustPr
         private List<XcustRcvTransactionsIntAll> listXcusTRTIA;
         private List<XcustInvTransactionLostsIntTbl> listXcusITLIT;
 
+        private String dateStart = "";      //gen log
+
         public ControlPO003(ControlMain cm)
         {
             Cm = cm;
@@ -121,6 +123,8 @@ namespace XCustPr
             DataTable dt = new DataTable();
             Boolean chk = false;
 
+            dateStart = date + " " + time;       //gen log
+
             // b.	Program ทำการ Move File มาไว้ที่ Path ตาม Parameter Path Process 
             addListView("อ่าน fileจาก" + Cm.initC.PO003PathInitial, "", lv1, form1);
             foreach (string aa in filePO)
@@ -172,8 +176,10 @@ namespace XCustPr
             DataTable dt1 = new DataTable();
             String currDate = System.DateTime.Now.ToString("yyyy-MM-dd");
             String buCode = "", locator = "", Org = "", subInv_code = "", currencyCode = "", blanketAgreement = "";
-            ValidatePrPo vPP = new ValidatePrPo();
-            List<ValidatePrPo> lVPr = new List<ValidatePrPo>();
+                        
+            ValidatePrPo vPP = new ValidatePrPo();   // gen log
+            List<ValidatePrPo> lVPr = new List<ValidatePrPo>();   // gen log
+            List<ValidateFileName> lVfile = new List<ValidateFileName>();   // gen log
 
             listXcustRHIA.Clear();
             listXcusTRTIA.Clear();
@@ -187,6 +193,7 @@ namespace XCustPr
             //getListXcBAHT();
             //getListXcBALT();
             int row1 = 0;
+            int cntErr = 0, cntFileErr = 0;   // gen log
 
             dtGroupBy = xCLPRITDB.selectMmxGroupByFilename();//   ดึง filename
             foreach (DataRow rowG in dtGroupBy.Rows)
@@ -196,6 +203,11 @@ namespace XCustPr
                 row1 = 0;
                 pB1.Minimum = 0;
                 pB1.Maximum = dt.Rows.Count;
+
+                ValidateFileName vF = new ValidateFileName();   // gen log
+                vF.fileName = rowG[xCLPRITDB.xCLPRIT.file_name].ToString().Trim();   // gen log
+                vF.recordTotal = dt.Rows.Count.ToString();   // gen log
+
                 foreach (DataRow row in dt.Rows)
                 {
                     row1++;

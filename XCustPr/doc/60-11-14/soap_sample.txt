@@ -1,0 +1,43 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:typ="http://xmlns.oracle.com/oracle/apps/fnd/applcore/webservices/types/" xmlns:web="http://xmlns.oracle.com/oracle/apps/fnd/applcore/webservices/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <typ:uploadFiletoUCM>
+         <typ:document>
+            <!--Optional:-->
+            <web:fileName>xcustpr.zip</web:fileName>
+            <!--Optional:-->
+            <web:contentType>application/zip</web:contentType>
+            <!--Optional:-->
+            <web:content>UEsDBBQAAAAIADVyaEv/hWosNwEAAI5TAAAZAAAAUG9yUmVxRGlzdEludGVyZmFjZUFsLmNzdu3b
+MWrEMBCF4T6QO+gAKmZGa0lWlwNsyB3SBrbL+UPeauNm2bRr/MswYMQr5qvGQvbovkaP7Pnz8mUl
+W3Yz00tVbapddf2trl1XwEO1qJ5UF1VlXVlX1pUNZUPZUDaUDWVD2VA2lA1lQ9mibFG2KFtKfrze
+L98pLSnMW0oxfP04b5t25/lnqe9rg7PD2eLs8dqkh72+OLDAAgsssMAC+6yw7sMKsMACCyywwO4N
+lqkAWGCBBRbYfcDW+Ulbh1dggQUWWGCBBfbIsG3CriPaG7DAAgsssMACe2DY2yGMDe+MW8ACCyyw
+wO4CdpsKTpWpAFhggQUWWGCPDNv/bnRbY9wCFlhggQUW2CPDbvcKgkMYYIEFFlhggT007G3c8rHw
+DwKwwAILLLD7gg3+/gYWWGCBBRbYR7A/UEsDBBQAAAAIADVyaEsTPLFWEgEAAMIJAAAcAAAAUG9y
+UmVxSGVhZGVyc0ludGVyZmFjZUFsLmNzduWVTYvCMBCG74L/IUeFdJlJbVqPRSMU+hFiFRcED14F
+9+Bh/ffmoyIia61Qi+sUhn7xZvJkmBdZhGMWMZom+axYUSXmZbxQcV7OyVQsRVrITOQlmRSZjPNv
+kiZZUoopZYAhInAAut3vkNFYSlUs9Rf36LJUGIIOxEp/g9V6G6nARzAyxCOT/c+RDNjw6/B7uBIw
+2bd5ZHNgM6dnmcvNbRhtD9EDfnkHf1/9Hj7LIuB6hxDVseBgWYy6YKFLtCyitlm4vqhlUfVF0GVf
+NGZh/nPrXxVDm5V2r6Sg5eO5eypvtI9m48e0o47xvx5CzQYyfACL8EEWrEsWYdssnDnVsqjMyb9h
+sX6hO70IxqNOzd/BqU9QSwMEFAAAAAgANXJoS6/d3VSLAQAAQmMAABoAAABQb3JSZXFMaW5lc0lu
+dGVyZmFjZUFsLmNzdu3aPWrDQBCG4T6QO+gAW+zszqx+OkNIlxByhbQBdzl/pG8NTuEyECt6ZZi1
+5PksMU8lIUtWJpvLVNLH+TPXlFLOlrQzqc7bkW1L70/P1daW9ahtjbYdTFn781aLvhdT1R8WdRdX
+DdW2BmNNbztVTVVNVU1VTbWpjqq6jKoTuE7gOoEr68q6sq6sK+vKurKubCgbyoayoWwoG8qGsqFs
+KBtzurm9nr+GIYaSbRwGWyLeXq4/5hsfTclKX/oMzfsSfWl9Gfsy9UWXbn2w1idrfbTWZ2vrcPva
+Hh8MzV/RHNH8R5oTmmiieX+aZbGMJppoookmmmiieUhNRxNNNNFEE0000TycptmSK5poookmmmii
+ieYhNWc00UQTTTTRRBPN42i2y5O9thjv0+5ek3f20ETzrjUtL4YmmmiiiSaaaKJ5IM0f95sNTTTR
+RBNNNNFE8zia40VzXsp4QhNNNNFEE0000UQTzV1rekMTTTTRRBNNNNFEE809al6fuhfePUATTTTR
+RBNNNNH8O81vUEsBAhQAFAAAAAgANXJoS/+Faiw3AQAAjlMAABkAAAAAAAAAAAAAAAAAAAAAAFBv
+clJlcURpc3RJbnRlcmZhY2VBbC5jc3ZQSwECFAAUAAAACAA1cmhLEzyxVhIBAADCCQAAHAAAAAAA
+AAAAAAAAAABuAQAAUG9yUmVxSGVhZGVyc0ludGVyZmFjZUFsLmNzdlBLAQIUABQAAAAIADVyaEuv
+3d1UiwEAAEJjAAAaAAAAAAAAAAAAAAAAALoCAABQb3JSZXFMaW5lc0ludGVyZmFjZUFsLmNzdlBL
+BQYAAAAAAwADANkAAAB9BAAAAAA=</web:content>
+            <!--Optional:-->
+            <web:documentAccount>prc$/requisition$/import$</web:documentAccount>
+            <!--Optional:-->
+            <web:documentTitle>test</web:documentTitle>
+         </typ:document>
+      </typ:uploadFiletoUCM>
+   </soapenv:Body>
+</soapenv:Envelope>

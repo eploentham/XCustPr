@@ -8,6 +8,6 @@ namespace XCustPr
 {
     public class Po004DirectSupplier
     {
-        public String 
+        //public String 
     }
 }
