@@ -25,7 +25,10 @@ namespace XCustPr
 
         public ValidatePrPo vPrPo;
         private String dateStart = "";      //gen log
-        
+        private StringBuilder sYear = new StringBuilder();
+        private StringBuilder sMonth = new StringBuilder();
+        private StringBuilder sDay = new StringBuilder();
+
         public XcustBuMstTblDB xCBMTDB;
         public XcustDeriverLocatorMstTblDB xCDLMTDB;
         public XcustDeriverOrganizationMstTblDB xCDOMTDB;
@@ -137,6 +140,364 @@ namespace XCustPr
             array[2] = col3;
 
             return (new ListViewItem(array));
+        }
+        private void getListXcSIMT()
+        {
+            listXcSIMT.Clear();
+            DataTable dt = xCSIMTDB.selectAll();
+            foreach (DataRow row in dt.Rows)
+            {
+                XcustSubInventoryMstTbl item = new XcustSubInventoryMstTbl();
+                item = xCSIMTDB.setData(row);
+                listXcSIMT.Add(item);
+            }
+        }
+        /*
+         * Method นี้ ไม่แน่ใจว่า จะแยกหรือ รวม
+         */
+        private void getListXcIMT()
+        {
+            listXcIMT.Clear();
+            DataTable dt = xCIMTDB.selectAll();
+            foreach (DataRow row in dt.Rows)
+            {
+                XcustItemMstTbl item = new XcustItemMstTbl();
+                item = xCIMTDB.setData(row);
+                listXcIMT.Add(item);
+            }
+        }
+        /*
+         * Method นี้ ไม่แน่ใจว่า จะแยกหรือ รวม
+         */
+        private void getListXcSMT()
+        {
+            listXcSMT.Clear();
+            DataTable dt = xCSMTDB.selectAll();
+            foreach (DataRow row in dt.Rows)
+            {
+                XcustSupplierMstTbl item = new XcustSupplierMstTbl();
+                item = xCSMTDB.setData(row);
+                listXcSMT.Add(item);
+            }
+        }
+        /*
+         * Method นี้ ไม่แน่ใจว่า จะแยกหรือ รวม
+         */
+        private void getListXcVSMT()
+        {
+            listXcVSMT.Clear();
+            DataTable dt = xCVSMTDB.selectAll();
+            foreach (DataRow row in dt.Rows)
+            {
+                XcustValueSetMstTbl item = new XcustValueSetMstTbl();
+                item = xCVSMTDB.setData(row);
+                listXcVSMT.Add(item);
+            }
+        }
+        /*
+         * Method นี้ ไม่แน่ใจว่า จะแยกหรือ รวม
+         */
+        private void getListXcUMT()
+        {
+            listXcUMT.Clear();
+            DataTable dt = xCUMTDB.selectAll();
+            foreach (DataRow row in dt.Rows)
+            {
+                XcustUomMstTbl item = new XcustUomMstTbl();
+                item = xCUMTDB.setData(row);
+                listXcUMT.Add(item);
+            }
+        }
+        /*
+         * check amount ว่า data type ถูกต้องไหม
+         * ที่ใช้ decimal.tryparse เพราะ ใน database เป็น decimal(18,0)
+         * Error PO008-006 : Invalid data type
+         */
+        public Boolean validateAmount(String qty)
+        {
+            Boolean chk = false;
+            int i = 0;
+            chk = int.TryParse(qty, out i);
+            return chk;
+        }
+        private String validateSubInventoryCode(String ordId, String StoreCode)
+        {
+            String chk = "";
+            foreach (XcustSubInventoryMstTbl item in listXcSIMT)
+            {
+                if (item.ORGAINZATION_ID.Equals(ordId.Trim()))
+                {
+                    if (item.attribute1.Equals(StoreCode.Trim()))
+                    {
+                        chk = item.SECONDARY_INVENTORY_NAME;
+                        break;
+                    }
+                }
+            }
+            return chk;
+        }
+        private Boolean validateItemCodeByOrgRef(String ordId, String item_code)
+        {
+            Boolean chk = false;
+            foreach (XcustItemMstTbl item in listXcIMT)
+            {
+                if (item.ORGAINZATION_ID.Equals(ordId.Trim()))
+                {
+                    if (item.ITEM_REFERENCE1.Equals(item_code.Trim()))
+                    {
+                        chk = true;
+                        break;
+                    }
+                }
+            }
+            return chk;
+        }
+        private Boolean validateSupplierBySupplierCode(String supplier_code)
+        {
+            Boolean chk = false;
+            foreach (XcustSupplierMstTbl item in listXcSMT)
+            {
+                if (item.SUPPLIER_NUMBER.Equals(supplier_code.Trim()))
+                {
+                    chk = true;
+                    break;
+                }
+            }
+            return chk;
+        }
+        /*
+         * check แค่ format ว่า เป็น yyyymmdd เท่านั้น
+         * Error PO008-002 : Date Format not correct 
+         */
+        public Boolean validateDate(String date)
+        {
+            Boolean chk = false;
+            if (date.Length == 8)
+            {
+                sYear.Clear();
+                sMonth.Clear();
+                sDay.Clear();
+                try
+                {
+                    sYear.Append(date.Substring(0, 4));
+                    sMonth.Append(date.Substring(4, 2));
+                    sDay.Append(date.Substring(6, 2));
+                    if ((int.Parse(sYear.ToString()) > 2000) && (int.Parse(sYear.ToString()) < 2100))
+                    {
+                        if ((int.Parse(sMonth.ToString()) >= 1) && (int.Parse(sMonth.ToString()) <= 12))
+                        {
+                            if ((int.Parse(sDay.ToString()) >= 1) && (int.Parse(sDay.ToString()) <= 31))
+                            {
+                                chk = true;
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    chk = false;
+                }
+                finally
+                {
+
+                }
+
+            }
+            else
+            {
+                chk = false;
+            }
+            return chk;
+        }
+        /*
+         * d.	จากนั้น Program จะเอาข้อมูลจาก Table XCUST_CEDAR_PO_TBL มาทำการ Validate 
+         * e.	กรณีที่ Validat ผ่าน จะเอาข้อมูล Insert ลง table XCUST_PO_HEADER_INT_ALL ,XCUST_PO_LINE_INT_ALL , XCUST_PO_LINE_LOC_INT_ALL ,XCUST_PO_DIST_INT_ALL และ Update Validate_flag = ‘Y’
+         */
+        public void processGetTempTableToValidate(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
+        {
+            addListView("อ่าน file จาก " + Cm.initC.PathProcess, "Validate", lv1, form1);
+            pB1.Visible = true;
+
+            Boolean chk = false;
+            DataTable dtGroupBy = new DataTable();
+            DataTable dt = new DataTable();
+            DataTable dt1 = new DataTable();
+            String currDate = System.DateTime.Now.ToString("yyyy-MM-dd");
+            String buCode = "", locator = "", Org = "", subInv_code = "", currencyCode = "", blanketAgreement = "";
+
+            ValidatePrPo vPP = new ValidatePrPo();   // gen log
+            List<ValidatePrPo> lVPr = new List<ValidatePrPo>();   // gen log
+            List<ValidateFileName> lVfile = new List<ValidateFileName>();   // gen log
+
+            listXcustPRHIA.Clear();
+            listXcustPRLIA.Clear();
+            listXcustPRDIA.Clear();
+            getListXcSIMT();
+            getListXcIMT();
+            getListXcSMT();
+            getListXcVSMT();
+            getListXcUMT();
+            int row1 = 0;
+            int cntErr = 0, cntFileErr = 0;   // gen log
+
+            buCode = xCBMTDB.selectActive1();
+            //Error PO001-004 : Invalid Requisitioning BU
+            if (!buCode.Equals(Cm.initC.BU_NAME.Trim()))
+            {
+                chk = false;
+            }
+            //Error PO001-008 : Invalid Deliver To Location
+            locator = xCDLMTDB.selectLocator1();
+            if (!locator.Equals(Cm.initC.Locator.Trim()))
+            {
+                chk = false;
+            }
+            //Error PO001-009 : Invalid Deliver-to Organization
+            Org = xCDOMTDB.selectActive1();
+            if (!Org.Equals(Cm.initC.ORGANIZATION_code.Trim()))
+            {
+                chk = false;
+            }
+
+            //Error PO001-013 : Invalid Currency Code
+            if (!xCMTDB.validateCurrencyCodeBycurrCode(Cm.initC.CURRENCY_CODE))
+            {
+                chk = false;
+            }
+            //Error PO008-014 : Invalid Procurement BU
+            if (!buCode.Equals(Cm.initC.BU_NAME.Trim()))
+            {
+                chk = false;
+            }
+
+
+            //StringBuilder filename = new StringBuilder();
+            dtGroupBy = xCCPITDB.selectCedarGroupByFilename();//   ดึง filename
+            foreach (DataRow rowG in dtGroupBy.Rows)
+            {
+                addListView("ดึงข้อมูล  " + rowG[xCCPITDB.xCCPIT.file_name].ToString().Trim(), "Validate", lv1, form1);
+                ValidateFileName vF = new ValidateFileName();   // gen log
+                vF.fileName = rowG[xCCPITDB.xCCPIT.file_name].ToString().Trim();   // gen log
+                vF.recordTotal = dt.Rows.Count.ToString();   // gen log
+                dt = xCCPITDB.selectCedarByFilename(rowG[xCCPITDB.xCCPIT.file_name].ToString().Trim());    // ข้อมูลใน file
+
+                row1 = 0;
+                cntErr = 0;     //gen log
+                pB1.Minimum = 0;
+                pB1.Maximum = dt.Rows.Count;
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    row1++;
+                    pB1.Value = row1;
+                    //Error PO008-006 : Invalid data type
+                    chk = validateAmount(row[xCCPITDB.xCCPIT.amt].ToString());
+                    if (!chk)
+                    {
+                        vPP = new ValidatePrPo();
+                        vPP.Filename = row[xCCPITDB.xCCPIT.file_name].ToString().Trim();
+                        vPP.Message = "Error PO008-006 ";
+                        vPP.Validate = "row " + row1 + " amt=" + row[xCCPITDB.xCCPIT.amt].ToString();
+                        lVPr.Add(vPP);
+                        cntErr++;       // gen log
+                    }
+                    chk = validateAmount(row[xCCPITDB.xCCPIT.total].ToString());
+                    if (!chk)
+                    {
+                        vPP = new ValidatePrPo();
+                        vPP.Filename = row[xCCPITDB.xCCPIT.file_name].ToString().Trim();
+                        vPP.Message = "Error PO008-006 ";
+                        vPP.Validate = "row " + row1 + " total=" + row[xCCPITDB.xCCPIT.total].ToString();
+                        lVPr.Add(vPP);
+                        cntErr++;       // gen log
+                    }
+                    chk = validateAmount(row[xCCPITDB.xCCPIT.vat].ToString());
+                    if (!chk)
+                    {
+                        vPP = new ValidatePrPo();
+                        vPP.Filename = row[xCCPITDB.xCCPIT.file_name].ToString().Trim();
+                        vPP.Message = "Error PO008-006 ";
+                        vPP.Validate = "row " + row1 + " vat=" + row[xCCPITDB.xCCPIT.vat].ToString();
+                        lVPr.Add(vPP);
+                        cntErr++;       // gen log
+                    }
+                    chk = validateAmount(row[xCCPITDB.xCCPIT.amt].ToString());
+                    if (!chk)
+                    {
+                        vPP = new ValidatePrPo();
+                        vPP.Filename = row[xCCPITDB.xCCPIT.file_name].ToString().Trim();
+                        vPP.Message = "Error PO008-006 ";
+                        vPP.Validate = "row " + row1 + " amt=" + row[xCCPITDB.xCCPIT.amt].ToString();
+                        lVPr.Add(vPP);
+                        cntErr++;       // gen log
+                    }
+                    //Error PO008-002 : Date Format not correct 
+                    chk = validateDate(row[xCCPITDB.xCCPIT.admin_receipt_doc_date].ToString());
+                    if (!chk)
+                    {
+                        vPP = new ValidatePrPo();
+                        vPP.Filename = row[xCCPITDB.xCCPIT.file_name].ToString().Trim();
+                        vPP.Message = "Error PO008-002 ";
+                        vPP.Validate = "row " + row1 + " admin_receipt_doc_date=" + row[xCCPITDB.xCCPIT.admin_receipt_doc_date].ToString();
+                        lVPr.Add(vPP);
+                        cntErr++;       // gen log
+                    }
+                    chk = validateDate(row[xCCPITDB.xCCPIT.approve_date].ToString());
+                    if (!chk)
+                    {
+                        vPP = new ValidatePrPo();
+                        vPP.Filename = row[xCCPITDB.xCCPIT.file_name].ToString().Trim();
+                        vPP.Message = "Error PO008-002 ";
+                        vPP.Validate = "row " + row1 + " approve_date=" + row[xCCPITDB.xCCPIT.approve_date].ToString();
+                        lVPr.Add(vPP);
+                        cntErr++;       // gen log
+                    }
+                    chk = validateDate(row[xCCPITDB.xCCPIT.cedar_close_date].ToString());
+                    if (!chk)
+                    {
+                        vPP = new ValidatePrPo();
+                        vPP.Filename = row[xCCPITDB.xCCPIT.file_name].ToString().Trim();
+                        vPP.Message = "Error PO008-002 ";
+                        vPP.Validate = "row " + row1 + " cedar_close_date=" + row[xCCPITDB.xCCPIT.cedar_close_date].ToString();
+                        lVPr.Add(vPP);
+                        cntErr++;       // gen log
+                    }
+                    //Error PO001-010 : Invalid Subinventory Code      //ไม่มี store code              
+                    //subInv_code = validateSubInventoryCode(Cm.initC.ORGANIZATION_code.Trim(), row[xCCPITDB.xCCPIT.store_code].ToString().Trim());
+                    //if (subInv_code.Equals(""))
+                    //{
+                    //    vPP = new ValidatePrPo();
+                    //    vPP.Filename = rowG[xCCPITDB.xCCPIT.file_name].ToString().Trim();
+                    //    vPP.Message = "Error PO001-010 ";
+                    //    vPP.Validate = "row " + row1 + " ORGANIZATION_code " + Cm.initC.ORGANIZATION_code.Trim();
+                    //    lVPr.Add(vPP);
+                    //    cntErr++;
+                    //}
+                    // Error PO008 - 011 : Invalid Item Number     //ในเอกสาร  Item Description    
+                    //if (!xCIMTDB.validateItemCodeByOrgRef1("300000000949654", row[xCLFPTDB.xCLFPT.ITEM_CODE].ToString().Trim()))// ต้องแก้ Fix code อยู่
+                    //if (validateItemCodeByOrgRef("300000000949654", row[xCLFPTDB.xCLFPT.ITEM_CODE].ToString().Trim()))// ต้องแก้ Fix code อยู่
+                    //{
+                    //    vPP = new ValidatePrPo();
+                    //    vPP.Filename = rowG[xCLFPTDB.xCLFPT.file_name].ToString().Trim();
+                    //    vPP.Message = "Error PO001-011 ";
+                    //    vPP.Validate = "row " + row1 + " store_code=" + row[xCLFPTDB.xCLFPT.store_code].ToString().Trim() + " item_code " + row[xCLFPTDB.xCLFPT.ITEM_CODE].ToString().Trim();
+                    //    lVPr.Add(vPP);
+                    //    cntErr++;
+                    //}
+                    // Error PO001-015 : Invalid Supplier
+                    //if (!xCSMTDB.validateSupplierBySupplierCode(row[xCLFPTDB.xCLFPT.SUPPLIER_CODE].ToString().Trim()))
+                    if (validateSupplierBySupplierCode(row[xCCPITDB.xCCPIT.supplier_code].ToString().Trim()))
+                    {
+                        vPP = new ValidatePrPo();
+                        vPP.Filename = rowG[xCCPITDB.xCCPIT.file_name].ToString().Trim();
+                        vPP.Message = "Error PO008-015 ";
+                        vPP.Validate = "row " + row1 + " supplier_code " + row[xCCPITDB.xCCPIT.supplier_code].ToString().Trim();
+                        lVPr.Add(vPP);
+                        cntErr++;
+                    }
+                }
+
+            }
         }
     }
 }

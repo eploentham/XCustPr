@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,7 @@ namespace XCustPr
 {
     public class XcustCedarPoIntTblDB
     {
-        XcustCedarPoIntTbl xCCPIT;
+        public XcustCedarPoIntTbl xCCPIT;
         ConnectDB conn;
         private InitC initC;
         public XcustCedarPoIntTblDB(ConnectDB c, InitC initc)
@@ -73,6 +74,20 @@ namespace XCustPr
         {
             String sql = "Delete From " + xCCPIT.table;
             conn.ExecuteNonQuery(sql, "kfc_po");
+        }
+        public DataTable selectCedarGroupByFilename()
+        {
+            DataTable dt = new DataTable();
+            String sql = "select " + xCCPIT.file_name + " From " + xCCPIT.table + " Group By " + xCCPIT.file_name;
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
+        }
+        public DataTable selectCedarByFilename(String filename)
+        {
+            DataTable dt = new DataTable();
+            String sql = "select * From " + xCCPIT.table + " Where " + xCCPIT.file_name + "='" + filename + "'";
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
         }
         public void insertBluk(List<String> cedar, String filename, String host, MaterialProgressBar pB1)
         {
@@ -141,6 +156,10 @@ namespace XCustPr
                     account_segment2 = aaa[colACCOUNT_SEGMENT - 2];// column ใน excel เลยต้อง -2
                     data_source = aaa[colDATA_SOURCE - 2];// column ใน excel เลยต้อง -2
 
+                    admin_receipt_doc_date = dateYearShortToDB(admin_receipt_doc_date);
+                    approve_date = dateYearShortToDB(approve_date);
+                    cedar_close_date = dateYearShortToDB(cedar_close_date);
+                    invoice_due_date = dateYearShortToDB(invoice_due_date);
 
                     //store_cocde = aaa[0];
                     //item_code = aaa[1];
@@ -189,6 +208,26 @@ namespace XCustPr
                     conn.ExecuteNonQuery(sql.ToString(), host);
                 }
             }
+        }
+        public String dateYearShortToDB(String date)
+        {
+            String chk = "", year = "", month = "", day = "";
+            //String[] txt = date.Split('/');
+            if (date.Length >= 10)
+            {
+                year = date.Substring(date.Length - 4);
+                month = date.Substring(3, 2);
+                day = date.Substring(0, 2);
+
+                chk = year + "-" + month + "-" + day;
+            }
+            else
+            {
+                chk = date;
+            }
+            
+
+            return chk;
         }
     }
 }

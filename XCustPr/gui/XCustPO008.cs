@@ -196,12 +196,12 @@ namespace XCustPr
             cPo008.processCedarPOtoErpPR(filePO, lv1, this, pB1);
             //1.ดึงข้อมูลตาม group by filename เพราะ field filename เป็นตัวแบ่งข้อมูลแต่ละfile
             //2.ดึงข้อมูล where ตาม filename เพื่อ validate ถ้า validate ผ่าน ก็ update validate_flag = 'Y'
-            // e.เช็คยอด rcv qty ของระบบ Linfox ต้องไม่เกินยอด PO qty ถ้าเกินให้ Validate ไม่ผ่าน
-            //f.ทำการ Matching Order PO ของ ERP กับ GR ของระบบ Linfox โดย
-            //- หา PO และ PO Line โดยใช้เลข MMX PO Number และ MMX Line Number มาหาโดยใน ERP จะเก็บไว้ที่ PR Header(Attribute2) ,PR Line(Attribute1)
-            //-เมื่อเจอให้ตรวจสอบยอดที่ยังไม่ได้ทำรับ ว่าเหลือพอต่อการ Receipt หรือไม่ หากไม่พอให้ Validate ไม่ผ่าน
+            //d.	จากนั้น Program จะเอาข้อมูลจาก Table XCUST_CEDAR_PO_TBL มาทำการ Validate 
+            // e.กรณีที่ Validat ผ่าน จะเอาข้อมูล Insert ลง table XCUST_PO_HEADER_INT_ALL, XCUST_PO_LINE_INT_ALL, XCUST_PO_LINE_LOC_INT_ALL, XCUST_PO_DIST_INT_ALL และ Update Validate_flag = ‘Y’
+            //- 
+            //-
 
-            //cPo004.processGetTempTableToValidate(lv1, this, pB1);
+            cPo008.processGetTempTableToValidate(lv1, this, pB1);
 
             //cPo004.processInsertTable(lv1, this, pB1);
         }
