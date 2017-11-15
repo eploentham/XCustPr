@@ -154,12 +154,12 @@ namespace XCustPr
                 MessageBox.Show("Path PO008PathProcess empty", "createFolderPO008");
                 return;
             }
-            //if (initC.PO008PathArchive.Equals(""))
-            //{
-            //    MessageBox.Show("Path PO003PathArchive empty", "createFolderPO003");
-            //    return;
-            //}
-            //createFolder(initC.PO008PathArchive);
+            if (initC.PO008PathArchive.Equals(""))
+            {
+                MessageBox.Show("Path PO003PathArchive empty", "createFolderPO008");
+                return;
+            }
+            createFolder(initC.PO008PathArchive);
             createFolder(initC.PO008PathError);
             createFolder(initC.PO008PathInitial);
             createFolder(initC.PO008PathProcess);
@@ -290,6 +290,13 @@ namespace XCustPr
             initC.PO004ImportSource = iniFile.Read("PO004ImportSource").Trim();
             initC.PO004ZipFileSearch = iniFile.Read("PO004ZipFileSearch").Trim();
             initC.PO004FileType = iniFile.Read("PO004FileType").Trim();
+
+            initC.PO008PathArchive = iniFile.Read("PO008PathArchive").Trim();
+            initC.PO008PathError = iniFile.Read("PO008PathError").Trim();
+            initC.PO008PathInitial = iniFile.Read("PO008PathInitial").Trim();
+            initC.PO008PathProcess = iniFile.Read("PO008PathProcess").Trim();
+            initC.PO008ImportSource = iniFile.Read("PO008ImportSource").Trim();
+            initC.PO008ZipFileSearch = iniFile.Read("PO008ZipFileSearch").Trim();
 
             initC.ExtractZipPathZipExtractRead = iniFile.Read("ExtractZipPathZipExtractRead").Trim();
             initC.ExtractZipPathZipExtract = iniFile.Read("ExtractZipPathZipExtract").Trim();

@@ -28,7 +28,7 @@ namespace XCustPr
         Color cTxtL, cTxtE, cForm;
 
         ControlMain Cm;
-        ControlPO004 cPo004;
+        ControlPO008 cPo008;
 
         private ListViewColumnSorter lvwColumnSorter;
         String[] filePO;
@@ -44,7 +44,7 @@ namespace XCustPr
         }
         private void initConfig()
         {
-            cPo004 = new ControlPO004(Cm);
+            cPo008 = new ControlPO008(Cm);
             initCompoment();
             pB1.Visible = false;
             lvwColumnSorter = new ListViewColumnSorter();
@@ -52,7 +52,7 @@ namespace XCustPr
             lvwColumnSorter.SortColumn = 0;
             lv1.Sort();
             //txtFileName.Text = cRDPO.initC.PathInitial + "PR03102017.txt";
-            txtFileName.Text = cPo004.Cm.initC.PO004PathInitial;
+            txtFileName.Text = Cm.initC.PO008PathInitial;
 
             lv1.Columns.Add("NO", 50);
             lv1.Columns.Add("List File", formwidth - 50 - 40 - 100, HorizontalAlignment.Left);
@@ -60,16 +60,16 @@ namespace XCustPr
             lv1.ListViewItemSorter = lvwColumnSorter;
 
             int i = 1;
-            if (cPo004.Cm.initC.PO003PathInitial.Equals(""))
+            if (Cm.initC.PO008PathInitial.Equals(""))
             {
-                MessageBox.Show("Path Config PO003 ไม่ถูกต้อง", "");
+                MessageBox.Show("Path Config PO008 ไม่ถูกต้อง", "");
                 disableBtn();
                 return;
             }
-            filePO = cPo004.Cm.getFileinFolder(cPo004.Cm.initC.PO004PathInitial);
+            filePO = cPo008.Cm.getFileinFolder(Cm.initC.PO008PathInitial);
             if (filePO == null)
             {
-                MessageBox.Show("Folder PO003 ไม่ถูกต้อง", "");
+                MessageBox.Show("Folder PO008 ไม่ถูกต้อง", "");
                 disableBtn();
                 return;
             }
@@ -98,40 +98,40 @@ namespace XCustPr
             line5 = 270 + gapLine;
 
             lb1 = new MaterialLabel();
-            lb1.Font = cPo004.fV1;
+            lb1.Font = cPo008.fV1;
             lb1.Text = "Text File";
             lb1.AutoSize = true;
             Controls.Add(lb1);
-            lb1.Location = new System.Drawing.Point(cPo004.formFirstLineX, cPo004.formFirstLineY + gapLine);
+            lb1.Location = new System.Drawing.Point(cPo008.formFirstLineX, cPo008.formFirstLineY + gapLine);
 
             lb2 = new MaterialLabel();
-            lb2.Font = cPo004.fV1;
-            lb2.Text = "Program Name XcustPO004";
+            lb2.Font = cPo008.fV1;
+            lb2.Text = "Program Name XcustPO008";
             lb2.AutoSize = true;
             Controls.Add(lb2);
-            lb2.Location = new System.Drawing.Point(grd3, cPo004.formFirstLineY + gapLine);
+            lb2.Location = new System.Drawing.Point(grd3, cPo008.formFirstLineY + gapLine);
 
             txtFileName = new MaterialSingleLineTextField();
-            txtFileName.Font = cPo004.fV1;
+            txtFileName.Font = cPo008.fV1;
             txtFileName.Text = "";
             txtFileName.Size = new System.Drawing.Size(300 - grd1 - 20 - 30, ControlHeight);
             Controls.Add(txtFileName);
-            txtFileName.Location = new System.Drawing.Point(grd1, cPo004.formFirstLineY + gapLine);
+            txtFileName.Location = new System.Drawing.Point(grd1, cPo008.formFirstLineY + gapLine);
             txtFileName.Hint = lb1.Text;
             txtFileName.Enter += txtFileName_Enter;
             txtFileName.Leave += txtFileName_Leave;
 
 
             btnRead = new MaterialFlatButton();
-            btnRead.Font = cPo004.fV1;
-            btnRead.Text = "1. mod up Read Text";
+            btnRead.Font = cPo008.fV1;
+            btnRead.Text = "1. mod up Read Excel";
             btnRead.Size = new System.Drawing.Size(30, ControlHeight);
             Controls.Add(btnRead);
             btnRead.Location = new System.Drawing.Point(grd1, line1);
             btnRead.Click += btnRead_Click;
 
             btnPrepare = new MaterialFlatButton();
-            btnPrepare.Font = cPo004.fV1;
+            btnPrepare.Font = cPo008.fV1;
             btnPrepare.Text = "2. prepare Data, zip file";
             btnPrepare.Size = new System.Drawing.Size(30, ControlHeight);
             Controls.Add(btnPrepare);
@@ -139,7 +139,7 @@ namespace XCustPr
             btnPrepare.Click += btnPrepare_Click;
 
             btnWebService = new MaterialFlatButton();
-            btnWebService.Font = cPo004.fV1;
+            btnWebService.Font = cPo008.fV1;
             btnWebService.Text = "3. Web Service";
             btnWebService.Size = new System.Drawing.Size(30, ControlHeight);
             Controls.Add(btnWebService);
@@ -147,7 +147,7 @@ namespace XCustPr
             btnWebService.Click += btnWebService_Click;
 
             btnFTP = new MaterialFlatButton();
-            btnFTP.Font = cPo004.fV1;
+            btnFTP.Font = cPo008.fV1;
             btnFTP.Text = "4. FTP to linfox";
             btnFTP.Size = new System.Drawing.Size(30, ControlHeight);
             Controls.Add(btnFTP);
@@ -155,7 +155,7 @@ namespace XCustPr
             btnFTP.Click += btnFTP_Click;
 
             btnEmail = new MaterialFlatButton();
-            btnEmail.Font = cPo004.fV1;
+            btnEmail.Font = cPo008.fV1;
             btnEmail.Text = "5. Send email ";
             btnEmail.Size = new System.Drawing.Size(30, ControlHeight);
             Controls.Add(btnEmail);
@@ -165,13 +165,13 @@ namespace XCustPr
             pB1 = new MaterialProgressBar();
             Controls.Add(pB1);
             pB1.Size = new System.Drawing.Size(formwidth - 40, pB1.Height);
-            pB1.Location = new System.Drawing.Point(cPo004.formFirstLineX + 5, line41);
+            pB1.Location = new System.Drawing.Point(cPo008.formFirstLineX + 5, line41);
 
             lv1 = new MaterialListView();
-            lv1.Font = cPo004.fV1;
+            lv1.Font = cPo008.fV1;
             lv1.FullRowSelect = true;
             lv1.Size = new System.Drawing.Size(formwidth - 40, formheight - line3 - 100);
-            lv1.Location = new System.Drawing.Point(cPo004.formFirstLineX + 5, line42);
+            lv1.Location = new System.Drawing.Point(cPo008.formFirstLineX + 5, line42);
             lv1.FullRowSelect = true;
             lv1.View = View.Details;
             //lv1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -192,8 +192,8 @@ namespace XCustPr
         private void btnRead_Click(object sender, EventArgs e)
         {
             lv1.Items.Clear();
-            filePO = cPo004.Cm.getFileinFolder(cPo004.Cm.initC.PO003PathInitial);
-            cPo004.processLinfoxRCVPOtoErpPR(filePO, lv1, this, pB1);
+            filePO = cPo008.Cm.getFileinFolder(Cm.initC.PO008PathInitial);
+            cPo008.processCedarPOtoErpPR(filePO, lv1, this, pB1);
             //1.ดึงข้อมูลตาม group by filename เพราะ field filename เป็นตัวแบ่งข้อมูลแต่ละfile
             //2.ดึงข้อมูล where ตาม filename เพื่อ validate ถ้า validate ผ่าน ก็ update validate_flag = 'Y'
             // e.เช็คยอด rcv qty ของระบบ Linfox ต้องไม่เกินยอด PO qty ถ้าเกินให้ Validate ไม่ผ่าน

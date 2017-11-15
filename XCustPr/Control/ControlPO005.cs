@@ -89,8 +89,7 @@ namespace XCustPr
             listXcustPRHIA = new List<XcustPorReqHeaderIntAll>();
             listXcustPRLIA = new List<XcustPorReqLineIntAll>();
             listXcustPRDIA = new List<XcustPorReqDistIntAll>();
-
-            listXcSIMT = new List<XcustSubInventoryMstTbl>();
+            
             listXcIMT = new List<XcustItemMstTbl>();
             listXcSMT = new List<XcustSupplierMstTbl>();
             listXcVSMT = new List<XcustValueSetMstTbl>();

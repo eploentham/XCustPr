@@ -43,49 +43,49 @@ namespace XCustPr
             String time = System.DateTime.Now.ToString("HH:mm:ss");
             //filename = Cm.initC.PathZip + "\\xcustpr.zip";
             //Cm.deleteFile(filename);
-            //ZipArchive zip = ZipFile.Open(filename, ZipArchiveMode.Read);
+            ZipArchive zip = ZipFile.Open(filename, ZipArchiveMode.Read);
             //var allFiles = Directory.GetFiles(@Cm.initC.ExtractZipPathZipExtractRead, "*.*", SearchOption.AllDirectories);
             foreach (String file in filePO)
             {
-                //using (ZipArchive archive = ZipFile.OpenRead(file))
-                //{
-                //    foreach (ZipArchiveEntry entry in archive.Entries)
-                //    {
-                //        //if (entry.FullName.EndsWith(".txt", StringComparison.OrdinalIgnoreCase))
-                //        //{
-                //        ValidateFileName vF = new ValidateFileName();
-                //        vF.fileName = entry.FullName;
-                //        vF.recordTotal = "1";
-                //        lVfile.Add(vF);
-                //        try
-                //        {
-                //            entry.ExtractToFile(Path.Combine(@Cm.initC.ExtractZipPathZipExtract, entry.FullName));
-                //        }
-                //        catch (IOException ioe)
-                //        {
-                //            vPP = new ValidatePrPo();
-                //            vPP.Filename = entry.FullName;
-                //            vPP.Message = ioe.Message;
-                //            //vPP.Validate = "row " + row1 + " ORDER_DATE=" + row[xCLFPTDB.xCLFPT.ORDER_DATE].ToString();
-                //            lVPr.Add(vPP);
-                //            addListView("err " + ioe.Message, "extract error ", lv1, form1);
-                //        }
-                //        catch (ArgumentException ae)
-                //        {
-                //            vPP = new ValidatePrPo();
-                //            vPP.Filename = entry.FullName;
-                //            vPP.Message = ae.Message;
-                //            //vPP.Validate = "row " + row1 + " ORDER_DATE=" + row[xCLFPTDB.xCLFPT.ORDER_DATE].ToString();
-                //            lVPr.Add(vPP);
-                //            addListView("err " + ae.Message, "extract error ", lv1, form1);
-                //        }
-                //        addListView("extract zip file " + entry.FullName, "extract zip ", lv1, form1);
-                //        //}
-                //    }
-                //    archive.Dispose();
-                //}
-                ////zip.CreateEntryFromFile(file, Path.GetFileName(file), CompressionLevel.Optimal);
-                //zip.CreateEntryFromFile(file, Path.GetFileName(file));
+                using (ZipArchive archive = ZipFile.OpenRead(file))
+                {
+                    foreach (ZipArchiveEntry entry in archive.Entries)
+                    {
+                        //if (entry.FullName.EndsWith(".txt", StringComparison.OrdinalIgnoreCase))
+                        //{
+                        ValidateFileName vF = new ValidateFileName();
+                        vF.fileName = entry.FullName;
+                        vF.recordTotal = "1";
+                        lVfile.Add(vF);
+                        try
+                        {
+                            entry.ExtractToFile(Path.Combine(@Cm.initC.ExtractZipPathZipExtract, entry.FullName));
+                        }
+                        catch (IOException ioe)
+                        {
+                            vPP = new ValidatePrPo();
+                            vPP.Filename = entry.FullName;
+                            vPP.Message = ioe.Message;
+                            //vPP.Validate = "row " + row1 + " ORDER_DATE=" + row[xCLFPTDB.xCLFPT.ORDER_DATE].ToString();
+                            lVPr.Add(vPP);
+                            addListView("err " + ioe.Message, "extract error ", lv1, form1);
+                        }
+                        catch (ArgumentException ae)
+                        {
+                            vPP = new ValidatePrPo();
+                            vPP.Filename = entry.FullName;
+                            vPP.Message = ae.Message;
+                            //vPP.Validate = "row " + row1 + " ORDER_DATE=" + row[xCLFPTDB.xCLFPT.ORDER_DATE].ToString();
+                            lVPr.Add(vPP);
+                            addListView("err " + ae.Message, "extract error ", lv1, form1);
+                        }
+                        addListView("extract zip file " + entry.FullName, "extract zip ", lv1, form1);
+                        //}
+                    }
+                    archive.Dispose();
+                }
+                //zip.CreateEntryFromFile(file, Path.GetFileName(file), CompressionLevel.Optimal);
+                zip.CreateEntryFromFile(file, Path.GetFileName(file));
             }
             //zip.Dispose();
             Cm.logProcess("xcustextractzip", lVPr, date +" "+ time, lVfile);
