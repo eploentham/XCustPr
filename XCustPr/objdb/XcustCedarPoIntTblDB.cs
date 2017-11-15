@@ -11,9 +11,11 @@ namespace XCustPr
     {
         XcustCedarPoIntTbl xCCPIT;
         ConnectDB conn;
-        public XcustCedarPoIntTblDB(ConnectDB c)
+        private InitC initC;
+        public XcustCedarPoIntTblDB(ConnectDB c, InitC initc)
         {
             conn = c;
+            initC = initc;
             initConfig();
         }
         private void initConfig()
@@ -129,23 +131,22 @@ namespace XCustPr
                         .Append(",").Append(xCCPIT.validate_flag).Append(",").Append(xCCPIT.vat).Append(",").Append(xCCPIT.week)
                         .Append(",").Append(xCCPIT.work_type).Append(",").Append(xCCPIT.wo_no).Append(",").Append(xCCPIT.xno)                        
                         .Append(") Values ('")
-                        .Append(account_segment1).Append("',").Append(account_segment2).Append(",'").Append(account_segment3)
+                        .Append(account_segment1).Append("','").Append(account_segment2).Append("','").Append(account_segment3)
                         .Append("','").Append(account_segment4).Append("','").Append(account_segment5).Append("','").Append(account_segment6)
                         .Append("','").Append(account_segment_no).Append("','").Append(admin).Append("','").Append(admin_receipt_doc_date)
                         .Append("','").Append(amt).Append("','").Append(approve_date).Append("','").Append(asset_code)
                         .Append("','").Append(asset_name).Append("','").Append(branch_plant).Append("','").Append(category_name)
                         .Append("','").Append(cedar_close_date).Append("','").Append(creation_by).Append("','").Append(creation_date)
                         .Append("','").Append(data_source).Append("','").Append(error_message).Append("','").Append(filename.Trim().Replace(initC.PO004PathProcess, ""))
-                        .Append("','").Append(RECEIVE_QTY).Append("','").Append(lastUpdateTime).Append("','").Append(store_cocde)
-                        .Append("','").Append(RECEIVE_QTY).Append("','").Append(lastUpdateTime).Append("','").Append(store_cocde)
-                        .Append("','").Append(RECEIVE_QTY).Append("','").Append(lastUpdateTime).Append("','").Append(store_cocde)
-                        .Append("','").Append(RECEIVE_QTY).Append("','").Append(lastUpdateTime).Append("','").Append(store_cocde)
-                        .Append("','").Append(RECEIVE_QTY).Append("','").Append(lastUpdateTime).Append("','").Append(store_cocde)
-                        .Append("','").Append(RECEIVE_QTY).Append("','").Append(lastUpdateTime).Append("','").Append(store_cocde)
-                        .Append("','").Append(RECEIVE_QTY).Append("','").Append(lastUpdateTime).Append("','").Append(store_cocde)
-                        .Append("','").Append(RECEIVE_QTY).Append("','").Append(lastUpdateTime).Append("','").Append(store_cocde)
-                        .Append("','").Append(RECEIVE_QTY).Append("','").Append(lastUpdateTime).Append("','").Append(store_cocde)
-                        .Append("','").Append(supplier_code).Append("','").Append(validate_flag).Append("') ");
+                        .Append("','").Append(invoice_due_date).Append("','").Append(item_description).Append("','").Append(item_e1)
+                        .Append("','").Append(last_update_by).Append("','").Append(last_update_date).Append("','").Append(loctype)
+                        .Append("','").Append(payment_term).Append("','").Append(period).Append("','").Append(po_no)
+                        .Append("','").Append(process_flag).Append("','").Append(qt_no).Append("','").Append(shippto_location)
+                        .Append("','").Append(supplier_code).Append("','").Append(supplier_contact).Append("','").Append(supplier_name)
+                        .Append("','").Append(supplier_site_code).Append("','").Append(lastUpdateTime).Append("','").Append(total)
+                        .Append("','").Append(validate_flag).Append("','").Append(vat).Append("','").Append(week)
+                        .Append("','").Append(work_type).Append("','").Append(wo_no).Append("','").Append(xno)                        
+                        .Append("') ");
                     conn.ExecuteNonQuery(sql.ToString(), host);
                 }
             }
