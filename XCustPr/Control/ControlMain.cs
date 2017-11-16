@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml;
+using System.Xml.Linq;
 
 namespace XCustPr
 {
@@ -56,10 +59,16 @@ namespace XCustPr
                 MessageBox.Show("Path PO001PathArchive empty", "createFolderPO001");
                 return;
             }
+            if (initC.PathZip.Equals(""))
+            {
+                MessageBox.Show("Path PO001PathZip empty", "createFolderPO001");
+                return;
+            }
             createFolderPO001PathProcess();
             createFolderPO001PathInitial();
             createFolderPO001PathError();
             createFolderPO001PathArchive();
+            createFolderPO001PathZip();
         }
         public void createFolderPO004()
         {
@@ -105,10 +114,16 @@ namespace XCustPr
                 MessageBox.Show("Path PO005PathArchive empty", "createFolderPO005");
                 return;
             }
+            if (initC.PO005pathZip.Equals(""))
+            {
+                MessageBox.Show("Path PO005PathZip empty", "createFolderPO005");
+                return;
+            }
             createFolder(initC.PO005PathArchive);
             createFolder(initC.PO005PathError);
             createFolder(initC.PO005PathInitial);
             createFolder(initC.PO005PathProcess);
+            createFolder(initC.PO005pathZip);
         }
         public void createFolderPO003()
         {
@@ -188,6 +203,12 @@ namespace XCustPr
             bool folderExists = Directory.Exists(initC.PathArchive);
             if (!folderExists)
                 Directory.CreateDirectory(initC.PathArchive);
+        }
+        public void createFolderPO001PathZip()
+        {
+            bool folderExists = Directory.Exists(initC.PathZip);
+            if (!folderExists)
+                Directory.CreateDirectory(initC.PathZip);
         }
         public String[] getFileinFolder(String path)
         {
@@ -274,6 +295,7 @@ namespace XCustPr
             initC.PO005PathInitial = iniFile.Read("PO005PathInitial").Trim();
             initC.PO005PathProcess = iniFile.Read("PO005PathProcess").Trim();
             initC.PO005ImportSource = iniFile.Read("PO005ImportSource").Trim();
+            initC.PO005pathZip = iniFile.Read("PO005pathZip").Trim();
 
             initC.PO003PathArchive = iniFile.Read("PO003PathArchive").Trim();    //bit
             initC.PO003PathError = iniFile.Read("PO003PathError").Trim();
@@ -640,6 +662,102 @@ namespace XCustPr
                 txt += "Error " + cntErr + Environment.NewLine;
                 stream.WriteLine(txt);
             }
+        }
+        public void callWebService(String flag)
+        {
+            String uri = "", dump = "";
+            //HttpWebRequest request = CreateWebRequest();
+            XmlDocument soapEnvelopeXml = new XmlDocument();
+            const Int32 BufferSize = 128;
+            String[] filePO;
+            if (flag.Equals("PO001"))
+            {
+                filePO = getFileinFolder(initC.PathZip);
+            }
+            else if (flag.Equals("PO005"))
+            {
+                filePO = getFileinFolder(initC.PathZip);
+            }
+            else
+            {
+                filePO = getFileinFolder(initC.PathZip);
+            }
+            
+            String text = System.IO.File.ReadAllText(filePO[0]);
+            //byte[] byteArraytext = Encoding.UTF8.GetBytes(text);
+            byte[] toEncodeAsBytestext = System.Text.ASCIIEncoding.ASCII.GetBytes(text);
+            String Arraytext = System.Convert.ToBase64String(toEncodeAsBytestext);
+
+            uri = @" <soapenv:Envelope xmlns:soapenv ='http://schemas.xmlsoap.org/soap/envelope/' xmlns:typ='http://xmlns.oracle.com/oracle/apps/fnd/applcore/webservices/types/' xmlns:web='http://xmlns.oracle.com/oracle/apps/fnd/applcore/webservices/'> " +
+                    "<soapenv:Header/> " +
+                        "<soapenv:Body> " +
+                         "<typ:uploadFiletoUCM> " +
+                   "<typ:document> " +
+                       "<!--Optional:--> " +
+                        "<web:fileName>xcustpr.zip</web:fileName> " +
+                             "<!--Optional:--> " +
+                              "<web:contentType>application/zip</web:contentType> " +
+                                     "<!--Optional:--> " +
+                                        "<web:content>" + Arraytext +
+                                        "</web:content> " +
+                            "<!--Optional:--> " +
+              "<web:documentAccount>prc$/requisition$/import$</web:documentAccount> " +
+                    "<!--Optional:--> " +
+                     "<web:documentTitle>amo_test_load</web:documentTitle> " +
+                       "</typ:document> " +
+                     "</typ:uploadFiletoUCM> " +
+                   "</soapenv:Body> " +
+                 "</soapenv:Envelope>";
+
+            //byte[] byteArray = Encoding.UTF8.GetBytes(envelope);
+            byte[] byteArray = Encoding.UTF8.GetBytes(uri);
+
+            // Construct the base 64 encoded string used as credentials for the service call
+            byte[] toEncodeAsBytes = System.Text.ASCIIEncoding.ASCII.GetBytes("icetech@iceconsulting.co.th" + ":" + "icetech@2017");
+            string credentials = System.Convert.ToBase64String(toEncodeAsBytes);
+
+            // Create HttpWebRequest connection to the service
+            HttpWebRequest request1 = (HttpWebRequest)WebRequest.Create("https://eglj-test.fa.us2.oraclecloud.com:443/fndAppCoreServices/FndManageImportExportFilesService?WSDL");
+
+            // Configure the request content type to be xml, HTTP method to be POST, and set the content length
+            request1.Method = "POST";
+            request1.ContentType = "text/xml;charset=UTF-8";
+            request1.ContentLength = byteArray.Length;
+
+            // Configure the request to use basic authentication, with base64 encoded user name and password, to invoke the service.
+            request1.Headers.Add("Authorization", "Basic " + credentials);
+
+            // Set the SOAP action to be invoked; while the call works without this, the value is expected to be set based as per standards
+            request1.Headers.Add("SOAPAction", "http://xmlns.oracle.com/apps/incentiveCompensation/cn/creditSetup/creditRule/creditRuleService/findRule");
+
+            // Write the xml payload to the request
+            Stream dataStream = request1.GetRequestStream();
+            dataStream.Write(byteArray, 0, byteArray.Length);
+            dataStream.Close();
+
+            // Get the response and process it; In this example, we simply print out the response XDocument doc;
+            string actNumber = "";
+            XDocument doc;
+            using (WebResponse response = request1.GetResponse())
+            {
+                using (Stream stream = response.GetResponseStream())
+                {
+                    doc = XDocument.Load(stream);
+                    foreach (XNode node in doc.DescendantNodes())
+                    {
+                        if (node is XElement)
+                        {
+                            XElement element = (XElement)node;
+                            if (element.Name.LocalName.Equals("result"))
+                            {
+                                actNumber = element.ToString().Replace("http://xmlns.oracle.com/oracle/apps/fnd/applcore/webservices/types/", "");
+                                actNumber = actNumber.Replace("result xmlns=", "").Replace("</result>", "").Replace(@"""", "").Replace("<>", "");
+                            }
+                        }
+                    }
+                }
+            }
+            Console.WriteLine(doc);
         }
     }
 }

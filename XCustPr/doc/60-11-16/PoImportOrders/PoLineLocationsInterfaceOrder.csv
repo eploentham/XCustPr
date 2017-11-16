@@ -1,0 +1,4 @@
+ABC11,ABC1,1,M1- Seattle Mfg,,,12,2015/09/01,2015/09/02,,,INVENTORY,,,,,,,,,,,,,,,Note to receiver,,,,,,,,,Attribute1,,,,,,,,,Attribute10,,,,,,,,,,Attribute20,2015/09/01,,,,,,,,,2015/09/01,1,,,,5,,,,,10,,,,,,,,,2012/03/04 03:45:45:22,,,,,,,,,,END
+DEF11,DEF1,1,M1- Seattle Mfg,,,12,2015/09/02,,,,INVENTORY,,,,,,,,,,,,,,,Note to receiver,,,,,,,,,Attribute1,,,,,,,,,Attribute10,,,,,,,,,,Attribute20,2015/09/02,,,,,,,,,2015/09/02,1,,,,5,,,,,10,,,,,,,,,,,,,,,,,,,END
+DEF21,DEF2,1,M1- Seattle Mfg,,,5,2015/09/03,,,,INVENTORY,,,,,,,,,,,,,,,Note to receiver,,,,,,,,,Attribute1,,,,,,,,,Attribute10,,,,,,,,,,Attribute20,2015/09/03,,,,,,,,,2015/09/03,1,,,,5,,,,,10,,,,,,,,,,,,,,,,,,,END
+DEF22,DEF2,2,M1- Seattle Mfg,,,7,2015/09/04,,,,INVENTORY,,,,,,,,,,,,,,,Note to receiver,,,,,,,,,Attribute1,,,,,,,,,Attribute10,,,,,,,,,,Attribute20,2015/09/04,,,,,,,,,2015/09/04,1,,,,5,,,,,10,,,,,,,,,,,,,,,,,,,END

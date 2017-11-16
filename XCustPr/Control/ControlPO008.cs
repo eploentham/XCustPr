@@ -499,5 +499,310 @@ namespace XCustPr
 
             }
         }
+        public void processGenCSVxCRHIADB(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String flag)
+        {
+            var file = Cm.initC.PO003PathArchive + "PorReqHeadersInterfaceAl.csv";
+            DataTable dt;
+            if (flag.Equals("PO003"))
+            {
+                dt = xCRHIADB.selectAll();
+            }
+            else
+            {
+                dt = xCRHIADB.selectAll();
+            }
+
+            addListView("processGenCSVxCRHIADB จำนวนข้อมูล " + dt.Rows.Count, "CVS", lv1, form1);
+            using (var stream = File.CreateText(file))
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    string col01 = row[xCRHIADB.xCRHIA.HEADER_INTERFACE_NUMBER].ToString();
+                    string col02 = "col02";      //action        รอถาม  
+                    string col03 = "col03";      //batch_id      รอถาม  
+                    string col04 = row[xCRHIADB.xCRHIA.IMPORT_SOURCE].ToString();
+                    string col05 = "col05";//Approval Action       รอถาม  
+                    string col06 = "col06";      //Order       รอถาม  
+                    string col07 = "col07";//Document Type Code      รอถาม  
+                    string col08 = "col08";//Style       รอถาม 
+                    string col09 = "col09";//Procurement BU       รอถาม 
+                    string col10 = "col10";//Requisitioning BU       รอถาม 
+
+                    string col11 = "col11";//Sold-to Legal Entity รอถาม  
+                    string col12 = "col12";//Bill-to BU
+                    string col13 = "col13";//Buyer
+                    string col14 = "col14";//Currency Code
+                    string col15 = "col15";//Rate
+                    string col16 = "col16";//Rate Type
+                    string col17 = "col17";//Rate Date
+                    string col18 = "col18";//Description
+                    string col19 = "col19";//Bill-to Location
+                    string col20 = "col20";//Ship-to Location
+
+                    string col21 = "col21";//Supplier
+                    string col22 = "col22";//Supplier Number
+                    string col23 = "col23";//Supplier Site
+                    string col24 = "col24";//Supplier Contact
+                    string col25 = "col25";//Supplier Order
+                    string col26 = "col26";//FOB
+                    string col27 = "col27";//Carrier
+                    string col28 = "col28";//Freight Terms
+                    string col29 = "col29";//Pay On Code
+                    string col30 = "col30";//Payment Terms
+
+                    string col31 = "col31";//Initiating Party
+                    string col32 = "col32";//Change Order Description
+                    string col33 = "col33";//Required Acknowledgment
+                    string col34 = "col34";//Acknowledge Within (Days)
+                    string col35 = "col35";//Communication Method
+                    string col36 = "col36";//Fax
+                    string col37 = "col37";//E-mail
+                    string col38 = "col38";//Confirming order
+                    string col39 = "col39";//Note to Supplier
+                    string col40 = "col40";//Note to Receiver
+
+                    string col41 = "col41";//Default Taxation Country Code
+                    string col42 = "col42";//Tax Document Subtype Code
+                    string col43 = row[xCRHIADB.xCRHIA.ATTRIBUTE_CATEGORY].ToString();
+                    string col44 = row[xCRHIADB.xCRHIA.ATTRIBUTE1].ToString();
+                    string col45 = row[xCRHIADB.xCRHIA.ATTRIBUTE2].ToString();
+                    string col46 = row[xCRHIADB.xCRHIA.ATTRIBUTE3].ToString();
+                    string col47 = row[xCRHIADB.xCRHIA.ATTRIBUTE4].ToString();
+                    string col48 = row[xCRHIADB.xCRHIA.ATTRIBUTE5].ToString();
+                    string col49 = row[xCRHIADB.xCRHIA.ATTRIBUTE6].ToString();
+                    string col50 = row[xCRHIADB.xCRHIA.ATTRIBUTE7].ToString();
+
+                    string col51 = row[xCRHIADB.xCRHIA.ATTRIBUTE8].ToString();
+                    string col52 = row[xCRHIADB.xCRHIA.ATTRIBUTE9].ToString();
+                    string col53 = row[xCRHIADB.xCRHIA.ATTRIBUTE10].ToString();
+                    string col54 = row[xCRHIADB.xCRHIA.ATTRIBUTE11].ToString();
+                    string col55 = row[xCRHIADB.xCRHIA.ATTRIBUTE12].ToString();
+                    string col56 = row[xCRHIADB.xCRHIA.ATTRIBUTE13].ToString();
+                    string col57 = row[xCRHIADB.xCRHIA.ATTRIBUTE14].ToString();
+                    string col58 = row[xCRHIADB.xCRHIA.ATTRIBUTE15].ToString();
+                    string col59 = row[xCRHIADB.xCRHIA.ATTRIBUTE16].ToString();
+                    string col60 = row[xCRHIADB.xCRHIA.ATTRIBUTE17].ToString();
+
+                    string col61 = row[xCRHIADB.xCRHIA.ATTRIBUTE18].ToString();
+                    string col62 = row[xCRHIADB.xCRHIA.ATTRIBUTE19].ToString();
+                    string col63 = row[xCRHIADB.xCRHIA.ATTRIBUTE20].ToString();
+                    string col64 = row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE1].ToString();
+                    string col65 = row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE2].ToString();
+                    string col66 = row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE3].ToString();
+                    string col67 = row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE4].ToString();
+                    string col68 = row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE5].ToString();
+                    string col69 = row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE6].ToString();
+                    string col70 = row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE7].ToString();
+
+                    string col71 = row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE8].ToString();
+                    string col72 = row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE9].ToString();
+                    string col73 = row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE10].ToString();
+                    string col74 = row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER1].ToString();
+                    string col75 = row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER2].ToString();
+                    string col76 = row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER3].ToString();
+                    string col77 = row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER4].ToString();
+                    string col78 = row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER5].ToString();
+                    string col79 = row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER6].ToString();
+                    string col80 = row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER7].ToString();
+
+                    string col81 = row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER8].ToString();
+                    string col82 = row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER9].ToString();
+                    string col83 = row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER10].ToString();
+                    string col84 = row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP1].ToString();
+                    string col85 = row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP2].ToString();
+                    string col86 = row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP3].ToString();
+                    string col87 = row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP4].ToString();
+                    string col88 = row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP5].ToString();
+                    string col89 = row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP6].ToString();
+                    string col90 = row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP7].ToString();
+
+                    string col91 = row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP8].ToString();
+                    string col92 = row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP9].ToString();
+                    string col93 = row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP10].ToString();
+                    string col94 = "col94";       //Buyer E-mail
+                    string col95 = "col95";       //Mode of Transport
+                    string col96 = "col96";       //Service Level
+                    string col97 = "col97";       //First Party Tax Registration Number
+                    string col98 = "col98";       //Third Party Tax Registration Number
+                    string col99 = "col99";       //Buyer Managed Transportation
+
+                    //string col71 = "col71";
+
+                    //string csvRow = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20}," +
+                    //    "{21},{22},{23},{24},{25},{26},{27},{28},{29},{30},{31},{32},{33},{34},{35},{36},{37},{38},{39},{40}," +
+                    //    "{41},{42},{43},{44},{45},{46},{47},{48},{49},{50},{51},{52},{53},{54},{55},{56},{57},{58},{59},{60}," +
+                    //    "{61},{62},{63},{64},{65},{66},{67},{68},{69},{70},{71}", 
+                    //    col01, col02, col03, col04, col05, col06, col07, col08, col09, col10,
+                    //    col11, col12, col13, col14, col15, col16, col17, col18, col19, col20,
+                    //    col21, col22, col23, col24, col25, col26, col27, col28, col29, col30,
+                    //    col41, col42, col43, col44, col45, col46, col47, col48, col49, col50,
+                    //    col51, col52, col53, col54, col55, col56, col57, col58, col59, col60,
+                    //    col61, col62, col63, col64, col65, col66, col67, col68, col69, col70, col71);
+
+                    string csvRow = col01 + "," + col02 + "," + col03 + "," + col04 + "," + col05 + "," + col06 + "," + col07 + "," + col08 + "," + col09 + "," + col10
+                        + "," + col11 + "," + col12 + "," + col13 + "," + col14 + "," + col15 + "," + col16 + "," + col17 + "," + col18 + "," + col19 + "," + col20
+                        + "," + col21 + "," + col22 + "," + col23 + "," + col24 + "," + col25 + "," + col26 + "," + col27 + "," + col28 + "," + col29 + "," + col30
+                        + "," + col31 + "," + col32 + "," + col33 + "," + col34 + "," + col35 + "," + col36 + "," + col37 + "," + col38 + "," + col39 + "," + col40
+                        + "," + col51 + "," + col52 + "," + col53 + "," + col54 + "," + col55 + "," + col56 + "," + col57 + "," + col58 + "," + col59 + "," + col60
+                        + "," + col61 + "," + col62 + "," + col63 + "," + col64 + "," + col65 + "," + col66 + "," + col67 + "," + col68 + "," + col69 + "," + col70
+                        + "," + col71 + "," + col72 + "," + col73 + "," + col74 + "," + col75 + "," + col76 + "," + col77 + "," + col78 + "," + col79 + "," + col80
+                        + "," + col81 + "," + col82 + "," + col83 + "," + col84 + "," + col85 + "," + col86 + "," + col87 + "," + col88 + "," + col89 + "," + col90
+                        + "," + col91 + "," + col92 + "," + col93 + "," + col94 + "," + col95 + "," + col96 + "," + col97 + "," + col98 + "," + col99;
+
+                    stream.WriteLine(csvRow);
+                }
+            }
+        }
+        public void processGenCSVxCRTIADB(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String flag)
+        {
+            var file = Cm.initC.PO003PathArchive + "PorReqHeadersInterfaceAl.csv";
+            DataTable dt;
+            if (flag.Equals("PO003"))
+            {
+                dt = xCRTIADB.selectAll();
+            }
+            else
+            {
+                dt = xCRTIADB.selectAll();
+            }
+
+            addListView("processGenCSVxCRTIADB จำนวนข้อมูล " + dt.Rows.Count, "CVS", lv1, form1);
+            using (var stream = File.CreateText(file))
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    string col01 = row[xCRTIADB.xCRTIA.HEADER_INTERFACE_NUMBER].ToString();     //Interface Line Key
+                    string col02 = row[xCRTIADB.xCRTIA.INTERFACE_SOURCE_CODE].ToString();      //Interface Header Key        รอถาม  
+                    string col03 = "col03";      //Action      รอถาม  
+                    string col04 = "col04";       //Line
+                    string col05 = "col05";//Line Type       รอถาม  
+                    string col06 = "col06";      //Item       รอถาม  
+                    string col07 = "col07";//Item Description      รอถาม  
+                    string col08 = "col08";//Item Revision       รอถาม 
+                    string col09 = "col09";//Category Name       รอถาม 
+                    string col10 = "col10";//Amount       รอถาม 
+
+                    string col11 = "col11";//Quantity รอถาม  
+                    string col12 = "col12";//UOM
+                    string col13 = "col13";//Price
+                    string col14 = "col14";//Secondary Quantity
+                    string col15 = "col15";//Secondary UOM
+                    string col16 = "col16";//Supplier Item
+                    string col17 = "col17";//Negotiated
+                    string col18 = "col18";//Hazard Class
+                    string col19 = "col19";//UN Number
+                    string col20 = "col20";//Note to Supplier 
+
+                    string col21 = "col21";//Note to Receiver
+                    string col22 = row[xCRHIADB.xCRHIA.ATTRIBUTE_CATEGORY].ToString();
+                    string col23 = row[xCRHIADB.xCRHIA.ATTRIBUTE1].ToString();
+                    string col24 = row[xCRHIADB.xCRHIA.ATTRIBUTE2].ToString();
+                    string col25 = row[xCRHIADB.xCRHIA.ATTRIBUTE3].ToString();
+                    string col26 = row[xCRHIADB.xCRHIA.ATTRIBUTE4].ToString();
+                    string col27 = row[xCRHIADB.xCRHIA.ATTRIBUTE5].ToString();
+                    string col28 = row[xCRHIADB.xCRHIA.ATTRIBUTE6].ToString();
+                    string col29 = row[xCRHIADB.xCRHIA.ATTRIBUTE7].ToString();
+                    string col30 = row[xCRHIADB.xCRHIA.ATTRIBUTE8].ToString();
+
+                    string col31 = row[xCRHIADB.xCRHIA.ATTRIBUTE9].ToString();
+                    string col32 = row[xCRHIADB.xCRHIA.ATTRIBUTE10].ToString();
+                    string col33 = row[xCRHIADB.xCRHIA.ATTRIBUTE11].ToString();
+                    string col34 = row[xCRHIADB.xCRHIA.ATTRIBUTE12].ToString();
+                    string col35 = row[xCRHIADB.xCRHIA.ATTRIBUTE13].ToString();
+                    string col36 = row[xCRHIADB.xCRHIA.ATTRIBUTE14].ToString();
+                    string col37 = row[xCRHIADB.xCRHIA.ATTRIBUTE15].ToString();
+                    string col38 = row[xCRHIADB.xCRHIA.ATTRIBUTE16].ToString();
+                    string col39 = row[xCRHIADB.xCRHIA.ATTRIBUTE17].ToString();
+                    string col40 = row[xCRHIADB.xCRHIA.ATTRIBUTE18].ToString();
+
+                    string col41 = row[xCRHIADB.xCRHIA.ATTRIBUTE19].ToString();
+                    string col42 = row[xCRHIADB.xCRHIA.ATTRIBUTE20].ToString();
+                    string col43 = row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE1].ToString();
+                    string col44 = row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE2].ToString();
+                    string col45 = row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE3].ToString();
+                    string col46 = row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE4].ToString();
+                    string col47 = row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE5].ToString();
+                    string col48 = row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE6].ToString();
+                    string col49 = row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE7].ToString();
+                    string col50 = row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE8].ToString();
+
+                    string col51 = row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE9].ToString();
+                    string col52 = row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE10].ToString();
+                    string col53 = row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER1].ToString();
+                    string col54 = row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER2].ToString();
+                    string col55 = row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER3].ToString();
+                    string col56 = row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER4].ToString();
+                    string col57 = row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER5].ToString();
+                    string col58 = row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER6].ToString();
+                    string col59 = row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER7].ToString();
+                    string col60 = row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER8].ToString();
+
+                    string col61 = row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER9].ToString();
+                    string col62 = row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER10].ToString();
+                    string col63 = row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP1].ToString();
+                    string col64 = row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP2].ToString();
+                    string col65 = row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP3].ToString();
+                    string col66 = row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP4].ToString();
+                    string col67 = row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP5].ToString();
+                    string col68 = row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP6].ToString();
+                    string col69 = row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP7].ToString();
+                    string col70 = row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP8].ToString();
+
+                    string col71 = row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP9].ToString();
+                    string col72 = row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP10].ToString();
+                    string col73 = "col73";       //Unit Weight
+                    string col74 = "col74";     //Weight UOM
+                    string col75 = "col75";     //Weight UOM Name
+                    string col76 = "col76";     //Unit Volumn
+                    string col77 = "col77";     //Volume UOM
+                    string col78 = "col78";     //Volume UOM Name
+                    string col79 = "col79";     //Template Name
+                    string col80 = "col80";     //ITEM_ATTRIBUTE_CATEGORY
+
+                    string col81 = "col81";     //ITEM_ATTRIBUTE1
+                    string col82 = "col82";     //ITEM_ATTRIBUTE2
+                    string col83 = "col83";     //ITEM_ATTRIBUTE3
+                    string col84 = "col84";     //ITEM_ATTRIBUTE4
+                    string col85 = "col85";     //ITEM_ATTRIBUTE5
+                    string col86 = "col86";     //ITEM_ATTRIBUTE6
+                    string col87 = "col87";     //ITEM_ATTRIBUTE7
+                    string col88 = "col88";     //ITEM_ATTRIBUTE8
+                    string col89 = "col89";     //ITEM_ATTRIBUTE9
+                    string col90 = "col90";     //ITEM_ATTRIBUTE10
+
+                    string col91 = "col91";     //ITEM_ATTRIBUTE11
+                    string col92 = "col92";     //ITEM_ATTRIBUTE12
+                    string col93 = "col93";     //ITEM_ATTRIBUTE13
+                    string col94 = "col94";       //ITEM_ATTRIBUTE14
+                    string col95 = "col95";       //ITEM_ATTRIBUTE15
+
+
+                    //string col71 = "col71";
+
+                    //string csvRow = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20}," +
+                    //    "{21},{22},{23},{24},{25},{26},{27},{28},{29},{30},{31},{32},{33},{34},{35},{36},{37},{38},{39},{40}," +
+                    //    "{41},{42},{43},{44},{45},{46},{47},{48},{49},{50},{51},{52},{53},{54},{55},{56},{57},{58},{59},{60}," +
+                    //    "{61},{62},{63},{64},{65},{66},{67},{68},{69},{70},{71}", 
+                    //    col01, col02, col03, col04, col05, col06, col07, col08, col09, col10,
+                    //    col11, col12, col13, col14, col15, col16, col17, col18, col19, col20,
+                    //    col21, col22, col23, col24, col25, col26, col27, col28, col29, col30,
+                    //    col41, col42, col43, col44, col45, col46, col47, col48, col49, col50,
+                    //    col51, col52, col53, col54, col55, col56, col57, col58, col59, col60,
+                    //    col61, col62, col63, col64, col65, col66, col67, col68, col69, col70, col71);
+
+                    string csvRow = col01 + "," + col02 + "," + col03 + "," + col04 + "," + col05 + "," + col06 + "," + col07 + "," + col08 + "," + col09 + "," + col10
+                        + "," + col11 + "," + col12 + "," + col13 + "," + col14 + "," + col15 + "," + col16 + "," + col17 + "," + col18 + "," + col19 + "," + col20
+                        + "," + col21 + "," + col22 + "," + col23 + "," + col24 + "," + col25 + "," + col26 + "," + col27 + "," + col28 + "," + col29 + "," + col30
+                        + "," + col31 + "," + col32 + "," + col33 + "," + col34 + "," + col35 + "," + col36 + "," + col37 + "," + col38 + "," + col39 + "," + col40
+                        + "," + col51 + "," + col52 + "," + col53 + "," + col54 + "," + col55 + "," + col56 + "," + col57 + "," + col58 + "," + col59 + "," + col60
+                        + "," + col61 + "," + col62 + "," + col63 + "," + col64 + "," + col65 + "," + col66 + "," + col67 + "," + col68 + "," + col69 + "," + col70
+                        + "," + col71 + "," + col72 + "," + col73 + "," + col74 + "," + col75 + "," + col76 + "," + col77 + "," + col78 + "," + col79 + "," + col80
+                        + "," + col81 + "," + col82 + "," + col83 + "," + col84 + "," + col85 + "," + col86 + "," + col87 + "," + col88 + "," + col89 + "," + col90
+                        + "," + col91 + "," + col92 + "," + col93 + "," + col94 + "," + col95;
+
+                    stream.WriteLine(csvRow);
+                }
+            }
+        }
     }
 }

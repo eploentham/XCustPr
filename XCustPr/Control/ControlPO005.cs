@@ -713,5 +713,17 @@ namespace XCustPr
 
             listXcustPRDIA.Add(item);
         }
+        public void processGenCSV(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
+        {
+            ControlRDPO cRDPO = new ControlRDPO(Cm);
+            addListView("processGenCSVxCPRHIA ", "CVS", lv1, form1);
+            cRDPO.processGenCSVxCPRHIA(lv1, form1, pB1,"PO005");
+            addListView("processGenCSVxCPRLIA ", "CVS", lv1, form1);
+            cRDPO.processGenCSVxCPRLIA(lv1, form1, pB1, "PO005");
+            addListView("processGenCSVxCPRDIA ", "CVS", lv1, form1);
+            cRDPO.processGenCSVxCPRDIA(lv1, form1, pB1, "PO005");
+            addListView("processGenZIP ", "CVS", lv1, form1);
+            cRDPO.processGenZIP(lv1, form1, pB1);
+        }
     }
 }

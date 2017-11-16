@@ -36,5 +36,40 @@ namespace XCustPr
 
             xCPLIT.table = "XCUST_PO_LINE_INT_TBL";
         }
+        public String insert(XcustPoLineIntTbl p)
+        {
+            String sql = "", chk = "";
+            try
+            {
+                //if (p.OrpChtNum.Equals(""))
+                //{
+                //    return "";
+                //}
+                //p.RowNumber = selectMaxRowNumber(p.YearId);
+                //p.Active = "1";
+                String last_update_by = "0", creation_by="0";
+                sql = "Insert Into " + xCPLIT.table + "(" + xCPLIT.action + "," + xCPLIT.category + "," + xCPLIT.creation_by + "," +
+                    xCPLIT.creation_date + "," + xCPLIT.error_message + "," + xCPLIT.interface_header_key + "," +
+                    xCPLIT.interface_line_key + "," + xCPLIT.item_description + "," + xCPLIT.last_update_by + "," +
+                    xCPLIT.last_update_date + "," + xCPLIT.line_num + "," + xCPLIT.line_type + "," +
+                    xCPLIT.process_flag + "," + xCPLIT.unit_price +                    
+                    ") " +
+                    "Values('" + p.action + "','" + p.category + "','" + creation_by + "'," +
+                    "getdate(),'" + p.error_message + "','" + p.interface_header_key + "','" +
+                    p.interface_line_key + "','" + p.item_description + "','" + last_update_by + "'," +
+                    "null,'" + p.line_num + "','" + p.line_type + "','" +
+                    p.process_flag + "'," + p.unit_price + 
+                    ") ";
+                chk = conn.ExecuteNonQueryAutoIncrement(sql, "kfc_po");
+                //chk = p.RowNumber;
+                //chk = p.Code;
+            }
+            catch (Exception ex)
+            {
+                //MessageBox.Show("Error " + ex.ToString(), "insert Doctor");
+            }
+
+            return chk;
+        }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,7 +28,7 @@ namespace XCustPr
 
         public XcustLinfoxPoRcpIntTblDB xCLPRITDB;
 
-        public XcustPorReqHeaderIntAllDB xCPRHIADB;
+        //public XcustPorReqHeaderIntAllDB xCPRHIADB;
         public XcustPorReqLineIntAllDB xCPRLIADB;
         public XcustPorReqDistIntAllDB xCPRDIADB;
         public XcustBuMstTblDB xCBMTDB;
@@ -40,9 +41,9 @@ namespace XCustPr
         public XcustUomMstTblDB xCUMTDB;
         public XcustValueSetMstTblDB xCVSMTDB;
 
-        public XcustRcvHeadersIntAllDB xCRHIADB;
-        public XcustRcvTransactionsIntAllDB xCRTIADB;
-        public XcustInvTransactionLostsIntTblDB xITLITDB;
+        public XcustRcvHeadersIntAllDB xCRHIADB;        //table จริง
+        public XcustRcvTransactionsIntAllDB xCRTIADB;        //table จริง
+        public XcustInvTransactionLostsIntTblDB xITLITDB;        //table จริง
 
         //public XcustBlanketAgreementHeaderTblDB xCBAHTDB;
         //public XcustBlanketAgreementLinesTblDB xCBALTDB;
@@ -71,7 +72,7 @@ namespace XCustPr
             conn = new ConnectDB("kfc_po", Cm.initC);        //standard
 
             xCLPRITDB = new XcustLinfoxPoRcpIntTblDB(conn, Cm.initC);
-            xCPRHIADB = new XcustPorReqHeaderIntAllDB(conn);
+            //xCPRHIADB = new XcustPorReqHeaderIntAllDB(conn);
             xCPRLIADB = new XcustPorReqLineIntAllDB(conn, Cm.initC);
             xCPRDIADB = new XcustPorReqDistIntAllDB(conn);
             xCBMTDB = new XcustBuMstTblDB(conn, Cm.initC);
@@ -476,6 +477,7 @@ namespace XCustPr
                 listXcUMT.Add(item);
             }
         }
-
+        
+        
     }
 }

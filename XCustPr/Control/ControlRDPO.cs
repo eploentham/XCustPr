@@ -611,18 +611,27 @@ namespace XCustPr
         public void processGenCSV(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
         {
             addListView("processGenCSVxCPRHIA ", "CVS", lv1, form1);
-            processGenCSVxCPRHIA(lv1, form1, pB1);
+            processGenCSVxCPRHIA(lv1, form1, pB1, "PO001");
             addListView("processGenCSVxCPRLIA ", "CVS", lv1, form1);
-            processGenCSVxCPRLIA(lv1, form1, pB1);
+            processGenCSVxCPRLIA(lv1, form1, pB1, "PO001");
             addListView("processGenCSVxCPRDIA ", "CVS", lv1, form1);
-            processGenCSVxCPRDIA(lv1, form1, pB1);
+            processGenCSVxCPRDIA(lv1, form1, pB1, "PO001");
             addListView("processGenZIP ", "CVS", lv1, form1);
-            processGenZIP(lv1,form1, pB1);
+            processGenZIP(lv1,form1, pB1, "PO001");
         }
-        public void processGenCSVxCPRHIA(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
+        public void processGenCSVxCPRHIA(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String flag)
         {
             var file = Cm.initC.PathArchive+ "PorReqHeadersInterfaceAl.csv";
-            DataTable dt = xCPRHIADB.selectAll();
+            DataTable dt;
+            if (flag.Equals("PO001"))
+            {
+                dt = xCPRHIADB.selectAll();
+            }
+            else
+            {
+                dt = xCPRHIADB.selectAll();
+            }
+            
             addListView("processGenCSVxCPRHIA จำนวนข้อมูล "+dt.Rows.Count, "CVS", lv1, form1);
             using (var stream = File.CreateText(file))
             {
@@ -728,10 +737,19 @@ namespace XCustPr
                 }
             }
         }
-        public void processGenCSVxCPRLIA(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
+        public void processGenCSVxCPRLIA(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String flag)
         {
             var file = Cm.initC.PathArchive + "PorReqLinesInterfaceAl.csv";
-            DataTable dt = xCPRLIADB.selectAll();
+            DataTable dt;
+            if (flag.Equals("PO001"))
+            {
+                dt = xCPRLIADB.selectAll();
+            }
+            else
+            {
+                dt = xCPRLIADB.selectAll();
+            }
+                
             addListView("processGenCSVxCPRLIA จำนวนข้อมูล " + dt.Rows.Count, "CVS", lv1, form1);
             using (var stream = File.CreateText(file))
             {
@@ -905,10 +923,18 @@ namespace XCustPr
                 }
             }
         }
-        public void processGenCSVxCPRDIA(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
+        public void processGenCSVxCPRDIA(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String flag)
         {
             var file = Cm.initC.PathArchive + "PorReqDistInterfaceAl.csv";
-            DataTable dt = xCPRDIADB.selectAll();
+            DataTable dt;
+            if (flag.Equals(""))
+            {
+                dt = xCPRDIADB.selectAll();
+            }
+            else
+            {
+                dt = xCPRDIADB.selectAll();
+            }
             addListView("processGenCSVxCPRDIA จำนวนข้อมูล " + dt.Rows.Count, "CVS", lv1, form1);
             using (var stream = File.CreateText(file))
             {
@@ -1075,30 +1101,40 @@ namespace XCustPr
                 }
             }
         }
-        public void processGenZIP(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
+        public void processGenZIP(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String flag)
         {
             addListView("create zip file " + Cm.initC.PathProcess, "Validate", lv1, form1);
-            String filename = "", ilename2 = "", ilename3 = "";
-            filename = Cm.initC.PathZip + "\\xcustpr.zip";
-            Cm.deleteFile(filename);
-            //ZipArchive zip = ZipFile.Open(filename, ZipArchiveMode.Create);
-            //var allFiles = Directory.GetFiles(@Cm.initC.PathArchive, "*.*", SearchOption.AllDirectories);
-            //foreach (String file in allFiles)
-            //{
-            //    //using (ZipArchive archive = ZipFile.OpenRead(file))
-            //    //{
-            //    //    foreach (ZipArchiveEntry entry in archive.Entries)
-            //    //    {
-            //    //        if (entry.FullName.EndsWith(".txt", StringComparison.OrdinalIgnoreCase))
-            //    //        {
-            //    //            entry.ExtractToFile(Path.Combine(@initC.PathZipExtract, entry.FullName));
-            //    //        }
-            //    //    }
-            //    //}
-            //    //zip.CreateEntryFromFile(file, Path.GetFileName(file), CompressionLevel.Optimal);
-            //    zip.CreateEntryFromFile(file, Path.GetFileName(file));
-            //}
-            //zip.Dispose();
+            String filenameZip = "", ilename2 = "", ilename3 = "", filename="";
+            if (flag.Equals("PO001"))
+            {
+                filenameZip = Cm.initC.PathZip + "\\xcustpr.zip";
+                filename = @Cm.initC.PathArchive;
+            }
+            else
+            {
+                filenameZip = Cm.initC.PO005pathZip + "\\xcustpr.zip";
+                filename = @Cm.initC.PO005PathArchive;
+            }
+            Cm.deleteFile(filenameZip);
+            ZipArchive zip = ZipFile.Open(filenameZip, ZipArchiveMode.Create);
+
+            var allFiles = Directory.GetFiles(filename, "*.*", SearchOption.AllDirectories);
+            foreach (String file in allFiles)
+            {
+                //using (ZipArchive archive = ZipFile.OpenRead(file))
+                //{
+                //    foreach (ZipArchiveEntry entry in archive.Entries)
+                //    {
+                //        if (entry.FullName.EndsWith(".txt", StringComparison.OrdinalIgnoreCase))
+                //        {
+                //            entry.ExtractToFile(Path.Combine(@initC.PathZipExtract, entry.FullName));
+                //        }
+                //    }
+                //}
+                //zip.CreateEntryFromFile(file, Path.GetFileName(file), CompressionLevel.Optimal);
+                zip.CreateEntryFromFile(file, Path.GetFileName(file));
+            }
+            zip.Dispose();
         }
         /*
          * g.	กรณีที่ Validat ผ่าน จะเอาข้อมูล Insert ลง table XCUST_POR_REQ_HEADER_INT_ALL
