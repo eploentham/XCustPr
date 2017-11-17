@@ -159,6 +159,276 @@ namespace XCustPr
                 pB1.Visible = false;
             }
         }
+        public void processGetTempTableToValidate(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
+        {
+            addListView("อ่าน file จาก " + Cm.initC.PathProcess, "Validate", lv1, form1);
+            pB1.Visible = true;
+            Boolean chk = false;
+            DataTable dtGroupBy = new DataTable();
+            DataTable dt = new DataTable();
+            DataTable dt1 = new DataTable();
+            String currDate = System.DateTime.Now.ToString("yyyy-MM-dd");
+            String buCode = "", locator = "", Org = "", subInv_code = "", currencyCode = "", blanketAgreement = "";
+
+            ValidatePrPo vPP = new ValidatePrPo();   // gen log
+            List<ValidatePrPo> lVPr = new List<ValidatePrPo>();   // gen log
+            List<ValidateFileName> lVfile = new List<ValidateFileName>();   // gen log
+
+
+
+            listXcustRHIA.Clear();
+            listXcusTRTIA.Clear();
+            listXcusITLIT.Clear();
+
+            getListXcSIMT();
+            getListXcIMT();
+            getListXcSMT();
+            getListXcVSMT();
+            getListXcUMT();
+
+            int row1 = 0;
+            int cntErr = 0, cntFileErr = 0;   // gen log
+
+            dtGroupBy = xCMPoRITDB.selectMmxGroupByFilename();//   ดึง filename
+            foreach (DataRow rowG in dtGroupBy.Rows)
+            {
+                addListView("ดึงข้อมูล  " + rowG[xCMPoRITDB.xCMPoRIT.file_name].ToString().Trim(), "Validate", lv1, form1);
+                dt = xCMPoRITDB.selectMmxByFilename(rowG[xCMPoRITDB.xCMPoRIT.file_name].ToString().Trim());    // ข้อมูลใน file
+                row1 = 0;
+                cntErr = 0;     //gen log
+                pB1.Minimum = 0;
+                pB1.Maximum = dt.Rows.Count;
+
+                ValidateFileName vF = new ValidateFileName();   // gen log
+                vF.fileName = rowG[xCMPoRITDB.xCMPoRIT.file_name].ToString().Trim();   // gen log
+                vF.recordTotal = dt.Rows.Count.ToString();   // gen log
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    row1++;
+                    pB1.Value = row1;
+                    //Error PO003-002 : Date Format not correct 
+                    chk = Cm.validateDate(row[xCMPoRITDB.xCMPoRIT.date_of_record].ToString());
+                    if (!chk)
+                    {
+                        vPP = new ValidatePrPo();
+                        vPP.Filename = rowG[xCMPoRITDB.xCMPoRIT.file_name].ToString().Trim();
+                        vPP.Message = "Error PO004-002 ";
+                        vPP.Validate = "row " + row1 + " date_of_record=" + row[xCMPoRITDB.xCMPoRIT.date_of_record].ToString();
+                        lVPr.Add(vPP);
+                        cntErr++;       // gen log
+                    }
+                    //Error PO004-004 : Invalid  Supplier Code
+                    if (Cm.validateSupplierBySupplierCode(row[xCMPoRITDB.xCMPoRIT.supplier_code].ToString().Trim(), listXcSMT))
+                    {
+                        vPP = new ValidatePrPo();
+                        vPP.Filename = rowG[xCMPoRITDB.xCMPoRIT.file_name].ToString().Trim();
+                        vPP.Message = "Error PO004-015 ";
+                        vPP.Validate = "row " + row1 + "  supplier_code " + row[xCMPoRITDB.xCMPoRIT.supplier_code].ToString().Trim();
+                        lVPr.Add(vPP);
+                        cntErr++;       // gen log
+                    }
+                    //Error PO004-003 : Invalid  Store No
+                    //subInv_code = xCSIMTDB.validateSubInventoryCode1(initC.ORGANIZATION_code.Trim(), row[xCLFPTDB.xCLFPT.store_code].ToString().Trim());
+                    subInv_code = validateSubInventoryCode(Cm.initC.ORGANIZATION_code.Trim(), row[xCMPoRITDB.xCMPoRIT.store_code].ToString().Trim());
+                    if (subInv_code.Equals(""))
+                    {
+                        vPP = new ValidatePrPo();
+                        vPP.Filename = rowG[xCMPoRITDB.xCMPoRIT.file_name].ToString().Trim();
+                        vPP.Message = "Error PO001-010 ";
+                        vPP.Validate = "row " + row1 + " store_code =" + row[xCMPoRITDB.xCMPoRIT.store_code].ToString().Trim() + " ORGANIZATION_code " + Cm.initC.ORGANIZATION_code.Trim();
+                        lVPr.Add(vPP);
+                        cntErr++;
+                    }
+                    //ดูว่า เป็น direct หรือ non direct
+                    if (getDirectSupplierBySupplierCode(row[xCMPoRITDB.xCMPoRIT.supplier_code].ToString().Trim()))
+                    {//direct
+                        DataTable dtR = xCMPoRITDB.gePOReceipt(row[xCMPoRITDB.xCMPoRIT.item_code].ToString().Trim(), row[xCMPoRITDB.xCMPoRIT.supplier_code].ToString().Trim());
+                        if (dtR.Rows.Count > 0)//พบ
+                        {
+                            Double qty = 0, qtyAmt=0, qtyMMx=0;
+                            qtyMMx = Double.Parse(row[xCMPoRITDB.xCMPoRIT.erp_qty].ToString().Trim());
+                            //นับก่อน ว่าพอตัดไหม
+                            foreach (DataRow rowR in dtR.Rows)       //นัดก่อน ว่าพอตัดไหม
+                            {
+                                if(Double.TryParse(rowR["quantity"].ToString(),out qty))
+                                {
+                                    qtyAmt += qty;
+                                }
+                                else// qty ไม่ถูกต้อง
+                                {
+                                }
+                            }
+                            //เริ่มตัด
+                            if(qtyMMx <= qtyAmt)//-	กรณียอด QTY มีเพียงพอสำหรับการ Receipt
+                            {//พอ ตัด
+                                Double qtyCut = 0;
+                                foreach (DataRow rowR in dtR.Rows)
+                                {
+                                    if (Double.TryParse(rowR["quantity"].ToString(), out qty))
+                                    {
+                                        if(qty >= qtyMMx)
+                                        {
+                                            //  insert
+                                            addXcustListHeader(row[xCMPoRITDB.xCMPoRIT.].ToString().Trim(), row[xCMPoRITDB.xCMPoRIT.supplier_code].ToString().Trim()
+                                                , row[xCMPoRITDB.xCMPoRIT.SUPPLIER_SITE_CODE].ToString().Trim());//ทำ รอไว้ เพื่อ process ช้า
+                                        }
+                                    }
+                                    qtyMMx -= qty;
+                                    if (qtyMMx <= 0) break;
+                                }
+                            }
+                            else//-	กรณียอด QTY ไม่เพียงพอสำหรับการ Receipt
+                            {
+                                xCMPoRITDB.updateValidate(row[xCMPoRITDB.xCMPoRIT.store_code].ToString().Trim(), row[xCMPoRITDB.xCMPoRIT.item_code].ToString().Trim()
+                                , row[xCMPoRITDB.xCMPoRIT.INVOICE_NO].ToString().Trim(), row[xCMPoRITDB.xCMPoRIT.file_name].ToString().Trim(), "E", "Error PO004-006 : PO QTY is less than Receipt QTY");
+                            }
+                        }
+                        else//ไม่พบ      -	กรณี Map ไม่เจอ PO ,PO Line
+                        {
+                            xCMPoRITDB.updateValidate(row[xCMPoRITDB.xCMPoRIT.store_code].ToString().Trim(), row[xCMPoRITDB.xCMPoRIT.item_code].ToString().Trim()
+                                , row[xCMPoRITDB.xCMPoRIT.INVOICE_NO].ToString().Trim(), row[xCMPoRITDB.xCMPoRIT.file_name].ToString().Trim(),"E", "Error PO004-005 : Not found PO Number/PO Line");
+                        }
+                    }
+                    else
+                    {//เป็น inven
+
+                    }
+                }
+            }
+        }
+        private void addXcustListHeader(String ref1, String supplier_code, String SUPPLIER_SITE_CODE)
+        {
+            Boolean chk = true;
+            foreach (XcustRcvHeadersIntAll xcprhia in listXcustRHIA)
+            {
+                if (xcprhia.ATTRIBUTE1.Equals(ref1))
+                {
+                    chk = false;
+                }
+            }
+            if (chk)
+            {
+                String seq = String.Concat("00" + listXcustRHIA.Count);
+                XcustRcvHeadersIntAll xcrhia1 = new XcustRcvHeadersIntAll();
+                xcrhia1.ATTRIBUTE1 = ref1;
+                xcrhia1.HEADER_INTERFACE_NUMBER = ref1;
+                xcrhia1.RECEIPT_SOURCE_CODE = Cm.initC.PO003RECEIPT_SOURCE;
+                xcrhia1.ASN_TYPE = "";//ถาม
+                xcrhia1.TRANSACTION_TYPE = Cm.initC.PO003TRANSACTION_TYPE;
+                xcrhia1.RECEIPT_NUM = "";//ถาม
+                xcrhia1.VENDOR_NUM = supplier_code;//ถาม
+                xcrhia1.VENDOR_SITE_CODE = SUPPLIER_SITE_CODE;//ถาม
+                xcrhia1.SHIPTO_ORGANIZATION_CODE = SUPPLIER_SITE_CODE;//ถาม
+                xcrhia1.TRANSACTION_DATE = "";//ถาม
+                xcrhia1.BUSINESS_UNIT = "";//ถาม
+                xcrhia1.ATTRIBUTE_CATEGORY = "";//ถาม
+                xcrhia1.PROCESS_FLAG = "N";
+                listXcustRHIA.Add(xcrhia1);
+            }
+        }
+        private Boolean getDirectSupplierBySupplierCode(String supplier_code)
+        {
+            Boolean chk = false;
+            foreach (XcustSupplierMstTbl item in listXcSMT)
+            {
+                if (item.SUPPLIER_NUMBER.Equals(supplier_code.Trim()))
+                {
+                    if (item.ATTRIBUTE1.Equals("Y"))
+                    {
+                        chk = true;
+                        break;
+                    }
+                }
+            }
+            return chk;
+        }
+        private String validateSubInventoryCode(String ordId, String StoreCode)
+        {
+            String chk = "";
+            foreach (XcustSubInventoryMstTbl item in listXcSIMT)
+            {
+                if (item.ORGAINZATION_ID.Equals(ordId.Trim()))
+                {
+                    if (item.attribute1.Equals(StoreCode.Trim()))
+                    {
+                        chk = item.SECONDARY_INVENTORY_NAME;
+                        break;
+                    }
+                }
+            }
+            return chk;
+        }
+        /*
+         * Method นี้ ไม่แน่ใจว่า จะแยกหรือ รวม
+         */
+        private void getListXcSIMT()
+        {
+            listXcSIMT.Clear();
+            DataTable dt = xCSIMTDB.selectAll();
+            foreach (DataRow row in dt.Rows)
+            {
+                XcustSubInventoryMstTbl item = new XcustSubInventoryMstTbl();
+                item = xCSIMTDB.setData(row);
+                listXcSIMT.Add(item);
+            }
+        }
+        /*
+         * Method นี้ ไม่แน่ใจว่า จะแยกหรือ รวม
+         */
+        private void getListXcIMT()
+        {
+            listXcIMT.Clear();
+            DataTable dt = xCIMTDB.selectAll();
+            foreach (DataRow row in dt.Rows)
+            {
+                XcustItemMstTbl item = new XcustItemMstTbl();
+                item = xCIMTDB.setData(row);
+                listXcIMT.Add(item);
+            }
+        }
+        /*
+         * Method นี้ ไม่แน่ใจว่า จะแยกหรือ รวม
+         */
+        private void getListXcSMT()
+        {
+            listXcSMT.Clear();
+            DataTable dt = xCSMTDB.selectAll();
+            foreach (DataRow row in dt.Rows)
+            {
+                XcustSupplierMstTbl item = new XcustSupplierMstTbl();
+                item = xCSMTDB.setData(row);
+                listXcSMT.Add(item);
+            }
+        }
+        /*
+         * Method นี้ ไม่แน่ใจว่า จะแยกหรือ รวม
+         */
+        private void getListXcVSMT()
+        {
+            listXcVSMT.Clear();
+            DataTable dt = xCVSMTDB.selectAll();
+            foreach (DataRow row in dt.Rows)
+            {
+                XcustValueSetMstTbl item = new XcustValueSetMstTbl();
+                item = xCVSMTDB.setData(row);
+                listXcVSMT.Add(item);
+            }
+        }
+        /*
+         * Method นี้ ไม่แน่ใจว่า จะแยกหรือ รวม
+         */
+        private void getListXcUMT()
+        {
+            listXcUMT.Clear();
+            DataTable dt = xCUMTDB.selectAll();
+            foreach (DataRow row in dt.Rows)
+            {
+                XcustUomMstTbl item = new XcustUomMstTbl();
+                item = xCUMTDB.setData(row);
+                listXcUMT.Add(item);
+            }
+        }
         private void addListView(String col1, String col2, MaterialListView lv1, Form form1)
         {
             lv1.Items.Add(AddToList((lv1.Items.Count + 1), col1, col2));

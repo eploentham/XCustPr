@@ -79,7 +79,7 @@ namespace XCustPr
         {
             DataTable dt = new DataTable();
             String chk = "";
-            String sql = "Select * From " + xCSMT.table + " Where " + xCSMT.SUPPLIER_NUMBER + "  = '" + suppCode + "' and "+xCSMT.ATTRIBUTE1 +"='YES'";
+            String sql = "Select * From " + xCSMT.table + " Where " + xCSMT.SUPPLIER_NUMBER + "  = '" + suppCode + "' and "+xCSMT.ATTRIBUTE1 +"='Y'";
             dt = conn.selectData(sql, "kfc_po");
             if (dt.Rows.Count > 0)
             {

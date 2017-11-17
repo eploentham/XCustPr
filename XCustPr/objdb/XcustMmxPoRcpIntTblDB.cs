@@ -46,7 +46,7 @@ namespace XCustPr
             xCMPoRIT.process_flag = "process_flag";
             xCMPoRIT.RECEIVE_QTY = "RECEIVE_QTY";
             xCMPoRIT.serial_number = "serial_number";
-            xCMPoRIT.store_cocde = "store_cocde";
+            xCMPoRIT.store_code = "store_cocde";
             xCMPoRIT.supplier_code = "supplier_code";
             xCMPoRIT.validate_flag = "validate_flag";
 
@@ -62,6 +62,45 @@ namespace XCustPr
         {
             DataTable dt = new DataTable();
             String sql = "select * From " + xCMPoRIT.table;
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
+        }
+        public DataTable selectMmxGroupByFilename()
+        {
+            DataTable dt = new DataTable();
+            String sql = "select " + xCMPoRIT.file_name + " From " + xCMPoRIT.table + " Group By " + xCMPoRIT.file_name;
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
+        }
+        public DataTable selectMmxByFilename(String filename)
+        {
+            DataTable dt = new DataTable();
+            String sql = "select * From " + xCMPoRIT.table + " Where " + xCMPoRIT.file_name + "='" + filename + "'";
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
+        }
+        public void updateValidate(String store_code, String item_code, String invoice_no, String file_name, String flag, String message)
+        {
+            String sql = "";
+            sql = "Update "+xCMPoRIT.table+" "+
+                "Set "+xCMPoRIT.validate_flag+"='" +flag+"' "+
+                "Where "+xCMPoRIT.store_code+"='"+store_code+"' and "+xCMPoRIT.item_code+"='"+item_code+"' and "+xCMPoRIT.INVOICE_NO+"='"+invoice_no+"' and "+xCMPoRIT.file_name+"='"+file_name+"'";
+            conn.ExecuteNonQuery(sql, "kfc_po");
+        }
+        public DataTable gePOReceipt(String ITEM_CODE, String SUPPLIER_NUMBER)
+        {
+            DataTable dt = new DataTable();
+            String sql = "";
+            sql = "Select po.SEGMENT1 PO_NUMBER,PO.LINE_NUM,po.quantity " +
+                "from XCUST_PO_TBL PO " +
+                "Left Join xcust_pr_TBL pr On PO.REQUISITION_HEADER_ID = pr.REQUISITION_HEADER_ID and PO.REQUISITION_LINE_ID = pr.REQUISITION_LINE_ID " +
+                "Left Join xcust_item_mst_tbl msi On PO.ITEM_ID = msi.INVENTORY_ITEM_ID " +
+                "Left Join xcust_organization_mst_tbl org On msi.ORGAINZATION_ID = org.ORGANIZATION_ID " +
+                "Left Join xcust_supplier_mst_tbl sup On PO.VENDOR_ID = sup.VENDOR_ID and sup.ATTRIBUTE1 = 'Y' " +
+                "Where PO.DOCUMENT_STATUS = 'OPEN' and PO.LINE_STATUS = 'OPEN'   " +                
+                "and org.INVENTORY_FLAG = 'Y' and msi.ITEM_CATEGORY_NAME = 'Finish Goods' " +
+                "and msi.ITEM_CODE = '"+ ITEM_CODE + "' and sup.SUPPLIER_NUMBER = '"+ SUPPLIER_NUMBER + "' " +
+                "Order By PO.PO_HEADER_ID ,PO.PO_LINE_ID ";
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
@@ -115,7 +154,7 @@ namespace XCustPr
                         .Append(",").Append(xCMPoRIT.INVOICE_AMT).Append(",").Append(xCMPoRIT.INVOICE_NO).Append(",").Append(xCMPoRIT.item_code)
                         .Append(",").Append(xCMPoRIT.last_update_by).Append(",").Append(xCMPoRIT.last_update_date).Append(",").Append(xCMPoRIT.lot_number)
                         .Append(",").Append(xCMPoRIT.po_line_number).Append(",").Append(xCMPoRIT.po_number).Append(",").Append(xCMPoRIT.process_flag)
-                        .Append(",").Append(xCMPoRIT.RECEIVE_QTY).Append(",").Append(xCMPoRIT.serial_number).Append(",").Append(xCMPoRIT.store_cocde)
+                        .Append(",").Append(xCMPoRIT.RECEIVE_QTY).Append(",").Append(xCMPoRIT.serial_number).Append(",").Append(xCMPoRIT.store_code)
                         .Append(",").Append(xCMPoRIT.supplier_code).Append(",").Append(xCMPoRIT.validate_flag)
                         .Append(") Values ('")
                         .Append(creation_by).Append("',").Append(creation_date).Append(",'").Append(date_of_record)
