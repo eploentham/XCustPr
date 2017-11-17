@@ -723,7 +723,7 @@ namespace XCustPr
             addListView("processGenCSVxCPRDIA ", "CVS", lv1, form1);
             cRDPO.processGenCSVxCPRDIA(lv1, form1, pB1, "PO005");
             addListView("processGenZIP ", "CVS", lv1, form1);
-            cRDPO.processGenZIP(lv1, form1, pB1);
+            cRDPO.processGenZIP(lv1, form1, pB1, "PO005");
         }
     }
 }
