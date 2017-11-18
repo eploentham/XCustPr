@@ -312,6 +312,7 @@ namespace XCustPr
             initC.PO004ImportSource = iniFile.Read("PO004ImportSource").Trim();
             initC.PO004ZipFileSearch = iniFile.Read("PO004ZipFileSearch").Trim();
             initC.PO004FileType = iniFile.Read("PO004FileType").Trim();
+            initC.PO004RECEIPT_SOURCE = iniFile.Read("PO004RECEIPT_SOURCE").Trim();
 
             initC.PO008PathArchive = iniFile.Read("PO008PathArchive").Trim();
             initC.PO008PathError = iniFile.Read("PO008PathError").Trim();

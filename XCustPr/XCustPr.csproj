@@ -165,6 +165,7 @@
     <Compile Include="objdb\XcustRcvTransactionsIntAllDB.cs" />
     <Compile Include="objdb\XcustSubinventoryMstTblDB.cs" />
     <Compile Include="objdb\XcustSupplierMstTblDB.cs" />
+    <Compile Include="objdb\XcustSupplierSiteMstTblDB.cs" />
     <Compile Include="objdb\XcustUomMstTblDB.cs" />
     <Compile Include="objdb\XcustValueSetMstTblDB.cs" />
     <Compile Include="object1\IniFile.cs" />
@@ -201,6 +202,7 @@
     <Compile Include="object1\XcustRcvTransactionsIntAll.cs" />
     <Compile Include="object1\XcustSubinventoryMstTbl.cs" />
     <Compile Include="object1\XcustSupplierMstTbl.cs" />
+    <Compile Include="object1\XcustSupplierSiteMstTbl.cs" />
     <Compile Include="object1\XcustUomMstTbl.cs" />
     <Compile Include="object1\XcustValueSetMstTbl.cs" />
     <Compile Include="Program.cs" />

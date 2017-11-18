@@ -38,6 +38,7 @@ namespace XCustPr
         public XcustSupplierMstTblDB xCSMTDB;
         public XcustUomMstTblDB xCUMTDB;
         public XcustValueSetMstTblDB xCVSMTDB;
+        public XcustSupplierSiteMstTblDB xCSSMTDB;
 
         public XcustRcvHeadersIntAllDB xCRHIADB;        //ใช้ table เดียวกับ PO003
         public XcustRcvTransactionsIntAllDB xCRTIADB;        //ใช้ table เดียวกับ PO003
@@ -57,6 +58,7 @@ namespace XCustPr
         private List<XcustRcvHeadersIntAll> listXcustRHIA;
         private List<XcustRcvTransactionsIntAll> listXcusTRTIA;
         private List<XcustInvTransactionLostsIntTbl> listXcusITLIT;
+        private List<XcustSupplierSiteMstTbl> listXcustSSMT;
 
         public ControlPO004(ControlMain cm)
         {
@@ -92,7 +94,7 @@ namespace XCustPr
             xCRHIADB = new XcustRcvHeadersIntAllDB(conn);
             xCRTIADB = new XcustRcvTransactionsIntAllDB(conn);
             xITLITDB = new XcustInvTransactionLostsIntTblDB(conn);
-            //xCBAHTDB = new XcustBlanketAgreementHeaderTblDB(conn, Cm.initC);
+            xCSSMTDB = new XcustSupplierSiteMstTblDB(conn, Cm.initC);
             //xCBALTDB = new XcustBlanketAgreementLinesTblDB(conn, Cm.initC);
 
             Cm.createFolderPO004();
@@ -270,8 +272,14 @@ namespace XCustPr
                                         if(qty >= qtyMMx)
                                         {
                                             //  insert
-                                            addXcustListHeader(row[xCMPoRITDB.xCMPoRIT.].ToString().Trim(), row[xCMPoRITDB.xCMPoRIT.supplier_code].ToString().Trim()
+                                            String vendor_code = "", supplier_site_code="";
+                                            vendor_code = getVendorBySupplierCode(row[xCMPoRITDB.xCMPoRIT.supplier_code].ToString().Trim());
+
+                                            addXcustListHeader(row[xCMPoRITDB.xCMPoRIT.INVOICE_NO].ToString().Trim(), vendor_code
                                                 , row[xCMPoRITDB.xCMPoRIT.SUPPLIER_SITE_CODE].ToString().Trim());//ทำ รอไว้ เพื่อ process ช้า
+                                            supplier_site_code 
+                                            xCMPoRITDB.updateValidate(row[xCMPoRITDB.xCMPoRIT.store_code].ToString().Trim(), row[xCMPoRITDB.xCMPoRIT.item_code].ToString().Trim()
+                                                , row[xCMPoRITDB.xCMPoRIT.INVOICE_NO].ToString().Trim(), row[xCMPoRITDB.xCMPoRIT.file_name].ToString().Trim(), "Y", "");
                                         }
                                     }
                                     qtyMMx -= qty;
@@ -359,6 +367,19 @@ namespace XCustPr
             }
             return chk;
         }
+        private String getVendorBySupplierCode(String supplier_code)
+        {
+            String chk = "";
+            foreach (XcustSupplierMstTbl item in listXcSMT)
+            {
+                if (item.SUPPLIER_NUMBER.Equals(supplier_code.Trim()))
+                {
+                    chk = item.VENDOR_ID;
+                    break;
+                }
+            }
+            return chk;
+        }
         /*
          * Method นี้ ไม่แน่ใจว่า จะแยกหรือ รวม
          */
@@ -427,6 +448,20 @@ namespace XCustPr
                 XcustUomMstTbl item = new XcustUomMstTbl();
                 item = xCUMTDB.setData(row);
                 listXcUMT.Add(item);
+            }
+        }
+        /*
+         * Method นี้ ไม่แน่ใจว่า จะแยกหรือ รวม
+         */
+        private void getListXcSSMT()
+        {
+            listXcustSSMT.Clear();
+            DataTable dt = xCSSMTDB.selectAll();
+            foreach (DataRow row in dt.Rows)
+            {
+                XcustSupplierSiteMstTbl item = new XcustSupplierSiteMstTbl();
+                item = xCSSMTDB.setData(row);
+                listXcustSSMT.Add(item);
             }
         }
         private void addListView(String col1, String col2, MaterialListView lv1, Form form1)
