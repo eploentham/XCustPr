@@ -60,6 +60,37 @@ namespace XCustPr
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
-        
+        public XcustSupplierSiteMstTbl setData(DataRow row)
+        {
+            XcustSupplierSiteMstTbl item;
+            item = new XcustSupplierSiteMstTbl();
+            item.ATTRIBUTE1 = row[xCSSMT.ATTRIBUTE1].ToString();
+            item.ATTRIBUTE2 = row[xCSSMT.ATTRIBUTE2].ToString();
+            item.ATTRIBUTE3 = row[xCSSMT.ATTRIBUTE3].ToString();
+            item.ATTRIBUTE4 = row[xCSSMT.ATTRIBUTE4].ToString();
+            item.ATTRIBUTE5 = row[xCSSMT.ATTRIBUTE5].ToString();
+            item.ATTRIBUTE6 = row[xCSSMT.ATTRIBUTE6].ToString();
+            item.ATTRIBUTE7 = row[xCSSMT.ATTRIBUTE7].ToString();
+            item.ATTRIBUTE8 = row[xCSSMT.ATTRIBUTE8].ToString();
+            item.ATTRIBUTE9 = row[xCSSMT.ATTRIBUTE9].ToString();
+            item.ATTRIBUTE10 = row[xCSSMT.ATTRIBUTE10].ToString();
+
+            item.CREATION_DATE = row[xCSSMT.CREATION_DATE].ToString();
+            item.EMAIL_ADDRESS = row[xCSSMT.EMAIL_ADDRESS].ToString();
+            item.LAST_UPDATE_DATE = row[xCSSMT.LAST_UPDATE_DATE].ToString();
+            item.LOCATION_ID = row[xCSSMT.LOCATION_ID].ToString();
+            item.MATCH_OPTION = row[xCSSMT.MATCH_OPTION].ToString();
+            item.PAY_SITE_FLAG = row[xCSSMT.PAY_SITE_FLAG].ToString();
+            item.PURCHASING_SITE_FLAG = row[xCSSMT.PURCHASING_SITE_FLAG].ToString();
+            item.RFQ_ONLY_SITE_FLAG = row[xCSSMT.RFQ_ONLY_SITE_FLAG].ToString();
+            item.SUPPLIER_NOTIF_METHOD = row[xCSSMT.SUPPLIER_NOTIF_METHOD].ToString();
+            item.VENDOR_ID = row[xCSSMT.VENDOR_ID].ToString();
+
+            item.VENDOR_SITE_CODE = row[xCSSMT.VENDOR_SITE_CODE].ToString();
+            item.VENDOR_SITE_ID = row[xCSSMT.VENDOR_SITE_ID].ToString();
+            item.VENDOR_SITE_SPK_ID = row[xCSSMT.VENDOR_SITE_SPK_ID].ToString();
+
+            return item;
+        }
     }
 }

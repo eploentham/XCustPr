@@ -274,10 +274,11 @@ namespace XCustPr
                                             //  insert
                                             String vendor_code = "", supplier_site_code="";
                                             vendor_code = getVendorBySupplierCode(row[xCMPoRITDB.xCMPoRIT.supplier_code].ToString().Trim());
-
+                                            supplier_site_code = getSupplierSiteCodeBySupplierCode(row[xCMPoRITDB.xCMPoRIT.supplier_code].ToString().Trim());
                                             addXcustListHeader(row[xCMPoRITDB.xCMPoRIT.INVOICE_NO].ToString().Trim(), vendor_code
-                                                , row[xCMPoRITDB.xCMPoRIT.SUPPLIER_SITE_CODE].ToString().Trim());//ทำ รอไว้ เพื่อ process ช้า
-                                            supplier_site_code 
+                                                , supplier_site_code, row[xCMPoRITDB.xCMPoRIT.INVOICE_NO].ToString().Trim());//ทำ รอไว้ เพื่อ process ช้า
+                                            addListXcustRTIA(row);
+
                                             xCMPoRITDB.updateValidate(row[xCMPoRITDB.xCMPoRIT.store_code].ToString().Trim(), row[xCMPoRITDB.xCMPoRIT.item_code].ToString().Trim()
                                                 , row[xCMPoRITDB.xCMPoRIT.INVOICE_NO].ToString().Trim(), row[xCMPoRITDB.xCMPoRIT.file_name].ToString().Trim(), "Y", "");
                                         }
@@ -305,7 +306,7 @@ namespace XCustPr
                 }
             }
         }
-        private void addXcustListHeader(String ref1, String supplier_code, String SUPPLIER_SITE_CODE)
+        private void addXcustListHeader(String ref1, String supplier_code, String SUPPLIER_SITE_CODE, String Supplier_Site_Code)
         {
             Boolean chk = true;
             foreach (XcustRcvHeadersIntAll xcprhia in listXcustRHIA)
@@ -319,21 +320,46 @@ namespace XCustPr
             {
                 String seq = String.Concat("00" + listXcustRHIA.Count);
                 XcustRcvHeadersIntAll xcrhia1 = new XcustRcvHeadersIntAll();
-                xcrhia1.ATTRIBUTE1 = ref1;
                 xcrhia1.HEADER_INTERFACE_NUMBER = ref1;
-                xcrhia1.RECEIPT_SOURCE_CODE = Cm.initC.PO003RECEIPT_SOURCE;
-                xcrhia1.ASN_TYPE = "";//ถาม
-                xcrhia1.TRANSACTION_TYPE = Cm.initC.PO003TRANSACTION_TYPE;
-                xcrhia1.RECEIPT_NUM = "";//ถาม
+                xcrhia1.RECEIPT_SOURCE_CODE = Cm.initC.PO004RECEIPT_SOURCE;
+                xcrhia1.ASN_TYPE = "STD";
+                xcrhia1.TRANSACTION_TYPE = "NEW";//ถาม
+                xcrhia1.RECEIPT_NUM = "";       // running
                 xcrhia1.VENDOR_NUM = supplier_code;//ถาม
+                xcrhia1.VENDOR_SITE_CODE = supplier_code;//ถาม
                 xcrhia1.VENDOR_SITE_CODE = SUPPLIER_SITE_CODE;//ถาม
-                xcrhia1.SHIPTO_ORGANIZATION_CODE = SUPPLIER_SITE_CODE;//ถาม
+                xcrhia1.SHIPTO_ORGANIZATION_CODE = Cm.initC.ORGANIZATION_code;//ถาม
                 xcrhia1.TRANSACTION_DATE = "";//ถาม
                 xcrhia1.BUSINESS_UNIT = "";//ถาม
-                xcrhia1.ATTRIBUTE_CATEGORY = "";//ถาม
+                xcrhia1.ATTRIBUTE_CATEGORY = "RCP_MMX_INFO";//ถาม
                 xcrhia1.PROCESS_FLAG = "N";
                 listXcustRHIA.Add(xcrhia1);
             }
+        }
+        private void addListXcustRTIA(DataRow row)   //xCRTIADB
+        {
+            XcustRcvTransactionsIntAll item = new XcustRcvTransactionsIntAll();
+            item.HEADER_INTERFACE_NUMBER = row[xCRTIADB.xCRTIA.he].ToString();
+            item.REQ_LINE_INTERFACE_ID = row[xCLFPTDB.xCLFPT.LINE_NUMBER].ToString();
+            item.DESTINATION_TYPE_CODE = "";
+            item.PRC_BU_NAME = "";
+            item.DELIVER_TO_ORGANIZATION_CODE = Cm.initC.ORGANIZATION_code;
+            item.DELIVER_TO_LOCATION_CODE = row[xCLFPTDB.xCLFPT.deriver_to_location].ToString();
+            item.DESTINATION_SUBINVENTORY = row[xCLFPTDB.xCLFPT.subinventory_code].ToString();
+            item.CATEGORY_NAME = row[xCLFPTDB.xCLFPT.ITEM_CATEGORY_NAME].ToString();
+            item.NEED_BY_DATE = row[xCLFPTDB.xCLFPT.REQUEST_TIME].ToString();
+            item.ITEM_CODE = row[xCLFPTDB.xCLFPT.ITEM_CODE].ToString();
+            item.LINE_TYPE = "";
+
+            item.QTY = row[xCLFPTDB.xCLFPT.QTY].ToString();
+            item.CURRENCY_CODE = Cm.initC.CURRENCY_CODE;
+            item.AGREEMENT_NUMBER = row[xCLFPTDB.xCLFPT.AGREEEMENT_NUMBER].ToString();
+            item.CURRENCY_UNIT_PRICE = "REQ_HEADER_INTERFACE_ID";//PO_NUMBER
+            item.Price = row[xCLFPTDB.xCLFPT.PRICE].ToString();
+            item.PROCESS_FLAG = "Y";
+            item.UOM_CODE = row[xCLFPTDB.xCLFPT.UOMCODE].ToString();
+
+            listXcusTRTIA.Add(item);
         }
         private Boolean getDirectSupplierBySupplierCode(String supplier_code)
         {
@@ -363,6 +389,19 @@ namespace XCustPr
                         chk = item.SECONDARY_INVENTORY_NAME;
                         break;
                     }
+                }
+            }
+            return chk;
+        }
+        private String getSupplierSiteCodeBySupplierCode(String supplier_code)
+        {
+            String chk = "";
+            foreach (XcustSupplierSiteMstTbl item in listXcustSSMT)
+            {
+                if (item.VENDOR_ID.Equals(supplier_code.Trim()))
+                {
+                    chk = item.VENDOR_ID;
+                    break;
                 }
             }
             return chk;
