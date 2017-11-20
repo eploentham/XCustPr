@@ -217,9 +217,9 @@ namespace XCustPr
             //- หา PO และ PO Line โดยใช้เลข MMX PO Number และ MMX Line Number มาหาโดยใน ERP จะเก็บไว้ที่ PR Header(Attribute2) ,PR Line(Attribute1)
             //-เมื่อเจอให้ตรวจสอบยอดที่ยังไม่ได้ทำรับ ว่าเหลือพอต่อการ Receipt หรือไม่ หากไม่พอให้ Validate ไม่ผ่าน
 
-            //cPo004.processGetTempTableToValidate(lv1, this, pB1);
+            cPo004.processGetTempTableToValidate(lv1, this, pB1);
 
-            //cPo004.processInsertTable(lv1, this, pB1);
+            cPo004.processInsertTable(lv1, this, pB1);
         }
         private void btnPrepare_Click(object sender, EventArgs e)
         {

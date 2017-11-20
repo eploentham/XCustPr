@@ -92,5 +92,49 @@ namespace XCustPr
 
             return item;
         }
+        public String getMinVendorSiteIdByVendorId(String vendor_id)
+        {
+            DataTable dt = new DataTable();
+            String chk = "";
+            String sql = "select min("+xCSSMT.VENDOR_SITE_SPK_ID+") as "+xCSSMT.VENDOR_SITE_SPK_ID+" " +
+                "From " + xCSSMT.table+" " +
+                "Where "+xCSSMT.PURCHASING_SITE_FLAG+"='Y' and "+xCSSMT.VENDOR_ID +"='"+vendor_id+"'";
+            dt = conn.selectData(sql, "kfc_po");
+            if (dt.Rows.Count > 0)
+            {
+                chk = dt.Rows[0][xCSSMT.VENDOR_SITE_SPK_ID].ToString();
+            }
+            return chk;
+        }
+        public String getVendorSiteCode(String vendor_spk_id)
+        {
+            DataTable dt = new DataTable();
+            String chk = "";
+            String sql = "select " + xCSSMT.VENDOR_SITE_CODE + " " +
+                "From " + xCSSMT.table + " " +
+                "Where " + xCSSMT.VENDOR_SITE_SPK_ID + "='" + vendor_spk_id + "'";
+            dt = conn.selectData(sql, "kfc_po");
+            if (dt.Rows.Count > 0)
+            {
+                chk = dt.Rows[0][xCSSMT.VENDOR_SITE_CODE].ToString();
+            }
+            return chk;
+        }
+        public String getVendorSiteCodeBySupplierCode(String supplier_code)
+        {
+            DataTable dt = new DataTable();
+            String chk = "", vendorSPKId="";
+            String sql = "select vendor_id "+
+                "from XCUST_SUPPLIER_MST_TBL "+
+                "where SUPPLIER_NUMBER = '"+ supplier_code+"'";
+            dt = conn.selectData(sql, "kfc_po");
+            if (dt.Rows.Count > 0)
+            {
+                chk = dt.Rows[0]["vendor_id"].ToString();
+                vendorSPKId = getMinVendorSiteIdByVendorId(chk);
+                chk = vendorSPKId.Equals("") ? getVendorSiteCode(vendorSPKId) : "";
+            }
+            return chk;
+        }
     }
 }

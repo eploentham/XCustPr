@@ -23,7 +23,7 @@ namespace XCustPr
             xCPDIT.charge_account_segment1 = "charge_account_segment1";
             xCPDIT.charge_account_segment2 = "charge_account_segment2";
             xCPDIT.charge_account_segment3 = "charge_account_segment3";
-            xCPDIT.charg_accounte_segment4 = "charg_accounte_segment4";
+            xCPDIT.charge_account_segment4 = "charg_accounte_segment4";
             xCPDIT.charge_account_segment5 = "charge_account_segment5";
             xCPDIT.charge_account_segment6 = "charge_account_segment6";
             xCPDIT.creation_by = "creation_by";
@@ -56,7 +56,7 @@ namespace XCustPr
                 //p.Active = "1";
                 String last_update_by = "0", creation_by = "0";
                 sql = "Insert Into " + xCPDIT.table + "(" + xCPDIT.amt + "," + xCPDIT.charge_account_segment1 + "," + xCPDIT.charge_account_segment2 + "," +
-                    xCPDIT.charge_account_segment3 + "," + xCPDIT.charg_accounte_segment4 + "," + xCPDIT.charge_account_segment5 + "," +
+                    xCPDIT.charge_account_segment3 + "," + xCPDIT.charge_account_segment4 + "," + xCPDIT.charge_account_segment5 + "," +
                     xCPDIT.charge_account_segment6 + "," + xCPDIT.creation_by + "," + xCPDIT.creation_date + "," +
                     xCPDIT.deliver_to_location + "," + xCPDIT.destion_subinventory + "," + xCPDIT.distribution_num + "," +
                     xCPDIT.error_message + "," + xCPDIT.interface_distribution_key + "," + xCPDIT.interface_header_key + "," +
@@ -64,7 +64,7 @@ namespace XCustPr
                     xCPDIT.last_update_date + "," + xCPDIT.process_flag +
                     ") " +
                     "Values('" + p.amt + "','" + p.charge_account_segment1 + "','" + p.charge_account_segment2 + "','" +
-                    p.charge_account_segment3 + "','" + p.charg_accounte_segment4 + "','" + p.charge_account_segment5 + "','" +
+                    p.charge_account_segment3 + "','" + p.charge_account_segment4 + "','" + p.charge_account_segment5 + "','" +
                     p.charge_account_segment6 + "','" + creation_by + "',getdate(),'" +
                     p.deliver_to_location + "','" + p.destion_subinventory + "','" + p.distribution_num + "','" +
                     p.error_message + "','" + p.interface_distribution_key + "','" + p.interface_header_key + "','" +

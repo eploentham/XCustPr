@@ -38,6 +38,14 @@ namespace XCustPr
             {
                 Application.Run(new XCustExtractZip(Cm));
             }
+            else if (System.Diagnostics.Process.GetCurrentProcess().ProcessName.ToLower().Equals("xcustpo008"))
+            {
+                Application.Run(new XCustPO008(Cm));
+            }
+            else if (System.Diagnostics.Process.GetCurrentProcess().ProcessName.ToLower().Equals("xcustvalueset"))
+            {
+                Application.Run(new XcustValueSet(Cm));
+            }
             else
             {
                 //Application.Run(new XCustPO008(Cm));

@@ -313,6 +313,10 @@ namespace XCustPr
             initC.PO004ZipFileSearch = iniFile.Read("PO004ZipFileSearch").Trim();
             initC.PO004FileType = iniFile.Read("PO004FileType").Trim();
             initC.PO004RECEIPT_SOURCE = iniFile.Read("PO004RECEIPT_SOURCE").Trim();
+            initC.PO004RECEIPT_TRANSACTION_TYPE = iniFile.Read("PO004RECEIPT_TRANSACTION_TYPE").Trim();
+            initC.PO004SOURCE_DOCUMENT_CODE = iniFile.Read("PO004SOURCE_DOCUMENT_CODE").Trim();
+            initC.PO004RECEIPT_SOURCE_CODE = iniFile.Read("PO004RECEIPT_SOURCE_CODE").Trim();
+            initC.PO004INTERFACE_SOURCE_CODE = iniFile.Read("PO004INTERFACE_SOURCE_CODE").Trim();
 
             initC.PO008PathArchive = iniFile.Read("PO008PathArchive").Trim();
             initC.PO008PathError = iniFile.Read("PO008PathError").Trim();
@@ -320,6 +324,8 @@ namespace XCustPr
             initC.PO008PathProcess = iniFile.Read("PO008PathProcess").Trim();
             initC.PO008ImportSource = iniFile.Read("PO008ImportSource").Trim();
             initC.PO008ZipFileSearch = iniFile.Read("PO008ZipFileSearch").Trim();
+            initC.PO008LEGAL_ENTITY = iniFile.Read("PO008LEGAL_ENTITY").Trim();
+            initC.PO008BUYER = iniFile.Read("PO008BUYER").Trim();
 
             initC.ExtractZipPathZipExtractRead = iniFile.Read("ExtractZipPathZipExtractRead").Trim();
             initC.ExtractZipPathZipExtract = iniFile.Read("ExtractZipPathZipExtract").Trim();
@@ -760,5 +766,6 @@ namespace XCustPr
             }
             Console.WriteLine(doc);
         }
+
     }
 }

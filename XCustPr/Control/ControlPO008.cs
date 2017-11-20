@@ -40,10 +40,17 @@ namespace XCustPr
         public XcustValueSetMstTblDB xCVSMTDB;
         public XcustBlanketAgreementHeaderTblDB xCBAHTDB;
         public XcustBlanketAgreementLinesTblDB xCBALTDB;
+        public XcustSupplierSiteMstTblDB xCSSMTDB;
 
-        private List<XcustPorReqHeaderIntAll> listXcustPRHIA;
-        private List<XcustPorReqLineIntAll> listXcustPRLIA;
-        private List<XcustPorReqDistIntAll> listXcustPRDIA;
+        public XcustPoHeaderIntTblDB xCPHITDB;
+        public XcustPoLineIntTblDB xCPLITDB;
+        public XcustPoLineLocIntTblDB xCPLLITDB;
+        public XcustPoDistIntTblDB xCPDITDB;
+
+        private List<XcustPoHeaderIntTbl> listXcustPHIT;        // table จริงๆ
+        private List<XcustPoLineIntTbl> listXcustPLIT;        // table จริงๆ
+        private List<XcustPoLineLocIntTbl> listXcustPLLIT;        // table จริงๆ
+        private List<XcustPoDistIntTbl> listXcustPDIT;        // table จริงๆ
 
         private List<XcustSubInventoryMstTbl> listXcSIMT;
         private List<XcustItemMstTbl> listXcIMT;
@@ -51,7 +58,7 @@ namespace XCustPr
         private List<XcustValueSetMstTbl> listXcVSMT;
         private List<XcustUomMstTbl> listXcUMT;
 
-        public XcustCedarPoIntTblDB xCCPITDB;
+        public XcustCedarPoIntTblDB xCCPITDB;// table temp
 
 
         public ControlPO008(ControlMain cm)
@@ -71,11 +78,18 @@ namespace XCustPr
             fV1 = new Font(fontName, fontSize8, FontStyle.Regular);        //standard
 
             xCCPITDB = new XcustCedarPoIntTblDB(conn, Cm.initC);
+            xCPHITDB = new XcustPoHeaderIntTblDB(conn);
+            xCPLITDB = new XcustPoLineIntTblDB(conn);
+            xCPLLITDB = new XcustPoLineLocIntTblDB(conn);
+            xCPDITDB = new XcustPoDistIntTblDB(conn);
+            xCSSMTDB = new XcustSupplierSiteMstTblDB(conn, Cm.initC);
 
             listXcSIMT = new List<XcustSubInventoryMstTbl>();
-            listXcustPRHIA = new List<XcustPorReqHeaderIntAll>();
-            listXcustPRLIA = new List<XcustPorReqLineIntAll>();
-            listXcustPRDIA = new List<XcustPorReqDistIntAll>();
+
+            listXcustPHIT = new List<XcustPoHeaderIntTbl>();        // table จริงๆ
+            listXcustPLIT = new List<XcustPoLineIntTbl>();        // table จริงๆ
+            listXcustPLLIT = new List<XcustPoLineLocIntTbl>();        // table จริงๆ
+            listXcustPDIT = new List<XcustPoDistIntTbl>();        // table จริงๆ
 
             listXcIMT = new List<XcustItemMstTbl>();
             listXcSMT = new List<XcustSupplierMstTbl>();
@@ -329,9 +343,11 @@ namespace XCustPr
             List<ValidatePrPo> lVPr = new List<ValidatePrPo>();   // gen log
             List<ValidateFileName> lVfile = new List<ValidateFileName>();   // gen log
 
-            listXcustPRHIA.Clear();
-            listXcustPRLIA.Clear();
-            listXcustPRDIA.Clear();
+            listXcustPHIT.Clear();
+            listXcustPLIT.Clear();
+            listXcustPLLIT.Clear();
+            listXcustPDIT.Clear();
+
             getListXcSIMT();
             getListXcIMT();
             getListXcSMT();
@@ -495,9 +511,190 @@ namespace XCustPr
                         lVPr.Add(vPP);
                         cntErr++;
                     }
+                    String vendorSiteCode = "";
+                    vendorSiteCode = xCSSMTDB.getVendorSiteCodeBySupplierCode(row[xCCPITDB.xCCPIT.supplier_code].ToString().Trim());
+                    addXcustListHeader(row[xCCPITDB.xCCPIT.wo_no].ToString().Trim(), row[xCCPITDB.xCCPIT.branch_plant].ToString().Trim()
+                        , row[xCCPITDB.xCCPIT.supplier_code].ToString().Trim(), vendorSiteCode);//ทำ รอไว้ เพื่อ process ช้า
+                    addXcustListLine(row);
+                    addXcustListLoc(row);
+                    //xCLPRITDB.updateValidateFlag("", "", "Y", "", "kfc_po");
                 }
-
+                vF.recordError = cntFileErr.ToString();   // gen log
+                vF.totalError = cntErr.ToString();   // gen log
+                lVfile.Add(vF);   // gen log
             }
+            pB1.Visible = false;
+            Cm.logProcess("xcustpo003", lVPr, dateStart, lVfile);   // gen log
+        }
+        public void processInsertTable(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
+        {
+            addListView("insert table " + Cm.initC.PathProcess, "Validate", lv1, form1);
+            String date = System.DateTime.Now.ToString("yyyy-MM-dd");
+            String time = System.DateTime.Now.ToString("HH:mm:ss");
+            foreach (XcustPoHeaderIntTbl xcprhia in listXcustPHIT)
+            {
+                if (insertXcustPorReqHeaderIntAll(xcprhia, date, time).Equals("1"))
+                {
+                    foreach (XcustPoLineIntTbl xcprlia in listXcustPLIT)
+                    {
+                        //XcustPorReqLineIntAll xcprlia = xCPRLIADB.setData(row, xCLFPTDB.xCLFPT);
+                        String chk = xCPLITDB.insert(xcprlia);
+                    }
+                    foreach (XcustPoLineLocIntTbl xcprdia in listXcustPLLIT)
+                    {
+                        //XcustPorReqLineIntAll xcprlia = xCPRLIADB.setData(row, xCLFPTDB.xCLFPT);
+                        String chk = xCPLLITDB.insert(xcprdia);
+                    }
+                    foreach (XcustPoDistIntTbl xcprdia in listXcustPDIT)
+                    {
+                        //XcustPorReqLineIntAll xcprlia = xCPRLIADB.setData(row, xCLFPTDB.xCLFPT);
+                        String chk = xCPDITDB.insert(xcprdia);
+                    }
+                }
+            }
+        }
+        private String insertXcustPorReqHeaderIntAll(XcustPoHeaderIntTbl xcprhia, String date, String time)
+        {//row[dc].ToString().Trim().
+            String chk = "";
+            //XcustRcvHeadersIntAll xCPRHIA = new XcustRcvHeadersIntAll();
+            //xCPRHIA.ATTRIBUTE1 = xcprhia.ATTRIBUTE1.Trim();
+
+            //xCPRHIA.HEADER_INTERFACE_NUMBER = HEADER_INTERFACE_NUMBER;
+            //xCPRHIA.RECEIPT_SOURCE_CODE = RECEIPT_SOURCE_CODE;
+            //xCPRHIA.BATCH_ID = xcprhia.BATCH_ID;
+            //xCPRHIA.DESCRIPTIONS = xcprhia.DESCRIPTIONS.Trim();
+            //xCPRHIA.REQUESTER_EMAIL_ADDR = "";
+            //xCPRHIA.INTERFACE_SOURCE_CODE = "";
+            //xCPRHIA.ATTRIBUTE_CATEGORY = xcprhia.ATTRIBUTE_CATEGORY;
+            //xCPRHIA.REQ_HEADER_INTERFACE_ID = xcprhia.REQ_HEADER_INTERFACE_ID.Trim();
+            //xCPRHIA.PROCESS_FLAG = "N";
+            //xCPRHIA.APPROVER_EMAIL_ADDR = "";
+            //xCPRHIA.ATTRIBUTE2 = xcprhia.ATTRIBUTE2;
+            //xCPRHIA.REQUITITION_NUMBER = xcprhia.REQUITITION_NUMBER;
+            //xCPRHIA.IMPORT_SOURCE = xcprhia.IMPORT_SOURCE;
+            //xCPRHIA.ATTRIBUTE1 = xcprhia.ATTRIBUTE1;
+            //xCPRHIA.REQ_BU_NAME = xcprhia.REQ_BU_NAME;
+            //xCPRHIA.STATUS_CODE = xcprhia.STATUS_CODE;
+            chk = xCPHITDB.insert(xcprhia);
+            return chk;
+        }
+        private void addXcustListHeader(String wo_no, String branch_plant, String supplier_code, String supplier_site_code)
+        {
+            Boolean chk = true;
+            foreach (XcustPoHeaderIntTbl xcprhia in listXcustPHIT)
+            {
+                if (xcprhia.interface_header_key.Equals(wo_no))
+                {
+                    chk = false;
+                }
+            }
+            if (chk)
+            {
+                String seq = String.Concat("00" + listXcustPHIT.Count);
+                XcustPoHeaderIntTbl xcrhia1 = new XcustPoHeaderIntTbl();
+                xcrhia1.interface_header_key = wo_no;
+                xcrhia1.action = "ORIGINAL";
+                xcrhia1.import_source = Cm.initC.PO008ImportSource;
+                xcrhia1.approval_action = "BYPASS";//ถาม
+                xcrhia1.document_typre_code = "STANDARD";
+                xcrhia1.prc_bu_name = Cm.initC.BU_NAME;//ถาม
+                xcrhia1.req_bu_name =Cm.initC.BU_NAME;//ถาม
+                xcrhia1.soldto_re_name = Cm.initC.PO008LEGAL_ENTITY;//ถาม
+                xcrhia1.billto_bu_name = Cm.initC.BU_NAME;//ถาม
+                xcrhia1.buyyer_name = Cm.initC.PO008BUYER;//ถาม
+                xcrhia1.currency_code = Cm.initC.CURRENCY_CODE;//ถาม
+                xcrhia1.bill_to_location = branch_plant;//ถาม
+                xcrhia1.ship_to_location = branch_plant;
+                xcrhia1.supplier_code = supplier_code;
+                xcrhia1.supplier_site_code = supplier_site_code;
+                xcrhia1.payment_term = "";//ถาม
+                xcrhia1.process_flag = "N";
+
+                listXcustPHIT.Add(xcrhia1);
+            }
+        }
+        private void addXcustListLine(DataRow row)
+        {
+            String running = "";
+            running = "00" + listXcustPLIT.Count + 1;
+            running = running.Substring(0, running.Length - 2);
+            XcustPoLineIntTbl item = new XcustPoLineIntTbl();
+            item.interface_header_key = row[xCCPITDB.xCCPIT.wo_no].ToString();
+            item.interface_line_key = row[xCCPITDB.xCCPIT.wo_no].ToString()+ running;
+            item.action = "ADD";
+            item.line_num = "";//ถาม
+            item.line_type = "SERVICE";
+            item.item_description = row[xCCPITDB.xCCPIT.wo_no].ToString()+"_"+ row[xCCPITDB.xCCPIT.qt_no].ToString()+"_"+ row[xCCPITDB.xCCPIT.item_description].ToString()+"_"+ row[xCCPITDB.xCCPIT.branch_plant].ToString();
+            item.category = "";//ถาม
+            item.unit_price = row[xCCPITDB.xCCPIT.amt].ToString();
+            //item.DOCUMENT_NUMBER = "";
+            //item.DOCUMENT_LINE_NUMBER = "";
+            //item.BUSINESS_UNIT = "";
+
+            //item.SUBINVENTORY_CODE = row[xCLPRITDB.xCLPRIT.subinventory_code].ToString();
+            //item.LOCATOR_CODE = row[xCLPRITDB.xCLPRIT.LOCATOR].ToString();
+            //item.QUANTITY = row[xCLPRITDB.xCLPRIT.qty_receipt].ToString();
+            //item.UOM_CODE = row[xCLPRITDB.xCLPRIT.uom_code].ToString();
+            //item.INTERFACE_SOURCE_CODE = "";
+            item.process_flag = "Y";
+            //item.UOM_CODE = row[xCMPITDB.xCMPIT.uom_code].ToString();
+
+            listXcustPLIT.Add(item);
+        }
+        private void addXcustListLoc(DataRow row)
+        {
+            String running = "";
+            running = "00" + listXcustPLLIT.Count + 1;
+            running = running.Substring(0, running.Length - 2);
+            XcustPoLineLocIntTbl item = new XcustPoLineLocIntTbl();
+            item.interface_header_key = row[xCCPITDB.xCCPIT.wo_no].ToString();
+            item.interface_line_key = row[xCCPITDB.xCCPIT.wo_no].ToString() + running+"1";
+            item.interface_line_location_key = row[xCCPITDB.xCCPIT.wo_no].ToString() + running + "11";
+            item.amt = row[xCCPITDB.xCCPIT.amt].ToString();
+            item.need_by_date = row[xCCPITDB.xCCPIT.cedar_close_date].ToString();
+            item.destination_type_code = "EXPENSE";//ถาม
+            item.attirbute1 = row[xCCPITDB.xCCPIT.wo_no].ToString();
+            item.attribute2 = row[xCCPITDB.xCCPIT.qt_no].ToString();
+            item.attribute3 = row[xCCPITDB.xCCPIT.asset_code].ToString();
+            item.attribute4 = row[xCCPITDB.xCCPIT.asset_name].ToString();
+            //item.LINE_TYPE = "";
+
+            //item.QTY = row[xCMPITDB.xCMPIT.confirm_qty].ToString();
+            //item.CURRENCY_CODE = initC.CURRENCY_CODE;
+            //item.AGREEMENT_NUMBER = row[xCLFPTDB.xCLFPT.AGREEEMENT_NUMBER].ToString();
+            //item.CURRENCY_UNIT_PRICE = "REQ_HEADER_INTERFACE_ID";//PO_NUMBER
+            //item.Price = row[xCLFPTDB.xCLFPT.PRICE].ToString();
+            item.process_flag = "Y";
+
+            listXcustPLLIT.Add(item);
+        }
+        private void addXcustListDist(DataRow row)
+        {
+            String running = "";
+            running = "00" + listXcustPDIT.Count + 1;
+            running = running.Substring(0, running.Length - 2);
+            XcustPoDistIntTbl item = new XcustPoDistIntTbl();
+            item.interface_header_key = row[xCCPITDB.xCCPIT.wo_no].ToString();
+            item.interface_line_location_key = row[xCCPITDB.xCCPIT.wo_no].ToString() + running + "11";
+            item.interface_distribution_key = row[xCCPITDB.xCCPIT.wo_no].ToString() + running + "111";
+            item.distribution_num = running;//ถาม ใช้อันเดียวกันได้ไหม
+            item.deliver_to_location = row[xCCPITDB.xCCPIT.branch_plant].ToString();//ถาม
+            item.destion_subinventory = row[xCCPITDB.xCCPIT.branch_plant].ToString();//ถาม
+            item.amt = row[xCCPITDB.xCCPIT.amt].ToString();
+            item.charge_account_segment1 = row[xCCPITDB.xCCPIT.account_segment1].ToString();//ถาม
+            item.charge_account_segment2 = row[xCCPITDB.xCCPIT.account_segment2].ToString();//ถาม
+            item.charge_account_segment3 = row[xCCPITDB.xCCPIT.account_segment3].ToString();//ถาม
+            item.charge_account_segment4 = row[xCCPITDB.xCCPIT.account_segment4].ToString();//ถาม
+            item.charge_account_segment5 = row[xCCPITDB.xCCPIT.account_segment5].ToString();//ถาม
+            item.charge_account_segment6 = row[xCCPITDB.xCCPIT.account_segment6].ToString();//ถาม
+            //item.QTY = row[xCMPITDB.xCMPIT.confirm_qty].ToString();
+            //item.CURRENCY_CODE = initC.CURRENCY_CODE;
+            //item.AGREEMENT_NUMBER = row[xCLFPTDB.xCLFPT.AGREEEMENT_NUMBER].ToString();
+            //item.CURRENCY_UNIT_PRICE = "REQ_HEADER_INTERFACE_ID";//PO_NUMBER
+            //item.Price = row[xCLFPTDB.xCLFPT.PRICE].ToString();
+            item.process_flag = "Y";
+
+            listXcustPDIT.Add(item);
         }
         public void processGenCSVxCRHIADB(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String flag)
         {

@@ -68,11 +68,13 @@
     <Compile Include="Control\ColorScheme.cs" />
     <Compile Include="Control\ControlExtractZip.cs" />
     <Compile Include="Control\ControlMain.cs" />
+    <Compile Include="Control\ControlMasterDB.cs" />
     <Compile Include="Control\ControlPO003.cs" />
     <Compile Include="Control\ControlPO004.cs" />
     <Compile Include="Control\ControlPO005.cs" />
     <Compile Include="Control\ControlPO008.cs" />
     <Compile Include="Control\ControlRDPO.cs" />
+    <Compile Include="Control\ControlValueSet.cs" />
     <Compile Include="Control\DrawHelper.cs" />
     <Compile Include="Control\IMaterialControl.cs" />
     <Compile Include="Control\MaterialCheckbox.cs">
@@ -139,6 +141,9 @@
     <Compile Include="gui\XCustPrToCloud.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="gui\XcustValueSet.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="objdb\ConnectDB.cs" />
     <Compile Include="objdb\XcustBlanketAgreementHeaderTblDB.cs" />
     <Compile Include="objdb\XcustBlanketAgreementLinesTblDB.cs" />
@@ -148,6 +153,9 @@
     <Compile Include="objdb\XcustDeriverLocatorMstTblDB.cs" />
     <Compile Include="objdb\XcustDeriverOrganizationMstTblDB.cs" />
     <Compile Include="objdb\XcustInvTransactionLostsIntTblDB.cs" />
+    <Compile Include="objdb\XcustInvTrnIntTblDB.cs" />
+    <Compile Include="objdb\XcustInvTrnLotInvTblDB.cs" />
+    <Compile Include="objdb\XcustInvTrnSerialInvTblDB.cs" />
     <Compile Include="objdb\XcustItemMstTblDB.cs" />
     <Compile Include="objdb\XcustLinfoxPoRcpIntTblDB.cs" />
     <Compile Include="objdb\XcustLinfoxPrTblDB.cs" />
@@ -185,6 +193,9 @@
     <Compile Include="object1\XcustDeriverLocatorMstTbl.cs" />
     <Compile Include="object1\XcustDeriverOrganizationMstTbl.cs" />
     <Compile Include="object1\XcustInvTransactionLostsIntTbl.cs" />
+    <Compile Include="object1\XcustInvTrnIntTbl.cs" />
+    <Compile Include="object1\XcustInvTrnLotInvTbl.cs" />
+    <Compile Include="object1\XcustInvTrnSerialInvTbl.cs" />
     <Compile Include="object1\XcustItemMstTbl.cs" />
     <Compile Include="object1\XcustLinfoxPoRcpIntTbl.cs" />
     <Compile Include="object1\XcustLinfoxPrTbl.cs" />

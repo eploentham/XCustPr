@@ -91,7 +91,7 @@ namespace XCustPr
         {
             DataTable dt = new DataTable();
             String sql = "";
-            sql = "Select po.SEGMENT1 PO_NUMBER,PO.LINE_NUM,po.quantity " +
+            sql = "Select po.SEGMENT1, po.PO_HEADER_ID as PO_NUMBER /*po.PO_NUMBER*/,PO.LINE_NUM,po.quantity " +
                 "from XCUST_PO_TBL PO " +
                 "Left Join xcust_pr_TBL pr On PO.REQUISITION_HEADER_ID = pr.REQUISITION_HEADER_ID and PO.REQUISITION_LINE_ID = pr.REQUISITION_LINE_ID " +
                 "Left Join xcust_item_mst_tbl msi On PO.ITEM_ID = msi.INVENTORY_ITEM_ID " +
