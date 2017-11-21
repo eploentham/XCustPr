@@ -64,6 +64,14 @@ namespace XCustPr
             xCLFPT.ACC_SEG5 = "ACC_SEG5";
             xCLFPT.ACC_SEG6 = "ACC_SEG6";
 
+            xCLFPT.SEND_PO_FLAG = "SEND_PO_FLAG";
+            xCLFPT.GEN_OUTBOUD_FLAG = "GEN_OUTBOUD_FLAG";
+            xCLFPT.ERP_PO_HEADER_ID = "ERP_PO_HEADER_ID";
+            xCLFPT.ERP_PO_LINE_ID = "ERP_PO_LINE_ID";
+            xCLFPT.ERP_PO_NUMBER = "ERP_PO_NUMBER";
+            xCLFPT.ERP_PO_LINE_NUMBER = "ERP_PO_LINE_NUMBER";
+            xCLFPT.ERP_QTY = "ERP_QTY";
+
             //xCLFPT.table = "xcust_linfox_pr_tbl";
             xCLFPT.table = "xcust_linfox_pr_int_tbl";
         }
@@ -104,6 +112,43 @@ namespace XCustPr
         {
             String sql = "Delete From " + xCLFPT.table + " Where " + xCLFPT.file_name + "='" + filename + "'";
             conn.ExecuteNonQuery(sql, "kfc_po");
+        }
+        public DataTable selectPO002()
+        {
+            DataTable dt = new DataTable();
+            
+            String sql = "select * From " + xCLFPT.table + " Where " + xCLFPT.SEND_PO_FLAG + "='N' and "+xCLFPT.PROCESS_FLAG+"='Y' and "+xCLFPT.GEN_OUTBOUD_FLAG+"='N'";
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
+        }
+        public DataTable selectPO002GenTextLinfoxGroupByERPPONumber()
+        {
+            DataTable dt = new DataTable();
+            String sql = "select "+ xCLFPT .ERP_PO_NUMBER+ 
+                " From " + xCLFPT.table + 
+                //" Where " + xCLFPT.SEND_PO_FLAG + "='N' and " + xCLFPT.PROCESS_FLAG + "='Y' and " + xCLFPT.GEN_OUTBOUD_FLAG + "='N' and " + xCLFPT.ERP_PO_NUMBER + " is not null "+
+                " Where " + xCLFPT.SEND_PO_FLAG + "='N' and " + xCLFPT.PROCESS_FLAG + "='Y' and " + xCLFPT.GEN_OUTBOUD_FLAG + "='N' and " + xCLFPT.ERP_PO_NUMBER + " ='' " +
+                "Group By " +xCLFPT.ERP_PO_NUMBER;
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
+        }
+        public DataTable selectPO002GenTextLinfox(String erp_po_number)
+        {
+            DataTable dt = new DataTable();
+            String sql = "select * From " + xCLFPT.table + " Where " + xCLFPT.SEND_PO_FLAG + "='N' and " + xCLFPT.PROCESS_FLAG + "='Y' and " + xCLFPT.GEN_OUTBOUD_FLAG + "='N' and "+xCLFPT.ERP_PO_NUMBER+" ='"+erp_po_number+"'";
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
+        }
+        public String updateFromPO002(String erp_po_number, String erp_qty, String po_number, String line_number)
+        {
+            String sql = "", chk = "";
+            sql = "Update "+xCLFPT.table +" "+
+                "Set "+xCLFPT.ERP_PO_NUMBER+"='"+ erp_po_number + "', "+
+                xCLFPT.ERP_QTY +"='"+ erp_qty+"' " +
+                "Where "+xCLFPT.PO_NUMBER+"='"+po_number+"' and "+xCLFPT.LINE_NUMBER+"='"+line_number+"'";
+            chk = conn.ExecuteNonQuery(sql, "kfc_po");
+
+            return chk;
         }
         
         public void insertBluk(List<String> linfox, String filename, String host, MaterialProgressBar pB1)

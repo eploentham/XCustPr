@@ -480,5 +480,17 @@ namespace XCustPr
 
             return chk;
         }
+        public String dateYearToDB(String date)
+        {
+            String chk = "", year = "", month = "", day = "";
+
+            day = date.Substring(date.Length - 2);
+            month = date.Substring(3, 2);
+            year = date.Substring(0, 2);
+
+            chk = year + month + day;
+
+            return chk;
+        }
     }
 }

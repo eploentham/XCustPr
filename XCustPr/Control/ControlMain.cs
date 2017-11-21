@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -19,6 +20,8 @@ namespace XCustPr
         private StringBuilder sYear = new StringBuilder();
         private StringBuilder sMonth = new StringBuilder();
         private StringBuilder sDay = new StringBuilder();
+        public string[] args;
+        public String xcustpowebservice_run="", xcustprwebservice_run="";
 
         public ControlMain()
         {
@@ -30,6 +33,20 @@ namespace XCustPr
             initC = new InitC();        //standard
 
             GetConfig();
+        }
+        public void setAgrument()
+        {
+            if (args == null) return;
+            foreach (String arg in args)
+            {
+                String[] aaa = arg.Split('=');
+                if (aaa.Length > 1)
+                {
+                    //MessageBox.Show("arg[0] " + aaa[0]+"    arg[1] " + aaa[1], "arg[1] "+ aaa[1]);
+                    xcustpowebservice_run = aaa[0].Equals("xcustpowebservice_run") ? aaa[1] : "";   //xcustpowebservice_run
+                    xcustprwebservice_run = aaa[0].Equals("xcustprwebservice_run") ? aaa[1] : "";
+                }
+            }
         }
         public void createFolder(String path)
         {
@@ -769,6 +786,21 @@ namespace XCustPr
             }
             Console.WriteLine(doc);
         }
-
+        public void runCommand(String filename, String argument)
+        {
+            Process process = new Process();
+            process.StartInfo.FileName = filename;
+            process.StartInfo.Arguments = argument; 
+            process.StartInfo.UseShellExecute = false;
+            process.StartInfo.RedirectStandardOutput = true;
+            process.StartInfo.RedirectStandardError = true;
+            process.Start();
+            //* Read the output (or the error)
+            string output = process.StandardOutput.ReadToEnd();
+            Console.WriteLine(output);
+            string err = process.StandardError.ReadToEnd();
+            Console.WriteLine(err);
+            process.WaitForExit();
+        }
     }
 }

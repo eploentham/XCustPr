@@ -69,7 +69,7 @@ namespace XCustPr
             xCPR.LINE_TYPE = "LINE_TYPE";
             xCPR.LOCATION = "LOCATION";
             xCPR.NAME = "NAME";
-            xCPR.PERCENT = "PERCENT";
+            xCPR.PERCENT = "PERCENT1";
             
             xCPR.PO_ORDER = "PO_ORDER";
             xCPR.REQUISITION_HEADER_ID = "REQUISITION_HEADER_ID";
@@ -84,14 +84,14 @@ namespace XCustPr
             xCPR.VENDOR_ID = "VENDOR_ID";
             xCPR.VENDOR_SITE_ID = "VENDOR_SITE_ID";
 
-            xCPR.table = "xcust_PO_TBL";
+            xCPR.table = "xcust_PR_TBL";
         }
         public Boolean selectDupPk(String requisition_header_id,String requisition_line_id)
         {
             String sql = "";
             Boolean chk = false;
             DataTable dt = new DataTable();
-            sql = "Select count(1) as cnt From "+ xCPR.table +" Where "+ xCPR.REQUISITION_HEADER_ID+"'"+requisition_header_id+"' and "+ xCPR.REQUISITION_LINE_ID+"='"+requisition_header_id+"'";
+            sql = "Select count(1) as cnt From "+ xCPR.table +" Where "+ xCPR.REQUISITION_HEADER_ID+"='"+requisition_header_id+"' and "+ xCPR.REQUISITION_LINE_ID+"='"+requisition_header_id+"'";
             dt = conn.selectData(sql, "kfc_po");
             if (dt.Rows.Count >= 1)
             {
@@ -99,9 +99,21 @@ namespace XCustPr
             }
             return chk;
         }
+        public DataTable selectPRPO(String linfox_po_number, String linfox_po_line_number)
+        {
+            DataTable dt = new DataTable();
+            String sql = "SELECT po.PO_HEADER_ID, po.PO_LINE_ID,po.SEGMENT1 po_number,po.LINE_NUM po_line_number, po.QUANTITY, po.header_id "+
+                "From xcust_pr_tbl PR "+
+                "Left Join xcust_po_tbl po On  po.REQUISITION_HEADER_ID = PR.REQUISITION_HEADER_ID and po.REQUISITION_LINE_ID = PR.REQUISITION_LINE_ID  " +
+                "Where  "+                ""+
+                " PR.ATTRIBUTE1_L = '"+ linfox_po_number + "' "+
+                "and PR.ATTRIBUTE2_L = '"+ linfox_po_line_number + "' ";
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
+        }
         public void deletexCPR(String requisition_header_id, String requisition_line_id)
         {
-            String sql = "Delete From "+xCPR.table+ " Where " + xCPR.REQUISITION_HEADER_ID + "'" + requisition_header_id + "' and " + xCPR.REQUISITION_LINE_ID + "='" + requisition_header_id + "'";
+            String sql = "Delete From "+xCPR.table+ " Where " + xCPR.REQUISITION_HEADER_ID + "='" + requisition_header_id + "' and " + xCPR.REQUISITION_LINE_ID + "='" + requisition_line_id + "'";
             conn.ExecuteNonQuery(sql, "kfc_po");
         }
         public String insertxCPR(XcustPrTbl p)
@@ -126,25 +138,28 @@ namespace XCustPr
                 //p.RowNumber = selectMaxRowNumber(p.YearId);
                 //p.Active = "1";
                 String last_update_by = "0", creation_by = "0";
+                p.AMOUNT = p.AMOUNT.Equals("") ? "0" : p.AMOUNT;
+                p.CURRENCY_AMOUNT = p.CURRENCY_AMOUNT.Equals("") ? "0" : p.CURRENCY_AMOUNT;
+                p.SECONDARY_QUANTITY = p.SECONDARY_QUANTITY.Equals("") ? "0" : p.SECONDARY_QUANTITY;
                 sql = "Insert Into " + xCPR.table + "(" + xCPR.AMOUNT + "," + xCPR.ATTRIBUTE1 + "," + xCPR.ATTRIBUTE10 + "," +
                     xCPR.ATTRIBUTE1_L + "," + xCPR.ATTRIBUTE2 + "," + xCPR.ATTRIBUTE2_L + "," +
                     xCPR.ATTRIBUTE3 + "," + xCPR.ATTRIBUTE3_L + "," + xCPR.ATTRIBUTE4 + "," +
                     xCPR.ATTRIBUTE5 + "," + xCPR.ATTRIBUTE6 + "," + xCPR.ATTRIBUTE7 + "," +
-                    xCPR.ATTRIBUTE8 + "," + xCPR.ATTRIBUTE9 + "," + xCPR.ATTRIBUTE10 + "," +
-                    xCPR.ATTRIBUTE11 + "," + xCPR.ATTRIBUTE12 + "," + xCPR.ATTRIBUTE13 +
-                    xCPR.ATTRIBUTE14 + "," + xCPR.ATTRIBUTE15 + "," + xCPR.ATTRIBUTE16 +
-                    xCPR.ATTRIBUTE17 + "," + xCPR.ATTRIBUTE18 + "," + xCPR.ATTRIBUTE19 +
-                    xCPR.ATTRIBUTE20 + "," + xCPR.ATTRIBUTE_CATEGORY + "," + xCPR.ATTRIBUTE_CATEGORY_L +
-                    xCPR.BUDGET_DATE + "," + xCPR.CHARGE_ACCOUNT + "," + xCPR.CONVERSION_DATE +
-                    xCPR.CREATED_BY + "," + xCPR.CREATION_DATE + "," + xCPR.CURRENCY_AMOUNT +
-                    xCPR.DESCRIPTION + "," + xCPR.DESTINATION_ORGANIZATION_ID + "," + xCPR.DESTINATION_TYPE_CODE +
-                    xCPR.DISTRIBUTION + "," + xCPR.DISTRIBUTION_CURRENCY_AMOUNT + "," + xCPR.DOCUMENT_STATUS +
-                    xCPR.FUNDS_STATUS + "," + xCPR.ITEM_DESCRIPTION + "," + xCPR.ITEM_ID +
-                    xCPR.LAST_UPDATE_DATE + "," + xCPR.LINE_NUMBER + "," + xCPR.LINE_TYPE +
-                    xCPR.LOCATION + "," + xCPR.NAME + "," + xCPR.PERCENT +
-                    xCPR.PO_ORDER + "," + xCPR.REQUISITION_HEADER_ID + "," + xCPR.REQUISITION_LINE_ID +
-                    xCPR.REQUISITION_NUMBER + "," + xCPR.REQ_BU_ID + "," + xCPR.SECONDARY_QUANTITY +
-                    xCPR.SECONDARY_UOM_CODE + "," + xCPR.SOURCE_TYPE_CODE + "," + xCPR.UNIT_PRICE +
+                    xCPR.ATTRIBUTE8 + "," + xCPR.ATTRIBUTE9 + "," +
+                    xCPR.ATTRIBUTE11 + "," + xCPR.ATTRIBUTE12 + "," + xCPR.ATTRIBUTE13 + "," +
+                    xCPR.ATTRIBUTE14 + "," + xCPR.ATTRIBUTE15 + "," + xCPR.ATTRIBUTE16 + "," +
+                    xCPR.ATTRIBUTE17 + "," + xCPR.ATTRIBUTE18 + "," + xCPR.ATTRIBUTE19 + "," +
+                    xCPR.ATTRIBUTE20 + "," + xCPR.ATTRIBUTE_CATEGORY + "," + xCPR.ATTRIBUTE_CATEGORY_L + "," +
+                    xCPR.BUDGET_DATE + "," + xCPR.CHARGE_ACCOUNT + "," + xCPR.CONVERSION_DATE + "," +
+                    xCPR.CREATED_BY + "," + xCPR.CREATION_DATE + "," + xCPR.CURRENCY_AMOUNT + "," +
+                    xCPR.DESCRIPTION + "," + xCPR.DESTINATION_ORGANIZATION_ID + "," + xCPR.DESTINATION_TYPE_CODE + "," +
+                    xCPR.DISTRIBUTION + "," + xCPR.DISTRIBUTION_CURRENCY_AMOUNT + "," + xCPR.DOCUMENT_STATUS + "," +
+                    xCPR.FUNDS_STATUS + "," + xCPR.ITEM_DESCRIPTION + "," + xCPR.ITEM_ID + "," +
+                    xCPR.LAST_UPDATE_DATE + "," + xCPR.LINE_NUMBER + "," + xCPR.LINE_TYPE + "," +
+                    xCPR.LOCATION + "," + xCPR.NAME + "," + xCPR.PERCENT + "," +
+                    xCPR.PO_ORDER + "," + xCPR.REQUISITION_HEADER_ID + "," + xCPR.REQUISITION_LINE_ID + "," +
+                    xCPR.REQUISITION_NUMBER + "," + xCPR.REQ_BU_ID + "," + xCPR.SECONDARY_QUANTITY + "," +
+                    xCPR.SECONDARY_UOM_CODE + "," + xCPR.SOURCE_TYPE_CODE + "," + xCPR.UNIT_PRICE + "," +
                     xCPR.UOM_CODE + "," + xCPR.VENDOR_ID + "," + xCPR.VENDOR_SITE_ID +
 
                     ") " +
@@ -152,21 +167,21 @@ namespace XCustPr
                     p.ATTRIBUTE1_L + "','" + p.ATTRIBUTE2 + "','" + p.ATTRIBUTE2_L + "','" +
                     p.ATTRIBUTE3 + "','" + p.ATTRIBUTE3_L + "','" + p.ATTRIBUTE4 + "','" +
                     p.ATTRIBUTE5 + "','" + p.ATTRIBUTE6 + "','" + p.ATTRIBUTE7 + "','" +
-                    p.ATTRIBUTE8 + "','" + p.ATTRIBUTE9 + "','" + p.ATTRIBUTE10 + "','" +
-                    p.ATTRIBUTE11 + "','" + p.ATTRIBUTE12 + "','" + p.ATTRIBUTE13 + "'" +
-                    p.ATTRIBUTE14 + "','" + p.ATTRIBUTE15 + "','" + p.ATTRIBUTE16 + "'" +
-                    p.ATTRIBUTE17 + "','" + p.ATTRIBUTE18 + "','" + p.ATTRIBUTE19 + "'" +
-                    p.ATTRIBUTE20 + "','" + p.ATTRIBUTE_CATEGORY + "','" + p.ATTRIBUTE_CATEGORY_L + "'" +
-                    p.BUDGET_DATE + "','" + p.CHARGE_ACCOUNT + "','" + p.CONVERSION_DATE + "'" +
-                    p.CREATED_BY + "','" + p.CREATION_DATE + "','" + p.CURRENCY_AMOUNT + "'" +
-                    p.DESCRIPTION + "','" + p.DESTINATION_ORGANIZATION_ID + "','" + p.DESTINATION_TYPE_CODE + "'" +
-                    p.DISTRIBUTION + "','" + p.DISTRIBUTION_CURRENCY_AMOUNT + "','" + p.DOCUMENT_STATUS + "'" +
-                    p.FUNDS_STATUS + "','" + p.ITEM_DESCRIPTION + "','" + p.ITEM_ID + "'" +
-                    p.LAST_UPDATE_DATE + "','" + p.LINE_NUMBER + "','" + p.LINE_TYPE + "'" +
-                    p.LOCATION + "','" + p.NAME + "','" + p.PERCENT + "'" +
-                    p.PO_ORDER + "','" + p.REQUISITION_HEADER_ID + "','" + p.REQUISITION_LINE_ID + "'" +
-                    p.REQUISITION_NUMBER + "','" + p.REQ_BU_ID + "','" + p.SECONDARY_QUANTITY + "'" +
-                    p.SECONDARY_UOM_CODE + "','" + p.SOURCE_TYPE_CODE + "','" + p.UNIT_PRICE + "'" +
+                    p.ATTRIBUTE8 + "','" + p.ATTRIBUTE9 + "','" + 
+                    p.ATTRIBUTE11 + "','" + p.ATTRIBUTE12 + "','" + p.ATTRIBUTE13 + "','" +
+                    p.ATTRIBUTE14 + "','" + p.ATTRIBUTE15 + "','" + p.ATTRIBUTE16 + "','" +
+                    p.ATTRIBUTE17 + "','" + p.ATTRIBUTE18 + "','" + p.ATTRIBUTE19 + "','" +
+                    p.ATTRIBUTE20 + "','" + p.ATTRIBUTE_CATEGORY + "','" + p.ATTRIBUTE_CATEGORY_L + "','" +
+                    p.BUDGET_DATE + "','" + p.CHARGE_ACCOUNT + "','" + p.CONVERSION_DATE + "','" +
+                    p.CREATED_BY + "','" + p.CREATION_DATE + "'," + p.CURRENCY_AMOUNT + ",'" +
+                    p.DESCRIPTION + "','" + p.DESTINATION_ORGANIZATION_ID + "','" + p.DESTINATION_TYPE_CODE + "','" +
+                    p.DISTRIBUTION + "','" + p.DISTRIBUTION_CURRENCY_AMOUNT + "','" + p.DOCUMENT_STATUS + "','" +
+                    p.FUNDS_STATUS + "','" + p.ITEM_DESCRIPTION + "','" + p.ITEM_ID + "','" +
+                    p.LAST_UPDATE_DATE + "','" + p.LINE_NUMBER + "','" + p.LINE_TYPE + "','" +
+                    p.LOCATION + "','" + p.NAME + "','" + p.PERCENT + "','" +
+                    p.PO_ORDER + "','" + p.REQUISITION_HEADER_ID + "','" + p.REQUISITION_LINE_ID + "','" +
+                    p.REQUISITION_NUMBER + "','" + p.REQ_BU_ID + "'," + p.SECONDARY_QUANTITY + ",'" +
+                    p.SECONDARY_UOM_CODE + "','" + p.SOURCE_TYPE_CODE + "','" + p.UNIT_PRICE + "','" +
                     p.UOM_CODE + "','" + p.VENDOR_ID + "','" + p.VENDOR_SITE_ID + "'" +                    
 
                     ") ";

@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace XCustPr
 {
-    public class XcustPRWebService:Form
+    public class XcustPOWebService:Form
     {
         int gapLine = 5;
         int grd0 = 0, grd1 = 100, grd2 = 240, grd3 = 320, grd4 = 570, grd5 = 700, grd51 = 700, grd6 = 820, grd7 = 900, grd8 = 1070, grd9 = 1200;
@@ -28,7 +28,7 @@ namespace XCustPr
         ControlPRPOWebService cPrWS;
         private ListViewColumnSorter lvwColumnSorter;
 
-        public XcustPRWebService(ControlMain cm)
+        public XcustPOWebService(ControlMain cm)
         {
             this.Size = new Size(formwidth, formheight);
             this.StartPosition = FormStartPosition.CenterScreen;
@@ -56,12 +56,11 @@ namespace XCustPr
             lv1.Columns.Add("   process   ", 100, HorizontalAlignment.Center);
             lv1.ListViewItemSorter = lvwColumnSorter;
 
-            lb2.Text = lb2.Text + " " + Cm.xcustpowebservice_run;
-            if (Cm.xcustprwebservice_run.ToLower().Equals("on"))
+            lb2.Text = lb2.Text + " " + Cm.xcustprwebservice_run;
+            if (Cm.xcustpowebservice_run.ToLower().Equals("on"))
             {
-                cPrWS.setXcustPRTbl(lv1, this, pB1);
+                cPrWS.setXcustPOTbl(lv1, this, pB1);
             }
-            //int i = 1;
         }
         private void disableBtn()
         {
@@ -90,7 +89,7 @@ namespace XCustPr
 
             lb2 = new MaterialLabel();
             lb2.Font = cPrWS.fV1;
-            lb2.Text = "Program Name XcustPR Web";
+            lb2.Text = "Program Name XcustPO Web";
             lb2.AutoSize = true;
             Controls.Add(lb2);
             lb2.Location = new System.Drawing.Point(grd3, cPrWS.formFirstLineY + gapLine);
@@ -135,7 +134,7 @@ namespace XCustPr
         }
         private void btnRead_Click(object sender, EventArgs e)
         {
-            cPrWS.setXcustPRTbl(lv1, this, pB1);
+            cPrWS.setXcustPOTbl(lv1, this, pB1);
         }
         private void txtFileName_Leave(object sender, EventArgs e)
         {

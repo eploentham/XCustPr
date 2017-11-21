@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,6 +27,7 @@ namespace XCustPr
 
         ControlMain Cm;
         ControlPO002 cPo002;
+        
 
         private ListViewColumnSorter lvwColumnSorter;
         String[] filePO;
@@ -44,6 +46,7 @@ namespace XCustPr
         private void initConfig()
         {
             cPo002 = new ControlPO002(Cm);
+            
             initCompoment();
             pB1.Visible = false;
             lvwColumnSorter = new ListViewColumnSorter();
@@ -86,7 +89,7 @@ namespace XCustPr
 
             lb2 = new MaterialLabel();
             lb2.Font = cPo002.fV1;
-            lb2.Text = "Program Name XcustPO003";
+            lb2.Text = "Program Name XcustPO002";
             lb2.AutoSize = true;
             Controls.Add(lb2);
             lb2.Location = new System.Drawing.Point(grd3, cPo002.formFirstLineY + gapLine);
@@ -161,11 +164,20 @@ namespace XCustPr
         }
         private void btnRead_Click(object sender, EventArgs e)
         {
+            //String cParams = "xcustprwebservice_run=on";
+            //string filename = Path.Combine("XCustPrWS.exe");
+            //Cm.runCommand(filename, cParams);
 
+            //cParams = "xcustpowebservice_run=on";
+            //filename = Path.Combine("XCustPoWS.exe");
+            //Cm.runCommand(filename, cParams);
+            
+            cPo002.processWebService(lv1, this, pB1);
+            cPo002.processMapping(lv1, this, pB1);
         }
         private void btnPrepare_Click(object sender, EventArgs e)
         {
-
+            cPo002.processGenTextLinfox(lv1, this, pB1);
         }
         private void btnWebService_Click(object sender, EventArgs e)
         {
