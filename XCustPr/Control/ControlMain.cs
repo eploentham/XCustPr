@@ -287,6 +287,9 @@ namespace XCustPr
             initC.AutoRunPO004 = iniFile.Read("AutoRunPO004");
             initC.AutoRunPO005 = iniFile.Read("AutoRunPO005");
             initC.AutoRunPO003 = iniFile.Read("AutoRunPO003");
+            initC.AutoRunPO008 = iniFile.Read("AutoRunPO008");
+            initC.AutoValueSet = iniFile.Read("AutoValueSet");
+            initC.AutoRunPO002 = iniFile.Read("AutoRunPO002");
 
             initC.PathMaster = iniFile.Read("PathMaster");
 

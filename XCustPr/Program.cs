@@ -46,14 +46,21 @@ namespace XCustPr
             {
                 Application.Run(new XcustValueSet(Cm));
             }
+            else if (System.Diagnostics.Process.GetCurrentProcess().ProcessName.ToLower().Equals("xcustpo002"))
+            {
+                Application.Run(new XCustPO002(Cm));
+            }
             else
             {
                 //Application.Run(new XCustPO008(Cm));
-                Application.Run(new XCustPO004(Cm));
+                //Application.Run(new XCustPO004(Cm));
                 //Application.Run(new XCustPO005(Cm));
                 //Application.Run(new XCustPO003(Cm));
                 //Application.Run(new XCustPrToCloud(Cm));
                 //Application.Run(new XCustExtractZip(Cm));
+                //Application.Run(new XcustValueSet(Cm));
+                //Application.Run(new XCustPO002(Cm));
+                Application.Run(new XcustPRWebService(Cm));
             }
         }
     }

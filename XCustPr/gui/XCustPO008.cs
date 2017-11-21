@@ -52,7 +52,7 @@ namespace XCustPr
             lvwColumnSorter.SortColumn = 0;
             lv1.Sort();
             //txtFileName.Text = cRDPO.initC.PathInitial + "PR03102017.txt";
-            txtFileName.Text = Cm.initC.PO008PathInitial;
+            txtFileName.Text = Cm.initC.AutoRunPO008;
 
             lv1.Columns.Add("NO", 50);
             lv1.Columns.Add("List File", formwidth - 50 - 40 - 100, HorizontalAlignment.Left);
@@ -207,7 +207,7 @@ namespace XCustPr
         }
         private void btnPrepare_Click(object sender, EventArgs e)
         {
-
+            cPo008.processGenCSV(lv1, this, pB1);
         }
         private void btnWebService_Click(object sender, EventArgs e)
         {

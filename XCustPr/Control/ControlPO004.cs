@@ -249,7 +249,7 @@ namespace XCustPr
                     {
                         vPP = new ValidatePrPo();
                         vPP.Filename = rowG[xCMPoRITDB.xCMPoRIT.file_name].ToString().Trim();
-                        vPP.Message = "Error PO001-010 ";
+                        vPP.Message = "Error PO004-010 ";
                         vPP.Validate = "row " + row1 + " store_code =" + row[xCMPoRITDB.xCMPoRIT.store_code].ToString().Trim() + " ORGANIZATION_code " + Cm.initC.ORGANIZATION_code.Trim();
                         lVPr.Add(vPP);
                         cntErr++;
@@ -273,7 +273,7 @@ namespace XCustPr
                                 {
                                     vPP = new ValidatePrPo();
                                     vPP.Filename = rowG[xCMPoRITDB.xCMPoRIT.file_name].ToString().Trim();
-                                    vPP.Message = "Error PO001-010 ";
+                                    vPP.Message = "Error PO004-010 ";
                                     vPP.Validate = "row " + row1 + " store_code =" + row[xCMPoRITDB.xCMPoRIT.store_code].ToString().Trim() + " quantity " + rowR["quantity"].ToString();
                                     lVPr.Add(vPP);
                                     cntErr++;
@@ -336,7 +336,7 @@ namespace XCustPr
                 lVfile.Add(vF);   // gen log
             }
             pB1.Visible = false;
-            Cm.logProcess("xcustpo003", lVPr, dateStart, lVfile);   // gen log
+            Cm.logProcess("xcustpo004", lVPr, dateStart, lVfile);   // gen log
         }
         public void processInsertTable(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
         {
@@ -488,7 +488,17 @@ namespace XCustPr
 
             listXcustITLIT.Add(item);
         }
-        
+        public void processGenCSV(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
+        {
+            addListView("processGenCSVxCPRHIA ", "CVS", lv1, form1);
+            //processGenCSVxCRHIA(lv1, form1, pB1, "PO004");
+            addListView("processGenCSVxCPRLIA ", "CVS", lv1, form1);
+            //processGenCSVxCRTIA(lv1, form1, pB1, "PO004");
+            addListView("processGenCSVxCPRDIA ", "CVS", lv1, form1);
+            //processGenCSVxITLIT(lv1, form1, pB1, "PO004");
+            addListView("processGenZIP ", "CVS", lv1, form1);
+            //processGenZIP(lv1, form1, pB1, "PO004");
+        }
         private String validateSubInventoryCode(String ordId, String StoreCode)
         {
             String chk = "";

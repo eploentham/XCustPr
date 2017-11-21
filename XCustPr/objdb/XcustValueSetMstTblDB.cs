@@ -195,5 +195,35 @@ namespace XCustPr
             chk = conn.ExecuteNonQuery(sql.ToString(), host);
             return chk;
         }
+        public String insertFromxCVSMT(XcustValueSetMstTbl item, String host)
+        {
+            String chk = "";
+
+            int VALUE_SET_ID = 0, VALUE_SET_CODE = 1, VALUE_ID = 2, VALUE = 3, DESCRIPTION = 4, ENABLED_FLAG = 5, LAST_UPDATE_DATE = 6, CREATION_DATE = 7;
+
+
+            String sql = "";
+            //String[] data1 = item.Split(',');
+
+            DataTable dt = selectByPk(item.VALUE_SET_ID, item.VALUE_ID);
+            if (dt.Rows.Count > 0)
+            {
+                sql = "Update " + xCVSMT.table + " Set " + xCVSMT.DESCRIPTION + "='" + item.DESCRIPTION + "', " + xCVSMT.ENABLED_FLAG + "='" + item.ENABLED_FLAG + "' " +
+                    "Where " + xCVSMT.VALUE_SET_ID + " = " + item.VALUE_SET_ID + " and " + xCVSMT.VALUE_ID + " = " + item.VALUE_ID + "";
+            }
+            else
+            {
+
+                sql = "Insert into " + xCVSMT.table + "(" + xCVSMT.CREATION_DATE + "," + xCVSMT.DESCRIPTION + "," + xCVSMT.ENABLED_FLAG + "," +
+                    xCVSMT.LAST_UPDATE_DATE + "," + xCVSMT.VALUE + "," + xCVSMT.VALUE_ID + "," +
+                    xCVSMT.VALUE_SET_CODE + "," + xCVSMT.VALUE_SET_ID + ") " +
+                    "Values ('" + item.CREATION_DATE + "','" + item.DESCRIPTION + "','" + item.ENABLED_FLAG
+                    + "','" + item.LAST_UPDATE_DATE + "','" + item.VALUE + "'," + item.VALUE_ID
+                    + ",'" + item.VALUE_SET_CODE + "'," + item.VALUE_SET_ID + ")";
+            }
+
+            chk = conn.ExecuteNonQuery(sql.ToString(), host);
+            return chk;
+        }
     }
 }

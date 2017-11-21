@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,7 +9,7 @@ namespace XCustPr
 {
     public class XcustPoDistIntTblDB
     {
-        XcustPoDistIntTbl xCPDIT;
+        public XcustPoDistIntTbl xCPDIT;
         ConnectDB conn;
 
         public XcustPoDistIntTblDB(ConnectDB c)
@@ -42,6 +43,13 @@ namespace XCustPr
             
 
             xCPDIT.table = "XCUST_PO_DIST_INT_TBL";
+        }
+        public DataTable selectAll()
+        {
+            DataTable dt = new DataTable();
+            String sql = "select * From " + xCPDIT.table;
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
         }
         public String insert(XcustPoDistIntTbl p)
         {

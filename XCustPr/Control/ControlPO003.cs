@@ -76,6 +76,7 @@ namespace XCustPr
             //xCPRHIADB = new XcustPorReqHeaderIntAllDB(conn);
             xCPRLIADB = new XcustPorReqLineIntAllDB(conn, Cm.initC);
             xCPRDIADB = new XcustPorReqDistIntAllDB(conn);
+
             xCBMTDB = new XcustBuMstTblDB(conn, Cm.initC);
             xCDLMTDB = new XcustDeriverLocatorMstTblDB(conn, Cm.initC);
             xCDOMTDB = new XcustDeriverOrganizationMstTblDB(conn, Cm.initC);

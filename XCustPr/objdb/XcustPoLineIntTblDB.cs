@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,7 +9,7 @@ namespace XCustPr
 {
     public class XcustPoLineIntTblDB
     {
-        XcustPoLineIntTbl xCPLIT;
+        public XcustPoLineIntTbl xCPLIT;
         ConnectDB conn;
 
         public XcustPoLineIntTblDB(ConnectDB c)
@@ -35,6 +36,13 @@ namespace XCustPr
             xCPLIT.unit_price = "unit_price";
 
             xCPLIT.table = "XCUST_PO_LINE_INT_TBL";
+        }
+        public DataTable selectAll()
+        {
+            DataTable dt = new DataTable();
+            String sql = "select * From " + xCPLIT.table;
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
         }
         public String insert(XcustPoLineIntTbl p)
         {

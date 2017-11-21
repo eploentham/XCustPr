@@ -32,7 +32,10 @@ namespace XCustPr
         public String AutoRunPO004 = "";
         public String AutoRunPO005 = "";
         public String AutoRunPO003 = "";
+        public String AutoRunPO008 = "";
         public String AutoRunExtractZip = "";
+        public String AutoValueSet = "";
+        public String AutoRunPO002 = "";
 
         public String PathMaster = "";
 
@@ -62,5 +65,7 @@ namespace XCustPr
         public String PO008PathInitial = "", PO008PathProcess = "", PO008PathError = "", PO008PathArchive = "", PO008ImportSource = "", PO008ZipFileSearch = "", PO008LEGAL_ENTITY="", PO008BUYER="";
         public String PO004FileType = "";
         public String ExtractZipPathZipExtractRead = "", ExtractZipPathZipExtract="";
+
+        
     }
 }

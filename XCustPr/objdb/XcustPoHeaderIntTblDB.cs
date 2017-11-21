@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,7 +9,7 @@ namespace XCustPr
 {
     public class XcustPoHeaderIntTblDB
     {
-        XcustPoHeaderIntTbl xCPHIT;
+        public XcustPoHeaderIntTbl xCPHIT;
         ConnectDB conn;
 
         public XcustPoHeaderIntTblDB(ConnectDB c)
@@ -28,7 +29,7 @@ namespace XCustPr
             xCPHIT.creation_date = "creation_date";
             xCPHIT.currency_code = "currency_code";
             xCPHIT.document_num = "document_num";
-            xCPHIT.document_typre_code = "document_typre_code";
+            xCPHIT.document_typre_code = "document_type_code";
             xCPHIT.error_message = "error_message";
             xCPHIT.import_source = "import_source";
             xCPHIT.interface_header_key = "interface_header_key";
@@ -49,6 +50,13 @@ namespace XCustPr
 
             xCPHIT.table = "XCUST_PO_HEADER_INT_TBL";
 
+        }
+        public DataTable selectAll()
+        {
+            DataTable dt = new DataTable();
+            String sql = "select * From " + xCPHIT.table;
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
         }
         public String insert(XcustPoHeaderIntTbl p)
         {
@@ -79,7 +87,7 @@ namespace XCustPr
                     p.interface_header_key + "','" + last_update_by + "',null,'" +
                     p.originator_rule + "','" + p.payment_term + "','" + p.prc_bu_name + "','" +
                     p.process_flag + "','" + p.req_bu_name + "','" + p.ship_to_location + "','" +
-                    p.soldto_re_name + "','" + p.supplier_code + "','" + p.supplier_site_code + "'" +
+                    p.soldto_re_name + "','" + p.supplier_code + "','" + p.supplier_site_code + "','" +
                     p.vendor_contact + "','" + p.billto_bu_name + "','" + p.DOCUMENT_ID + "'" +
                     ") ";
                 chk = conn.ExecuteNonQueryAutoIncrement(sql, "kfc_po");

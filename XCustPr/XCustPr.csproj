@@ -47,6 +47,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="HtmlAgilityPack, Version=1.6.5.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlAgilityPack.1.6.5\lib\Net45\HtmlAgilityPack.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.IO.Compression" />
@@ -69,10 +72,12 @@
     <Compile Include="Control\ControlExtractZip.cs" />
     <Compile Include="Control\ControlMain.cs" />
     <Compile Include="Control\ControlMasterDB.cs" />
+    <Compile Include="Control\ControlPO002.cs" />
     <Compile Include="Control\ControlPO003.cs" />
     <Compile Include="Control\ControlPO004.cs" />
     <Compile Include="Control\ControlPO005.cs" />
     <Compile Include="Control\ControlPO008.cs" />
+    <Compile Include="Control\ControlPRWebService.cs" />
     <Compile Include="Control\ControlRDPO.cs" />
     <Compile Include="Control\ControlValueSet.cs" />
     <Compile Include="Control\DrawHelper.cs" />
@@ -117,6 +122,7 @@
     <Compile Include="Control\MaterialTabSelector.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Control\ReadHtml.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -124,6 +130,9 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="gui\XCustExtractZip.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="gui\XCustPO002.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="gui\XCustPO003.cs">
@@ -141,7 +150,10 @@
     <Compile Include="gui\XCustPrToCloud.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="gui\XcustValueSet.cs">
+    <Compile Include="gui\XcustPRWebService.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="gui\XCustValueSet.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="objdb\ConnectDB.cs" />
@@ -169,6 +181,9 @@
     <Compile Include="objdb\XcustPorReqDistIntAllDB.cs" />
     <Compile Include="objdb\XcustPorReqHeaderIntAllDB.cs" />
     <Compile Include="objdb\XcustPorReqLineIntAllDB.cs" />
+    <Compile Include="objdb\XcustPoTblDB.cs" />
+    <Compile Include="object1\XcustPoTbl.cs" />
+    <Compile Include="objdb\XcustPrTblDB.cs" />
     <Compile Include="objdb\XcustRcvHeadersIntAllDB.cs" />
     <Compile Include="objdb\XcustRcvTransactionsIntAllDB.cs" />
     <Compile Include="objdb\XcustSubinventoryMstTblDB.cs" />
@@ -209,6 +224,7 @@
     <Compile Include="object1\XcustPorReqDistIntAll.cs" />
     <Compile Include="object1\XcustPorReqHeaderIntAll.cs" />
     <Compile Include="object1\XcustPorReqLineIntAll.cs" />
+    <Compile Include="object1\XcustPrTbl.cs" />
     <Compile Include="object1\XcustRcvHeadersIntAll.cs" />
     <Compile Include="object1\XcustRcvTransactionsIntAll.cs" />
     <Compile Include="object1\XcustSubinventoryMstTbl.cs" />
@@ -222,6 +238,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resource1.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
