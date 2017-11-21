@@ -1149,17 +1149,18 @@ namespace XCustPr
             {
                 if(insertXcustPorReqHeaderIntAll(xcprhia, date, time).Equals("1"))
                 {
-                    foreach(XcustPorReqLineIntAll xcprlia in listXcustPRLIA)
-                    {
-                        //XcustPorReqLineIntAll xcprlia = xCPRLIADB.setData(row, xCLFPTDB.xCLFPT);
-                        String chk = xCPRLIADB.insert(xcprlia);
-                    }
-                    foreach (XcustPorReqDistIntAll xcprdia in listXcustPRDIA)
-                    {
-                        //XcustPorReqLineIntAll xcprlia = xCPRLIADB.setData(row, xCLFPTDB.xCLFPT);
-                        String chk = xCPRDIADB.insert(xcprdia);
-                    }
+                    
                 }
+            }
+            foreach (XcustPorReqLineIntAll xcprlia in listXcustPRLIA)
+            {
+                //XcustPorReqLineIntAll xcprlia = xCPRLIADB.setData(row, xCLFPTDB.xCLFPT);
+                String chk = xCPRLIADB.insert(xcprlia);
+            }
+            foreach (XcustPorReqDistIntAll xcprdia in listXcustPRDIA)
+            {
+                //XcustPorReqLineIntAll xcprlia = xCPRLIADB.setData(row, xCLFPTDB.xCLFPT);
+                String chk = xCPRDIADB.insert(xcprdia);
             }
         }
         /*
@@ -1711,7 +1712,6 @@ namespace XCustPr
                     }
                 }
             }
-            
         }
         
     }

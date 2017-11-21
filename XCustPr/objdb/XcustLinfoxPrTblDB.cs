@@ -203,12 +203,12 @@ namespace XCustPr
         }
         public String updateValidateFlag(String po_number, String line_number, String flag, String agreement_number, String host)
         {
-            String sql = "";
+            String sql = "", chk="";
             sql = "Update "+xCLFPT.table +" Set "+xCLFPT.VALIDATE_FLAG+"='"+flag+"', "+xCLFPT.AGREEEMENT_NUMBER+" ='"+ agreement_number+"' "+
                 "Where " +xCLFPT.PO_NUMBER+" = '"+po_number+"' and "+xCLFPT.LINE_NUMBER+"='"+line_number+"'";
-            conn.ExecuteNonQuery(sql.ToString(), host);
+            chk = conn.ExecuteNonQuery(sql.ToString(), host);
 
-            return "";
+            return chk;
         }
         
         public DataTable selectValidateFlagYGroupByPoNumber()

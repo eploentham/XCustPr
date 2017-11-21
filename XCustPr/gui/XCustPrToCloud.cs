@@ -251,7 +251,7 @@ namespace XCustPr
             //cRDPO.validateOrderDateMinCurrDate("");
 
             //EndpointAddress endpointAddress = new EndpointAddress(new Uri("https://host:port/icCnSetupCreditRulesPublicService/CreditRuleService"));
-            cRDPO.ImportMasterXCUST_VALUE_SET_MST_TBL();
+            //cRDPO.ImportMasterXCUST_VALUE_SET_MST_TBL();
             
         }
         private void btnFTP_Click(object sender, EventArgs e)
