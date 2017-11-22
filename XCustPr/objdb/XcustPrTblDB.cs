@@ -99,6 +99,13 @@ namespace XCustPr
             }
             return chk;
         }
+        public DataTable selectPO007FixLen()
+        {
+            DataTable dt = new DataTable();
+            String sql = "Select * From XCUST_FIX_LENGTH_TBL Where CUSTOMIZATION_NAME = 'PO007' Order By X_SEQ ";
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
+        }
         public DataTable selectPRPO(String linfox_po_number, String linfox_po_line_number)
         {
             DataTable dt = new DataTable();
@@ -110,6 +117,37 @@ namespace XCustPr
                 "and PR.ATTRIBUTE2_L = '"+ linfox_po_line_number + "' ";
             dt = conn.selectData(sql, "kfc_po");
             return dt;
+        }
+        public DataTable selectPRPO007()
+        {
+            DataTable dt = new DataTable();
+            String sql = "SELECT po.CREATION_DATE, po.PO_LINE_ID,po.SEGMENT1 as po_number,po.LINE_NUM, po.QUANTITY, po.VENDOR_ID, po.PRC_BU_ID, po.ITEM_ID" +
+                ", po.ITEM_DESCRIPTION, po.QUANTITY_RECEIPT, po.QUANTITY, po.UOM_CODE, po.UNIT_PRICE, po.LINE_TYPE_ID, po.PAYMENT_TERM, po.CURRENCY_CODE, po.REVISION_NUM" +
+                ",po.SEGMENT1, po.ACC_SEGMENT1, po.ACC_SEGMENT2,po.TAX_CODE " +
+                "From xcust_pr_tbl PR " +
+                "inner Join xcust_po_tbl po On  po.REQUISITION_HEADER_ID = PR.REQUISITION_HEADER_ID and po.REQUISITION_LINE_ID = PR.REQUISITION_LINE_ID  " +
+                "Where  " + "" +
+                " PR.ATTRIBUTE1 <> 'MMX'  ";
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
+        }
+        public String selectItemCode(String item_id, String prc_bu_id)
+        {
+            String chk = "";
+            DataTable dt = new DataTable();
+            String sql = "select msi.ITEM_CODE "+
+                            "from xcust_item_mst_tbl msi " +
+                            ",xcust_organization_mst_tbl org " +
+                            ", XCUST_BU_MST_TBL bu " +
+                            " where " +
+                            "/*msi.INVENTORY_ITEM_ID   = 300000001619857 "+
+                            "and*/ msi.ORGAINZATION_ID = org.ORGANIZATION_ID "+
+                            "and bu.PRIMARY_LEDGER_ID = org.SET_OF_BOOKS_ID " +
+                            "and msi.INVENTORY_ITEM_ID = '"+ item_id + "' " +
+                            "and bu.BU_ID = '"+ prc_bu_id + "'  ";
+            dt = conn.selectData(sql, "kfc_po");
+            chk = dt.Rows.Count > 0 ? dt.Rows[0]["ITEM_CODE"].ToString() : "";
+            return chk;
         }
         public void deletexCPR(String requisition_header_id, String requisition_line_id)
         {

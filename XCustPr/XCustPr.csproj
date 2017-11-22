@@ -76,6 +76,7 @@
     <Compile Include="Control\ControlPO003.cs" />
     <Compile Include="Control\ControlPO004.cs" />
     <Compile Include="Control\ControlPO005.cs" />
+    <Compile Include="Control\ControlPO006.cs" />
     <Compile Include="Control\ControlPO007.cs" />
     <Compile Include="Control\ControlPO008.cs" />
     <Compile Include="Control\ControlPRPOWebService.cs" />
@@ -143,6 +144,12 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="gui\XCustPO005.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="gui\XCustPO006.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="gui\XCustPO007.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="gui\XCustPO008.cs">

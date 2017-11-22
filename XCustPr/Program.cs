@@ -54,6 +54,10 @@ namespace XCustPr
             {
                 Application.Run(new XCustPO002(Cm));
             }
+            else if (System.Diagnostics.Process.GetCurrentProcess().ProcessName.ToLower().Equals("xcustpo006"))
+            {
+                Application.Run(new XCustPO002(Cm));
+            }
             else if (System.Diagnostics.Process.GetCurrentProcess().ProcessName.ToLower().Equals("xcustpows"))
             {
                 Application.Run(new XcustPOWebService(Cm));
@@ -71,9 +75,11 @@ namespace XCustPr
                 //Application.Run(new XCustPrToCloud(Cm));
                 //Application.Run(new XCustExtractZip(Cm));
                 //Application.Run(new XcustValueSet(Cm));
-                Application.Run(new XCustPO002(Cm));
+                //Application.Run(new XCustPO002(Cm));
                 //Application.Run(new XcustPRWebService(Cm));
                 //Application.Run(new XcustPOWebService(Cm));
+                //Application.Run(new XCustPO007(Cm));
+                Application.Run(new XCustPO006(Cm));
             }
         }
     }

@@ -485,7 +485,15 @@ namespace XCustPr
                 item.PRODUCT_TYPE = data2[57].Trim();
                 item.ASSESSABLE_VALUE = data2[58].Trim();
                 item.DELIVER_TO_LOC_LINFOX = data2[59].Trim();
-                
+
+                item.TAX_AMOUNT = "";
+                item.TAX_CODE = "";
+                item.ACC_SEGMENT1 = "";
+                item.ACC_SEGMENT2 = "";
+                item.ACC_SEGMENT3 = "";
+                item.ACC_SEGMENT4 = "";
+                item.ACC_SEGMENT5 = "";
+                item.ACC_SEGMENT6 = "";
 
                 //int VALUE_SET_ID = 0, VALUE_SET_CODE = 1, VALUE_ID = 2, VALUE = 3, DESCRIPTION = 4, ENABLED_FLAG = 5, LAST_UPDATE_DATE = 6, CREATION_DATE = 7;
 

@@ -196,7 +196,15 @@ namespace XCustPr
             createFolder(initC.PO008PathInitial);
             createFolder(initC.PO008PathProcess);
         }
-
+        public void createFolderPO007()
+        {
+            if (initC.PO007PathInitial.Equals(""))
+            {
+                MessageBox.Show("Path PO007PathInitial empty", "createFolderPO007");
+                return;
+            }
+            createFolder(initC.PO007PathInitial);
+        }
         public void createFolderPO001PathProcess()
         {
             bool folderExists = Directory.Exists(initC.PathProcess);
@@ -346,6 +354,8 @@ namespace XCustPr
             initC.PO008ZipFileSearch = iniFile.Read("PO008ZipFileSearch").Trim();
             initC.PO008LEGAL_ENTITY = iniFile.Read("PO008LEGAL_ENTITY").Trim();
             initC.PO008BUYER = iniFile.Read("PO008BUYER").Trim();
+
+            initC.PO007PathInitial = iniFile.Read("PO007PathInitial").Trim();
 
             initC.ExtractZipPathZipExtractRead = iniFile.Read("ExtractZipPathZipExtractRead").Trim();
             initC.ExtractZipPathZipExtract = iniFile.Read("ExtractZipPathZipExtract").Trim();
@@ -801,6 +811,23 @@ namespace XCustPr
             string err = process.StandardError.ReadToEnd();
             Console.WriteLine(err);
             process.WaitForExit();
+        }
+        public String dateDBtoShow(String date)
+        {
+            String chk = "", year = "", month = "", day = "";
+            if (date.Length >= 10)
+            {
+                day = date.Substring(8, 2);
+                month = date.Substring(5, 2);
+                year = date.Substring(0, 4);
+
+                chk = day + "/" + month + "/" + year;
+            }
+            else
+            {
+                chk = date;
+            }
+            return chk;
         }
     }
 }

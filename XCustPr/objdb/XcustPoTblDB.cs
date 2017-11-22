@@ -77,6 +77,15 @@ namespace XCustPr
             xCPO.VENDOR_ID = "VENDOR_ID";
             xCPO.VENDOR_SITE = "VENDOR_SITE";
 
+            xCPO.TAX_AMOUNT = "TAX_AMOUNT";
+            xCPO.TAX_CODE = "TAX_CODE";
+            xCPO.ACC_SEGMENT1 = "ACC_SEGMENT1";
+            xCPO.ACC_SEGMENT2 = "ACC_SEGMENT2";
+            xCPO.ACC_SEGMENT3 = "ACC_SEGMENT3";
+            xCPO.ACC_SEGMENT4 = "ACC_SEGMENT4";
+            xCPO.ACC_SEGMENT5 = "ACC_SEGMENT5";
+            xCPO.ACC_SEGMENT6 = "ACC_SEGMENT6";
+
             xCPO.table = "xcust_PO_TBL";
 
         }
@@ -120,6 +129,7 @@ namespace XCustPr
                 //p.RowNumber = selectMaxRowNumber(p.YearId);
                 //p.Active = "1";
                 String last_update_by = "0", creation_by = "0";
+                p.TAX_AMOUNT = p.TAX_AMOUNT.Equals("") ? "0" : p.TAX_AMOUNT;
                 sql = "Insert Into " + xCPO.table + "(" + xCPO.AGENT_ID + "," + xCPO.APPROVED_DATE + "," + xCPO.APPROVED_FLAG + "," +
                     xCPO.ASSESSABLE_VALUE + "," + xCPO.ATTRIBUTE1 + "," + xCPO.ATTRIBUTE2 + "," +
                     xCPO.ATTRIBUTE3 + "," + xCPO.ATTRIBUTE4 + "," + xCPO.ATTRIBUTE_CATEGORY + "," +
@@ -137,8 +147,11 @@ namespace XCustPr
                     xCPO.SEGMENT1 + "," + xCPO.SHIP_TO_LOCATION_ID + "," + xCPO.SOLDTO_LE + "," +
                     xCPO.SOLDTO_LE_ID + "," + xCPO.SUPPLIER_NOTIF_METHOD + "," + xCPO.SUPP_NAME + "," +
                     xCPO.TYPE_LOOKUP_CODE + "," + xCPO.UNIT_PRICE + "," + xCPO.UOM_CODE + "," +
-                    xCPO.VENDOR_CONTACT_ID + "," + xCPO.VENDOR_ID + "," + xCPO.VENDOR_SITE +
-                    
+                    xCPO.VENDOR_CONTACT_ID + "," + xCPO.VENDOR_ID + "," + xCPO.VENDOR_SITE + "," +
+                    xCPO.TAX_AMOUNT + "," + xCPO.TAX_CODE + "," + xCPO.ACC_SEGMENT1 + "," +
+                    xCPO.ACC_SEGMENT2 + "," + xCPO.ACC_SEGMENT3 + "," + xCPO.ACC_SEGMENT4 + "," +
+                    xCPO.ACC_SEGMENT5 + "," + xCPO.ACC_SEGMENT6 +
+
                     ") " +
                     "Values(" + p.AGENT_ID + ",'" + p.APPROVED_DATE + "','" + p.APPROVED_FLAG + "','" +
                     p.ASSESSABLE_VALUE + "','" + p.ATTRIBUTE1 + "','" + p.ATTRIBUTE2 + "','" +
@@ -157,8 +170,11 @@ namespace XCustPr
                     p.SEGMENT1 + "','" + p.SHIP_TO_LOCATION_ID + "','" + p.SOLDTO_LE + "','" +
                     p.SOLDTO_LE_ID + "','" + p.SUPPLIER_NOTIF_METHOD + "','" + p.SUPP_NAME + "','" +
                     p.TYPE_LOOKUP_CODE + "','" + p.UNIT_PRICE + "','" + p.UOM_CODE + "','" +
-                    p.VENDOR_CONTACT_ID + "','" + p.VENDOR_ID + "','" + p.VENDOR_SITE + "'" +
-                    
+                    p.VENDOR_CONTACT_ID + "','" + p.VENDOR_ID + "','" + p.VENDOR_SITE + "','" +
+                    p.TAX_AMOUNT + "','" + p.TAX_CODE + "','" + p.ACC_SEGMENT1 + "','" +
+                    p.ACC_SEGMENT2 + "','" + p.ACC_SEGMENT3 + "','" + p.ACC_SEGMENT4 + "','" +
+                    p.ACC_SEGMENT5 + "','" + p.ACC_SEGMENT6 + "'" +
+
                     ") ";
                 chk = conn.ExecuteNonQuery(sql, "kfc_po");
                 //chk = p.RowNumber;
