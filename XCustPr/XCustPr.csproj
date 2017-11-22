@@ -76,6 +76,7 @@
     <Compile Include="Control\ControlPO003.cs" />
     <Compile Include="Control\ControlPO004.cs" />
     <Compile Include="Control\ControlPO005.cs" />
+    <Compile Include="Control\ControlPO007.cs" />
     <Compile Include="Control\ControlPO008.cs" />
     <Compile Include="Control\ControlPRPOWebService.cs" />
     <Compile Include="Control\ControlRDPO.cs" />
