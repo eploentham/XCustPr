@@ -124,7 +124,7 @@ namespace XCustPr
         public DataTable selectPO002GenTextLinfoxGroupByERPPONumber()
         {
             DataTable dt = new DataTable();
-            String sql = "select "+ xCLFPT .ERP_PO_NUMBER+ 
+            String sql = "select "+ xCLFPT .ERP_PO_NUMBER+ //","+xCLFPT.PO_NUMBER+","+xCLFPT.LINE_NUMBER+
                 " From " + xCLFPT.table + 
                 //" Where " + xCLFPT.SEND_PO_FLAG + "='N' and " + xCLFPT.PROCESS_FLAG + "='Y' and " + xCLFPT.GEN_OUTBOUD_FLAG + "='N' and " + xCLFPT.ERP_PO_NUMBER + " is not null "+
                 //" Where " + xCLFPT.SEND_PO_FLAG + "='N' and " + xCLFPT.PROCESS_FLAG + "='Y' and " + xCLFPT.GEN_OUTBOUD_FLAG + "='N' and " + xCLFPT.ERP_PO_NUMBER + " ='' " +
@@ -151,7 +151,16 @@ namespace XCustPr
 
             return chk;
         }
-        
+        public String updateOutBoundFlag(String po_number, String line_number)
+        {
+            String sql = "", chk = "";
+            sql = "Update " + xCLFPT.table + " " +
+                "Set " + xCLFPT.GEN_OUTBOUD_FLAG + "='Y' " +                
+                "Where " + xCLFPT.PO_NUMBER + "='" + po_number + "' and " + xCLFPT.LINE_NUMBER + "='" + line_number + "'";
+            chk = conn.ExecuteNonQuery(sql, "kfc_po");
+
+            return chk;
+        }
         public void insertBluk(List<String> linfox, String filename, String host, MaterialProgressBar pB1)
         {
             int i = 0;

@@ -106,13 +106,14 @@ namespace XCustPr
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
-        public String updateOutBoundFlag(String po_number,String line_number)
+        public DataTable selectPO006FixLen()
         {
-            String sql = "", chk = "";
-            sql = "Select * From XCUST_FIX_LENGTH_TBL Where CUSTOMIZATION_NAME = 'PO007' Order By X_SEQ ";
-
-            return chk;
+            DataTable dt = new DataTable();
+            String sql = "Select * From XCUST_FIX_LENGTH_TBL Where CUSTOMIZATION_NAME = 'PO006' Order By X_SEQ ";
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
         }
+
         public DataTable selectPRPO(String linfox_po_number, String linfox_po_line_number)
         {
             DataTable dt = new DataTable();
@@ -126,6 +127,37 @@ namespace XCustPr
             return dt;
         }
         public DataTable selectPRPO007()
+        {
+            DataTable dt = new DataTable();
+            String sql = "SELECT po.CREATION_DATE, po.PO_LINE_ID,po.SEGMENT1 as po_number,po.LINE_NUM, po.QUANTITY, po.VENDOR_ID, po.PRC_BU_ID, po.ITEM_ID" +
+                ", po.ITEM_DESCRIPTION, po.QUANTITY_RECEIPT, po.QUANTITY, po.UOM_CODE, po.UNIT_PRICE, po.LINE_TYPE_ID, po.PAYMENT_TERM, po.CURRENCY_CODE, po.REVISION_NUM" +
+                ",po.SEGMENT1, po.ACC_SEGMENT1, po.ACC_SEGMENT2,po.TAX_CODE, po.PO_HEADER_ID " +
+                "From xcust_pr_tbl PR " +
+                "inner Join xcust_po_tbl po On  po.REQUISITION_HEADER_ID = PR.REQUISITION_HEADER_ID and po.REQUISITION_LINE_ID = PR.REQUISITION_LINE_ID  " +
+                "Where  " + "" +
+                " PR.ATTRIBUTE1 <> 'MMX'  ";
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
+        }
+        /*
+         * 1.5.1.1	เป็น  PO ที่เกิดจาก Direct supplier โดยดูจาก Attribute1 ของ PR ต้องไม่เป็นรายการที่เป็น "MMX"
+         * join XCUST_SUPPLIER_MST_TBL.VENDOR_ID
+         * where ATTRIBUTE1 = 'Y'
+         * 1.1.1.1	เป็น PO ที่อนุมัติแล้ว
+         * 
+         */
+        public DataTable selectPRPO006GroupByVendor()
+        {
+            DataTable dt = new DataTable();
+            String sql = "SELECT po.VENDOR_ID " +
+                "From xcust_pr_tbl PR " +
+                "inner Join xcust_po_tbl po On  po.REQUISITION_HEADER_ID = PR.REQUISITION_HEADER_ID and po.REQUISITION_LINE_ID = PR.REQUISITION_LINE_ID  " +
+                "Where  " + "" +
+                " PR.ATTRIBUTE1 <> 'MMX' group by po.VENDOR_ID ";
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
+        }
+        public DataTable selectPRPO006(String VENDOR_ID)
         {
             DataTable dt = new DataTable();
             String sql = "SELECT po.CREATION_DATE, po.PO_LINE_ID,po.SEGMENT1 as po_number,po.LINE_NUM, po.QUANTITY, po.VENDOR_ID, po.PRC_BU_ID, po.ITEM_ID" +

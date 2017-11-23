@@ -42,7 +42,7 @@ namespace XCustPr
         private List<XcustValueSetMstTbl> listXcVSMT;
         private List<XcustUomMstTbl> listXcUMT;
 
-        public XcustPrTblDB xCPTDB;
+        public XcustPrTblDB xCPrTDB;
 
         public ControlPO007(ControlMain cm)
         {
@@ -65,7 +65,7 @@ namespace XCustPr
             xCUMTDB = new XcustUomMstTblDB(conn, Cm.initC);
             xCVSMTDB = new XcustValueSetMstTblDB(conn, Cm.initC);
 
-            xCPTDB = new XcustPrTblDB(conn, Cm.initC);
+            xCPrTDB = new XcustPrTblDB(conn, Cm.initC);
 
             Cm.createFolderPO007();
             fontSize9 = 9.75f;        //standard
@@ -98,8 +98,8 @@ namespace XCustPr
             getListXcUMT();
 
             DataTable dt007 = new DataTable();
-            DataTable dtFixLen = xCPTDB.selectPO007FixLen();
-            dt007 = xCPTDB.selectPRPO007();
+            DataTable dtFixLen = xCPrTDB.selectPO007FixLen();
+            dt007 = xCPrTDB.selectPRPO007();
             if (dt007.Rows.Count>0)
             {
                 String date = System.DateTime.Now.ToString("yyyy-MM-dd");
@@ -110,7 +110,7 @@ namespace XCustPr
                 {
                     foreach (DataRow row in dt007.Rows)
                     {
-                        String itemcode = xCPTDB.selectItemCode(row["PRC_BU_ID"].ToString(), row["ITEM_ID"].ToString());
+                        String itemcode = xCPrTDB.selectItemCode(row["PRC_BU_ID"].ToString(), row["ITEM_ID"].ToString());
                         String desc1 = "", desc2 = "",taxExp="", taxCal="",receipt_num="",line_num="",lot_number="";
                         desc1 = row["ITEM_DESCRIPTION"].ToString();
                         if(desc1.Length > int.Parse(dtFixLen.Rows[7]["X_LENGTH"].ToString()))
@@ -119,7 +119,7 @@ namespace XCustPr
                         }
                         taxExp = !row["TAX_CODE"].ToString().Equals("") ? "V" : "E";
                         taxCal = !row["TAX_CODE"].ToString().Equals("") ? "Y" : "N";
-                        DataTable dtLot = xCPTDB.selectLot(row["PO_HEADER_ID"].ToString(), row["PO_LINE_ID"].ToString());
+                        DataTable dtLot = xCPrTDB.selectLot(row["PO_HEADER_ID"].ToString(), row["PO_LINE_ID"].ToString());
                         if (dtLot.Rows.Count > 0)
                         {
                             receipt_num = dtLot.Rows[0]["receipt_num"].ToString();

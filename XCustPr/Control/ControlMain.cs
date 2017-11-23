@@ -205,6 +205,30 @@ namespace XCustPr
             }
             createFolder(initC.PO007PathInitial);
         }
+        public void createFolderPO006()
+        {
+            if (initC.PO006PathInitial.Equals(""))
+            {
+                MessageBox.Show("Path PO006PathInitial empty", "createFolderPO006");
+                return;
+            }
+            createFolder(initC.PO006PathInitial);
+        }
+        public void createFolderPO002()
+        {
+            if (initC.PO002PathInitial.Equals(""))
+            {
+                MessageBox.Show("Path PO002PathInitial empty", "createFolderPO002");
+                return;
+            }
+            if (initC.PO002PathDestinaion.Equals(""))
+            {
+                MessageBox.Show("Path PO002PathDestinaion empty", "createFolderPO002");
+                return;
+            }
+            createFolder(initC.PO002PathInitial);
+            createFolder(initC.PO002PathDestinaion);
+        }
         public void createFolderPO001PathProcess()
         {
             bool folderExists = Directory.Exists(initC.PathProcess);
@@ -355,7 +379,14 @@ namespace XCustPr
             initC.PO008LEGAL_ENTITY = iniFile.Read("PO008LEGAL_ENTITY").Trim();
             initC.PO008BUYER = iniFile.Read("PO008BUYER").Trim();
 
+            initC.PO002PathInitial = iniFile.Read("PO002PathInitial").Trim();
+            initC.PO002PathDestinaion = iniFile.Read("PO002PathDestinaion").Trim();
+
             initC.PO007PathInitial = iniFile.Read("PO007PathInitial").Trim();
+
+            initC.PO006PathInitial = iniFile.Read("PO006PathInitial").Trim();
+            initC.PO006ReRun = iniFile.Read("PO006ReRun").Trim();
+            initC.Po006DeliveryDate = iniFile.Read("Po006DeliveryDate").Trim();
 
             initC.ExtractZipPathZipExtractRead = iniFile.Read("ExtractZipPathZipExtractRead").Trim();
             initC.ExtractZipPathZipExtract = iniFile.Read("ExtractZipPathZipExtract").Trim();

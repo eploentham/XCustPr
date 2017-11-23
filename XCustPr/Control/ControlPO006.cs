@@ -41,6 +41,9 @@ namespace XCustPr
         private List<XcustValueSetMstTbl> listXcVSMT;
         private List<XcustUomMstTbl> listXcUMT;
 
+        public XcustPrTblDB xCPrTDB;
+        public XcustPoTblDB xCPoTDB;
+
         public ControlPO006(ControlMain cm)
         {
             Cm = cm;
@@ -62,7 +65,10 @@ namespace XCustPr
             xCUMTDB = new XcustUomMstTblDB(conn, Cm.initC);
             xCVSMTDB = new XcustValueSetMstTblDB(conn, Cm.initC);
 
-            Cm.createFolderPO007();
+            xCPrTDB = new XcustPrTblDB(conn, Cm.initC);
+            xCPoTDB = new XcustPoTblDB(conn, Cm.initC);
+
+            Cm.createFolderPO006();
             fontSize9 = 9.75f;        //standard
             fontSize8 = 8.25f;        //standard
             fV1B = new Font(fontName, fontSize9, FontStyle.Bold);        //standard
@@ -75,6 +81,35 @@ namespace XCustPr
             listXcSMT = new List<XcustSupplierMstTbl>();
             listXcVSMT = new List<XcustValueSetMstTbl>();
             listXcUMT = new List<XcustUomMstTbl>();
+        }
+        /*
+         * a.	Query ข้อมูลที่ Table XCUST_PR_PO_INFO_TBL โดยมี Data Source ที่เป็น “MMX”    และมี Delivery date ตาม Parameter
+         * b.	Write file ตาม Format  ลงใน Folder ตาม Path Parameter Path Initial โดย File จะทำการ Gen 
+         */
+        public void processGetTempTableToValidate(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
+        {
+            addListView("gen file " + Cm.initC.PO006PathInitial, "Validate", lv1, form1);
+            pB1.Visible = true;
+            Boolean chk = false;
+
+            getListXcSIMT();
+            getListXcIMT();
+            getListXcSMT();
+            getListXcVSMT();
+            getListXcUMT();
+
+            DataTable dt006 = new DataTable();
+            DataTable dtFixLen = xCPrTDB.selectPO006FixLen();
+            dt006 = xCPrTDB.selectPRPO006GroupByVendor();
+            if (dt006.Rows.Count > 0)
+            {
+                foreach(DataRow row in dt006.Rows)
+                {
+                    DataTable dt = xCPrTDB.selectPRPO006(row[xCPoTDB.xCPO.VENDOR_ID].ToString());
+
+                }
+                
+            }
         }
         private void addListView(String col1, String col2, MaterialListView lv1, Form form1)
         {

@@ -79,6 +79,7 @@
     <Compile Include="Control\ControlPO006.cs" />
     <Compile Include="Control\ControlPO007.cs" />
     <Compile Include="Control\ControlPO008.cs" />
+    <Compile Include="Control\ControlPoRWebService.cs" />
     <Compile Include="Control\ControlPRPOWebService.cs" />
     <Compile Include="Control\ControlRDPO.cs" />
     <Compile Include="Control\ControlValueSet.cs" />
@@ -155,6 +156,9 @@
     <Compile Include="gui\XCustPO008.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="gui\XCustPoRWebService.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="gui\XcustPOWebService.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -189,10 +193,12 @@
     <Compile Include="objdb\XcustPoHeaderIntTblDB.cs" />
     <Compile Include="objdb\XcustPoLineIntTblDB.cs" />
     <Compile Include="objdb\XcustPoLineLocIntTblDB.cs" />
+    <Compile Include="objdb\XcustPoReceiptTblDB.cs" />
     <Compile Include="objdb\XcustPorReqDistIntAllDB.cs" />
     <Compile Include="objdb\XcustPorReqHeaderIntAllDB.cs" />
     <Compile Include="objdb\XcustPorReqLineIntAllDB.cs" />
     <Compile Include="objdb\XcustPoTblDB.cs" />
+    <Compile Include="object1\XcustPoReceiptTbl.cs" />
     <Compile Include="object1\XcustPoTbl.cs" />
     <Compile Include="objdb\XcustPrTblDB.cs" />
     <Compile Include="objdb\XcustRcvHeadersIntAllDB.cs" />

@@ -65,6 +65,8 @@ namespace XCustPr
         public String PO008PathInitial = "", PO008PathProcess = "", PO008PathError = "", PO008PathArchive = "", PO008ImportSource = "", PO008ZipFileSearch = "", PO008LEGAL_ENTITY="", PO008BUYER="";
         public String PO004FileType = "";
         public String PO007PathInitial = "";
+        public String PO002PathInitial = "", PO002PathDestinaion = "";
+        public String PO006PathInitial = "", PO006ReRun="", Po006DeliveryDate="";
         public String ExtractZipPathZipExtractRead = "", ExtractZipPathZipExtract="";
 
         

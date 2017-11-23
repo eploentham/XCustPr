@@ -63,13 +63,13 @@ namespace XCustPr
             txtFileName.Text = Cm.initC.AutoRunPO003;
 
             int i = 1;
-            if (cPo003.Cm.initC.PO003PathInitial.Equals(""))
+            if (Cm.initC.PO003PathInitial.Equals(""))
             {
                 MessageBox.Show("Path Config PO003 ไม่ถูกต้อง", "");
                 disableBtn();
                 return;
             }
-            filePO = cPo003.Cm.getFileinFolder(cPo003.Cm.initC.PO003PathInitial);
+            filePO = Cm.getFileinFolder(Cm.initC.PO003PathInitial);
             if (filePO == null)
             {
                 MessageBox.Show("Folder PO003 ไม่ถูกต้อง", "");

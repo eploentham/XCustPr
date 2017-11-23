@@ -81,7 +81,7 @@ namespace XCustPr
             xCPOTDB = new XcustPoTblDB(conn, Cm.initC);
             xCLPTDB = new XcustLinfoxPrTblDB(conn, Cm.initC);
 
-            Cm.createFolderPO003();
+            Cm.createFolderPO002();
             cPRPOWS = new ControlPRPOWebService(Cm);
 
             fontSize9 = 9.75f;        //standard
@@ -139,6 +139,8 @@ namespace XCustPr
                     DataTable dt = new DataTable();
                     dt = xCLPTDB.selectPO002GenTextLinfox(erpPONumber);
                     writeTextLinfox(erpPONumber,dt);
+                    xCPOTDB.updateOutBoundFlag(dt.Rows[0][xCLPTDB.xCLFPT.PO_NUMBER].ToString(), dt.Rows[0][xCLPTDB.xCLFPT.LINE_NUMBER].ToString());     // f.	Update po_trb ว่า gen_outbound_flag เรียบร้อย 
+                    xCLPTDB.updateOutBoundFlag(dt.Rows[0][xCLPTDB.xCLFPT.PO_NUMBER].ToString(), dt.Rows[0][xCLPTDB.xCLFPT.LINE_NUMBER].ToString());     //d.Program update ข้อมูล XCUST_LINFOX_PR_TBL.GEN_OUTBOUND_FLAG = 'Y'
                 }
             }
         }
@@ -146,7 +148,7 @@ namespace XCustPr
         {
             String reqDate = "";
             reqDate = dt.Rows[0][xCLPTDB.xCLFPT.REQUEST_DATE].ToString().Replace("-","").Replace(":", "").Replace("/", "");
-            var file = Cm.initC.PathInitial + "PO"+ erpPONumber+ reqDate+".txt";
+            var file = Cm.initC.PO002PathInitial + "PO"+ erpPONumber+ reqDate+".txt";
             using (var stream = File.CreateText(file))
             {
                 foreach (DataRow row in dt.Rows)

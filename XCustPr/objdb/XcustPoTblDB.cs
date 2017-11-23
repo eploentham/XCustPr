@@ -107,6 +107,19 @@ namespace XCustPr
             String sql = "Delete From " + xCPO.table + " Where " + xCPO.PO_HEADER_ID + "='" + po_header_id + "' and " + xCPO.PO_LINE_ID + "='" + po_line_id + "'";
             conn.ExecuteNonQuery(sql, "kfc_po");
         }
+        public String updateOutBoundFlag(String linfox_po_number, String linfox_po_line_number)
+        {
+            String sql = "", chk = "";
+            sql = "Update " + xCPO.table + " " +
+                "Set " + xCPO.GEN_OUTBOUD_FLAG+"='Y' "+
+                "Where "+xCPO.PO_HEADER_ID + " in " +
+                "(SELECT po.PO_HEADER_ID From xcust_pr_tbl PR " +
+                "Left Join xcust_po_tbl po On  po.REQUISITION_HEADER_ID = PR.REQUISITION_HEADER_ID and po.REQUISITION_LINE_ID = PR.REQUISITION_LINE_ID " +
+                "Where PR.ATTRIBUTE1_L = '" + linfox_po_number + "' " +
+                "and PR.ATTRIBUTE2_L = '" + linfox_po_line_number + "') " ;
+
+            return chk;
+        }
         public String insertxCPR(XcustPoTbl p)
         {
             String sql = "", chk = "";
