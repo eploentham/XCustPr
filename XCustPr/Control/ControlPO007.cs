@@ -111,7 +111,7 @@ namespace XCustPr
                     foreach (DataRow row in dt007.Rows)
                     {
                         String itemcode = xCPTDB.selectItemCode(row["PRC_BU_ID"].ToString(), row["ITEM_ID"].ToString());
-                        String desc1 = "", desc2 = "",taxExp="", taxCal="";
+                        String desc1 = "", desc2 = "",taxExp="", taxCal="",receipt_num="",line_num="",lot_number="";
                         desc1 = row["ITEM_DESCRIPTION"].ToString();
                         if(desc1.Length > int.Parse(dtFixLen.Rows[7]["X_LENGTH"].ToString()))
                         {
@@ -119,6 +119,13 @@ namespace XCustPr
                         }
                         taxExp = !row["TAX_CODE"].ToString().Equals("") ? "V" : "E";
                         taxCal = !row["TAX_CODE"].ToString().Equals("") ? "Y" : "N";
+                        DataTable dtLot = xCPTDB.selectLot(row["PO_HEADER_ID"].ToString(), row["PO_LINE_ID"].ToString());
+                        if (dtLot.Rows.Count > 0)
+                        {
+                            receipt_num = dtLot.Rows[0]["receipt_num"].ToString();
+                            line_num = dtLot.Rows[0]["line_num"].ToString();
+                            lot_number = dtLot.Rows[0]["lot_number"].ToString();
+                        }
                         string col01 = FixLen(Cm.dateDBtoShow(row["CREATION_DATE"].ToString()), dtFixLen.Rows[0]["X_LENGTH"].ToString());
                         string col02 = FixLen(Cm.initC.Company, dtFixLen.Rows[1]["X_LENGTH"].ToString());
                         string col03 = FixLen("col3", dtFixLen.Rows[2]["X_LENGTH"].ToString());      //PO DT
@@ -148,12 +155,12 @@ namespace XCustPr
                         string col25 = FixLen("", dtFixLen.Rows[24]["X_LENGTH"].ToString());        //Transaction Originator
                         string col26 = FixLen("Direct", dtFixLen.Rows[25]["X_LENGTH"].ToString());        //Curency Mode
                         string col27 = FixLen(row["CURRENCY_CODE"].ToString(), dtFixLen.Rows[26]["X_LENGTH"].ToString());
-                        string col28 = FixLen(row["REVISION_NUM"].ToString(), dtFixLen.Rows[27]["X_LENGTH"].ToString());     //Receipt NO.
+                        string col28 = FixLen(receipt_num, dtFixLen.Rows[27]["X_LENGTH"].ToString());     //Receipt NO.
                         string col29 = FixLen("", dtFixLen.Rows[28]["X_LENGTH"].ToString());      //ระบุค่าว่าง
-                        string col30 = FixLen(row["LINE_NUM"].ToString(), dtFixLen.Rows[29]["X_LENGTH"].ToString());      //XCUST_PR_PO_INFO_TBL.PO_RECEIPT_LINE_NO
+                        string col30 = FixLen(line_num, dtFixLen.Rows[29]["X_LENGTH"].ToString());      //XCUST_PR_PO_INFO_TBL.PO_RECEIPT_LINE_NO
 
                         string col31 = FixLen(taxCal, dtFixLen.Rows[30]["X_LENGTH"].ToString());      //Tax(Y / N)
-                        string col32 = FixLen("col31", dtFixLen.Rows[31]["X_LENGTH"].ToString());      //XCUST_PR_PO_INFO_TBL.LOT_NUMBER
+                        string col32 = FixLen(lot_number, dtFixLen.Rows[31]["X_LENGTH"].ToString());      //XCUST_PR_PO_INFO_TBL.LOT_NUMBER
                         string col33 = FixLen("", dtFixLen.Rows[32]["X_LENGTH"].ToString());      //ระบุค่าว่าง
                         string col34 = FixLen("", dtFixLen.Rows[33]["X_LENGTH"].ToString());      //ระบุค่าว่าง
                         string col35 = FixLen("", dtFixLen.Rows[34]["X_LENGTH"].ToString());      //ระบุค่าว่าง

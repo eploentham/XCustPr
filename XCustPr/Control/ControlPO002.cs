@@ -117,7 +117,9 @@ namespace XCustPr
                     {
                         foreach(DataRow prpo in dt.Rows)
                         {
-                            xCLPTDB.updateFromPO002(prpo[xCPRTDB.xCPR.REQUISITION_HEADER_ID].ToString(), prpo[xCPRTDB.xCPR.REQUISITION_LINE_ID].ToString(),
+                            //xCLPTDB.updateFromPO002(prpo[xCPRTDB.xCPR.REQUISITION_HEADER_ID].ToString(), prpo[xCPRTDB.xCPR.REQUISITION_LINE_ID].ToString(),
+                            //    linfox[xCLPTDB.xCLFPT.PO_NUMBER].ToString(), linfox[xCLPTDB.xCLFPT.LINE_NUMBER].ToString());
+                            xCLPTDB.updateFromPO002(prpo["po_number"].ToString(), prpo["QUANTITY"].ToString(),
                                 linfox[xCLPTDB.xCLFPT.PO_NUMBER].ToString(), linfox[xCLPTDB.xCLFPT.LINE_NUMBER].ToString());
                         }
                     }
@@ -143,7 +145,7 @@ namespace XCustPr
         public void writeTextLinfox(String erpPONumber, DataTable dt)
         {
             String reqDate = "";
-            reqDate = dt.Rows[0][xCLPTDB.xCLFPT.REQUEST_DATE].ToString().Replace("-","");
+            reqDate = dt.Rows[0][xCLPTDB.xCLFPT.REQUEST_DATE].ToString().Replace("-","").Replace(":", "").Replace("/", "");
             var file = Cm.initC.PathInitial + "PO"+ erpPONumber+ reqDate+".txt";
             using (var stream = File.CreateText(file))
             {
@@ -162,7 +164,7 @@ namespace XCustPr
 
                     string col11 = row[xCLPTDB.xCLFPT.ITEM_CODE].ToString();
                     string col12 = row[xCLPTDB.xCLFPT.ERP_QTY].ToString();
-                    string col13 = "col13";     //Unit Of Mesure
+                    string col13 = row[xCLPTDB.xCLFPT.UOMCODE].ToString();     //Unit Of Mesure
                     string col14 = row[xCLPTDB.xCLFPT.ORDER_DATE].ToString();
                     string col15 = row[xCLPTDB.xCLFPT.ERP_QTY].ToString();     //Delivery instruction
 

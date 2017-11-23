@@ -106,10 +106,17 @@ namespace XCustPr
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
+        public String updateOutBoundFlag(String po_number,String line_number)
+        {
+            String sql = "", chk = "";
+            sql = "Select * From XCUST_FIX_LENGTH_TBL Where CUSTOMIZATION_NAME = 'PO007' Order By X_SEQ ";
+
+            return chk;
+        }
         public DataTable selectPRPO(String linfox_po_number, String linfox_po_line_number)
         {
             DataTable dt = new DataTable();
-            String sql = "SELECT po.PO_HEADER_ID, po.PO_LINE_ID,po.SEGMENT1 po_number,po.LINE_NUM po_line_number, po.QUANTITY, po.header_id "+
+            String sql = "SELECT po.PO_HEADER_ID, po.PO_LINE_ID,po.SEGMENT1 po_number,po.LINE_NUM po_line_number, po.QUANTITY/*, po.header_id*/ "+
                 "From xcust_pr_tbl PR "+
                 "Left Join xcust_po_tbl po On  po.REQUISITION_HEADER_ID = PR.REQUISITION_HEADER_ID and po.REQUISITION_LINE_ID = PR.REQUISITION_LINE_ID  " +
                 "Where  "+                ""+
@@ -123,7 +130,7 @@ namespace XCustPr
             DataTable dt = new DataTable();
             String sql = "SELECT po.CREATION_DATE, po.PO_LINE_ID,po.SEGMENT1 as po_number,po.LINE_NUM, po.QUANTITY, po.VENDOR_ID, po.PRC_BU_ID, po.ITEM_ID" +
                 ", po.ITEM_DESCRIPTION, po.QUANTITY_RECEIPT, po.QUANTITY, po.UOM_CODE, po.UNIT_PRICE, po.LINE_TYPE_ID, po.PAYMENT_TERM, po.CURRENCY_CODE, po.REVISION_NUM" +
-                ",po.SEGMENT1, po.ACC_SEGMENT1, po.ACC_SEGMENT2,po.TAX_CODE " +
+                ",po.SEGMENT1, po.ACC_SEGMENT1, po.ACC_SEGMENT2,po.TAX_CODE, po.PO_HEADER_ID " +
                 "From xcust_pr_tbl PR " +
                 "inner Join xcust_po_tbl po On  po.REQUISITION_HEADER_ID = PR.REQUISITION_HEADER_ID and po.REQUISITION_LINE_ID = PR.REQUISITION_LINE_ID  " +
                 "Where  " + "" +
@@ -148,6 +155,18 @@ namespace XCustPr
             dt = conn.selectData(sql, "kfc_po");
             chk = dt.Rows.Count > 0 ? dt.Rows[0]["ITEM_CODE"].ToString() : "";
             return chk;
+        }
+        public DataTable selectLot(String po_header_id, String po_line_id)
+        {
+            String chk = "";
+            DataTable dt = new DataTable();
+            String sql = "select receipt_num,line_num,lot_number "+
+                        "FROM XCUST_PO_RECEIPT_TBL PO_RCP " +
+                        "where PO_RCP.PO_HEADER_ID = '"+po_header_id +"' "+
+                        "and PO_RCP.PO_LINE_ID = '"+po_line_id  +"' ";
+            dt = conn.selectData(sql, "kfc_po");
+            
+            return dt;
         }
         public void deletexCPR(String requisition_header_id, String requisition_line_id)
         {
