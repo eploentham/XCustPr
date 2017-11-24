@@ -149,11 +149,11 @@ namespace XCustPr
         public DataTable selectPRPO006GroupByVendor()
         {
             DataTable dt = new DataTable();
-            String sql = "SELECT po.VENDOR_ID " +
+            String sql = "SELECT po.VENDOR_ID, po.acc_segment1 as deliveryDate " +
                 "From xcust_pr_tbl PR " +
                 "inner Join xcust_po_tbl po On  po.REQUISITION_HEADER_ID = PR.REQUISITION_HEADER_ID and po.REQUISITION_LINE_ID = PR.REQUISITION_LINE_ID  " +
                 "Where  " + "" +
-                " PR.ATTRIBUTE1 <> 'MMX' group by po.VENDOR_ID ";
+                " PR.ATTRIBUTE1 <> 'MMX' group by po.VENDOR_ID, po.acc_segment1 ";
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }

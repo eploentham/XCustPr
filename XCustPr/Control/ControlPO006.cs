@@ -105,10 +105,10 @@ namespace XCustPr
             {
                 foreach(DataRow row in dt006.Rows)
                 {
+                    String deliveryDate = row["deliveryDate"].ToString();
                     DataTable dt = xCPrTDB.selectPRPO006(row[xCPoTDB.xCPO.VENDOR_ID].ToString());
 
                 }
-                
             }
         }
         private void addListView(String col1, String col2, MaterialListView lv1, Form form1)
