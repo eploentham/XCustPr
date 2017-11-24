@@ -109,7 +109,7 @@ namespace XCustPr
         public DataTable selectPO006FixLen()
         {
             DataTable dt = new DataTable();
-            String sql = "Select * From XCUST_FIX_LENGTH_TBL Where CUSTOMIZATION_NAME = 'PO006' Order By X_SEQ ";
+            String sql = "Select * From XCUST_FIX_LENGTH_TBL Where CUSTOMIZATION_NAME = 'PO006_2' Order By X_LEVEL, X_SEQ ";
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
@@ -129,8 +129,8 @@ namespace XCustPr
         public DataTable selectPRPO007()
         {
             DataTable dt = new DataTable();
-            String sql = "SELECT po.CREATION_DATE, po.PO_LINE_ID,po.SEGMENT1 as po_number,po.LINE_NUM, po.QUANTITY, po.VENDOR_ID, po.PRC_BU_ID, po.ITEM_ID" +
-                ", po.ITEM_DESCRIPTION, po.QUANTITY_RECEIPT, po.QUANTITY, po.UOM_CODE, po.UNIT_PRICE, po.LINE_TYPE_ID, po.PAYMENT_TERM, po.CURRENCY_CODE, po.REVISION_NUM" +
+            String sql = "SELECT po.CREATION_DATE, po.PO_LINE_ID,po.SEGMENT1 as po_number,po.LINE_NUM, po.QUANTITY, po.VENDOR_ID, po.PRC_BU_ID, po.ITEM_ID " +
+                ", po.ITEM_DESCRIPTION, po.QUANTITY_RECEIPT, po.QUANTITY, po.UOM_CODE, po.UNIT_PRICE, po.LINE_TYPE_ID, po.PAYMENT_TERM, po.CURRENCY_CODE, po.REVISION_NUM " +
                 ",po.SEGMENT1, po.ACC_SEGMENT1, po.ACC_SEGMENT2,po.TAX_CODE, po.PO_HEADER_ID " +
                 "From xcust_pr_tbl PR " +
                 "inner Join xcust_po_tbl po On  po.REQUISITION_HEADER_ID = PR.REQUISITION_HEADER_ID and po.REQUISITION_LINE_ID = PR.REQUISITION_LINE_ID  " +
@@ -146,7 +146,7 @@ namespace XCustPr
          * 1.1.1.1	เป็น PO ที่อนุมัติแล้ว
          * 
          */
-        public DataTable selectPRPO006GroupByVendor()
+        public DataTable selectPRPO006GroupByVendorDeliveryDate()
         {
             DataTable dt = new DataTable();
             String sql = "SELECT po.VENDOR_ID, po.acc_segment1 as deliveryDate " +
@@ -157,16 +157,45 @@ namespace XCustPr
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
-        public DataTable selectPRPO006(String VENDOR_ID)
+        public DataTable selectPRPO006GroupByVendor()
         {
             DataTable dt = new DataTable();
-            String sql = "SELECT po.CREATION_DATE, po.PO_LINE_ID,po.SEGMENT1 as po_number,po.LINE_NUM, po.QUANTITY, po.VENDOR_ID, po.PRC_BU_ID, po.ITEM_ID" +
-                ", po.ITEM_DESCRIPTION, po.QUANTITY_RECEIPT, po.QUANTITY, po.UOM_CODE, po.UNIT_PRICE, po.LINE_TYPE_ID, po.PAYMENT_TERM, po.CURRENCY_CODE, po.REVISION_NUM" +
-                ",po.SEGMENT1, po.ACC_SEGMENT1, po.ACC_SEGMENT2,po.TAX_CODE, po.PO_HEADER_ID " +
+            String sql = "SELECT po.VENDOR_ID " +
                 "From xcust_pr_tbl PR " +
                 "inner Join xcust_po_tbl po On  po.REQUISITION_HEADER_ID = PR.REQUISITION_HEADER_ID and po.REQUISITION_LINE_ID = PR.REQUISITION_LINE_ID  " +
                 "Where  " + "" +
-                " PR.ATTRIBUTE1 <> 'MMX'  ";
+                " PR.ATTRIBUTE1 <> 'MMX' group by po.VENDOR_ID ";
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
+        }
+        public DataTable selectPRPO006(String VENDOR_ID, String delivery_date, String rerun)
+        {
+            DataTable dt = new DataTable();
+            String sql = "", where="", whereRerun = "";
+            if (delivery_date.Equals(""))
+            {
+                where = " ";
+            }
+            else
+            {
+                where = "  ";
+            }
+            if (rerun.Equals("Y"))
+            {
+                whereRerun = " and po.GEN_OUTBOUD_FLAG = 'Y' ";
+            }
+            else
+            {
+                whereRerun = " and po.GEN_OUTBOUD_FLAG = 'N' ";
+            }
+            whereRerun = " ";
+            sql = "SELECT po.CREATION_DATE, po.PO_LINE_ID,po.SEGMENT1 as po_number,po.LINE_NUM, po.QUANTITY, po.VENDOR_ID, po.PRC_BU_ID, po.ITEM_ID " +
+                    ", po.ITEM_DESCRIPTION, po.QUANTITY_RECEIPT, po.QUANTITY, po.UOM_CODE, po.UNIT_PRICE, po.LINE_TYPE_ID, po.PAYMENT_TERM, po.CURRENCY_CODE, po.REVISION_NUM " +
+                    ",po.SEGMENT1, po.ACC_SEGMENT1, po.ACC_SEGMENT2,po.TAX_CODE, po.PO_HEADER_ID " +
+                    "From xcust_pr_tbl PR " +
+                    "inner Join xcust_po_tbl po On  po.REQUISITION_HEADER_ID = PR.REQUISITION_HEADER_ID and po.REQUISITION_LINE_ID = PR.REQUISITION_LINE_ID  " +
+                    "Where  " + "" +
+                    " PR.ATTRIBUTE1 <> 'MMX'  "+ where+ whereRerun+ " Order By po.SEGMENT1 ";
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }

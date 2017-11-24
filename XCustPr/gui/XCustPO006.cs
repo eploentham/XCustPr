@@ -11,16 +11,19 @@ namespace XCustPr
     public class XCustPO006:Form
     {
         int gapLine = 5;
-        int grd0 = 0, grd1 = 100, grd2 = 240, grd3 = 320, grd4 = 570, grd5 = 700, grd51 = 700, grd6 = 820, grd7 = 900, grd8 = 1070, grd9 = 1200;
+        int grd0 = 0, grd1 = 100, grd2 = 240, grd3 = 320, grd4 = 570, grd41 = 620, grd5 = 700, grd51 = 700, grd6 = 820, grd7 = 900, grd8 = 1070, grd9 = 1200;
         int line1 = 35, line2 = 27, line3 = 85, line4 = 105, line41 = 120, line42 = 111, line5 = 270, ControlHeight = 21, lineGap = 5;
 
         int formwidth = 860, formheight = 740;
 
         MaterialLabel lb1, lb2;
         MaterialSingleLineTextField txtFileName;
-        MaterialFlatButton btnRead, btnPrepare, btnWebService, btnFTP, btnEmail;
+        MaterialFlatButton btnRead, /*btnPrepare, btnWebService, btnFTP,*/ btnEmail;
         MaterialListView lv1;
         MaterialProgressBar pB1;
+
+        CheckBox chkReRun, chkDeliveryDate;
+        DateTimePicker dtpDeliveryDate;
 
         Color cTxtL, cTxtE, cForm;
 
@@ -56,19 +59,19 @@ namespace XCustPr
             lv1.Columns.Add("List File", formwidth - 50 - 40 - 100, HorizontalAlignment.Left);
             lv1.Columns.Add("   process   ", 100, HorizontalAlignment.Center);
             lv1.ListViewItemSorter = lvwColumnSorter;
-            txtFileName.Text = Cm.initC.AutoRunPO003;
+            txtFileName.Text = Cm.initC.AutoRunPO006;
 
             int i = 1;
-            if (cPo006.Cm.initC.PO003PathInitial.Equals(""))
+            if (Cm.initC.PO006PathInitial.Equals(""))
             {
-                MessageBox.Show("Path Config PO003 ไม่ถูกต้อง", "");
+                MessageBox.Show("Path Config PO006 ไม่ถูกต้อง", "");
                 disableBtn();
                 return;
             }
-            filePO = cPo006.Cm.getFileinFolder(Cm.initC.PO003PathInitial);
+            filePO = Cm.getFileinFolder(Cm.initC.PO006PathInitial);
             if (filePO == null)
             {
-                MessageBox.Show("Folder PO003 ไม่ถูกต้อง", "");
+                MessageBox.Show("Folder PO006 ไม่ถูกต้อง", "");
                 disableBtn();
                 return;
             }
@@ -77,13 +80,14 @@ namespace XCustPr
                 lv1.Items.Add(AddToList((i++), aa, ""));
                 //lv1.Items.s
             }
+            dtpDeliveryDate.Enabled = false;
         }
         private void disableBtn()
         {
             btnRead.Enabled = false;
-            btnPrepare.Enabled = false;
-            btnFTP.Enabled = false;
-            btnWebService.Enabled = false;
+            //btnPrepare.Enabled = false;
+            //btnFTP.Enabled = false;
+            //btnWebService.Enabled = false;
             btnEmail.Enabled = false;
         }
         private void initCompoment()
@@ -119,8 +123,7 @@ namespace XCustPr
             txtFileName.Hint = lb1.Text;
             txtFileName.Enter += txtFileName_Enter; ;
             txtFileName.Leave += txtFileName_Leave;
-
-
+            
             btnRead = new MaterialFlatButton();
             btnRead.Font = cPo006.fV1;
             btnRead.Text = "1. mod up Read Text";
@@ -129,29 +132,40 @@ namespace XCustPr
             btnRead.Location = new System.Drawing.Point(grd1, line1);
             btnRead.Click += btnRead_Click;
 
-            btnPrepare = new MaterialFlatButton();
-            btnPrepare.Font = cPo006.fV1;
-            btnPrepare.Text = "2. prepare Data, zip file";
-            btnPrepare.Size = new System.Drawing.Size(30, ControlHeight);
-            Controls.Add(btnPrepare);
-            btnPrepare.Location = new System.Drawing.Point(grd3, line1);
-            btnPrepare.Click += btnPrepare_Click;
+            chkReRun = new CheckBox();
+            chkReRun.Font = cPo006.fV1B;
+            chkReRun.Text = " re run Check = 'Y' ";
+            chkReRun.Size = new System.Drawing.Size(70, ControlHeight);
+            Controls.Add(chkReRun);
+            chkReRun.Location = new System.Drawing.Point(grd3, line1+10);
+            chkReRun.Click += ChkReRun_Click;
 
-            btnWebService = new MaterialFlatButton();
-            btnWebService.Font = cPo006.fV1;
-            btnWebService.Text = "3. Web Service";
-            btnWebService.Size = new System.Drawing.Size(30, ControlHeight);
-            Controls.Add(btnWebService);
-            btnWebService.Location = new System.Drawing.Point(grd4, line1);
-            btnWebService.Click += btnWebService_Click;
+            chkDeliveryDate = new CheckBox();
+            chkDeliveryDate.Font = cPo006.fV1B;
+            chkDeliveryDate.Text = "ระบุวันที่ ";
+            chkDeliveryDate.Size = new System.Drawing.Size(80, ControlHeight);
+            Controls.Add(chkDeliveryDate);
+            chkDeliveryDate.Location = new System.Drawing.Point(grd4, line1+10);
+            chkDeliveryDate.Click += ChkDeliveryDate_Click; ;
 
-            btnFTP = new MaterialFlatButton();
-            btnFTP.Font = cPo006.fV1;
-            btnFTP.Text = "4. FTP to linfox";
-            btnFTP.Size = new System.Drawing.Size(30, ControlHeight);
-            Controls.Add(btnFTP);
-            btnFTP.Location = new System.Drawing.Point(grd5, line1);
-            btnFTP.Click += btnFTP_Click;
+            dtpDeliveryDate = new DateTimePicker();
+            //dtpDeliveryDate = new MaterialFlatButton();
+            dtpDeliveryDate.Font = cPo006.fV1;
+            //btnWebService.Text = "3. Web Service";
+            dtpDeliveryDate.Size = new System.Drawing.Size(120, ControlHeight);
+            Controls.Add(dtpDeliveryDate);
+            dtpDeliveryDate.Location = new System.Drawing.Point(grd4+chkDeliveryDate.Width+5, line1+10);
+            dtpDeliveryDate.Format = DateTimePickerFormat.Short;
+            dtpDeliveryDate.ValueChanged += DtpDeliveryDate_ValueChanged;
+            //btnWebService.Click += btnWebService_Click;
+
+            //btnFTP = new MaterialFlatButton();
+            //btnFTP.Font = cPo006.fV1;
+            //btnFTP.Text = "4. FTP to linfox";
+            //btnFTP.Size = new System.Drawing.Size(30, ControlHeight);
+            //Controls.Add(btnFTP);
+            //btnFTP.Location = new System.Drawing.Point(grd5, line1);
+            //btnFTP.Click += btnFTP_Click;
 
             btnEmail = new MaterialFlatButton();
             btnEmail.Font = cPo006.fV1;
@@ -178,12 +192,54 @@ namespace XCustPr
 
             Controls.Add(lv1);
         }
+
+        private void DtpDeliveryDate_ValueChanged(object sender, EventArgs e)
+        {
+            //throw new NotImplementedException();
+            setDtpDelivery();
+        }
+
+        private void setDtpDelivery()
+        {
+            String year = "", month = "", day = "";
+            year = dtpDeliveryDate.Value.Year.ToString();
+            month = dtpDeliveryDate.Value.Month.ToString("00");
+            day = dtpDeliveryDate.Value.Day.ToString("00");
+            Cm.setConfig("Po006DeliveryDate", year + "-" + month + "-" + day);
+        }
+        private void ChkDeliveryDate_Click(object sender, EventArgs e)
+        {
+            //throw new NotImplementedException();
+            if (chkDeliveryDate.Checked)
+            {
+                dtpDeliveryDate.Enabled = true;
+                setDtpDelivery();
+            }
+            else
+            {
+                dtpDeliveryDate.Enabled = false;
+            }
+        }
+
+        private void ChkReRun_Click(object sender, EventArgs e)
+        {
+            //throw new NotImplementedException();
+            if (chkReRun.Checked)
+            {
+                Cm.setConfig("PO006ReRun", "Y");
+            }
+            else
+            {
+                Cm.setConfig("PO006ReRun", "N");
+            }
+        }
+
         private void btnRead_Click(object sender, EventArgs e)
         {
             lv1.Items.Clear();
-            filePO = cPo006.Cm.getFileinFolder(cPo006.Cm.initC.PO003PathInitial);
+            filePO = Cm.getFileinFolder(Cm.initC.PO006PathInitial);
             cPo006.processGetTempTableToValidate(lv1, this, pB1);
-            
+            chkReRun.Checked = false;
             
 
             //cPo006.processGetTempTableToValidate(lv1, this, pB1);
@@ -200,11 +256,11 @@ namespace XCustPr
         }
         private void btnFTP_Click(object sender, EventArgs e)
         {
-
+            
         }
         private void btnEmail_Click(object sender, EventArgs e)
         {
-
+            cPo006.sendEmailPO006("Test Vendor");
         }
         private void txtFileName_Leave(object sender, EventArgs e)
         {

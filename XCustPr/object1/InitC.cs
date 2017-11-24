@@ -36,6 +36,7 @@ namespace XCustPr
         public String AutoRunExtractZip = "";
         public String AutoValueSet = "";
         public String AutoRunPO002 = "";
+        public String AutoRunPO006 = "";
 
         public String PathMaster = "";
 

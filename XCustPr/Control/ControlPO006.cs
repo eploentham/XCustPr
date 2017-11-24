@@ -2,7 +2,11 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
+using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -100,14 +104,55 @@ namespace XCustPr
 
             DataTable dt006 = new DataTable();
             DataTable dtFixLen = xCPrTDB.selectPO006FixLen();
-            dt006 = xCPrTDB.selectPRPO006GroupByVendor();
+            if (dtFixLen.Rows.Count <= 0) return;
+            dt006 = xCPrTDB.selectPRPO006GroupByVendorDeliveryDate();
             if (dt006.Rows.Count > 0)
             {
                 foreach(DataRow row in dt006.Rows)
                 {
                     String deliveryDate = row["deliveryDate"].ToString();
-                    DataTable dt = xCPrTDB.selectPRPO006(row[xCPoTDB.xCPO.VENDOR_ID].ToString());
+                    DataTable dt = new DataTable();
+                    if (Cm.initC.Po006DeliveryDate.Equals("sysdate"))
+                    {
+                        String date = System.DateTime.Now.ToString("yyyy-MM-dd");
+                        dt = xCPrTDB.selectPRPO006(row[xCPoTDB.xCPO.VENDOR_ID].ToString(), date, Cm.initC.PO006ReRun);
+                    }
+                    else
+                    {
+                        dt = xCPrTDB.selectPRPO006(row[xCPoTDB.xCPO.VENDOR_ID].ToString(), Cm.initC.Po006DeliveryDate, Cm.initC.PO006ReRun);
+                    }
+                    if (dt.Rows.Count > 0)
+                    {
+                        writeTextPO006(row[xCPoTDB.xCPO.VENDOR_ID].ToString(), deliveryDate, dt, dtFixLen);
+                    }
+                }
+            }
+            Cm.setConfig("Po006DeliveryDate", "sysdate");
+            Cm.setConfig("PO006ReRun", "N");
+        }
+        public void writeTextPO006(String vendor_id, String delivery_date, DataTable dt, DataTable dtFixLen)
+        {
+            var file = Cm.initC.PO006PathInitial + "S" + vendor_id+"_R" + delivery_date.Replace("-","") + ".KFC";
+            using (var stream = File.CreateText(file))
+            {
+                String hCol01 = Cm.FixLen("S" + vendor_id, dtFixLen.Rows[0]["X_LENGTH"].ToString()," ");
+                String hCol02 = Cm.FixLen(delivery_date.Replace("-", ""), dtFixLen.Rows[1]["X_LENGTH"].ToString(), " ");
+                String hCol3 = Cm.FixLen(dt.Rows.Count.ToString(), dtFixLen.Rows[2]["X_LENGTH"].ToString(), "0");
+                String head = hCol01 + hCol02 + hCol3;//+System.Environment.NewLine;
+                stream.WriteLine(head);
+                foreach (DataRow row in dt.Rows)
+                {
+                    String col01 = Cm.FixLen(row["po_number"].ToString(), dtFixLen.Rows[3]["X_LENGTH"].ToString()," ");
+                    String col02 = Cm.FixLen(delivery_date.Replace("-", ""), dtFixLen.Rows[4]["X_LENGTH"].ToString(), " ");     //PO date
+                    String col03 = Cm.FixLen(Cm.initC.ORGANIZATION_code, dtFixLen.Rows[5]["X_LENGTH"].ToString(), " ");     //Store Code
+                    String col04 = Cm.FixLen(delivery_date.Replace("-", ""), dtFixLen.Rows[6]["X_LENGTH"].ToString(), " ");          //Delivery Date
+                    String col05 = Cm.FixLen(row["ITEM_ID"].ToString(), dtFixLen.Rows[7]["X_LENGTH"].ToString(), " ");
+                    String col06 = Cm.FixLen(row["QUANTITY"].ToString(), dtFixLen.Rows[8]["X_LENGTH"].ToString(), " ");
+                    String col07 = Cm.FixLen(row["UOM_CODE"].ToString(), dtFixLen.Rows[9]["X_LENGTH"].ToString(), " ");
 
+                    String csvRow = col01 + col02 + col03 + col04 + col05 + col06 + col07 ;
+
+                    stream.WriteLine(csvRow);
                 }
             }
         }
@@ -197,6 +242,72 @@ namespace XCustPr
                 item = xCUMTDB.setData(row);
                 listXcUMT.Add(item);
             }
+        }
+        public void sendEmailPO006(String vendorName)
+        {
+            var fromAddress = new MailAddress(Cm.initC.EmailUsername, "Ekapop Ploentham");
+            var toAddress = new MailAddress(Cm.initC.APPROVER_EMAIL, "To Name");
+            var toAddress2 = new MailAddress("amo@iceconsulting.co.th", "To Name");
+            var toAddress3 = new MailAddress("ekk@ii.co.th", "To Name");
+            String fromPassword = Cm.initC.EmailPassword;
+            const string subject = "test";
+            DataTable dt006;
+            dt006 = xCPrTDB.selectPRPO006GroupByVendor();
+            if (dt006.Rows.Count <= 0) return;
+            string Body = System.IO.File.ReadAllText(Environment.CurrentDirectory + "\\" + "email_regis.html");
+            Body = Body.Replace("#vendorName#", vendorName);
+
+            var smtp1 = new SmtpClient
+            {
+                Host = "smtp.gmail.com",
+                Port = 587,
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                Credentials = new NetworkCredential(fromAddress.Address, fromPassword),
+                Timeout = 20000
+            };
+
+            var message = new MailMessage();
+            message.From = fromAddress;
+            message.Subject = "Test send Email form PO006";
+            message.To.Add(toAddress);
+            message.To.Add(toAddress2);
+            message.To.Add(toAddress3);
+            message.IsBodyHtml = true;
+            message.BodyEncoding = System.Text.Encoding.UTF8;
+
+            LinkedResource LinkedImage = new LinkedResource(@Environment.CurrentDirectory + "\\" + "logo_ice_consulting.png");
+            LinkedImage.ContentId = "logo_ice";
+            //Added the patch for Thunderbird as suggested by Jorge
+            LinkedImage.ContentType = new ContentType(MediaTypeNames.Image.Jpeg);
+
+            AlternateView htmlView = AlternateView.CreateAlternateViewFromString(Body, null, "text/html");
+            htmlView.LinkedResources.Add(LinkedImage);
+            message.AlternateViews.Add(htmlView);
+
+            
+            if (dt006.Rows.Count > 0)
+            {
+                foreach(DataRow row in dt006.Rows)
+                {
+                    String[] filePO;
+                    filePO = Cm.getFileinFolder(Cm.initC.PO006PathInitial, row["VENDOR_ID"].ToString());
+                    if (filePO.Length > 0)
+                    {
+                        foreach (string aa in filePO)
+                        {
+                            Attachment attachment;
+                            attachment = new System.Net.Mail.Attachment(aa);
+                            message.Attachments.Add(attachment);
+                        }
+                    }
+                }                
+            }
+
+            message.Body = Body;
+
+            smtp1.Send(message);
+
         }
     }
 }

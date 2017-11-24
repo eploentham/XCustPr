@@ -5,6 +5,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Mail;
+using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -291,6 +293,10 @@ namespace XCustPr
                 System.IO.File.Delete(@sourceFile);
             }
         }
+        public void setConfig(String key, String value)
+        {
+            iniFile.Write(key, value);
+        }
         public void GetConfig()
         {
             initC.PathArchive = iniFile.Read("PathArchive");    //bit
@@ -339,6 +345,7 @@ namespace XCustPr
             initC.AutoRunPO008 = iniFile.Read("AutoRunPO008");
             initC.AutoValueSet = iniFile.Read("AutoValueSet");
             initC.AutoRunPO002 = iniFile.Read("AutoRunPO002");
+            initC.AutoRunPO006 = iniFile.Read("AutoRunPO006");
 
             initC.PathMaster = iniFile.Read("PathMaster");
 
@@ -859,6 +866,38 @@ namespace XCustPr
                 chk = date;
             }
             return chk;
+        }
+        public String FixLen(String str, String len, String chrFix)
+        {
+            String chk = "", aaa = "";
+            int len1 = 0;
+            if (int.TryParse(len, out len1))
+            {
+                if (len1 > str.Length)
+                {
+                    for (int i = 0; i < len1; i++)
+                    {
+                        aaa += chrFix;
+                    }
+                    chk = aaa + str;
+                    chk = chk.Substring(str.Length);
+                }
+                else
+                {
+                    chk = str.Substring(0, len1);
+                }
+            }
+            return chk;
+        }
+        
+        private AlternateView getEmbeddedImage(String filePath, String cid)
+        {
+            LinkedResource res = new LinkedResource(filePath);
+            res.ContentId = cid;
+            string htmlBody = "<img src=cid:" + res.ContentId + ">";
+            AlternateView alternateView = AlternateView.CreateAlternateViewFromString(htmlBody, null, MediaTypeNames.Text.Html);
+            alternateView.LinkedResources.Add(res);
+            return alternateView;
         }
     }
 }

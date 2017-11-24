@@ -208,7 +208,7 @@ namespace XCustPr
         private void btnRead_Click(object sender, EventArgs e)
         {
             lv1.Items.Clear();
-            filePO = cPo004.Cm.getFileinFolder(Cm.initC.PO004PathInitial, Cm.initC.PO004FileType);
+            filePO = Cm.getFileinFolder(Cm.initC.PO004PathInitial, Cm.initC.PO004FileType);
             cPo004.processLinfoxRCVPOtoErpPR(filePO, lv1, this, pB1);
             //1.ดึงข้อมูลตาม group by filename เพราะ field filename เป็นตัวแบ่งข้อมูลแต่ละfile
             //2.ดึงข้อมูล where ตาม filename เพื่อ validate ถ้า validate ผ่าน ก็ update validate_flag = 'Y'

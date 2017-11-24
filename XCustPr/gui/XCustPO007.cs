@@ -65,7 +65,7 @@ namespace XCustPr
             int i = 1;
             if (Cm.initC.PO003PathInitial.Equals(""))
             {
-                MessageBox.Show("Path Config PO003 ไม่ถูกต้อง", "");
+                MessageBox.Show("Path Config PO007 ไม่ถูกต้อง", "");
                 disableBtn();
                 return;
             }
