@@ -231,6 +231,33 @@ namespace XCustPr
             createFolder(initC.PO002PathInitial);
             createFolder(initC.PO002PathDestinaion);
         }
+        public void createFolderAP001()
+        {
+            if (initC.AP001PathInitial.Equals(""))
+            {
+                MessageBox.Show("Path AP001PathInitial empty", "createFolderAP001");
+                return;
+            }
+            if (initC.AP001PathProcess.Equals(""))
+            {
+                MessageBox.Show("Path AP001PathProcess empty", "createFolderAP001");
+                return;
+            }
+            if (initC.AP001PathError.Equals(""))
+            {
+                MessageBox.Show("Path AP001PathError empty", "createFolderAP001");
+                return;
+            }
+            if (initC.AP001PathArchive.Equals(""))
+            {
+                MessageBox.Show("Path AP001PathArchive empty", "createFolderAP001");
+                return;
+            }
+            createFolder(initC.AP001PathInitial);
+            createFolder(initC.AP001PathProcess);
+            createFolder(initC.AP001PathError);
+            createFolder(initC.AP001PathArchive);
+        }
         public void createFolderPO001PathProcess()
         {
             bool folderExists = Directory.Exists(initC.PathProcess);
@@ -398,6 +425,11 @@ namespace XCustPr
             initC.ExtractZipPathZipExtractRead = iniFile.Read("ExtractZipPathZipExtractRead").Trim();
             initC.ExtractZipPathZipExtract = iniFile.Read("ExtractZipPathZipExtract").Trim();
             initC.AutoRunExtractZip = iniFile.Read("AutoRunExtractZip").Trim();
+
+            initC.AP001PathArchive = iniFile.Read("AP001PathArchive").Trim();
+            initC.AP001PathError = iniFile.Read("AP001PathError").Trim();
+            initC.AP001PathInitial = iniFile.Read("AP001PathInitial").Trim();
+            initC.AP001PathProcess = iniFile.Read("AP001PathProcess").Trim();
 
             //initC.grdQuoColor = iniFile.Read("gridquotationcolor");
 

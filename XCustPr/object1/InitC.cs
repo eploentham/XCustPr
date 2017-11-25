@@ -70,6 +70,9 @@ namespace XCustPr
         public String PO006PathInitial = "", PO006ReRun="", Po006DeliveryDate="";
         public String ExtractZipPathZipExtractRead = "", ExtractZipPathZipExtract="";
 
-        
+        public String AP001PathInitial = "", AP001PathProcess = "", AP001PathError = "", AP001PathArchive = "";
+
+
+
     }
 }

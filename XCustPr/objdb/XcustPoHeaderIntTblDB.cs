@@ -90,7 +90,7 @@ namespace XCustPr
                     p.soldto_re_name + "','" + p.supplier_code + "','" + p.supplier_site_code + "','" +
                     p.vendor_contact + "','" + p.billto_bu_name + "','" + p.DOCUMENT_ID + "'" +
                     ") ";
-                chk = conn.ExecuteNonQueryAutoIncrement(sql, "kfc_po");
+                chk = conn.ExecuteNonQuery(sql, "kfc_po");
                 //chk = p.RowNumber;
                 //chk = p.Code;
             }

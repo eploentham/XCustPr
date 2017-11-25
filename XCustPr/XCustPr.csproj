@@ -69,6 +69,7 @@
     <Compile Include="Control\AnimationManager.cs" />
     <Compile Include="Control\Animations.cs" />
     <Compile Include="Control\ColorScheme.cs" />
+    <Compile Include="Control\ControlAP001.cs" />
     <Compile Include="Control\ControlExtractZip.cs" />
     <Compile Include="Control\ControlMain.cs" />
     <Compile Include="Control\ControlMasterDB.cs" />
@@ -132,6 +133,9 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="gui\XCustAP001.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="gui\XCustExtractZip.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -172,6 +176,8 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="objdb\ConnectDB.cs" />
+    <Compile Include="objdb\XcustApInvIntTblDB.cs" />
+    <Compile Include="objdb\XcustApInvLinesIntTblDB.cs" />
     <Compile Include="objdb\XcustBlanketAgreementHeaderTblDB.cs" />
     <Compile Include="objdb\XcustBlanketAgreementLinesTblDB.cs" />
     <Compile Include="objdb\XcustBuMstTblDB.cs" />
@@ -198,6 +204,9 @@
     <Compile Include="objdb\XcustPorReqHeaderIntAllDB.cs" />
     <Compile Include="objdb\XcustPorReqLineIntAllDB.cs" />
     <Compile Include="objdb\XcustPoTblDB.cs" />
+    <Compile Include="objdb\XcustSupInvoiceIntTblDB.cs" />
+    <Compile Include="object1\XcustApInvIntTbl.cs" />
+    <Compile Include="object1\XcustApInvLinesIntTbl.cs" />
     <Compile Include="object1\XcustPoReceiptTbl.cs" />
     <Compile Include="object1\XcustPoTbl.cs" />
     <Compile Include="objdb\XcustPrTblDB.cs" />
@@ -245,6 +254,7 @@
     <Compile Include="object1\XcustRcvHeadersIntAll.cs" />
     <Compile Include="object1\XcustRcvTransactionsIntAll.cs" />
     <Compile Include="object1\XcustSubinventoryMstTbl.cs" />
+    <Compile Include="object1\XcustSupInvoiceIntTbl.cs" />
     <Compile Include="object1\XcustSupplierMstTbl.cs" />
     <Compile Include="object1\XcustSupplierSiteMstTbl.cs" />
     <Compile Include="object1\XcustUomMstTbl.cs" />

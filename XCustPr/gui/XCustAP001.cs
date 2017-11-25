@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,7 +8,7 @@ using System.Windows.Forms;
 
 namespace XCustPr
 {
-    public class XCustPO002:Form
+    public class XCustAP001:Form
     {
         int gapLine = 5;
         int grd0 = 0, grd1 = 100, grd2 = 240, grd3 = 320, grd4 = 570, grd5 = 700, grd51 = 700, grd6 = 820, grd7 = 900, grd8 = 1070, grd9 = 1200;
@@ -26,14 +25,13 @@ namespace XCustPr
         Color cTxtL, cTxtE, cForm;
 
         ControlMain Cm;
-        ControlPO002 cPo002;
-        
+        ControlAP001 cAp001;
+
 
         private ListViewColumnSorter lvwColumnSorter;
         String[] filePO;
 
-
-        public XCustPO002(ControlMain cm)
+        public XCustAP001(ControlMain cm)
         {
             this.Size = new Size(formwidth, formheight);
             this.StartPosition = FormStartPosition.CenterScreen;
@@ -45,8 +43,8 @@ namespace XCustPr
         }
         private void initConfig()
         {
-            cPo002 = new ControlPO002(Cm);
-            
+            cAp001 = new ControlAP001(Cm);
+
             initCompoment();
             pB1.Visible = false;
             lvwColumnSorter = new ListViewColumnSorter();
@@ -69,7 +67,7 @@ namespace XCustPr
             btnFTP.Enabled = false;
             btnWebService.Enabled = false;
             btnEmail.Enabled = false;
-        }
+        } 
         private void initCompoment()
         {
             line1 = 35 + gapLine;
@@ -81,80 +79,80 @@ namespace XCustPr
             line5 = 270 + gapLine;
 
             lb1 = new MaterialLabel();
-            lb1.Font = cPo002.fV1;
+            lb1.Font = cAp001.fV1;
             lb1.Text = "Text File";
             lb1.AutoSize = true;
             Controls.Add(lb1);
-            lb1.Location = new System.Drawing.Point(cPo002.formFirstLineX, cPo002.formFirstLineY + gapLine);
+            lb1.Location = new System.Drawing.Point(cAp001.formFirstLineX, cAp001.formFirstLineY + gapLine);
 
             lb2 = new MaterialLabel();
-            lb2.Font = cPo002.fV1;
-            lb2.Text = "Program Name XcustPO002";
+            lb2.Font = cAp001.fV1;
+            lb2.Text = "Program Name XcustAP001";
             lb2.AutoSize = true;
             Controls.Add(lb2);
-            lb2.Location = new System.Drawing.Point(grd3, cPo002.formFirstLineY + gapLine);
+            lb2.Location = new System.Drawing.Point(grd3, cAp001.formFirstLineY + gapLine);
 
             txtFileName = new MaterialSingleLineTextField();
-            txtFileName.Font = cPo002.fV1;
+            txtFileName.Font = cAp001.fV1;
             txtFileName.Text = "";
             txtFileName.Size = new System.Drawing.Size(300 - grd1 - 20 - 30, ControlHeight);
             Controls.Add(txtFileName);
-            txtFileName.Location = new System.Drawing.Point(grd1, cPo002.formFirstLineY + gapLine);
+            txtFileName.Location = new System.Drawing.Point(grd1, cAp001.formFirstLineY + gapLine);
             txtFileName.Hint = lb1.Text;
-            txtFileName.Enter += txtFileName_Enter;
-            txtFileName.Leave += txtFileName_Leave;
+            txtFileName.Enter += TxtFileName_Enter;
+            txtFileName.Leave += TxtFileName_Leave;
 
 
             btnRead = new MaterialFlatButton();
-            btnRead.Font = cPo002.fV1;
+            btnRead.Font = cAp001.fV1;
             btnRead.Text = "1. mod up Read Text";
             btnRead.Size = new System.Drawing.Size(30, ControlHeight);
             Controls.Add(btnRead);
             btnRead.Location = new System.Drawing.Point(grd1, line1);
-            btnRead.Click += btnRead_Click;
+            btnRead.Click += BtnRead_Click;
 
             btnPrepare = new MaterialFlatButton();
-            btnPrepare.Font = cPo002.fV1;
+            btnPrepare.Font = cAp001.fV1;
             btnPrepare.Text = "2. prepare Data, zip file";
             btnPrepare.Size = new System.Drawing.Size(30, ControlHeight);
             Controls.Add(btnPrepare);
             btnPrepare.Location = new System.Drawing.Point(grd3, line1);
-            btnPrepare.Click += btnPrepare_Click;
+            btnPrepare.Click += BtnPrepare_Click;
 
             btnWebService = new MaterialFlatButton();
-            btnWebService.Font = cPo002.fV1;
+            btnWebService.Font = cAp001.fV1;
             btnWebService.Text = "3. Web Service";
             btnWebService.Size = new System.Drawing.Size(30, ControlHeight);
             Controls.Add(btnWebService);
             btnWebService.Location = new System.Drawing.Point(grd4, line1);
-            btnWebService.Click += btnWebService_Click;
+            btnWebService.Click += BtnWebService_Click;
 
             btnFTP = new MaterialFlatButton();
-            btnFTP.Font = cPo002.fV1;
+            btnFTP.Font = cAp001.fV1;
             btnFTP.Text = "4. FTP to linfox";
             btnFTP.Size = new System.Drawing.Size(30, ControlHeight);
             Controls.Add(btnFTP);
             btnFTP.Location = new System.Drawing.Point(grd5, line1);
-            btnFTP.Click += btnFTP_Click;
+            btnFTP.Click += BtnFTP_Click; ;
 
             btnEmail = new MaterialFlatButton();
-            btnEmail.Font = cPo002.fV1;
+            btnEmail.Font = cAp001.fV1;
             btnEmail.Text = "5. Send email ";
             btnEmail.Size = new System.Drawing.Size(30, ControlHeight);
             Controls.Add(btnEmail);
             btnEmail.Location = new System.Drawing.Point(grd1, line3);
-            btnEmail.Click += btnEmail_Click;
+            btnEmail.Click += BtnEmail_Click;
 
             pB1 = new MaterialProgressBar();
             Controls.Add(pB1);
             pB1.Size = new System.Drawing.Size(formwidth - 40, pB1.Height);
-            pB1.Location = new System.Drawing.Point(cPo002.formFirstLineX + 5, line41);
+            pB1.Location = new System.Drawing.Point(cAp001.formFirstLineX + 5, line41);
 
             lv1 = new MaterialListView();
-            lv1.Font = cPo002.fV1;
+            lv1.Font = cAp001.fV1;
             lv1.FullRowSelect = true;
             lv1.Size = new System.Drawing.Size(formwidth - 40, formheight - line3 - 100);
-            lv1.Location = new System.Drawing.Point(cPo002.formFirstLineX + 5, line42);
+            lv1.Location = new System.Drawing.Point(cAp001.formFirstLineX + 5, line42);
             lv1.FullRowSelect = true;
             lv1.View = View.Details;
             //lv1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -162,54 +160,40 @@ namespace XCustPr
 
             Controls.Add(lv1);
         }
-        private void btnRead_Click(object sender, EventArgs e)
-        {
-            //String cParams = "xcustprwebservice_run=on";
-            //string filename = Path.Combine("XCustPrWS.exe");
-            //Cm.runCommand(filename, cParams);
 
-            //cParams = "xcustpowebservice_run=on";
-            //filename = Path.Combine("XCustPoWS.exe");
-            //Cm.runCommand(filename, cParams);
-            
-            //cPo002.processWebService(lv1, this, pB1);
-            cPo002.processMapping(lv1, this, pB1);
-        }
-        private void btnPrepare_Click(object sender, EventArgs e)
-        {
-            cPo002.processGenTextLinfox(lv1, this, pB1);
-        }
-        private void btnWebService_Click(object sender, EventArgs e)
-        {
-
-        }
-        private void btnFTP_Click(object sender, EventArgs e)
-        {
-
-        }
-        private void btnEmail_Click(object sender, EventArgs e)
-        {
-
-        }
-        private void txtFileName_Leave(object sender, EventArgs e)
+        private void BtnEmail_Click(object sender, EventArgs e)
         {
             //throw new NotImplementedException();
-            txtFileName.BackColor = cTxtL;
         }
 
-        private void txtFileName_Enter(object sender, EventArgs e)
+        private void BtnFTP_Click(object sender, EventArgs e)
         {
             //throw new NotImplementedException();
-            txtFileName.BackColor = cTxtE;
         }
-        private ListViewItem AddToList(int col1, string col2, string col3)
-        {
-            string[] array = new string[3];
-            array[0] = col1.ToString();
-            array[1] = col2;
-            array[2] = col3;
 
-            return (new ListViewItem(array));
+        private void BtnWebService_Click(object sender, EventArgs e)
+        {
+            //throw new NotImplementedException();
+        }
+
+        private void BtnPrepare_Click(object sender, EventArgs e)
+        {
+            //throw new NotImplementedException();
+        }
+
+        private void BtnRead_Click(object sender, EventArgs e)
+        {
+            //throw new NotImplementedException();
+        }
+
+        private void TxtFileName_Leave(object sender, EventArgs e)
+        {
+            //throw new NotImplementedException();
+        }
+
+        private void TxtFileName_Enter(object sender, EventArgs e)
+        {
+            //throw new NotImplementedException();
         }
     }
 }

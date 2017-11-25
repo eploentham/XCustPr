@@ -74,6 +74,10 @@ namespace XCustPr
             {
                 Application.Run(new XcustPRWebService(Cm));
             }
+            else if (System.Diagnostics.Process.GetCurrentProcess().ProcessName.ToLower().Equals("xcustap001"))
+            {
+                Application.Run(new XCustAP001(Cm));
+            }
             else
             {
                 //Application.Run(new XCustPO008(Cm));
@@ -87,8 +91,9 @@ namespace XCustPr
                 //Application.Run(new XcustPRWebService(Cm));
                 //Application.Run(new XcustPOWebService(Cm));
                 //Application.Run(new XCustPO007(Cm));
-                Application.Run(new XCustPO006(Cm));
+                //Application.Run(new XCustPO006(Cm));
                 //Application.Run(new XCustPoRWebService(Cm));
+                Application.Run(new XCustAP001(Cm));
             }
         }
     }
