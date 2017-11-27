@@ -97,16 +97,16 @@ namespace XCustPr
                     xCAIIT.ATTRIBUTE8 + "," + xCAIIT.ATTRIBUTE9 + "," + xCAIIT.BUSINESS_UNIT + "," +
                     xCAIIT.DESCRIPTION + "," + xCAIIT.GLOBAL_ATTRIBUTE1 + "," + xCAIIT.GLOBAL_ATTRIBUTE11 + "," +
                     xCAIIT.GLOBAL_ATTRIBUTE12 + "," + xCAIIT.GLOBAL_ATTRIBUTE13 + "," + xCAIIT.GLOBAL_ATTRIBUTE14 + "," +
-                    xCAIIT.GLOBAL_ATTRIBUTE15 + "," + xCAIIT.GLOBAL_ATTRIBUTE16 + "," + xCAIIT.GLOBAL_ATTRIBUTE17 +
-                    xCAIIT.GLOBAL_ATTRIBUTE18 + "," + xCAIIT.GLOBAL_ATTRIBUTE19 + "," + xCAIIT.GLOBAL_ATTRIBUTE2 +
-                    xCAIIT.GLOBAL_ATTRIBUTE20 + "," + xCAIIT.GLOBAL_ATTRIBUTE3 + "," + xCAIIT.GLOBAL_ATTRIBUTE4 +
-                    xCAIIT.GLOBAL_ATTRIBUTE5 + "," + xCAIIT.GLOBAL_ATTRIBUTE6 + "," + xCAIIT.GLOBAL_ATTRIBUTE7 +
-                    xCAIIT.GLOBAL_ATTRIBUTE8 + "," + xCAIIT.GLOBAL_ATTRIBUTE9 + "," + xCAIIT.INVOICE_CUR_CODE +
-                    xCAIIT.INVOICE_DATE + "," + xCAIIT.INVOICE_ID + "," + xCAIIT.INVOICE_NUM +
-                    xCAIIT.INVOICE_TYPE_LOOKUP_CODE + "," + xCAIIT.LEGAL_ENTITY + "," + xCAIIT.PAYMENT_CURR_CODE +
-                    xCAIIT.PAYMENT_METHOD + "," + xCAIIT.PAY_GROUP + "," + xCAIIT.SOURCE +
-                    xCAIIT.SOURCE_FROM + "," + xCAIIT.TERMS_DATE + "," + xCAIIT.TERMS_NAME +
-                    xCAIIT.VENDOR_NAME + "," + xCAIIT.VENDOR_NUMBER + "," + xCAIIT.VENDOR_SITE_CODE +
+                    xCAIIT.GLOBAL_ATTRIBUTE15 + "," + xCAIIT.GLOBAL_ATTRIBUTE16 + "," + xCAIIT.GLOBAL_ATTRIBUTE17 + "," +
+                    xCAIIT.GLOBAL_ATTRIBUTE18 + "," + xCAIIT.GLOBAL_ATTRIBUTE19 + "," + xCAIIT.GLOBAL_ATTRIBUTE2 + "," +
+                    xCAIIT.GLOBAL_ATTRIBUTE20 + "," + xCAIIT.GLOBAL_ATTRIBUTE3 + "," + xCAIIT.GLOBAL_ATTRIBUTE4 + "," +
+                    xCAIIT.GLOBAL_ATTRIBUTE5 + "," + xCAIIT.GLOBAL_ATTRIBUTE6 + "," + xCAIIT.GLOBAL_ATTRIBUTE7 + "," +
+                    xCAIIT.GLOBAL_ATTRIBUTE8 + "," + xCAIIT.GLOBAL_ATTRIBUTE9 + "," + xCAIIT.INVOICE_CUR_CODE + "," +
+                    xCAIIT.INVOICE_DATE + "," + xCAIIT.INVOICE_ID + "," + xCAIIT.INVOICE_NUM + "," +
+                    xCAIIT.INVOICE_TYPE_LOOKUP_CODE + "," + xCAIIT.LEGAL_ENTITY + "," + xCAIIT.PAYMENT_CURR_CODE + "," +
+                    xCAIIT.PAYMENT_METHOD + "," + xCAIIT.PAY_GROUP + "," + xCAIIT.SOURCE + "," +
+                    xCAIIT.SOURCE_FROM + "," + xCAIIT.TERMS_DATE + "," + xCAIIT.TERMS_NAME + "," +
+                    xCAIIT.VENDOR_NAME + "," + xCAIIT.VENDOR_NUMBER + "," + xCAIIT.VENDOR_SITE_CODE + 
                     ") " +
                     "Values('" + p.ACCOUNTING_DATE + "','" + p.ACCTS_PAY + "','" + p.ATTRIBUTE1 + "','" +
                     p.ATTRIBUTE10 + "','" + p.ATTRIBUTE11 + "','" + p.ATTRIBUTE12 + "'," +

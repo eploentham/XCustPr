@@ -258,6 +258,39 @@ namespace XCustPr
             createFolder(initC.AP001PathError);
             createFolder(initC.AP001PathArchive);
         }
+        public void createFolderAP004()
+        {
+            if (initC.AP004PathInitial.Equals(""))
+            {
+                MessageBox.Show("Path AP004PathInitial empty", "createFolderAP004");
+                return;
+            }
+            if (initC.AP004PathProcess.Equals(""))
+            {
+                MessageBox.Show("Path AP004PathProcess empty", "createFolderAP004");
+                return;
+            }
+            if (initC.AP004PathError.Equals(""))
+            {
+                MessageBox.Show("Path AP004PathError empty", "createFolderAP004");
+                return;
+            }
+            if (initC.AP004PathArchive.Equals(""))
+            {
+                MessageBox.Show("Path AP004PathArchive empty", "createFolderAP004");
+                return;
+            }
+            if (initC.AP004ImportSource.Equals(""))
+            {
+                MessageBox.Show("Path AP004ImportSource empty", "createFolderAP004");
+                return;
+            }
+            createFolder(initC.AP004PathInitial);
+            createFolder(initC.AP004PathProcess);
+            createFolder(initC.AP004PathError);
+            createFolder(initC.AP004PathArchive);
+            createFolder(initC.AP004ImportSource);
+        }
         public void createFolderPO001PathProcess()
         {
             bool folderExists = Directory.Exists(initC.PathProcess);
@@ -430,6 +463,12 @@ namespace XCustPr
             initC.AP001PathError = iniFile.Read("AP001PathError").Trim();
             initC.AP001PathInitial = iniFile.Read("AP001PathInitial").Trim();
             initC.AP001PathProcess = iniFile.Read("AP001PathProcess").Trim();
+
+            initC.AP004PathArchive = iniFile.Read("AP004PathArchive").Trim();
+            initC.AP004PathError = iniFile.Read("AP004PathError").Trim();
+            initC.AP004PathInitial = iniFile.Read("AP004PathInitial").Trim();
+            initC.AP004PathProcess = iniFile.Read("AP004PathProcess").Trim();
+            initC.AP004ImportSource = iniFile.Read("AP004ImportSource").Trim();
 
             //initC.grdQuoColor = iniFile.Read("gridquotationcolor");
 

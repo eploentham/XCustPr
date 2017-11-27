@@ -71,6 +71,7 @@ namespace XCustPr
         public String ExtractZipPathZipExtractRead = "", ExtractZipPathZipExtract="";
 
         public String AP001PathInitial = "", AP001PathProcess = "", AP001PathError = "", AP001PathArchive = "";
+        public String AP004PathInitial = "", AP004PathProcess = "", AP004PathError = "", AP004PathArchive = "", AP004ImportSource="";
 
 
 

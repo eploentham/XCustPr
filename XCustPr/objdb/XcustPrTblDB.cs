@@ -99,10 +99,17 @@ namespace XCustPr
             }
             return chk;
         }
-        public DataTable selectPO007FixLen()
+        public DataTable selectPO007FixLenHeader()
         {
             DataTable dt = new DataTable();
-            String sql = "Select * From XCUST_FIX_LENGTH_TBL Where CUSTOMIZATION_NAME = 'PO007' Order By X_SEQ ";
+            String sql = "Select * From XCUST_FIX_LENGTH_TBL Where CUSTOMIZATION_NAME = 'PO007' and X_LEVEL = 'HEADER' Order By X_LEVEL, X_SEQ ";
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
+        }
+        public DataTable selectPO007FixLenLine()
+        {
+            DataTable dt = new DataTable();
+            String sql = "Select * From XCUST_FIX_LENGTH_TBL Where CUSTOMIZATION_NAME = 'PO007' and X_LEVEL = 'LINE' Order By X_LEVEL, X_SEQ ";
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }

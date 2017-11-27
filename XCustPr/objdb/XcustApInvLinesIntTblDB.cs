@@ -101,7 +101,7 @@ namespace XCustPr
                     xCAILIT.LINE_NUMBER + "," + xCAILIT.PO_LINE_NUMBER + "," + xCAILIT.PO_NUMBER + "," +
                     xCAILIT.PRICE + "," + xCAILIT.QUANTITY + "," + xCAILIT.RECEIPT_LINE_NUMBER + "," +
                     xCAILIT.RECEIPT_NUMBER + "," + xCAILIT.TAX_CLASSIFICATION_CODE + "," + xCAILIT.TAX_RATE + "," +
-                    xCAILIT.TAX_REGIME_CODE + "'" +
+                    xCAILIT.TAX_REGIME_CODE + " " +
                     ") " +
                     "Values('" + p.ATTRIBUTE1 + "','" + p.ATTRIBUTE10 + "','" + p.ATTRIBUTE11 + "','" +
                     p.ATTRIBUTE12 + "','" + p.ATTRIBUTE13 + "','" + p.ATTRIBUTE14 + "'," +

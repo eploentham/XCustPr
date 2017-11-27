@@ -25,6 +25,7 @@ namespace XCustPr
 
         public XcustPorReqLineIntAllDB xCPRLIADB;
         public XcustPorReqDistIntAllDB xCPRDIADB;
+
         public XcustBuMstTblDB xCBMTDB;
         public XcustDeriverLocatorMstTblDB xCDLMTDB;
         public XcustDeriverOrganizationMstTblDB xCDOMTDB;

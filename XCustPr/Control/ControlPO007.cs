@@ -98,7 +98,7 @@ namespace XCustPr
             getListXcUMT();
 
             DataTable dt007 = new DataTable();
-            DataTable dtFixLen = xCPrTDB.selectPO007FixLen();
+            DataTable dtFixLen = xCPrTDB.selectPO007FixLenLine();
             dt007 = xCPrTDB.selectPRPO007();
             if (dt007.Rows.Count>0)
             {
