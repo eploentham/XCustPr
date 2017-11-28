@@ -204,11 +204,12 @@ namespace XCustPr
         {
             //throw new NotImplementedException();
             lv1.Items.Clear();
-            filePO = Cm.getFileinFolder(Cm.initC.AP004PathInitial,"sum");
-            //cAp004.processTextFileUinfo(filePO, lv1, this, pB1);
-
-            filePO = Cm.getFileinFolder(Cm.initC.AP004PathInitial, "detail");
+            // ePO = Cm.getFileinFolder(Cm.initC.AP004PathInitial,"header");
+            filePO = Cm.getFileinFolder(Cm.initC.AP004PathInitial);
             cAp004.processTextFileUinfo(filePO, lv1, this, pB1);
+
+            //filePO = Cm.getFileinFolder(Cm.initC.AP004PathInitial, "detail");
+            //cAp004.processTextFileUinfo(filePO, lv1, this, pB1);
         }
 
         private void TxtFileName_Leave(object sender, EventArgs e)

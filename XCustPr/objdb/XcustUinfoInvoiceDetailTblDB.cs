@@ -13,7 +13,7 @@ namespace XCustPr
         ConnectDB conn;
         private InitC initC;
 
-        public XcustPrTblDB xCPrTDB;
+        
 
         public XcustUinfoInvoiceDetailTblDB(ConnectDB c, InitC initc)
         {
@@ -23,8 +23,6 @@ namespace XCustPr
         }
         private void initConfig()
         {
-            xCPrTDB = new XcustPrTblDB(conn, initC);
-
             xCUiIDT = new XcustUinfoInvoiceDetailTbl();
             xCUiIDT.bu = "bu";
             xCUiIDT.company = "company";
@@ -82,46 +80,46 @@ namespace XCustPr
             String sql = "Delete From " + xCUiIDT.table;
             conn.ExecuteNonQuery(sql, "kfc_po");
         }
-        public void insertBluk(List<String> uinfo, String filename, String host, MaterialProgressBar pB1)
+        public void insertBluk(List<String> uinfo, DataTable dtFixLen, String filename, String host, MaterialProgressBar pB1)
         {
-            DataTable dtFixLen = xCPrTDB.selectPO007FixLenLine();
-            
             foreach(String aa in uinfo)
             {
                 if (aa.Length <= 400) continue;
-                xCUiIDT.trans_date = aa.Substring(0, int.Parse(dtFixLen.Rows[0]["X_LENGTH"].ToString()));
-                xCUiIDT.company = aa.Substring(int.Parse(dtFixLen.Rows[1]["X_START_POSITION"].ToString())-1, int.Parse(dtFixLen.Rows[1]["X_LENGTH"].ToString()));
-                xCUiIDT.po_document_type = aa.Substring(int.Parse(dtFixLen.Rows[2]["X_START_POSITION"].ToString())-1, int.Parse(dtFixLen.Rows[2]["X_LENGTH"].ToString()));
-                xCUiIDT.po_code = aa.Substring(int.Parse(dtFixLen.Rows[3]["X_START_POSITION"].ToString())-1, int.Parse(dtFixLen.Rows[3]["X_LENGTH"].ToString()));
-                xCUiIDT.supplier_code = aa.Substring(int.Parse(dtFixLen.Rows[4]["X_START_POSITION"].ToString())-1, int.Parse(dtFixLen.Rows[4]["X_LENGTH"].ToString()));
-                xCUiIDT.po_line_no = aa.Substring(int.Parse(dtFixLen.Rows[5]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[5]["X_LENGTH"].ToString()));
-                xCUiIDT.item_code = aa.Substring(int.Parse(dtFixLen.Rows[6]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[6]["X_LENGTH"].ToString()));
-                xCUiIDT.description1 = aa.Substring(int.Parse(dtFixLen.Rows[7]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[7]["X_LENGTH"].ToString()));
-                xCUiIDT.description2 = aa.Substring(int.Parse(dtFixLen.Rows[8]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[8]["X_LENGTH"].ToString()));
-                xCUiIDT.po_receipt_amt = aa.Substring(int.Parse(dtFixLen.Rows[9]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[9]["X_LENGTH"].ToString()));
-                xCUiIDT.po_tax_code = aa.Substring(int.Parse(dtFixLen.Rows[10]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[10]["X_LENGTH"].ToString()));
+                XcustUinfoInvoiceDetailTbl item = new XcustUinfoInvoiceDetailTbl();
+                item.trans_date = aa.Substring(0, int.Parse(dtFixLen.Rows[0]["X_LENGTH"].ToString()));
+                item.company = aa.Substring(int.Parse(dtFixLen.Rows[1]["X_START_POSITION"].ToString())-1, int.Parse(dtFixLen.Rows[1]["X_LENGTH"].ToString()));
+                item.po_document_type = aa.Substring(int.Parse(dtFixLen.Rows[2]["X_START_POSITION"].ToString())-1, int.Parse(dtFixLen.Rows[2]["X_LENGTH"].ToString()));
+                item.po_code = aa.Substring(int.Parse(dtFixLen.Rows[3]["X_START_POSITION"].ToString())-1, int.Parse(dtFixLen.Rows[3]["X_LENGTH"].ToString()));
+                item.supplier_code = aa.Substring(int.Parse(dtFixLen.Rows[4]["X_START_POSITION"].ToString())-1, int.Parse(dtFixLen.Rows[4]["X_LENGTH"].ToString()));
+                item.po_line_no = aa.Substring(int.Parse(dtFixLen.Rows[5]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[5]["X_LENGTH"].ToString()));
+                item.item_code = aa.Substring(int.Parse(dtFixLen.Rows[6]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[6]["X_LENGTH"].ToString()));
+                item.description1 = aa.Substring(int.Parse(dtFixLen.Rows[7]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[7]["X_LENGTH"].ToString()));
+                item.description2 = aa.Substring(int.Parse(dtFixLen.Rows[8]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[8]["X_LENGTH"].ToString()));
+                item.po_receipt_amt = aa.Substring(int.Parse(dtFixLen.Rows[9]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[9]["X_LENGTH"].ToString()));
+                item.po_tax_code = aa.Substring(int.Parse(dtFixLen.Rows[10]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[10]["X_LENGTH"].ToString()));
 
-                xCUiIDT.po_tax_type = aa.Substring(int.Parse(dtFixLen.Rows[11]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[11]["X_LENGTH"].ToString()));
-                xCUiIDT.po_account_code = aa.Substring(int.Parse(dtFixLen.Rows[12]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[12]["X_LENGTH"].ToString()));
-                xCUiIDT.qty = aa.Substring(int.Parse(dtFixLen.Rows[13]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[13]["X_LENGTH"].ToString()));
-                xCUiIDT.uom_code = aa.Substring(int.Parse(dtFixLen.Rows[14]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[14]["X_LENGTH"].ToString()));
-                xCUiIDT.unit_price = aa.Substring(int.Parse(dtFixLen.Rows[15]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[15]["X_LENGTH"].ToString()));
-                xCUiIDT.sub_ledger = aa.Substring(int.Parse(dtFixLen.Rows[16]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[16]["X_LENGTH"].ToString()));
-                xCUiIDT.Sub_ledger_type = aa.Substring(int.Parse(dtFixLen.Rows[17]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[17]["X_LENGTH"].ToString()));
-                xCUiIDT.reference1 = aa.Substring(int.Parse(dtFixLen.Rows[18]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[18]["X_LENGTH"].ToString()));
-                xCUiIDT.reference2 = aa.Substring(int.Parse(dtFixLen.Rows[19]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[19]["X_LENGTH"].ToString()));
-                xCUiIDT.remark = aa.Substring(int.Parse(dtFixLen.Rows[20]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[20]["X_LENGTH"].ToString()));
+                item.po_tax_type = aa.Substring(int.Parse(dtFixLen.Rows[11]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[11]["X_LENGTH"].ToString()));
+                item.po_account_code = aa.Substring(int.Parse(dtFixLen.Rows[12]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[12]["X_LENGTH"].ToString()));
+                item.qty = aa.Substring(int.Parse(dtFixLen.Rows[13]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[13]["X_LENGTH"].ToString()));
+                item.uom_code = aa.Substring(int.Parse(dtFixLen.Rows[14]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[14]["X_LENGTH"].ToString()));
+                item.unit_price = aa.Substring(int.Parse(dtFixLen.Rows[15]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[15]["X_LENGTH"].ToString()));
+                item.sub_ledger = aa.Substring(int.Parse(dtFixLen.Rows[16]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[16]["X_LENGTH"].ToString()));
+                item.Sub_ledger_type = aa.Substring(int.Parse(dtFixLen.Rows[17]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[17]["X_LENGTH"].ToString()));
+                item.reference1 = aa.Substring(int.Parse(dtFixLen.Rows[18]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[18]["X_LENGTH"].ToString()));
+                item.reference2 = aa.Substring(int.Parse(dtFixLen.Rows[19]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[19]["X_LENGTH"].ToString()));
+                item.remark = aa.Substring(int.Parse(dtFixLen.Rows[20]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[20]["X_LENGTH"].ToString()));
 
-                xCUiIDT.po_line_type = aa.Substring(int.Parse(dtFixLen.Rows[21]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[21]["X_LENGTH"].ToString()));
-                xCUiIDT.payment_term = aa.Substring(int.Parse(dtFixLen.Rows[22]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[22]["X_LENGTH"].ToString()));
-                xCUiIDT.bu = aa.Substring(int.Parse(dtFixLen.Rows[23]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[23]["X_LENGTH"].ToString()));
-                xCUiIDT.currency_mode = aa.Substring(int.Parse(dtFixLen.Rows[24]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[24]["X_LENGTH"].ToString()));
-                xCUiIDT.currency_code = aa.Substring(int.Parse(dtFixLen.Rows[25]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[25]["X_LENGTH"].ToString()));
-                xCUiIDT.receipt_number = aa.Substring(int.Parse(dtFixLen.Rows[26]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[26]["X_LENGTH"].ToString()));
-                xCUiIDT.receipt_type = aa.Substring(int.Parse(dtFixLen.Rows[27]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[27]["X_LENGTH"].ToString()));
+                item.po_line_type = aa.Substring(int.Parse(dtFixLen.Rows[21]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[21]["X_LENGTH"].ToString()));
+                item.payment_term = aa.Substring(int.Parse(dtFixLen.Rows[22]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[22]["X_LENGTH"].ToString()));
+                item.bu = aa.Substring(int.Parse(dtFixLen.Rows[23]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[23]["X_LENGTH"].ToString()));
+                item.currency_mode = aa.Substring(int.Parse(dtFixLen.Rows[24]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[24]["X_LENGTH"].ToString()));
+                item.currency_code = aa.Substring(int.Parse(dtFixLen.Rows[25]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[25]["X_LENGTH"].ToString()));
+                item.receipt_number = aa.Substring(int.Parse(dtFixLen.Rows[26]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[26]["X_LENGTH"].ToString()));
+                item.receipt_type = aa.Substring(int.Parse(dtFixLen.Rows[27]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[27]["X_LENGTH"].ToString()));
                 //xCUiIDT.po_line_no = aa.Substring(int.Parse(dtFixLen.Rows[2]["X_LENGTH"].ToString()), int.Parse(dtFixLen.Rows[3]["X_LENGTH"].ToString()));
                 //xCUiIDT.supplier_code = aa.Substring(int.Parse(dtFixLen.Rows[2]["X_LENGTH"].ToString()), int.Parse(dtFixLen.Rows[3]["X_LENGTH"].ToString()));
                 //xCUiIDT.supplier_code = aa.Substring(int.Parse(dtFixLen.Rows[2]["X_LENGTH"].ToString()), int.Parse(dtFixLen.Rows[3]["X_LENGTH"].ToString()));
+                insert(item);
             }
         }
         private String insert(XcustUinfoInvoiceDetailTbl p)

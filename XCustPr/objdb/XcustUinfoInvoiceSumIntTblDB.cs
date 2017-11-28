@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,6 +39,25 @@ namespace XCustPr
             String sql = "Delete From " + xCUiISIT.table;
             conn.ExecuteNonQuery(sql, "kfc_po");
         }
+        public void insertBluk(List<String> uinfo, DataTable dtFixLen, String filename, String host, MaterialProgressBar pB1)
+        {
+            foreach (String aa in uinfo)
+            {
+                if (aa.Length <= 90) continue;
+                XcustUinfoInvoiceSumIntTbl item = new XcustUinfoInvoiceSumIntTbl();
+                item.BASE_AMOUNT = aa.Substring(0, int.Parse(dtFixLen.Rows[0]["X_LENGTH"].ToString()));
+                item.ERROR_MSG = aa.Substring(int.Parse(dtFixLen.Rows[1]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[0]["X_LENGTH"].ToString()));
+                item.FLIE_NAME = aa.Substring(int.Parse(dtFixLen.Rows[2]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[0]["X_LENGTH"].ToString()));
+                item.GL_DATE = aa.Substring(int.Parse(dtFixLen.Rows[31]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[0]["X_LENGTH"].ToString()));
+                item.INVOICE_DATE = aa.Substring(int.Parse(dtFixLen.Rows[4]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[0]["X_LENGTH"].ToString()));
+                item.INVOICE_NUM = aa.Substring(int.Parse(dtFixLen.Rows[5]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[0]["X_LENGTH"].ToString())); ;
+                item.PROCESS_FLAG = aa.Substring(int.Parse(dtFixLen.Rows[6]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[0]["X_LENGTH"].ToString()));
+                item.SUPPLIER_NUM = aa.Substring(int.Parse(dtFixLen.Rows[7]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[0]["X_LENGTH"].ToString()));
+                item.TAX_AMOUNT = aa.Substring(int.Parse(dtFixLen.Rows[8]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[0]["X_LENGTH"].ToString()));
+                item.VALIDATE_FLAG = aa.Substring(int.Parse(dtFixLen.Rows[9]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[0]["X_LENGTH"].ToString()));
+                insert(item);
+            }
+        }
         public String insert(XcustUinfoInvoiceSumIntTbl p)
         {
             String sql = "", chk = "";
@@ -63,7 +83,7 @@ namespace XCustPr
                     
                     ") ";
                 chk = conn.ExecuteNonQuery(sql, "kfc_po");
-                //chk = p.RowNumber;
+                //chk = p.RowNumber;                                                                                                                   
                 //chk = p.Code;
             }
             catch (Exception ex)

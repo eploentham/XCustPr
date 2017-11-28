@@ -27,6 +27,7 @@ namespace XCustPr
 
         public XcustUinfoInvoiceDetailTblDB xCUiIDTDB;
         public XcustUinfoInvoiceSumIntTblDB xCUiISITDB;
+        public XcustPrTblDB xCPrTDB;
 
         public XcustBuMstTblDB xCBMTDB;
         public XcustDeriverLocatorMstTblDB xCDLMTDB;
@@ -59,6 +60,7 @@ namespace XCustPr
 
             xCUiIDTDB = new XcustUinfoInvoiceDetailTblDB(conn, Cm.initC);
             xCUiISITDB = new XcustUinfoInvoiceSumIntTblDB(conn, Cm.initC);
+            xCPrTDB = new XcustPrTblDB(conn, Cm.initC);
 
             xCBMTDB = new XcustBuMstTblDB(conn, Cm.initC);
             xCDLMTDB = new XcustDeriverLocatorMstTblDB(conn, Cm.initC);
@@ -112,13 +114,23 @@ namespace XCustPr
             // insert xcust_mmx_pr_int_tbl
             filePOProcess = Cm.getFileinFolder(Cm.initC.AP004PathProcess);
             addListView("อ่าน file จาก " + Cm.initC.AP004PathProcess, "", lv1, form1);
+            DataTable dtFixLen = xCPrTDB.selectPO007FixLenLine();
+            DataTable dtFixLenH = xCPrTDB.selectPO007FixLenHeader();
             foreach (string aa in filePOProcess)
             {
                 List<String> rcv = rd.ReadTextFile(aa);
                 addListView("insert temp table " + aa, "", lv1, form1);
                 //conn.BulkToMySQL("kfc_po", linfox);       // ย้ายจาก MySQL ไป MSSQL   
                 pB1.Visible = true;
-                xCUiIDTDB.insertBluk(rcv, aa, "kfc_po", pB1);
+                if (aa.Replace(Cm.initC.AP004PathProcess,"").IndexOf("detail")>=0)
+                {
+                    xCUiIDTDB.insertBluk(rcv, dtFixLen, aa, "kfc_po", pB1);
+                }
+                else
+                {
+                    xCUiISITDB.insertBluk(rcv, dtFixLenH, aa, "kfc_po", pB1);
+                }
+                
                 pB1.Visible = false;
             }
         }
