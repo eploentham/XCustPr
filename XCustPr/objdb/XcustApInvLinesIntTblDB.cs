@@ -84,6 +84,20 @@ namespace XCustPr
                 //}
                 //p.RowNumber = selectMaxRowNumber(p.YearId);
                 //p.Active = "1";
+                p.INVOICE_ID = p.INVOICE_ID.Equals("0") ? "" : p.INVOICE_ID;
+                p.LINE_NUMBER = p.LINE_NUMBER.Equals("0") ? "" : p.LINE_NUMBER;
+                p.INVOICE_AMOUNT = p.INVOICE_AMOUNT.Equals("0") ? "" : p.INVOICE_AMOUNT;
+                p.QUANTITY = p.QUANTITY.Equals("0") ? "" : p.QUANTITY;
+                p.PRICE = p.PRICE.Equals("0") ? "" : p.PRICE;
+                p.PO_LINE_NUMBER = p.PO_LINE_NUMBER.Equals("0") ? "" : p.PO_LINE_NUMBER;
+                p.RECEIPT_LINE_NUMBER = p.RECEIPT_LINE_NUMBER.Equals("0") ? "" : p.RECEIPT_LINE_NUMBER;
+                p.TAX_RATE = p.TAX_RATE.Equals("0") ? "" : p.TAX_RATE;
+                //p.TAX_RATE = p.TAX_RATE.Equals("0") ? "" : p.TAX_RATE;
+
+                p.PRICE = String.Concat(Double.Parse(p.PRICE));
+                p.QUANTITY = String.Concat(Double.Parse(p.QUANTITY));
+                p.INVOICE_AMOUNT = String.Concat(Double.Parse(p.INVOICE_AMOUNT));
+
                 String last_update_by = "0", creation_by = "0";
                 sql = "Insert Into " + xCAILIT.table + "(" + xCAILIT.ATTRIBUTE1 + "," + xCAILIT.ATTRIBUTE10 + "," + xCAILIT.ATTRIBUTE11 + "," +
                     xCAILIT.ATTRIBUTE12 + "," + xCAILIT.ATTRIBUTE13 + "," + xCAILIT.ATTRIBUTE14 + "," +
@@ -104,7 +118,7 @@ namespace XCustPr
                     xCAILIT.TAX_REGIME_CODE + " " +
                     ") " +
                     "Values('" + p.ATTRIBUTE1 + "','" + p.ATTRIBUTE10 + "','" + p.ATTRIBUTE11 + "','" +
-                    p.ATTRIBUTE12 + "','" + p.ATTRIBUTE13 + "','" + p.ATTRIBUTE14 + "'," +
+                    p.ATTRIBUTE12 + "','" + p.ATTRIBUTE13 + "','" + p.ATTRIBUTE14 + "','" +
                     p.ATTRIBUTE15 + "','" + p.ATTRIBUTE2 + "','" + p.ATTRIBUTE3 + "','" +
                     p.ATTRIBUTE4 + "','" + p.ATTRIBUTE5 + "','" + p.ATTRIBUTE6 + "','" +
                     p.ATTRIBUTE7 + "','" + p.ATTRIBUTE8 + "','" + p.ATTRIBUTE9 + "','" +

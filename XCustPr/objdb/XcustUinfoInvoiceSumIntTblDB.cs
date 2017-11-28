@@ -39,22 +39,34 @@ namespace XCustPr
             String sql = "Delete From " + xCUiISIT.table;
             conn.ExecuteNonQuery(sql, "kfc_po");
         }
+        public DataTable selectAll()
+        {
+            DataTable dt = new DataTable();
+            String sql = "select * From " + xCUiISIT.table;
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
+        }
         public void insertBluk(List<String> uinfo, DataTable dtFixLen, String filename, String host, MaterialProgressBar pB1)
         {
             foreach (String aa in uinfo)
             {
                 if (aa.Length <= 90) continue;
                 XcustUinfoInvoiceSumIntTbl item = new XcustUinfoInvoiceSumIntTbl();
-                item.BASE_AMOUNT = aa.Substring(0, int.Parse(dtFixLen.Rows[0]["X_LENGTH"].ToString()));
-                item.ERROR_MSG = aa.Substring(int.Parse(dtFixLen.Rows[1]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[0]["X_LENGTH"].ToString()));
-                item.FLIE_NAME = aa.Substring(int.Parse(dtFixLen.Rows[2]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[0]["X_LENGTH"].ToString()));
-                item.GL_DATE = aa.Substring(int.Parse(dtFixLen.Rows[31]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[0]["X_LENGTH"].ToString()));
-                item.INVOICE_DATE = aa.Substring(int.Parse(dtFixLen.Rows[4]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[0]["X_LENGTH"].ToString()));
-                item.INVOICE_NUM = aa.Substring(int.Parse(dtFixLen.Rows[5]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[0]["X_LENGTH"].ToString())); ;
-                item.PROCESS_FLAG = aa.Substring(int.Parse(dtFixLen.Rows[6]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[0]["X_LENGTH"].ToString()));
-                item.SUPPLIER_NUM = aa.Substring(int.Parse(dtFixLen.Rows[7]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[0]["X_LENGTH"].ToString()));
-                item.TAX_AMOUNT = aa.Substring(int.Parse(dtFixLen.Rows[8]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[0]["X_LENGTH"].ToString()));
-                item.VALIDATE_FLAG = aa.Substring(int.Parse(dtFixLen.Rows[9]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[0]["X_LENGTH"].ToString()));
+                item.INVOICE_DATE = aa.Substring(0, int.Parse(dtFixLen.Rows[0]["X_LENGTH"].ToString())).Trim();
+                item.INVOICE_NUM = aa.Substring(int.Parse(dtFixLen.Rows[1]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[0]["X_LENGTH"].ToString())).Trim();
+                item.SUPPLIER_NUM = aa.Substring(int.Parse(dtFixLen.Rows[2]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[0]["X_LENGTH"].ToString())).Trim();
+                item.BASE_AMOUNT = aa.Substring(int.Parse(dtFixLen.Rows[3]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[0]["X_LENGTH"].ToString())).Trim();
+                item.TAX_AMOUNT = aa.Substring(int.Parse(dtFixLen.Rows[4]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[0]["X_LENGTH"].ToString())).Trim();
+                item.GL_DATE = aa.Substring(int.Parse(dtFixLen.Rows[5]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[0]["X_LENGTH"].ToString())).Trim();
+                item.FLIE_NAME = filename.Trim().Replace(initC.AP004PathProcess,"").Trim();
+                item.VALIDATE_FLAG = "";
+                item.PROCESS_FLAG = "";
+                item.ERROR_MSG = "";
+
+                item.INVOICE_DATE = item.dateShowToDB(item.INVOICE_DATE);
+                item.GL_DATE = item.dateShowToDB(item.GL_DATE);
+                item.TAX_AMOUNT = item.TAX_AMOUNT.Replace(",","").Replace(".00", "");
+                item.BASE_AMOUNT = item.TAX_AMOUNT.Replace(",", "").Replace(".00", "");
                 insert(item);
             }
         }
@@ -77,7 +89,7 @@ namespace XCustPr
                                         
                     ") " +
                     "Values('" + p.BASE_AMOUNT + "','" + p.ERROR_MSG + "','" + p.FLIE_NAME + "','" +
-                    p.GL_DATE + "','" + p.INVOICE_DATE + "','" + p.INVOICE_NUM + "'," +
+                    p.GL_DATE + "','" + p.INVOICE_DATE + "','" + p.INVOICE_NUM + "','" +
                     p.PROCESS_FLAG + "','" + p.SUPPLIER_NUM + "','" + p.TAX_AMOUNT + "','" +
                     p.VALIDATE_FLAG + "' " + 
                     

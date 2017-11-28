@@ -209,7 +209,8 @@ namespace XCustPr
             cAp004.processTextFileUinfo(filePO, lv1, this, pB1);
 
             //filePO = Cm.getFileinFolder(Cm.initC.AP004PathInitial, "detail");
-            //cAp004.processTextFileUinfo(filePO, lv1, this, pB1);
+            cAp004.processGetTempTableToValidate(lv1, this, pB1);
+            cAp004.processInsertTable(lv1, this, pB1);
         }
 
         private void TxtFileName_Leave(object sender, EventArgs e)

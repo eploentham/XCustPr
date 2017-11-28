@@ -109,7 +109,7 @@ namespace XCustPr
                     xCAIIT.VENDOR_NAME + "," + xCAIIT.VENDOR_NUMBER + "," + xCAIIT.VENDOR_SITE_CODE + 
                     ") " +
                     "Values('" + p.ACCOUNTING_DATE + "','" + p.ACCTS_PAY + "','" + p.ATTRIBUTE1 + "','" +
-                    p.ATTRIBUTE10 + "','" + p.ATTRIBUTE11 + "','" + p.ATTRIBUTE12 + "'," +
+                    p.ATTRIBUTE10 + "','" + p.ATTRIBUTE11 + "','" + p.ATTRIBUTE12 + "','" +
                     p.ATTRIBUTE13 + "','" + p.ATTRIBUTE14 + "','" + p.ATTRIBUTE15 + "','" +
                     p.ATTRIBUTE2 + "','" + p.ATTRIBUTE3 + "','" + p.ATTRIBUTE4 + "','" +
                     p.ATTRIBUTE5 + "','" + p.ATTRIBUTE6 + "','" + p.ATTRIBUTE7 + "','" +

@@ -16,6 +16,23 @@ namespace XCustPr
         {
             return r.Next().ToString();
         }
+        public String dateShowToDB(String date)
+        {
+            String chk = "", year = "", month = "", day = "";
+            if (date.Length > 4)
+            {
+                day = date.Substring(0,2);
+                month = date.Substring(3, 2);
+                year = date.Substring(6, 4);
+
+                chk = year + "-" + month + "-" + day;
+            }
+            else
+            {
+                chk = date;
+            }
+            return chk;
+        }
         public String dateYearToDB(String date)
         {
             String chk = "", year = "", month = "", day = "";
@@ -31,8 +48,6 @@ namespace XCustPr
             {
                 chk = date;
             }
-            
-
             return chk;
         }
         public String dateTimeYearToDB(String datetime)
