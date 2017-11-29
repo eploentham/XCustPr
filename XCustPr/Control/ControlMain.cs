@@ -23,11 +23,11 @@ namespace XCustPr
         private StringBuilder sMonth = new StringBuilder();
         private StringBuilder sDay = new StringBuilder();
         public string[] args;
-        public String xcustpowebservice_run="", xcustprwebservice_run="";
+        public String xcustpowebservice_run = "", xcustprwebservice_run = "";
 
         public ControlMain()
         {
-            initConfig();            
+            initConfig();
         }
         private void initConfig()
         {
@@ -328,7 +328,7 @@ namespace XCustPr
             {
                 filePaths = Directory.GetFiles(@path);
             }
-             
+
             return filePaths;
         }
         public String[] getFileinFolder(String path, String app)
@@ -337,7 +337,7 @@ namespace XCustPr
             String filename = "";
             if (Directory.Exists(path))
             {
-                filePaths = Directory.GetFiles(@path, "*"+app+"*");
+                filePaths = Directory.GetFiles(@path, "*" + app + "*");
             }
 
             return filePaths;
@@ -463,6 +463,9 @@ namespace XCustPr
             initC.AP001PathError = iniFile.Read("AP001PathError").Trim();
             initC.AP001PathInitial = iniFile.Read("AP001PathInitial").Trim();
             initC.AP001PathProcess = iniFile.Read("AP001PathProcess").Trim();
+            initC.AP001ImportSource = iniFile.Read("AP001ImportSource").Trim();
+            initC.AP001LEGAL_ENTITY = iniFile.Read("AP001LEGAL_ENTITY").Trim();
+            initC.AP001INVOICE_TYPE = iniFile.Read("AP001INVOICE_TYPE").Trim();
 
             initC.AP004PathArchive = iniFile.Read("AP004PathArchive").Trim();
             initC.AP004PathError = iniFile.Read("AP004PathError").Trim();
@@ -493,7 +496,7 @@ namespace XCustPr
         }
         public String dateYearShortToDB(String date)
         {
-            String chk = "", year = "", month="", day="";
+            String chk = "", year = "", month = "", day = "";
 
             year = date.Substring(date.Length - 2);
             day = date.Substring(4, 2);
@@ -641,7 +644,7 @@ namespace XCustPr
             }
             return chk;
         }
-        public Boolean validateValueBySegment1(String valuesetcode, String enableflag, String value,List<XcustValueSetMstTbl> listXcVSMT)
+        public Boolean validateValueBySegment1(String valuesetcode, String enableflag, String value, List<XcustValueSetMstTbl> listXcVSMT)
         {
             Boolean chk = false;
             foreach (XcustValueSetMstTbl item in listXcVSMT)
@@ -757,13 +760,13 @@ namespace XCustPr
         }
         public void logProcess(String programname, List<ValidatePrPo> lVPr, String startdatetime, List<ValidateFileName> listfile)
         {
-            String line1 = "", parameter="", programstart="", filename="", recordError="", txt="";
-            int cntErr = 0, err=0;
+            String line1 = "", parameter = "", programstart = "", filename = "", recordError = "", txt = "";
+            int cntErr = 0, err = 0;
             if (programname.ToLower().Equals("xcustpo001"))
             {
                 line1 = "Program : XCUST Interface PR<Linfox>To PO(ERP)" + Environment.NewLine;
             }
-            parameter = "Parameter : "+Environment.NewLine;
+            parameter = "Parameter : " + Environment.NewLine;
             parameter += "           Path Initial :" + initC.PathInitial + Environment.NewLine;
             parameter += "           Path Process :" + initC.PathProcess + Environment.NewLine;
             parameter += "           Path Error :" + initC.PathError + Environment.NewLine;
@@ -773,7 +776,7 @@ namespace XCustPr
             {
                 foreach (ValidateFileName vF in listfile)
                 {
-                    filename += "Filename " + vF.fileName + ", Total = " + vF.recordTotal + ", Validate pass = " + vF.validatePass + ", Record Error = " + vF.recordError+", Total Error = "+vF.totalError + Environment.NewLine;
+                    filename += "Filename " + vF.fileName + ", Total = " + vF.recordTotal + ", Validate pass = " + vF.validatePass + ", Record Error = " + vF.recordError + ", Total Error = " + vF.totalError + Environment.NewLine;
                     if (int.TryParse(vF.recordError, out err))
                     {
                         if (int.Parse(vF.recordError) > 0)
@@ -785,14 +788,14 @@ namespace XCustPr
             }
             if (lVPr.Count > 0)
             {
-                foreach(ValidatePrPo vPr in lVPr)
+                foreach (ValidatePrPo vPr in lVPr)
                 {
                     recordError += "FileName " + vPr.Filename + Environment.NewLine;
                     recordError += "==>" + vPr.Validate + Environment.NewLine;
-                    recordError += "     ====>Error"+vPr.Message + Environment.NewLine;
+                    recordError += "     ====>Error" + vPr.Message + Environment.NewLine;
                 }
             }
-            using (var stream = File.CreateText(Environment.CurrentDirectory + "\\" + programname+"_"+ startdatetime.Replace("-","_").Replace(":","_") + ".log"))
+            using (var stream = File.CreateText(Environment.CurrentDirectory + "\\" + programname + "_" + startdatetime.Replace("-", "_").Replace(":", "_") + ".log"))
             {
                 txt = line1;
                 txt += parameter;
@@ -803,8 +806,8 @@ namespace XCustPr
                 txt += "File Error " + Environment.NewLine;
                 txt += "--------------------------------------------------------------------------" + Environment.NewLine;
                 txt += recordError + Environment.NewLine;
-                txt += "Total "+ listfile.Count + Environment.NewLine;
-                txt += "Complete " + (listfile.Count-cntErr) + Environment.NewLine;
+                txt += "Total " + listfile.Count + Environment.NewLine;
+                txt += "Complete " + (listfile.Count - cntErr) + Environment.NewLine;
                 txt += "Error " + cntErr + Environment.NewLine;
                 stream.WriteLine(txt);
             }
@@ -828,7 +831,7 @@ namespace XCustPr
             {
                 filePO = getFileinFolder(initC.PathZip);
             }
-            
+
             String text = System.IO.File.ReadAllText(filePO[0]);
             //byte[] byteArraytext = Encoding.UTF8.GetBytes(text);
             byte[] toEncodeAsBytestext = System.Text.ASCIIEncoding.ASCII.GetBytes(text);
@@ -909,7 +912,7 @@ namespace XCustPr
         {
             Process process = new Process();
             process.StartInfo.FileName = filename;
-            process.StartInfo.Arguments = argument; 
+            process.StartInfo.Arguments = argument;
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.RedirectStandardOutput = true;
             process.StartInfo.RedirectStandardError = true;
@@ -960,7 +963,7 @@ namespace XCustPr
             }
             return chk;
         }
-        
+
         private AlternateView getEmbeddedImage(String filePath, String cid)
         {
             LinkedResource res = new LinkedResource(filePath);

@@ -69,7 +69,7 @@ namespace XCustPr
             filePO = Cm.getFileinFolder(Cm.initC.AP004PathInitial);
             if (filePO == null)
             {
-                MessageBox.Show("Folder PO003 ไม่ถูกต้อง", "");
+                MessageBox.Show("Folder AO004 ไม่ถูกต้อง", "");
                 disableBtn();
                 return;
             }

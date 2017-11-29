@@ -52,13 +52,33 @@ namespace XCustPr
             lvwColumnSorter.SortColumn = 0;
             lv1.Sort();
             //txtFileName.Text = cRDPO.initC.PathInitial + "PR03102017.txt";
-            txtFileName.Text = Cm.initC.PO003PathInitial;
+            txtFileName.Text = Cm.initC.AP001PathInitial;
 
             lv1.Columns.Add("NO", 50);
             lv1.Columns.Add("List File", formwidth - 50 - 40 - 100, HorizontalAlignment.Left);
             lv1.Columns.Add("   process   ", 100, HorizontalAlignment.Center);
             lv1.ListViewItemSorter = lvwColumnSorter;
             txtFileName.Text = Cm.initC.AutoRunPO003;
+
+            int i = 1;
+            if (Cm.initC.AP001PathInitial.Equals(""))
+            {
+                MessageBox.Show("Path Config AP001 ไม่ถูกต้อง", "");
+                disableBtn();
+                return;
+            }
+            filePO = Cm.getFileinFolder(Cm.initC.AP001PathInitial);
+            if (filePO == null)
+            {
+                MessageBox.Show("Folder AP001 ไม่ถูกต้อง", "");
+                disableBtn();
+                return;
+            }
+            foreach (string aa in filePO)
+            {
+                lv1.Items.Add(AddToList((i++), aa, ""));
+                //lv1.Items.s
+            }
         }
         private void disableBtn()
         {
@@ -184,6 +204,13 @@ namespace XCustPr
         private void BtnRead_Click(object sender, EventArgs e)
         {
             //throw new NotImplementedException();
+            lv1.Items.Clear();
+
+            filePO = Cm.getFileinFolder(Cm.initC.AP001PathInitial);
+            cAp001.processTextFileSupplier(filePO, lv1, this, pB1);
+            cAp001.processGetTempTableToValidate(lv1, this, pB1);
+
+
         }
 
         private void TxtFileName_Leave(object sender, EventArgs e)
@@ -194,6 +221,15 @@ namespace XCustPr
         private void TxtFileName_Enter(object sender, EventArgs e)
         {
             //throw new NotImplementedException();
+        }        
+        private ListViewItem AddToList(int col1, string col2, string col3)
+        {
+            string[] array = new string[3];
+            array[0] = col1.ToString();
+            array[1] = col2;
+            array[2] = col3;
+
+            return (new ListViewItem(array));
         }
     }
 }

@@ -218,12 +218,12 @@ namespace XCustPr
                     row1++;
                     pB1.Value = row1;
                     //Error PO003-002 : Date Format not correct
-                    //chk = Cm.validateDate(row[xCLPRITDB.xCLPRIT.lot_expire_date].ToString());
-                    //if (!chk)
+                    //subInv_code = Cm.validateSubInventoryCode(Cm.initC.ORGANIZATION_code.Trim(), row[xCUiIDTDB.xCUiIDT.s].ToString().Trim(), listXcSIMT);
+                    //if (subInv_code.Equals(""))
                     //{
                     //    vPP = new ValidatePrPo();
                     //    vPP.Filename = rowH[xCLPRITDB.xCLPRIT.file_name].ToString().Trim();
-                    //    vPP.Message = "Error PO004-002 ";
+                    //    vPP.Message = "Error AP004-004 ";
                     //    vPP.Validate = "row " + row1 + " conf_delivery_date=" + row[xCLPRITDB.xCLPRIT.lot_expire_date].ToString();
                     //    lVPr.Add(vPP);
                     //    cntErr++;       // gen log
