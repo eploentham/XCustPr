@@ -74,14 +74,14 @@ namespace XCustPr
             lv1.Columns.Add("List File", formwidth - 50 - 40 - 100, HorizontalAlignment.Left);
             lv1.Columns.Add("   process   ", 100, HorizontalAlignment.Center);
             lv1.ListViewItemSorter = lvwColumnSorter;
-            if (cRDPO.Cm.initC.PO003PathInitial.Equals(""))
+            if (Cm.initC.PathInitial.Equals(""))
             {
                 MessageBox.Show("Path Config PO001 ไม่ถูกต้อง", "");
                 disableBtn();
                 return;
             }
             int i = 1;
-            filePO = cRDPO.Cm.getFileinFolder(cRDPO.Cm.initC.PathInitial);
+            filePO = Cm.getFileinFolder(cRDPO.Cm.initC.PathInitial);
             if (filePO == null)
             {
                 MessageBox.Show("Folder PO001 ไม่ถูกต้อง", "");

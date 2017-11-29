@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -73,6 +74,13 @@ namespace XCustPr
             
             xCAILIT.table = "XCUST_AP_INV_LINES_INT_TBL";
         }
+        public DataTable selectAll()
+        {
+            DataTable dt = new DataTable();
+            String sql = "select * From " + xCAILIT.table;
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
+        }
         public String insert(XcustApInvLinesIntTbl p)
         {
             String sql = "", chk = "";
@@ -84,14 +92,14 @@ namespace XCustPr
                 //}
                 //p.RowNumber = selectMaxRowNumber(p.YearId);
                 //p.Active = "1";
-                p.INVOICE_ID = p.INVOICE_ID.Equals("0") ? "" : p.INVOICE_ID;
-                p.LINE_NUMBER = p.LINE_NUMBER.Equals("0") ? "" : p.LINE_NUMBER;
-                p.INVOICE_AMOUNT = p.INVOICE_AMOUNT.Equals("0") ? "" : p.INVOICE_AMOUNT;
-                p.QUANTITY = p.QUANTITY.Equals("0") ? "" : p.QUANTITY;
-                p.PRICE = p.PRICE.Equals("0") ? "" : p.PRICE;
-                p.PO_LINE_NUMBER = p.PO_LINE_NUMBER.Equals("0") ? "" : p.PO_LINE_NUMBER;
-                p.RECEIPT_LINE_NUMBER = p.RECEIPT_LINE_NUMBER.Equals("0") ? "" : p.RECEIPT_LINE_NUMBER;
-                p.TAX_RATE = p.TAX_RATE.Equals("0") ? "" : p.TAX_RATE;
+                p.INVOICE_ID = p.INVOICE_ID.Equals("") ? "0" : p.INVOICE_ID;
+                p.LINE_NUMBER = p.LINE_NUMBER.Equals("") ? "0" : p.LINE_NUMBER;
+                p.INVOICE_AMOUNT = p.INVOICE_AMOUNT.Equals("") ? "0" : p.INVOICE_AMOUNT;
+                p.QUANTITY = p.QUANTITY.Equals("") ? "0" : p.QUANTITY;
+                p.PRICE = p.PRICE.Equals("") ? "0" : p.PRICE;
+                p.PO_LINE_NUMBER = p.PO_LINE_NUMBER.Equals("") ? "0" : p.PO_LINE_NUMBER;
+                p.RECEIPT_LINE_NUMBER = p.RECEIPT_LINE_NUMBER.Equals("") ? "0" : p.RECEIPT_LINE_NUMBER;
+                p.TAX_RATE = p.TAX_RATE.Equals("") ? "0" : p.TAX_RATE;
                 //p.TAX_RATE = p.TAX_RATE.Equals("0") ? "" : p.TAX_RATE;
 
                 p.PRICE = String.Concat(Double.Parse(p.PRICE));

@@ -60,12 +60,50 @@ namespace XCustPr
             lv1.Columns.Add("List File", formwidth - 50 - 40 - 100, HorizontalAlignment.Left);
             lv1.Columns.Add("   process   ", 100, HorizontalAlignment.Center);
             lv1.ListViewItemSorter = lvwColumnSorter;
-            txtFileName.Text = Cm.initC.AutoRunPO003;
+            txtFileName.Text = Cm.initC.AutoRunPO002;
+            if (Cm.initC.PO002PathInitial.Equals(""))
+            {
+                MessageBox.Show("Path Config PO002 ไม่ถูกต้อง", "");
+                disableBtn();
+                return;
+            }
+            int i = 1;
+            filePO = Cm.getFileinFolder(Cm.initC.PO002PathInitial);
+            if (filePO == null)
+            {
+                MessageBox.Show("Folder PO002 ไม่ถูกต้อง", "");
+                disableBtn();
+                return;
+            }
+            if (Cm.initC.PO002PathDestinaion.Equals(""))
+            {
+                MessageBox.Show("Path Config PO002 ไม่ถูกต้อง", "");
+                disableBtn();
+                return;
+            }
+            
+            filePO = Cm.getFileinFolder(Cm.initC.PO002PathDestinaion);
+            if (filePO == null)
+            {
+                MessageBox.Show("Folder PO002 ไม่ถูกต้อง", "");
+                disableBtn();
+                return;
+            }
+
+            disableBtn1();
         }
         private void disableBtn()
         {
             btnRead.Enabled = false;
             btnPrepare.Enabled = false;
+            btnFTP.Enabled = false;
+            btnWebService.Enabled = false;
+            btnEmail.Enabled = false;
+        }
+        private void disableBtn1()
+        {
+            //btnRead.Enabled = false;
+            //btnPrepare.Enabled = false;
             btnFTP.Enabled = false;
             btnWebService.Enabled = false;
             btnEmail.Enabled = false;

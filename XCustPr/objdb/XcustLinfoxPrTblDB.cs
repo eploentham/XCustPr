@@ -117,7 +117,7 @@ namespace XCustPr
         {
             DataTable dt = new DataTable();
             
-            String sql = "select * From " + xCLFPT.table + " Where " + xCLFPT.SEND_PO_FLAG + "='N' and "+xCLFPT.PROCESS_FLAG+"='Y' and "+xCLFPT.GEN_OUTBOUD_FLAG+"='N'";
+            String sql = "Select * From " + xCLFPT.table + " Where " + xCLFPT.SEND_PO_FLAG + "='N' and "+xCLFPT.PROCESS_FLAG+"='Y' and "+xCLFPT.GEN_OUTBOUD_FLAG+"='N'";
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }

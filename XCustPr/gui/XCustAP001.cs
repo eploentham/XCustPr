@@ -199,6 +199,7 @@ namespace XCustPr
         private void BtnPrepare_Click(object sender, EventArgs e)
         {
             //throw new NotImplementedException();
+            cAp001.processGenCSV(lv1, this, pB1);
         }
 
         private void BtnRead_Click(object sender, EventArgs e)
@@ -210,7 +211,7 @@ namespace XCustPr
             cAp001.processTextFileSupplier(filePO, lv1, this, pB1);
             cAp001.processGetTempTableToValidate(lv1, this, pB1);
 
-
+            cAp001.processInsertTable(lv1, this, pB1);
         }
 
         private void TxtFileName_Leave(object sender, EventArgs e)

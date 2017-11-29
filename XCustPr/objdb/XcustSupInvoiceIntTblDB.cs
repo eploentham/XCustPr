@@ -56,7 +56,7 @@ namespace XCustPr
         public DataTable selectGroupByFilename()
         {
             DataTable dt = new DataTable();
-            String sql = "select * From " + xCSIIT.table + " Group By " + xCSIIT.FILE_NAME; ;
+            String sql = "select " + xCSIIT.FILE_NAME + " From " + xCSIIT.table + " Group By " + xCSIIT.FILE_NAME;
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }

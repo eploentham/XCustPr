@@ -28,11 +28,12 @@ namespace XCustPr
         private IniFile iniFile;        //standard
         //public InitC initC;        //standard
 
-        public XcustLinfoxPrTblDB xCLFPTDB;
+        public XcustLinfoxPrTblDB xCLFPTDB;          // table temp
 
-        public XcustPorReqHeaderIntAllDB xCPRHIADB;
-        public XcustPorReqLineIntAllDB xCPRLIADB;
-        public XcustPorReqDistIntAllDB xCPRDIADB;
+        public XcustPorReqHeaderIntAllDB xCPRHIADB;     // table จริง
+        public XcustPorReqLineIntAllDB xCPRLIADB;     // table จริง
+        public XcustPorReqDistIntAllDB xCPRDIADB;     // table จริง
+
         public XcustBuMstTblDB xCBMTDB;
         public XcustDeriverLocatorMstTblDB xCDLMTDB;
         public XcustDeriverOrganizationMstTblDB xCDOMTDB;
@@ -277,7 +278,7 @@ namespace XCustPr
                 xcprhia1.BATCH_ID = curr_date.Replace("-","") + seq.Substring(seq.Length-2);
                 xcprhia1.REQUITITION_NUMBER = "PR"+curr_date.Substring(2,2);
                 xcprhia1.DESCRIPTIONS = "LINFOX_"+ po_number+"_"+ filename;
-                xcprhia1.ATTRIBUTE_CATEGORY = "LINFOX_PR’";
+                xcprhia1.ATTRIBUTE_CATEGORY = "LINFOX_PR";
                 xcprhia1.ATTRIBUTE2 = po_number;
                 listXcustPRHIA.Add(xcprhia1);
             }
