@@ -1204,29 +1204,59 @@ namespace XCustPr
             if (!buCode.Equals(Cm.initC.BU_NAME.Trim()))
             {
                 chk = false;
+                vPP = new ValidatePrPo();
+                vPP.Filename = "PO001 Parameter ";
+                vPP.Message = "Error PO001-004 : Invalid Requisitioning BU";
+                vPP.Validate = "";
+                lVPr.Add(vPP);
+                cntErr++;       // gen log
             }
             //Error PO001-008 : Invalid Deliver To Location
             locator = xCDLMTDB.selectLocator1();
             if (!locator.Equals(Cm.initC.Locator.Trim()))
             {
                 chk = false;
+                vPP = new ValidatePrPo();
+                vPP.Filename = "PO001 Parameter ";
+                vPP.Message = "Error PO001-008 : Invalid Deliver To Location";
+                vPP.Validate = "";
+                lVPr.Add(vPP);
+                cntErr++;       // gen log
             }
             //Error PO001-009 : Invalid Deliver-to Organization
             Org = xCDOMTDB.selectActive1();
             if (!Org.Equals(Cm.initC.ORGANIZATION_code.Trim()))
             {
                 chk = false;
+                vPP = new ValidatePrPo();
+                vPP.Filename = "PO001 Parameter ";
+                vPP.Message = "Error PO001-009 : Invalid Deliver-to Organization";
+                vPP.Validate = "";
+                lVPr.Add(vPP);
+                cntErr++;       // gen log
             }
 
             //Error PO001-013 : Invalid Currency Code
             if (!xCMTDB.validateCurrencyCodeBycurrCode(Cm.initC.CURRENCY_CODE))
             {
                 chk = false;
+                vPP = new ValidatePrPo();
+                vPP.Filename = "PO001 Parameter ";
+                vPP.Message = "Error PO001-013 : Invalid Currency Code";
+                vPP.Validate = "";
+                lVPr.Add(vPP);
+                cntErr++;       // gen log
             }
             //Error PO001-014 : Invalid Procurement BU
             if (!buCode.Equals(Cm.initC.BU_NAME.Trim()))
             {
                 chk = false;
+                vPP = new ValidatePrPo();
+                vPP.Filename = "PO001 Parameter ";
+                vPP.Message = "Error PO001-014 : Invalid Procurement BU";
+                vPP.Validate = "";
+                lVPr.Add(vPP);
+                cntErr++;       // gen log
             }
 
             //StringBuilder filename = new StringBuilder();

@@ -26,7 +26,7 @@ namespace XCustPr
 
         ControlPRPOWebService cPRPOWS;
 
-        public ValidatePrPo vPrPo;
+        public ValidatePrPo vPrPo;      //gen log
 
         public XcustPorReqLineIntAllDB xCPRLIADB;
         public XcustPorReqDistIntAllDB xCPRDIADB;
@@ -129,13 +129,22 @@ namespace XCustPr
                                 linfox[xCLPTDB.xCLFPT.PO_NUMBER].ToString(), linfox[xCLPTDB.xCLFPT.LINE_NUMBER].ToString());
                         }
                     }
+                    else
+                    {
+                        vPP = new ValidatePrPo();
+                        vPP.Filename = "PO002";
+                        vPP.Message = "No Data "+ linfox[xCLPTDB.xCLFPT.PO_NUMBER].ToString() + "" + linfox[xCLPTDB.xCLFPT.LINE_NUMBER].ToString();
+                        vPP.Validate = "Error PO002-001 mapping : No Data Found  ";
+                        lVPr.Add(vPP);
+                        cntErr++;       // gen log
+                    }
                 }
             }
             else
             {
                 vPP = new ValidatePrPo();
                 vPP.Filename = "PO002";
-                vPP.Message = "error No Data";
+                vPP.Message = "No Data";
                 vPP.Validate = "Error PO002-001: No Data Found  ";
                 lVPr.Add(vPP);
                 cntErr++;       // gen log
@@ -154,9 +163,13 @@ namespace XCustPr
                     DataTable dt = new DataTable();
                     dt = xCLPTDB.selectPO002GenTextLinfox(erpPONumber);
                     writeTextLinfox(erpPONumber,dt);
-                    xCPOTDB.updateOutBoundFlag(dt.Rows[0][xCLPTDB.xCLFPT.PO_NUMBER].ToString(), dt.Rows[0][xCLPTDB.xCLFPT.LINE_NUMBER].ToString());     // f.	Update po_trb ว่า gen_outbound_flag เรียบร้อย 
-                    xCLPTDB.updateOutBoundFlag(dt.Rows[0][xCLPTDB.xCLFPT.PO_NUMBER].ToString(), dt.Rows[0][xCLPTDB.xCLFPT.LINE_NUMBER].ToString());     //d.Program update ข้อมูล XCUST_LINFOX_PR_TBL.GEN_OUTBOUND_FLAG = 'Y'
+                    // f.	Update po_trb ว่า gen_outbound_flag เรียบร้อย 
+                    xCPOTDB.updateOutBoundFlag(dt.Rows[0][xCLPTDB.xCLFPT.PO_NUMBER].ToString(), dt.Rows[0][xCLPTDB.xCLFPT.LINE_NUMBER].ToString());
+                    //d.Program update ข้อมูล XCUST_LINFOX_PR_TBL.GEN_OUTBOUND_FLAG = 'Y'
+                    xCLPTDB.updateOutBoundFlag(dt.Rows[0][xCLPTDB.xCLFPT.PO_NUMBER].ToString(), dt.Rows[0][xCLPTDB.xCLFPT.LINE_NUMBER].ToString());     
                 }
+                pB1.Visible = false;
+                Cm.logProcess("xcustpo002", lVPr, dateStart, lVfile);   // gen log
             }
         }
         public void writeTextLinfox(String erpPONumber, DataTable dt)
@@ -172,32 +185,51 @@ namespace XCustPr
                 {
                     foreach (DataRow row in dt.Rows)
                     {
-                        string col01 = "A";
-                        string col02 = "";      //Branch/Plant
-                        string col03 = row[xCLPTDB.xCLFPT.SUPPLIER_CODE].ToString();
-                        string col04 = "WP";
-                        string col05 = row[xCLPTDB.xCLFPT.PO_NUMBER].ToString();
-                        string col06 = "col06";     //Company
-                        string col07 = row[xCLPTDB.xCLFPT.LINE_NUMBER].ToString();
-                        string col08 = row[xCLPTDB.xCLFPT.ERP_PO_NUMBER].ToString();
-                        string col09 = reqDate;
-                        string col10 = row[xCLPTDB.xCLFPT.REQUEST_TIME].ToString();
+                        try
+                        {
+                            string col01 = "A";
+                            string col02 = "";      //Branch/Plant
+                            string col03 = row[xCLPTDB.xCLFPT.SUPPLIER_CODE].ToString();
+                            string col04 = "WP";
+                            string col05 = row[xCLPTDB.xCLFPT.PO_NUMBER].ToString();
+                            string col06 = Cm.initC.Company;     //Company
+                            string col07 = row[xCLPTDB.xCLFPT.LINE_NUMBER].ToString();
+                            string col08 = row[xCLPTDB.xCLFPT.ERP_PO_NUMBER].ToString();
+                            string col09 = reqDate;
+                            string col10 = row[xCLPTDB.xCLFPT.REQUEST_TIME].ToString();
 
-                        string col11 = row[xCLPTDB.xCLFPT.ITEM_CODE].ToString();
-                        string col12 = row[xCLPTDB.xCLFPT.ERP_QTY].ToString();
-                        string col13 = row[xCLPTDB.xCLFPT.UOMCODE].ToString();     //Unit Of Mesure
-                        string col14 = row[xCLPTDB.xCLFPT.ORDER_DATE].ToString();
-                        string col15 = row[xCLPTDB.xCLFPT.ERP_QTY].ToString();     //Delivery instruction
+                            string col11 = row[xCLPTDB.xCLFPT.ITEM_CODE].ToString();
+                            string col12 = row[xCLPTDB.xCLFPT.ERP_QTY].ToString();
+                            string col13 = row[xCLPTDB.xCLFPT.UOMCODE].ToString();     //Unit Of Mesure
+                            string col14 = row[xCLPTDB.xCLFPT.ORDER_DATE].ToString();
+                            string col15 = row[xCLPTDB.xCLFPT.ERP_QTY].ToString();     //Delivery instruction
 
-                        string csvRow = col01 + "," + col02 + "," + col03 + "," + col04 + "," + col05 + "," + col06 + "," + col07 + "," + col08 + "," + col09 + "," + col10
-                            + "," + col11 + "," + col12 + "," + col13 + "," + col14 + "," + col15;
+                            string csvRow = col01 + "," + col02 + "," + col03 + "," + col04 + "," + col05 + "," + col06 + "," + col07 + "," + col08 + "," + col09 + "," + col10
+                                + "," + col11 + "," + col12 + "," + col13 + "," + col14 + "," + col15;
 
-                        stream.WriteLine(csvRow);
+                            stream.WriteLine(csvRow);
+                        }
+                        catch (Exception ex)
+                        {
+                            vPP = new ValidatePrPo();
+                            vPP.Filename = file;
+                            vPP.Message = "error " + ex.Message;
+                            vPP.Validate = "Error PO002-003 :  ";
+                            lVPr.Add(vPP);
+                            cntErr++;       // gen log
+                        }
                     }
                 }
             }
             catch (IOException ioex)
             {
+                ValidateFileName vF = new ValidateFileName();   // gen log
+                vF.fileName = file;   // gen log
+                vF.recordTotal = dt.Rows.Count.ToString();   // gen log
+                vF.recordError = cntFileErr.ToString();   // gen log
+                vF.totalError = cntErr.ToString();   // gen log
+                lVfile.Add(vF);   // gen log
+
                 vPP = new ValidatePrPo();
                 vPP.Filename = file;
                 vPP.Message = "error " + ioex.Message;
@@ -205,7 +237,6 @@ namespace XCustPr
                 lVPr.Add(vPP);
                 cntErr++;       // gen log
             }
-            
         }
     }
 }

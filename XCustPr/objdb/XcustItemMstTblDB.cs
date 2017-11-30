@@ -49,7 +49,7 @@ namespace XCustPr
             xCIMT.ITEM_STATUS = "ITEM_STATUS";
             xCIMT.ITEM_TYPE = "ITEM_TYPE";
             xCIMT.LAST_UPDATE_DATE = "LAST_UPDATE_DATE";
-            xCIMT.ORGAINZATION_ID = "ORGAINZATION_ID";
+            xCIMT.ORGAINZATION_ID = "ORGANIZATION_ID";
             xCIMT.PRIMARY_UOM = "PRIMARY_UOM";
 
             xCIMT.table = "xcust_item_mst_tbl";

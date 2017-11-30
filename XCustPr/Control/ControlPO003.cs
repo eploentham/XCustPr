@@ -25,7 +25,7 @@ namespace XCustPr
         public ControlMain Cm;
         public ConnectDB conn;        //standard
 
-        public ValidatePrPo vPrPo;
+        public ValidatePrPo vPrPo;      //gen log
 
         public XcustLinfoxPoRcpIntTblDB xCLPRITDB;
 

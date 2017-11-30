@@ -117,7 +117,7 @@ namespace XCustPr
         {
             DataTable dt = new DataTable();
             
-            String sql = "Select * From " + xCLFPT.table + " Where " + xCLFPT.SEND_PO_FLAG + "='N' and "+xCLFPT.PROCESS_FLAG+"='Y' and "+xCLFPT.GEN_OUTBOUD_FLAG+"='N'";
+            String sql = "Select * From " + xCLFPT.table + " Where " + xCLFPT.SEND_PO_FLAG + " is null and "+xCLFPT.PROCESS_FLAG+"='Y' and "+xCLFPT.GEN_OUTBOUD_FLAG+" is null ";
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
@@ -125,10 +125,11 @@ namespace XCustPr
         {
             DataTable dt = new DataTable();
             String sql = "select "+ xCLFPT .ERP_PO_NUMBER+ //","+xCLFPT.PO_NUMBER+","+xCLFPT.LINE_NUMBER+
-                " From " + xCLFPT.table + 
+                " From " + xCLFPT.table +
                 //" Where " + xCLFPT.SEND_PO_FLAG + "='N' and " + xCLFPT.PROCESS_FLAG + "='Y' and " + xCLFPT.GEN_OUTBOUD_FLAG + "='N' and " + xCLFPT.ERP_PO_NUMBER + " is not null "+
                 //" Where " + xCLFPT.SEND_PO_FLAG + "='N' and " + xCLFPT.PROCESS_FLAG + "='Y' and " + xCLFPT.GEN_OUTBOUD_FLAG + "='N' and " + xCLFPT.ERP_PO_NUMBER + " ='' " +
-                " Where " + xCLFPT.SEND_PO_FLAG + "='N' and " + xCLFPT.PROCESS_FLAG + "='Y' and " + xCLFPT.GEN_OUTBOUD_FLAG + "='N' and " + xCLFPT.ERP_PO_NUMBER + " !='' " +    // for test
+                " Where " + xCLFPT.SEND_PO_FLAG + " is null and " + xCLFPT.PROCESS_FLAG + "='Y' and " + xCLFPT.GEN_OUTBOUD_FLAG + " is null and " + xCLFPT.ERP_PO_NUMBER + " ='' " +
+                //" Where " + xCLFPT.SEND_PO_FLAG + " is null and " + xCLFPT.PROCESS_FLAG + "='Y' and " + xCLFPT.GEN_OUTBOUD_FLAG + " is null and " + xCLFPT.ERP_PO_NUMBER + " !='' " +    // for test
                 "Group By " +xCLFPT.ERP_PO_NUMBER;
             dt = conn.selectData(sql, "kfc_po");
             return dt;
@@ -137,6 +138,8 @@ namespace XCustPr
         {
             DataTable dt = new DataTable();
             String sql = "select * From " + xCLFPT.table + " Where " + xCLFPT.SEND_PO_FLAG + "='N' and " + xCLFPT.PROCESS_FLAG + "='Y' and " + xCLFPT.GEN_OUTBOUD_FLAG + "='N' and "+xCLFPT.ERP_PO_NUMBER+" ='"+erp_po_number+"'";
+            //String sql = "select * From " + xCLFPT.table + 
+            //    " Where " + xCLFPT.SEND_PO_FLAG + " is null and " + xCLFPT.PROCESS_FLAG + "='Y' and " + xCLFPT.GEN_OUTBOUD_FLAG + " is null and " + xCLFPT.ERP_PO_NUMBER + " ='" + erp_po_number + "'";
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
@@ -168,7 +171,7 @@ namespace XCustPr
             String date = System.DateTime.Now.ToString("yyyy-MM-dd");
             String time = System.DateTime.Now.ToString("HH:mm:ss");
 
-            String ConnectionString = "", errMsg = "", processFlag = "", validateFlag = "", createBy="0", createDate= "GETDATE()", lastUpdateBy="0", lastUpdateTime="null";
+            String ConnectionString = "", errMsg = "", processFlag = "", validateFlag = "", createBy="0", createDate= "GETDATE()", lastUpdateBy="0", lastUpdateTime="null", chk="";
             if (host == "kfc_po")
             {
                 ConnectionString = conn.connKFC.ConnectionString;
@@ -188,6 +191,8 @@ namespace XCustPr
                     errMsg = "";
                     processFlag = "N";
                     validateFlag = "N";
+                    String qty = "";
+                    qty = aaa[8].Equals("")?"0": aaa[8];
                     //bbb += "('" + aaa[0] + "','" +
                     //aaa[11] + "','" + errMsg + "','" + aaa[6] + "','" +
                     //aaa[2] + "','" + aaa[4] + "','" + aaa[5] + "','" +
@@ -201,13 +206,13 @@ namespace XCustPr
                         .Append(",").Append(xCLFPT.last_update_by).Append(",").Append(xCLFPT.last_update_date).Append(",").Append(xCLFPT.file_name)
                         .Append(",").Append(xCLFPT.store_code).Append(",").Append(xCLFPT.REQUEST_TIME).Append(") Values ('")
                         .Append(aaa[0]).Append("','").Append(aaa[1]).Append("','").Append(aaa[2])
-                        .Append("','").Append(aaa[3]).Append("',").Append(aaa[4]).Append(",'").Append(aaa[5])
+                        .Append("','").Append(aaa[3]).Append("','").Append(aaa[4]).Append("','").Append(aaa[5])
                         .Append("','").Append(aaa[7]).Append("',").Append(aaa[8]).Append(",'").Append(aaa[9])                        
                         .Append("','").Append(aaa[10]).Append("','").Append(validateFlag).Append("','").Append(processFlag)
                         .Append("','").Append(errMsg).Append("','").Append(createBy).Append("',").Append(createDate)
                         .Append(",'").Append(lastUpdateBy).Append("',").Append(lastUpdateTime).Append(",'").Append(filename.Trim().Replace(initC.PathProcess,""))
                         .Append("','").Append(aaa[11]).Append("','").Append(aaa[6]).Append("') ");
-                    conn.ExecuteNonQuery(sql.ToString(), host);
+                    chk = conn.ExecuteNonQuery(sql.ToString(), host);
                 }
             }
         }
