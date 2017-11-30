@@ -38,6 +38,10 @@ namespace XCustPr
         public String AutoRunPO002 = "";
         public String AutoRunPO006 = "";
 
+        public String POAPPROVER = "";
+        public String POAPPROVER_EMAIL = "";
+        public String DESTINATION_TYPE_CODE = "";
+
         public String PathMaster = "";
 
         public String EmailPort = "3306";

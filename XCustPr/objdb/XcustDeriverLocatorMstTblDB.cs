@@ -61,5 +61,20 @@ namespace XCustPr
             }
             return chk;
         }
+        public String selectLocatorByInvtory(String name, String org)
+        {
+            DataTable dt = new DataTable();
+            String chk = "";
+            String sql = "select  SECONDARY_INVENTORY_NAME "+
+                 "from xcust_subinventory_mst_tbl " +
+                "where SECONDARY_INVENTORY_NAME = '"+name+"' " +
+                "and ORGANIZATION_ID = '"+org+"' ";
+            dt = conn.selectData(sql, "kfc_po");
+            if (dt.Rows.Count > 0)
+            {
+                chk = dt.Rows[0]["SECONDARY_INVENTORY_NAME"].ToString().Trim();
+            }
+            return chk;
+        }
     }
 }

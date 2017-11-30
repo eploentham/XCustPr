@@ -45,6 +45,7 @@ namespace XCustPr
         public XcustValueSetMstTblDB xCVSMTDB;
         public XcustBlanketAgreementHeaderTblDB xCBAHTDB;
         public XcustBlanketAgreementLinesTblDB xCBALTDB;
+        public XcustSupplierSiteMstTblDB xCSSMTDB;
 
         public ValidatePrPo vPrPo;
 
@@ -93,6 +94,7 @@ namespace XCustPr
             xCVSMTDB = new XcustValueSetMstTblDB(conn, Cm.initC);
             xCBAHTDB = new XcustBlanketAgreementHeaderTblDB(conn, Cm.initC);
             xCBALTDB = new XcustBlanketAgreementLinesTblDB(conn, Cm.initC);
+            xCSSMTDB = new XcustSupplierSiteMstTblDB(conn, Cm.initC);
 
             fontSize9 = 9.75f;        //standard
             fontSize8 = 8.25f;        //standard
@@ -256,12 +258,12 @@ namespace XCustPr
          * เตรียมข้อมูล เพื่อที่จะลง table XcustPorReqHeaderIntAll
          * เพราะในเอกสาร ต้องลงตาม group by po_number
          */
-        private void addXcustPRHIA(String po_number, String curr_date, String filename)
+        private void addXcustPRHIA(String po_number, String curr_date, String filename, String requestId)
         {
             Boolean chk = true;
             foreach(XcustPorReqHeaderIntAll xcprhia in listXcustPRHIA)
             {
-                if (xcprhia.ATTRIBUTE1.Equals(po_number))
+                if (xcprhia.REQ_HEADER_INTERFACE_ID.Equals(po_number))
                 {
                     chk = false;
                 }
@@ -270,7 +272,7 @@ namespace XCustPr
             {
                 String seq = String.Concat("00" + listXcustPRHIA.Count);
                 XcustPorReqHeaderIntAll xcprhia1 = new XcustPorReqHeaderIntAll();
-                xcprhia1.ATTRIBUTE1 = po_number;
+                //xcprhia1.ATTRIBUTE1 = po_number;
                 xcprhia1.IMPORT_SOURCE = Cm.initC.ImportSource;
                 xcprhia1.REQ_BU_NAME = Cm.initC.BU_NAME;
                 xcprhia1.STATUS_CODE = Cm.initC.PR_STATAUS;
@@ -279,32 +281,42 @@ namespace XCustPr
                 xcprhia1.REQUITITION_NUMBER = "PR"+curr_date.Substring(2,2);
                 xcprhia1.DESCRIPTIONS = "LINFOX_"+ po_number+"_"+ filename;
                 xcprhia1.ATTRIBUTE_CATEGORY = "LINFOX_PR";
+                xcprhia1.ATTRIBUTE1 = Cm.initC.ImportSource;
                 xcprhia1.ATTRIBUTE2 = po_number;
+                xcprhia1.request_id = requestId;
                 listXcustPRHIA.Add(xcprhia1);
             }
         }
-        private void addXcustPRLIAFromxCLFPT(DataRow row)
+        private void addXcustPRLIAFromxCLFPT(DataRow row, String subInv_code, String price, String agreementnumber, String agreementLinbNumber, String supplierSiteCode)
         {
             XcustPorReqLineIntAll item = new XcustPorReqLineIntAll();
             item.REQ_HEADER_INTERFACE_ID = row[xCLFPTDB.xCLFPT.PO_NUMBER].ToString();
             item.REQ_LINE_INTERFACE_ID = row[xCLFPTDB.xCLFPT.LINE_NUMBER].ToString();
             item.DESTINATION_TYPE_CODE = "";
-            item.PRC_BU_NAME = "";
+            item.PRC_BU_NAME = Cm.initC.BU_NAME;
             item.DELIVER_TO_ORGANIZATION_CODE = Cm.initC.ORGANIZATION_code;
             item.DELIVER_TO_LOCATION_CODE = row[xCLFPTDB.xCLFPT.deriver_to_location].ToString();
-            item.DESTINATION_SUBINVENTORY = row[xCLFPTDB.xCLFPT.subinventory_code].ToString();
+            item.DESTINATION_SUBINVENTORY = subInv_code;
             item.CATEGORY_NAME = row[xCLFPTDB.xCLFPT.ITEM_CATEGORY_NAME].ToString();
             item.NEED_BY_DATE = row[xCLFPTDB.xCLFPT.REQUEST_TIME].ToString();
             item.ITEM_CODE = row[xCLFPTDB.xCLFPT.ITEM_CODE].ToString();
-            item.LINE_TYPE = "";
+            item.LINE_TYPE = "GOODS";
 
             item.QTY = row[xCLFPTDB.xCLFPT.QTY].ToString();
             item.CURRENCY_CODE = Cm.initC.CURRENCY_CODE;
-            item.AGREEMENT_NUMBER = row[xCLFPTDB.xCLFPT.AGREEEMENT_NUMBER].ToString();
+            item.AGREEMENT_NUMBER = agreementnumber;
             item.CURRENCY_UNIT_PRICE = "REQ_HEADER_INTERFACE_ID";//PO_NUMBER
             item.Price = row[xCLFPTDB.xCLFPT.PRICE].ToString();
             item.PROCESS_FLAG = "Y";
             item.UOM_CODE = row[xCLFPTDB.xCLFPT.UOMCODE].ToString();
+            item.request_id = row[xCLFPTDB.xCLFPT.request_id].ToString();
+            item.ATTRIBUTE2 = row[xCLFPTDB.xCLFPT.LINE_NUMBER].ToString();
+            item.AGREEMENT_LINE_NUMBER = agreementLinbNumber;
+            item.ATTRIBUTE_CATEGORY = "LINFOX_PR";
+            item.SUGGESTED_VENDOR_NAME = row[xCLFPTDB.xCLFPT.SUPPLIER_CODE].ToString();
+            item.SUGGESTED_VENDOR_SITE = supplierSiteCode;
+            item.Price = price;
+            //item.Requisitioning_BU
 
             listXcustPRLIA.Add(item);
         }
@@ -324,7 +336,7 @@ namespace XCustPr
             //item.LINE_TYPE = "";
 
             item.QTY = row[xCLFPTDB.xCLFPT.QTY].ToString();
-            //item.CURRENCY_CODE = initC.CURRENCY_CODE;
+            item.request_id = row[xCLFPTDB.xCLFPT.request_id].ToString();
             //item.AGREEMENT_NUMBER = row[xCLFPTDB.xCLFPT.AGREEEMENT_NUMBER].ToString();
             //item.CURRENCY_UNIT_PRICE = "REQ_HEADER_INTERFACE_ID";//PO_NUMBER
             //item.Price = row[xCLFPTDB.xCLFPT.PRICE].ToString();
@@ -609,24 +621,24 @@ namespace XCustPr
         {
             addListView("หา Blanket Agreement " + Cm.initC.PathProcess, "Blanket", lv1, form1);
         }
-        public void processGenCSV(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
+        public void processGenCSV(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String requestId)
         {
             addListView("processGenCSVxCPRHIA ", "CVS", lv1, form1);
-            processGenCSVxCPRHIA(lv1, form1, pB1, "PO001");
+            processGenCSVxCPRHIA(lv1, form1, pB1, "PO001", requestId);
             addListView("processGenCSVxCPRLIA ", "CVS", lv1, form1);
-            processGenCSVxCPRLIA(lv1, form1, pB1, "PO001");
+            processGenCSVxCPRLIA(lv1, form1, pB1, "PO001", requestId);
             addListView("processGenCSVxCPRDIA ", "CVS", lv1, form1);
-            processGenCSVxCPRDIA(lv1, form1, pB1, "PO001");
+            processGenCSVxCPRDIA(lv1, form1, pB1, "PO001", requestId);
             addListView("processGenZIP ", "CVS", lv1, form1);
             processGenZIP(lv1,form1, pB1, "PO001");
         }
-        public void processGenCSVxCPRHIA(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String flag)
+        public void processGenCSVxCPRHIA(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String flag, String requestId)
         {
             var file = Cm.initC.PathArchive+ "PorReqHeadersInterfaceAl.csv";
             DataTable dt;
             if (flag.Equals("PO001"))
             {
-                dt = xCPRHIADB.selectAll();
+                dt = xCPRHIADB.selectGenTextCSV(requestId);
             }
             else
             {
@@ -641,79 +653,79 @@ namespace XCustPr
                     string col01 = row[xCPRHIADB.xCPRHIA.REQ_HEADER_INTERFACE_ID].ToString();
                     string col02 = row[xCPRHIADB.xCPRHIA.IMPORT_SOURCE].ToString();
                     string col03 = row[xCPRHIADB.xCPRHIA.REQ_BU_NAME].ToString();
-                    string col04 = row[xCPRHIADB.xCPRHIA.BATCH_ID].ToString();
+                    string col04 = row[xCPRHIADB.xCPRHIA. request_id].ToString();
                     string col05 = "";// รอถาม  Interface Source Line ID
                     string col06 = row[xCPRHIADB.xCPRHIA.STATUS_CODE].ToString();
-                    string col07 = "";// รอถาม  Approver
-                    string col08 = "";// รอถาม  Entered By*
-                    string col09 = row[xCPRHIADB.xCPRHIA.REQUITITION_NUMBER].ToString();
-                    string col10 = row[xCPRHIADB.xCPRHIA.DESCRIPTIONS].ToString();
+                    string col07 = Cm.initC.POAPPROVER;// รอถาม  Approver
+                    string col08 = Cm.initC.POAPPROVER_EMAIL;
+                    string col09 = Cm.initC.BU_NAME;// รอถาม  Entered By*
+                    string col10 = row[xCPRHIADB.xCPRHIA.REQUITITION_NUMBER].ToString();
 
-                    string col11 = "";// รอถาม  Emergency Purchase Order
+                    string col11 = row[xCPRHIADB.xCPRHIA.DESCRIPTIONS].ToString();
                     string col12 = "";//Taxation Country
                     string col13 = "";//Taxation Territory
                     string col14 = "";//Document Fiscal Classification Code
                     string col15 = "";//Document Fiscal Classification
                     string col16 = "";//Justification
-                    string col17 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE1].ToString();
-                    string col18 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE2].ToString();
-                    string col19 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE3].ToString();
-                    string col20 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE4].ToString();
+                    string col17 = "";
+                    string col18 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE1].ToString();
+                    string col19 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE2].ToString();
+                    string col20 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE3].ToString();
 
-                    string col21 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE5].ToString();
-                    string col22 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE6].ToString();
-                    string col23 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE7].ToString();
-                    string col24 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE8].ToString();
-                    string col25 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE9].ToString();
-                    string col26 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE10].ToString();
-                    string col27 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE11].ToString();
-                    string col28 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE12].ToString();
-                    string col29 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE13].ToString();
-                    string col30 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE14].ToString();
+                    string col21 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE4].ToString();
+                    string col22 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE5].ToString();
+                    string col23 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE6].ToString();
+                    string col24 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE7].ToString();
+                    string col25 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE8].ToString();
+                    string col26 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE9].ToString();
+                    string col27 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE10].ToString();
+                    string col28 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE11].ToString();
+                    string col29 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE12].ToString();
+                    string col30 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE13].ToString();
 
-                    string col31 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE15].ToString();
-                    string col32 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE16].ToString();
-                    string col33 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE17].ToString();
-                    string col34 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE18].ToString();
-                    string col35 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE19].ToString();
-                    string col36 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE20].ToString();
-                    string col37 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_DATE1].ToString();
-                    string col38 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_DATE2].ToString();
-                    string col39 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_DATE3].ToString();
-                    string col40 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_DATE4].ToString();
+                    string col31 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE14].ToString();
+                    string col32 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE15].ToString();
+                    string col33 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE16].ToString();
+                    string col34 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE17].ToString();
+                    string col35 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE18].ToString();
+                    string col36 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE19].ToString();
+                    string col37 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE20].ToString();
+                    string col38 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_DATE1].ToString();
+                    string col39 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_DATE2].ToString();
+                    string col40 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_DATE3].ToString();
 
-                    string col41 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_DATE5].ToString();
-                    string col42 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_DATE6].ToString();
-                    string col43 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_DATE7].ToString();
-                    string col44 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_DATE8].ToString();
-                    string col45 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_DATE9].ToString();
-                    string col46 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_DATE10].ToString();
-                    string col47 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_TIMESTAMP1].ToString();
-                    string col48 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_TIMESTAMP2].ToString();
-                    string col49 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_TIMESTAMP3].ToString();
-                    string col50 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_TIMESTAMP4].ToString();
+                    string col41 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_DATE4].ToString();
+                    string col42 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_DATE5].ToString();
+                    string col43 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_DATE6].ToString();
+                    string col44 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_DATE7].ToString();
+                    string col45 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_DATE8].ToString();
+                    string col46 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_DATE9].ToString();
+                    string col47 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_DATE10].ToString();
+                    string col48 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_TIMESTAMP1].ToString();
+                    string col49 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_TIMESTAMP2].ToString();
+                    string col50 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_TIMESTAMP3].ToString();
 
-                    string col51 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_TIMESTAMP5].ToString();
-                    string col52 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_TIMESTAMP6].ToString();
-                    string col53 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_TIMESTAMP7].ToString();
-                    string col54 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_TIMESTAMP8].ToString();
-                    string col55 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_TIMESTAMP9].ToString();
-                    string col56 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_TIMESTAMP10].ToString();
-                    string col57 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_NUMBER1].ToString();
-                    string col58 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_NUMBER1].ToString();
-                    string col59 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_NUMBER1].ToString();
-                    string col60 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_NUMBER1].ToString();
+                    string col51 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_TIMESTAMP4].ToString();
+                    string col52 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_TIMESTAMP5].ToString();
+                    string col53 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_TIMESTAMP6].ToString();
+                    string col54 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_TIMESTAMP7].ToString();
+                    string col55 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_TIMESTAMP8].ToString();
+                    string col56 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_TIMESTAMP9].ToString();
+                    string col57 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_TIMESTAMP10].ToString();
+                    string col58 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_NUMBER1].ToString().Equals("0")?"": row[xCPRHIADB.xCPRHIA.ATTRIBUTE_NUMBER1].ToString();
+                    string col59 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_NUMBER2].ToString().Equals("0") ? "" : row[xCPRHIADB.xCPRHIA.ATTRIBUTE_NUMBER2].ToString();
+                    string col60 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_NUMBER3].ToString().Equals("0") ? "" : row[xCPRHIADB.xCPRHIA.ATTRIBUTE_NUMBER3].ToString();
 
-                    string col61 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_NUMBER1].ToString();
-                    string col62 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_NUMBER2].ToString();
-                    string col63 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_NUMBER3].ToString();
-                    string col64 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_NUMBER4].ToString();
-                    string col65 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_NUMBER5].ToString();
-                    string col66 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_NUMBER6].ToString();
-                    string col67 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_NUMBER7].ToString();
-                    string col68 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_NUMBER8].ToString();
-                    string col69 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_NUMBER9].ToString();
-                    string col70 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_NUMBER10].ToString();
+                    string col61 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_NUMBER4].ToString().Equals("0") ? "" : row[xCPRHIADB.xCPRHIA.ATTRIBUTE_NUMBER4].ToString();
+                    string col62 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_NUMBER5].ToString().Equals("0") ? "" : row[xCPRHIADB.xCPRHIA.ATTRIBUTE_NUMBER5].ToString();
+                    string col63 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_NUMBER6].ToString().Equals("0") ? "" : row[xCPRHIADB.xCPRHIA.ATTRIBUTE_NUMBER6].ToString();
+                    string col64 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_NUMBER7].ToString().Equals("0") ? "" : row[xCPRHIADB.xCPRHIA.ATTRIBUTE_NUMBER7].ToString();
+                    string col65 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_NUMBER8].ToString().Equals("0") ? "" : row[xCPRHIADB.xCPRHIA.ATTRIBUTE_NUMBER8].ToString();
+                    string col66 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_NUMBER9].ToString().Equals("0") ? "" : row[xCPRHIADB.xCPRHIA.ATTRIBUTE_NUMBER9].ToString();
+                    string col67 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_NUMBER10].ToString().Equals("0") ? "" : row[xCPRHIADB.xCPRHIA.ATTRIBUTE_NUMBER10].ToString();
+                    string col68 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_CATEGORY].ToString();
+                    string col69 = "";
+                    string col70 = "";
                     //string col71 = "col71";
 
                     //string csvRow = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20}," +
@@ -731,6 +743,7 @@ namespace XCustPr
                         +","+ col11 + "," + col12 + "," + col13 + "," + col14 + "," + col15 + "," + col16 + "," + col17 + "," + col18 + "," + col19 + "," + col20
                         + "," + col21 + "," + col22 + "," + col23 + "," + col24 + "," + col25 + "," + col26 + "," + col27 + "," + col28 + "," + col29 + "," + col30
                         + "," + col31 + "," + col32 + "," + col33 + "," + col34 + "," + col35 + "," + col36 + "," + col37 + "," + col38 + "," + col39 + "," + col40
+                        + "," + col41 + "," + col42 + "," + col43 + "," + col44 + "," + col45 + "," + col46 + "," + col47 + "," + col48 + "," + col49 + "," + col50
                         + "," + col51 + "," + col52 + "," + col53 + "," + col54 + "," + col55 + "," + col56 + "," + col57 + "," + col58 + "," + col59 + "," + col60
                         + "," + col61 + "," + col62 + "," + col63 + "," + col64 + "," + col65 + "," + col66 + "," + col67 + "," + col68 + "," + col69 + "," + col70;
 
@@ -738,13 +751,13 @@ namespace XCustPr
                 }
             }
         }
-        public void processGenCSVxCPRLIA(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String flag)
+        public void processGenCSVxCPRLIA(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String flag, String requestId)
         {
             var file = Cm.initC.PathArchive + "PorReqLinesInterfaceAl.csv";
             DataTable dt;
             if (flag.Equals("PO001"))
             {
-                dt = xCPRLIADB.selectAll();
+                dt = xCPRLIADB.selectGenTextCSV(requestId);
             }
             else
             {
@@ -759,11 +772,11 @@ namespace XCustPr
                     string col01 = row[xCPRLIADB.xCPRLIA.REQ_LINE_INTERFACE_ID].ToString();
                     string col02 = row[xCPRLIADB.xCPRLIA.REQ_HEADER_INTERFACE_ID].ToString();
                     string col03 = "";
-                    string col04 = row[xCPRLIADB.xCPRLIA.DESTINATION_TYPE_CODE].ToString();
-                    string col05 = row[xCPRLIADB.xCPRLIA.DELIVER_TO_LOCATION_CODE].ToString();
+                    string col04 = Cm.initC.DESTINATION_TYPE_CODE;
+                    string col05 = row[xCPRLIADB.xCPRLIA.DESTINATION_SUBINVENTORY].ToString();
                     string col06 = row[xCPRLIADB.xCPRLIA.DELIVER_TO_ORGANIZATION_CODE].ToString();
                     string col07 = row[xCPRLIADB.xCPRLIA.DESTINATION_SUBINVENTORY].ToString();
-                    string col08 = "";         //Requester
+                    string col08 = Cm.initC.Requester;         //Requester
                     string col09 = "";         //Item Description
                     string col10 = row[xCPRLIADB.xCPRLIA.CATEGORY_NAME].ToString();     //Category Name
 
@@ -775,7 +788,7 @@ namespace XCustPr
                     string col16 = row[xCPRLIADB.xCPRLIA.QTY].ToString();
                     string col17 = row[xCPRLIADB.xCPRLIA.CURRENCY_CODE].ToString();
                     //string col18 = row[xCPRLIADB.xCPRLIA.Price].ToString();
-                    string col18 = row[xCPRLIADB.xCPRLIA.ATTRIBUTE_NUMBER10].ToString();// ใน table ไม่มี filed price เลยเอามาฝาก ใส่ ATTRIBUTE_NUMBER10 ไปก่อน
+                    string col18 = row[xCPRLIADB.xCPRLIA.Price].ToString();// ใน table ไม่มี filed price เลยเอามาฝาก ใส่ ATTRIBUTE_NUMBER10 ไปก่อน
                     string col19 = "";     //Conversion Rate
                     string col20 = "";     //Conversion Date
 
@@ -856,16 +869,16 @@ namespace XCustPr
                     string col89 = row[xCPRLIADB.xCPRLIA.ATTRIBUTE_DATE9].ToString();
                     string col90 = row[xCPRLIADB.xCPRLIA.ATTRIBUTE_DATE10].ToString();
 
-                    string col91 = row[xCPRLIADB.xCPRLIA.ATTRIBUTE_TIMESTAMP1].ToString();     //ATTRIBUTE_TIMESTAMP1
-                    string col92 = row[xCPRLIADB.xCPRLIA.ATTRIBUTE_TIMESTAMP2].ToString();
-                    string col93 = row[xCPRLIADB.xCPRLIA.ATTRIBUTE_TIMESTAMP3].ToString();
-                    string col94 = row[xCPRLIADB.xCPRLIA.ATTRIBUTE_TIMESTAMP4].ToString();
-                    string col95 = row[xCPRLIADB.xCPRLIA.ATTRIBUTE_TIMESTAMP5].ToString();
-                    string col96 = row[xCPRLIADB.xCPRLIA.ATTRIBUTE_TIMESTAMP6].ToString();
-                    string col97 = row[xCPRLIADB.xCPRLIA.ATTRIBUTE_TIMESTAMP7].ToString();
-                    string col98 = row[xCPRLIADB.xCPRLIA.ATTRIBUTE_TIMESTAMP8].ToString();
-                    string col99 = row[xCPRLIADB.xCPRLIA.ATTRIBUTE_TIMESTAMP9].ToString();
-                    string col100 = row[xCPRLIADB.xCPRLIA.ATTRIBUTE_TIMESTAMP10].ToString();
+                    string col91 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_TIMESTAMP1].ToString().Equals("0") ? "" : row[xCPRLIADB.xCPRLIA.ATTRIBUTE_TIMESTAMP1].ToString();     //ATTRIBUTE_TIMESTAMP1
+                    string col92 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_TIMESTAMP2].ToString().Equals("0") ? "" : row[xCPRLIADB.xCPRLIA.ATTRIBUTE_TIMESTAMP2].ToString();
+                    string col93 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_TIMESTAMP3].ToString().Equals("0") ? "" : row[xCPRLIADB.xCPRLIA.ATTRIBUTE_TIMESTAMP3].ToString();
+                    string col94 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_TIMESTAMP4].ToString().Equals("0") ? "" : row[xCPRLIADB.xCPRLIA.ATTRIBUTE_TIMESTAMP4].ToString();
+                    string col95 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_TIMESTAMP5].ToString().Equals("0") ? "" : row[xCPRLIADB.xCPRLIA.ATTRIBUTE_TIMESTAMP5].ToString();
+                    string col96 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_TIMESTAMP6].ToString().Equals("0") ? "" : row[xCPRLIADB.xCPRLIA.ATTRIBUTE_TIMESTAMP6].ToString();
+                    string col97 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_TIMESTAMP7].ToString().Equals("0") ? "" : row[xCPRLIADB.xCPRLIA.ATTRIBUTE_TIMESTAMP7].ToString();
+                    string col98 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_TIMESTAMP8].ToString().Equals("0") ? "" : row[xCPRLIADB.xCPRLIA.ATTRIBUTE_TIMESTAMP8].ToString();
+                    string col99 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_TIMESTAMP9].ToString().Equals("0") ? "" : row[xCPRLIADB.xCPRLIA.ATTRIBUTE_TIMESTAMP9].ToString();
+                    string col100 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_TIMESTAMP10].ToString().Equals("0") ? "" : row[xCPRLIADB.xCPRLIA.ATTRIBUTE_TIMESTAMP10].ToString();
 
                     string col101 = row[xCPRLIADB.xCPRLIA.ATTRIBUTE_NUMBER1].ToString();       //ATTRIBUTE_NUMBER1
                     string col102 = row[xCPRLIADB.xCPRLIA.ATTRIBUTE_NUMBER2].ToString();
@@ -895,7 +908,7 @@ namespace XCustPr
                     string col124 = "";       //Work Order Number
                     string col125 = row[xCPRLIADB.xCPRLIA.UOM_CODE].ToString();     //UOM
                     string col126 = "";       //Secondary UOM
-
+                    col91 = "";
                     //string csvRow = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20}," +
                     //    "{21},{22},{23},{24},{25},{26},{27},{28},{29},{30},{31},{32},{33},{34},{35},{36},{37},{38},{39},{40}," +
                     //    "{41},{42},{43},{44},{45},{46},{47},{48},{49},{50},{51},{52},{53},{54},{55},{56},{57},{58},{59},{60}," +
@@ -924,13 +937,13 @@ namespace XCustPr
                 }
             }
         }
-        public void processGenCSVxCPRDIA(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String flag)
+        public void processGenCSVxCPRDIA(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String flag, String requestId)
         {
             var file = Cm.initC.PathArchive + "PorReqDistInterfaceAl.csv";
             DataTable dt;
-            if (flag.Equals(""))
+            if (flag.Equals("PO001"))
             {
-                dt = xCPRDIADB.selectAll();
+                dt = xCPRDIADB.selectGenTextCSV(requestId);
             }
             else
             {
@@ -1199,7 +1212,7 @@ namespace XCustPr
             int row1 = 0;
             int cntErr =0, cntFileErr=0;   // gen log
 
-            buCode = xCBMTDB.selectActive1();
+            buCode = xCBMTDB.selectActiveBuName();
             //Error PO001-004 : Invalid Requisitioning BU
             if (!buCode.Equals(Cm.initC.BU_NAME.Trim()))
             {
@@ -1211,26 +1224,37 @@ namespace XCustPr
                 lVPr.Add(vPP);
                 cntErr++;       // gen log
             }
+            
+            //Error PO001-009 : Invalid Deliver-to Organization
+            Org = xCDOMTDB.selectActiveByCode(Cm.initC.ORGANIZATION_code.Trim());
+            if (Org.Equals(""))
+            {
+                chk = false;
+                vPP = new ValidatePrPo();
+                vPP.Filename = "PO001 Parameter ";
+                vPP.Message = "Error PO001-009 : Invalid Deliver-to Organization";
+                vPP.Validate = "";
+                lVPr.Add(vPP);
+                cntErr++;       // gen log
+            }else if (Org.Equals("D"))
+            {
+                chk = false;
+                vPP = new ValidatePrPo();
+                vPP.Filename = "PO001 Parameter ";
+                vPP.Message = "Error PO001-009 : Duppicate Deliver-to Organization";
+                vPP.Validate = "";
+                lVPr.Add(vPP);
+                cntErr++;       // gen log
+            }
+
             //Error PO001-008 : Invalid Deliver To Location
-            locator = xCDLMTDB.selectLocator1();
+            locator = xCDLMTDB.selectLocatorByInvtory(Cm.initC.Locator.Trim(), Org);
             if (!locator.Equals(Cm.initC.Locator.Trim()))
             {
                 chk = false;
                 vPP = new ValidatePrPo();
                 vPP.Filename = "PO001 Parameter ";
                 vPP.Message = "Error PO001-008 : Invalid Deliver To Location";
-                vPP.Validate = "";
-                lVPr.Add(vPP);
-                cntErr++;       // gen log
-            }
-            //Error PO001-009 : Invalid Deliver-to Organization
-            Org = xCDOMTDB.selectActive1();
-            if (!Org.Equals(Cm.initC.ORGANIZATION_code.Trim()))
-            {
-                chk = false;
-                vPP = new ValidatePrPo();
-                vPP.Filename = "PO001 Parameter ";
-                vPP.Message = "Error PO001-009 : Invalid Deliver-to Organization";
                 vPP.Validate = "";
                 lVPr.Add(vPP);
                 cntErr++;       // gen log
@@ -1314,7 +1338,7 @@ namespace XCustPr
                     }
                     //Error PO001-010 : Invalid Subinventory Code
                     //subInv_code = xCSIMTDB.validateSubInventoryCode1(initC.ORGANIZATION_code.Trim(), row[xCLFPTDB.xCLFPT.store_code].ToString().Trim());
-                    subInv_code = validateSubInventoryCode(Cm.initC.ORGANIZATION_code.Trim(), row[xCLFPTDB.xCLFPT.store_code].ToString().Trim());
+                    subInv_code = xCSIMTDB.validateSubInventoryCode1(Org, row[xCLFPTDB.xCLFPT.store_code].ToString().Trim());
                     if (subInv_code.Equals(""))
                     {
                         vPP = new ValidatePrPo();
@@ -1327,7 +1351,7 @@ namespace XCustPr
 
                     // Error PO001 - 011 : Invalid Item Number
                     //if (!xCIMTDB.validateItemCodeByOrgRef1("300000000949654", row[xCLFPTDB.xCLFPT.ITEM_CODE].ToString().Trim()))// ต้องแก้ Fix code อยู่
-                    if (validateItemCodeByOrgRef("300000000949654", row[xCLFPTDB.xCLFPT.ITEM_CODE].ToString().Trim()))// ต้องแก้ Fix code อยู่
+                    if (!xCIMTDB.validateItemCodeByOrgRefLinfox(Org, row[xCLFPTDB.xCLFPT.ITEM_CODE].ToString().Trim()))// ต้องแก้ Fix code อยู่
                     {
                         vPP = new ValidatePrPo();
                         vPP.Filename = rowG[xCLFPTDB.xCLFPT.file_name].ToString().Trim();
@@ -1338,7 +1362,9 @@ namespace XCustPr
                     }
                     // Error PO001-015 : Invalid Supplier
                     //if (!xCSMTDB.validateSupplierBySupplierCode(row[xCLFPTDB.xCLFPT.SUPPLIER_CODE].ToString().Trim()))
-                    if (validateSupplierBySupplierCode(row[xCLFPTDB.xCLFPT.SUPPLIER_CODE].ToString().Trim()))
+                    String vendorId = "";
+                    vendorId = xCSMTDB.validateSupplierBySupplierCode1(row[xCLFPTDB.xCLFPT.SUPPLIER_CODE].ToString().Trim());
+                    if (vendorId.Equals(""))
                     {
                         vPP = new ValidatePrPo();
                         vPP.Filename = rowG[xCLFPTDB.xCLFPT.file_name].ToString().Trim();
@@ -1347,8 +1373,12 @@ namespace XCustPr
                         lVPr.Add(vPP);
                         cntErr++;
                     }
+                    String supplierSiteCode = "";
+                    supplierSiteCode = xCSSMTDB.getMinVendorSiteIdByVendorId(vendorId);
+
+
                     // Error PO001-016 :  Invalid UOM
-                    if (validateUOMCodeByUOMCode(row[xCLFPTDB.xCLFPT.UOMCODE].ToString().Trim()))
+                    if (!xCUMTDB.validateUOMCodeByUOMCode(row[xCLFPTDB.xCLFPT.UOMCODE].ToString().Trim()))
                     {
                         vPP = new ValidatePrPo();
                         vPP.Filename = rowG[xCLFPTDB.xCLFPT.file_name].ToString().Trim();
@@ -1359,7 +1389,7 @@ namespace XCustPr
                     }
                     // Error PO001-017 : Invalid CHARGE_ACCOUNT_SEGMENT1
                     //if (!xCVSMTDB.validateValueBySegment1("COMPANY RD CLOUD","Y", "11"))// ต้องแก้ Fix code อยู่
-                    if (validateValueBySegment1("COMPANY RD CLOUD", "Y", "11"))// ต้องแก้ Fix code อยู่
+                    if (!xCVSMTDB.validateValueBySegment1("COMPANY RD CLOUD", "Y", "11"))// ต้องแก้ Fix code อยู่
                     {
                         vPP = new ValidatePrPo();
                         vPP.Filename = row[xCLFPTDB.xCLFPT.file_name].ToString().Trim();
@@ -1370,7 +1400,7 @@ namespace XCustPr
                     }
                     // Error PO001-018 : Invalid CHARGE_ACCOUNT_SEGMENT2
                     //if (!xCVSMTDB.validateValueBySegment2("STORE RD CLOUD", "Y", "00000"))// ต้องแก้ Fix code อยู่
-                    if (validateValueBySegment2("STORE RD CLOUD", "Y", "00000"))// ต้องแก้ Fix code อยู่
+                    if (!xCVSMTDB.validateValueBySegment2("STORE RD CLOUD", "Y", "00000"))// ต้องแก้ Fix code อยู่
                     {
                         vPP = new ValidatePrPo();
                         vPP.Filename = rowG[xCLFPTDB.xCLFPT.file_name].ToString().Trim();
@@ -1381,7 +1411,7 @@ namespace XCustPr
                     }
                     // Error PO001-019 : Invalid CHARGE_ACCOUNT_SEGMENT3
                     //if (!xCVSMTDB.validateValueBySegment3("ACCOUNT RD CLOUD", "Y", "117101"))// ต้องแก้ Fix code อยู่
-                    if (validateValueBySegment3("ACCOUNT RD CLOUD", "Y", "117101"))// ต้องแก้ Fix code อยู่
+                    if (!xCVSMTDB.validateValueBySegment3("ACCOUNT RD CLOUD", "Y", "117101"))// ต้องแก้ Fix code อยู่
                     {
                         vPP = new ValidatePrPo();
                         vPP.Filename = rowG[xCLFPTDB.xCLFPT.file_name].ToString().Trim();
@@ -1392,7 +1422,7 @@ namespace XCustPr
                     }
                     // Error PO001-020 : Invalid CHARGE_ACCOUNT_SEGMENT4
                     //if (!xCVSMTDB.validateValueBySegment4("PROJECT RD CLOUD", "Y", subInv_code))// ต้องแก้ Fix code อยู่
-                    if (validateValueBySegment4("PROJECT RD CLOUD", "Y", subInv_code))// ต้องแก้ Fix code อยู่
+                    if (!xCVSMTDB.validateValueBySegment4("PROJECT RD CLOUD", "Y", "000000"))// ต้องแก้ Fix code อยู่
                     {
                         vPP = new ValidatePrPo();
                         vPP.Filename = rowG[xCLFPTDB.xCLFPT.file_name].ToString().Trim();
@@ -1403,7 +1433,7 @@ namespace XCustPr
                     }
                     // Error PO001-021 : Invalid CHARGE_ACCOUNT_SEGMENT5
                     //if (!xCVSMTDB.validateValueBySegment5("FUTURE1 RD CLOUD", "Y", "00"))// ต้องแก้ Fix code อยู่
-                    if (validateValueBySegment5("FUTURE1 RD CLOUD", "Y", "00"))// ต้องแก้ Fix code อยู่
+                    if (!xCVSMTDB.validateValueBySegment5("FUTURE1 RD CLOUD", "Y", "00"))// ต้องแก้ Fix code อยู่
                     {
                         vPP = new ValidatePrPo();
                         vPP.Filename = rowG[xCLFPTDB.xCLFPT.file_name].ToString().Trim();
@@ -1414,7 +1444,7 @@ namespace XCustPr
                     }
                     // Error PO001-022 : Invalid CHARGE_ACCOUNT_SEGMENT6
                     //if (!xCVSMTDB.validateValueBySegment6("FUTURE2 RD CLOUD", "Y", "0000"))// ต้องแก้ Fix code อยู่
-                    if (validateValueBySegment6("FUTURE2 RD CLOUD", "Y", "0000"))// ต้องแก้ Fix code อยู่
+                    if (!xCVSMTDB.validateValueBySegment6("FUTURE2 RD CLOUD", "Y", "0000"))// ต้องแก้ Fix code อยู่
                     {
                         vPP = new ValidatePrPo();
                         vPP.Filename = rowG[xCLFPTDB.xCLFPT.file_name].ToString().Trim();
@@ -1427,30 +1457,32 @@ namespace XCustPr
                     blanketAgreement = getBlanketAgreement(row[xCLFPTDB.xCLFPT.SUPPLIER_CODE].ToString().Trim(), 
                         row[xCLFPTDB.xCLFPT.ITEM_CODE].ToString().Trim(), row[xCLFPTDB.xCLFPT.QTY].ToString().Trim());
                     String[] aa = blanketAgreement.Split(',');
-                    String price = "";
+                    String price = "", agreementLineNumber="";
                     if (aa.Length > 0)
                     {
                         blanketAgreement = aa[0];
                         price = aa[1];
+                        agreementLineNumber = aa[2];
                     }
                     if (blanketAgreement.IndexOf("false")>=0)
                     {
                         vPP = new ValidatePrPo();
                         vPP.Filename = rowG[xCLFPTDB.xCLFPT.file_name].ToString().Trim();
-                        vPP.Message = "Error PO001-"+ blanketAgreement.Replace("flase","");
-                        vPP.Validate = "row " + row1 + " store_code=" + row[xCLFPTDB.xCLFPT.store_code].ToString().Trim() + " CHARGE_ACCOUNT_SEGMENT6 ";
+                        vPP.Message = "Error PO001-"+ blanketAgreement.Replace("false","");
+                        vPP.Validate = "row " + row1 + " store_code=" + row[xCLFPTDB.xCLFPT.store_code].ToString().Trim() + " agreementLineNumber ";
                         lVPr.Add(vPP);
                         xCLFPTDB.updateValidateFlag(row[xCLFPTDB.xCLFPT.PO_NUMBER].ToString().Trim(), row[xCLFPTDB.xCLFPT.LINE_NUMBER].ToString().Trim(), "E","", "kfc_po");
                         cntErr++;       // gen log
                     }
                     else
                     {
-                        addXcustPRHIA(row[xCLFPTDB.xCLFPT.PO_NUMBER].ToString().Trim(), currDate, rowG[xCLFPTDB.xCLFPT.file_name].ToString().Trim());//ทำ รอไว้ เพื่อ process ช้า
+                        addXcustPRHIA(row[xCLFPTDB.xCLFPT.PO_NUMBER].ToString().Trim(), currDate, rowG[xCLFPTDB.xCLFPT.file_name].ToString().Trim()
+                            , row[xCLFPTDB.xCLFPT.request_id].ToString().Trim());//ทำ รอไว้ เพื่อ process ช้า
                         row.BeginEdit();
                         row[xCLFPTDB.xCLFPT.AGREEEMENT_NUMBER] = blanketAgreement;
                         row[xCLFPTDB.xCLFPT.PRICE] = price;
                         row.EndEdit();
-                        addXcustPRLIAFromxCLFPT(row);
+                        addXcustPRLIAFromxCLFPT(row, subInv_code, price, blanketAgreement, agreementLineNumber, supplierSiteCode);
                         addXcustPRDIAFromxCLFPT(row);
                         xCLFPTDB.updateValidateFlag(row[xCLFPTDB.xCLFPT.PO_NUMBER].ToString().Trim(), row[xCLFPTDB.xCLFPT.LINE_NUMBER].ToString().Trim(),"Y", blanketAgreement, "kfc_po");
                     }
@@ -1467,7 +1499,7 @@ namespace XCustPr
             pB1.Visible = false;
             Cm.logProcess("xcustpo001", lVPr, dateStart, lVfile);   // gen log
         }
-        public void processLinfoxPOtoErpPR(String[] filePO, MaterialListView lv1, Form form1, MaterialProgressBar pB1)
+        public String processLinfoxPOtoErpPR(String[] filePO, MaterialListView lv1, Form form1, MaterialProgressBar pB1)
         {
             TimeZoneInfo tz = TimeZoneInfo.FindSystemTimeZoneById("US Eastern Standard Time");
             String date = System.DateTime.Now.ToString("yyyy-MMM-dd");
@@ -1491,16 +1523,18 @@ namespace XCustPr
             // insert XCUST_LINFOX_PR_TBL
             filePOProcess = Cm.getFileinFolder(Cm.initC.PathProcess);
             addListView("อ่าน file จาก " + Cm.initC.PathProcess, "", lv1, form1);
+            String requestId = "";
+            requestId = xCLFPTDB.getRequestID();
             foreach (string aa in filePOProcess)
             {
                 List<String> linfox = rd.ReadTextFile(aa);
                 addListView("insert temp table " + aa, "", lv1, form1);
                 //conn.BulkToMySQL("kfc_po", linfox);       // ย้ายจาก MySQL ไป MSSQL
                 pB1.Visible = true;
-                xCLFPTDB.insertBluk(linfox, aa, "kfc_po", pB1);
+                xCLFPTDB.insertBluk(linfox, aa, "kfc_po", pB1, requestId);
                 pB1.Visible = false;
             }
-            
+            return requestId;
         }
         private void addListView(String col1, String col2, MaterialListView lv1, Form form1)
         {
@@ -1530,9 +1564,10 @@ namespace XCustPr
             xCPRHIA.ATTRIBUTE2 = xcprhia.ATTRIBUTE2;
             xCPRHIA.REQUITITION_NUMBER = xcprhia.REQUITITION_NUMBER;
             xCPRHIA.IMPORT_SOURCE = xcprhia.IMPORT_SOURCE;
-            xCPRHIA.ATTRIBUTE1 = xcprhia.ATTRIBUTE1;
+            xCPRHIA.ATTRIBUTE2 = xcprhia.ATTRIBUTE2;
             xCPRHIA.REQ_BU_NAME = xcprhia.REQ_BU_NAME;
             xCPRHIA.STATUS_CODE = xcprhia.STATUS_CODE;
+            xCPRHIA.request_id = xcprhia.request_id;
             chk = xCPRHIADB.insert(xCPRHIA);
             return chk;
         }
@@ -1545,9 +1580,10 @@ namespace XCustPr
             xCPRHIA.BATCH_ID = "";
             xCPRHIA.ATTRIBUTE1 = row[xCLFPTDB.xCLFPT.PO_NUMBER].ToString().Trim();
 
-            xCPRHIA.ATTRIBUTE_DATE1 = date;
-            xCPRHIA.ATTRIBUTE_TIMESTAMP1 = date+" "+ time;
-            
+            xCPRHIA.ATTRIBUTE_DATE1 = "";
+            //xCPRHIA.ATTRIBUTE_TIMESTAMP1 = date+" "+ time;
+            xCPRHIA.ATTRIBUTE_TIMESTAMP1 = "";
+
             xCPRHIA.DESCRIPTIONS = row[xCLFPTDB.xCLFPT.LINE_NUMBER].ToString().Trim();
             xCPRHIA.REQUESTER_EMAIL_ADDR = "";
             
@@ -1558,6 +1594,7 @@ namespace XCustPr
             xCPRHIA.STATUS_CODE = "";
             xCPRHIA.REQ_BU_NAME = "";
             xCPRHIA.REQUITITION_NUMBER = "";
+            xCPRHIA.request_id = row[xCLFPTDB.xCLFPT.request_id].ToString();
             xCPRHIADB.insert(xCPRHIA);
         }
         private void insertXcustPorReqLineIntAll(DataRow row, String date, String time)
@@ -1587,11 +1624,14 @@ namespace XCustPr
             xCPRLIA.Requisitioning_BU = Cm.initC.BU_NAME;
             xCPRLIA.DESTINATION_SUBINVENTORY = row[xCLFPTDB.xCLFPT.subinventory_code].ToString().Trim();
             xCPRLIA.SUGGESTED_VENDOR_NAME = row[xCLFPTDB.xCLFPT.SUPPLIER_CODE].ToString().Trim();
-            xCPRLIA.SUGGESTED_VENDOR_SITE = "";
+            xCPRLIA.SUGGESTED_VENDOR_SITE = row[xCLFPTDB.xCLFPT.SUPPLIER_SITE_CODE].ToString().Trim();
             xCPRLIA.LINE_TYPE = Cm.initC.LINE_TYPE;
             xCPRLIA.AGREEMENT_NUMBER = row[xCLFPTDB.xCLFPT.AGREEEMENT_NUMBER].ToString();
             //xCPRLIA.DESTINATION_SUBINVENTORY = "";
             xCPRLIA.ATTRIBUTE_NUMBER10 = row[xCLFPTDB.xCLFPT.PRICE].ToString().Trim();
+            xCPRLIA.request_id = row[xCLFPTDB.xCLFPT.request_id].ToString();
+
+            
             //xCPRLIA.REQ_HEADER_INTERFACE_ID
 
             xCPRLIADB.insert(xCPRLIA);
@@ -1660,13 +1700,21 @@ namespace XCustPr
             //{
             //    return "false";
             //}
-            sql = "Select xcbaht.*, xcblt."+xCBALTDB.xCBALT.PRICE+ ", "+ xCBALTDB.xCBALT.PRICE_LIMIT + " " +
-                " From " + xCBAHTDB.xCBAHT.table +
-                " xcbaht " +
-                "left join "+xCBALTDB.xCBALT.table+ " xcblt ON xcblt." + xCBALTDB.xCBALT.PO_HEADER_ID+ "=xcbaht."+xCBAHTDB.xCBAHT.PO_HEADER_ID+" "+
-                "Where xcbaht." + xCBAHTDB.xCBAHT.SUPPLIER_CODE + "  = '" + supp_code + "' " +
-                "and xcblt." + xCBALTDB.xCBALT.ITEM_CODE + "='" + item_code + "' and xcbaht." +
-            xCBAHTDB.xCBAHT.STATUS + "='OPEN'";
+            //sql = "Select xcbaht.*, xcblt."+xCBALTDB.xCBALT.PRICE+ ", "+ xCBALTDB.xCBALT.PRICE_LIMIT + ", "+ xCBALTDB.xCBALT.LINE_NUMBER +" " +
+            //    " From " + xCBAHTDB.xCBAHT.table +
+            //    " xcbaht " +
+            //    "left join "+xCBALTDB.xCBALT.table+ " xcblt ON xcblt." + xCBALTDB.xCBALT.PO_HEADER_ID+ "=xcbaht."+xCBAHTDB.xCBAHT.PO_HEADER_ID+" "+
+            //    "Where xcbaht." + xCBAHTDB.xCBAHT.SUPPLIER_CODE + "  = '" + supp_code + "' " +
+            //    "and xcblt." + xCBALTDB.xCBALT.ITEM_CODE + "='" + item_code + "' and xcbaht." +
+            //xCBAHTDB.xCBAHT.STATUS + "='OPEN'";
+            sql = "select xcbaht.* , xcblt." + xCBALTDB.xCBALT.PRICE + ", " + xCBALTDB.xCBALT.PRICE_LIMIT + ", " + xCBALTDB.xCBALT.LINE_NUMBER +" "+
+                "From XCUST_BLANKET_AGREEMENT_HEADER_TBL xcbaht "+
+                ",XCUST_BLANKET_AGREEMENT_LINES_TBL xcblt "+
+                "where xcblt.PO_HEADER_ID = xcbaht.PO_HEADER_ID "+
+                "and xcbaht.SUPPLIER_CODE = '"+supp_code+"' "+
+                "and xcblt.ITEM_CODE = '"+item_code+"' "+
+                "and xcbaht.status = 'OPEN' "+
+                "and xcblt.line_status = 'OPEN'";
             dt = conn.selectData(sql, "kfc_po");
             if (dt.Rows.Count > 0)
             {
@@ -1674,7 +1722,7 @@ namespace XCustPr
                 {
                     if ((dt.Rows[0][xCBALTDB.xCBALT.PRICE_LIMIT] == null) || (dt.Rows[0][xCBALTDB.xCBALT.PRICE_LIMIT].ToString().Equals("")))
                     {
-                        chk = dt.Rows[0][xCBAHTDB.xCBAHT.AGREEMENT_NUMBER].ToString().Trim() + "," + price1;
+                        chk = dt.Rows[0][xCBAHTDB.xCBAHT.AGREEMENT_NUMBER].ToString().Trim() + "," + price1+","+ dt.Rows[0][xCBALTDB.xCBALT.LINE_NUMBER].ToString().Trim();
                     }
                     else
                     {
@@ -1695,17 +1743,17 @@ namespace XCustPr
                                         }
                                         else
                                         {
-                                            chk = "false,026";
+                                            chk = "false,026,";
                                         }
                                     }
                                     else
                                     {
-                                        chk = "false,025";
+                                        chk = "false,025,";
                                     }
                                 }
                                 else
                                 {
-                                    chk = "false,";
+                                    chk = "false,,";
                                 }
                             }
                         }
@@ -1713,12 +1761,12 @@ namespace XCustPr
                 }
                 else
                 {
-                    chk = "false,024";
+                    chk = "false,024,";
                 }
             }
             else
             {
-                chk = "false,023";
+                chk = "false,023,";
             }
             return chk;
         }

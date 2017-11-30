@@ -96,13 +96,18 @@ namespace XCustPr
         {
             DataTable dt = new DataTable();
             String chk = "";
-            String sql = "select min("+xCSSMT.VENDOR_SITE_SPK_ID+") as "+xCSSMT.VENDOR_SITE_SPK_ID+" " +
-                "From " + xCSSMT.table+" " +
-                "Where "+xCSSMT.PURCHASING_SITE_FLAG+"='Y' and "+xCSSMT.VENDOR_ID +"='"+vendor_id+"'";
+            String sql = "select t.VENDOR_SITE_CODE "+
+                "from XCUST_SUPPLIER_SITE_MST_TBL t " +
+                "where VENDOR_ID = '"+vendor_id+"' " +
+                "and PURCHASING_SITE_FLAG = 'Y' " +
+                "and t.VENDOR_SITE_ID = (select min(tt.VENDOR_SITE_ID) " +
+                 "                       from XCUST_SUPPLIER_SITE_MST_TBL tt " +
+                 "                       where tt.VENDOR_ID = t.vendor_id " +
+                 "                       and tt.PURCHASING_SITE_FLAG = t.PURCHASING_SITE_FLAG)";
             dt = conn.selectData(sql, "kfc_po");
             if (dt.Rows.Count > 0)
             {
-                chk = dt.Rows[0][xCSSMT.VENDOR_SITE_SPK_ID].ToString();
+                chk = dt.Rows[0]["VENDOR_SITE_CODE"].ToString();
             }
             return chk;
         }

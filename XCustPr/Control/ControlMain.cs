@@ -380,6 +380,10 @@ namespace XCustPr
 
             initC.EmailPort = iniFile.Read("EmailPort");
 
+            initC.POAPPROVER = iniFile.Read("POAPPROVER");
+            initC.POAPPROVER_EMAIL = iniFile.Read("POAPPROVER_EMAIL");
+            initC.DESTINATION_TYPE_CODE = iniFile.Read("DESTINATION_TYPE_CODE");
+
             initC.EmailCharset = iniFile.Read("EmailCharset");      //orc master
             initC.EmailUsername = iniFile.Read("EmailUsername");
             initC.EmailPassword = iniFile.Read("EmailPassword");

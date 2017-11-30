@@ -15,6 +15,6 @@ namespace XCustPr
         public String AGREEMENT_LINE_NUMBER = "", PRICE = "", ITEM_CATEGORY_NAME = "", SUPPLIER_SITE_CODE = "", ACC_SEG1 = "", ACC_SEG2 = "";
         public String ACC_SEG3 = "", ACC_SEG4 = "", ACC_SEG5 = "", ACC_SEG6 = "";
 
-        public String SEND_PO_FLAG = "", GEN_OUTBOUD_FLAG = "", ERP_PO_HEADER_ID = "", ERP_PO_LINE_ID = "", ERP_PO_NUMBER = "", ERP_PO_LINE_NUMBER = "", ERP_QTY = "";
+        public String SEND_PO_FLAG = "", GEN_OUTBOUD_FLAG = "", ERP_PO_HEADER_ID = "", ERP_PO_LINE_ID = "", ERP_PO_NUMBER = "", ERP_PO_LINE_NUMBER = "", ERP_QTY = "", request_id="";
     }
 }

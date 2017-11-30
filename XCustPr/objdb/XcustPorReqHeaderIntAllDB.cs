@@ -89,7 +89,7 @@ namespace XCustPr
             xCPRHIA.IMPORT_SOURCE = "IMPORT_SOURCE";
             xCPRHIA.CREATE_BY = "CREATE_BY";
             xCPRHIA.LAST_UPDATE_BY = "LAST_UPDATE_BY";
-            //xCPRHIA.IMPORT_SOURCE = "IMPORT_SOURCE";
+            xCPRHIA.request_id = "request_id";
 
             xCPRHIA.pkField = "";
             xCPRHIA.table = "xcust_por_req_header_int_all";
@@ -98,6 +98,13 @@ namespace XCustPr
         {
             DataTable dt = new DataTable();
             String sql = "select * From " + xCPRHIA.table;
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
+        }
+        public DataTable selectGenTextCSV(String requestId)
+        {
+            DataTable dt = new DataTable();
+            String sql = "select * From " + xCPRHIA.table + " WHere "+xCPRHIA.request_id+"='"+requestId+"'";
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
@@ -188,6 +195,8 @@ namespace XCustPr
                 //    p.LAST_UPDATE_DATE + "','" + p.CREATION_DATE + "','" + p.IMPORT_SOURCE + "','" +
                 //    p.LAST_UPDATE_BY + 
                 //    "') ";
+                p.ATTRIBUTE_DATE1 = "";
+                p.ATTRIBUTE_TIMESTAMP1 = "";
                 sql = "Insert Into " + xCPRHIA.table + "(" + xCPRHIA.ATTRIBUTE1 + "," + xCPRHIA.ATTRIBUTE_DATE1 + "," +
                     xCPRHIA.ATTRIBUTE_TIMESTAMP1 + "," + xCPRHIA.BATCH_ID + "," +
                     xCPRHIA.DESCRIPTIONS + "," + xCPRHIA.REQUESTER_EMAIL_ADDR + "," + xCPRHIA.INTERFACE_SOURCE_CODE + "," +
@@ -212,7 +221,7 @@ namespace XCustPr
                     xCPRHIA.ATTRIBUTE_TIMESTAMP5 + "," + xCPRHIA.ATTRIBUTE_TIMESTAMP6 + "," + xCPRHIA.ATTRIBUTE_TIMESTAMP7 + "," +
                     xCPRHIA.ATTRIBUTE_TIMESTAMP8 + "," + xCPRHIA.ATTRIBUTE_TIMESTAMP9 + "," + xCPRHIA.ATTRIBUTE_TIMESTAMP10 + "," +
                     xCPRHIA.LAST_UPDATE_DATE + "," + xCPRHIA.CREATION_DATE + "," + xCPRHIA.IMPORT_SOURCE + "," +
-                    xCPRHIA.LAST_UPDATE_BY +","+ xCPRHIA.ATTRIBUTE_DATE1+
+                    xCPRHIA.LAST_UPDATE_BY +","+ xCPRHIA.request_id+
                     ") " +
                     "Values('" + p.ATTRIBUTE1 + "','" + p.ATTRIBUTE_DATE1 + "','" +
                     p.ATTRIBUTE_TIMESTAMP1 + "'," + p.BATCH_ID + ",'" +
@@ -238,7 +247,7 @@ namespace XCustPr
                     p.ATTRIBUTE_TIMESTAMP5 + "','" + p.ATTRIBUTE_TIMESTAMP6 + "','" + p.ATTRIBUTE_TIMESTAMP7 + "','" +
                     p.ATTRIBUTE_TIMESTAMP8 + "','" + p.ATTRIBUTE_TIMESTAMP9 + "','" + p.ATTRIBUTE_TIMESTAMP10 + "','" +
                     p.LAST_UPDATE_DATE + "','" + p.CREATION_DATE + "','" + p.IMPORT_SOURCE + "','" +
-                    p.LAST_UPDATE_BY + "','" + p.ATTRIBUTE_DATE1 +
+                    p.LAST_UPDATE_BY + "','" + p.request_id +
                     "') ";
                 chk = conn.ExecuteNonQuery(sql, "kfc_po");
                 //chk = p.RowNumber;

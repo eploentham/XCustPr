@@ -62,5 +62,23 @@ namespace XCustPr
             }
             return chk;
         }
+        public String selectActiveByCode(String code)
+        {
+            String chk = "";
+            DataTable dt = new DataTable();
+            String sql = "select organization_id "+
+                "from xcust_organization_mst_tbl "+
+                "where organization_code = '"+code+"' ";
+            dt = conn.selectData(sql, "kfc_po");
+            if (dt.Rows.Count > 0)
+            {
+                chk = dt.Rows[0]["organization_id"].ToString().Trim();
+            }
+            else
+            {
+                chk = "D";
+            }
+            return chk;
+        }
     }
 }

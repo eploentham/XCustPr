@@ -109,6 +109,8 @@ namespace XCustPr
             xCPRLIA.AGREEMENT_NUMBER = "AGREEMENT_NUMBER";
             xCPRLIA.AGREEMENT_LINE_NUMBER = "AGREEMENT_LINE_NUMBER";
             xCPRLIA.UOM_CODE = "UOM_CODE";
+            xCPRLIA.request_id = "request_id";
+            //xCPRLIA.Price = "";
 
             xCPRLIA.table = "xcust_por_req_line_int_all";
         }
@@ -144,6 +146,13 @@ namespace XCustPr
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
+        public DataTable selectGenTextCSV(String requestId)
+        {
+            DataTable dt = new DataTable();
+            String sql = "select * From " + xCPRLIA.table+" Where "+xCPRLIA.request_id+"='"+requestId+"'";
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
+        }
         public String insert(XcustPorReqLineIntAll p)
         {
             String sql = "", chk = "";
@@ -165,6 +174,9 @@ namespace XCustPr
                 p.ATTRIBUTE_NUMBER8 = p.ATTRIBUTE_NUMBER8.Equals("") ? "0" : p.ATTRIBUTE_NUMBER8;
                 p.ATTRIBUTE_NUMBER9 = p.ATTRIBUTE_NUMBER9.Equals("") ? "0" : p.ATTRIBUTE_NUMBER9;
                 p.ATTRIBUTE_NUMBER10 = p.ATTRIBUTE_NUMBER10.Equals("") ? "0" : p.ATTRIBUTE_NUMBER10;
+
+                p.Price = p.Price.Equals("") ? "0" : p.Price;
+                p.ATTRIBUTE_DATE2 = "";
                 sql = "Insert Into " + xCPRLIA.table + "(" + xCPRLIA.ATTRIBUTE1 + "," + xCPRLIA.ATTRIBUTE_DATE1 + "," +
                     xCPRLIA.ATTRIBUTE_TIMESTAMP1 + "," + xCPRLIA.CATEGORY_NAME + "," +
                     xCPRLIA.CURRENCY_CODE + "," + xCPRLIA.DELIVER_TO_LOCATION_CODE + "," + xCPRLIA.DELIVER_TO_ORGANIZATION_CODE + "," +
@@ -193,7 +205,7 @@ namespace XCustPr
                     xCPRLIA.ATTRIBUTE_TIMESTAMP8 + "," + xCPRLIA.ATTRIBUTE_TIMESTAMP9 + "," + xCPRLIA.ATTRIBUTE_TIMESTAMP10 + "," +
                     xCPRLIA.LAST_UPDATE_DATE + "," + xCPRLIA.CREATION_DATE + "," + xCPRLIA.CREATE_BY + "," +
                     xCPRLIA.LAST_UPDATE_BY + "," + xCPRLIA.LINE_TYPE + "," + xCPRLIA.AGREEMENT_NUMBER + ","+
-                    xCPRLIA.UOM_CODE+") " +
+                    xCPRLIA.UOM_CODE + "," + xCPRLIA.request_id + "," + xCPRLIA.AGREEMENT_LINE_NUMBER + "," + xCPRLIA.ATTRIBUTE_CATEGORY + "," + xCPRLIA.Price + ") " +
                     "Values('" + p.ATTRIBUTE1 + "','" + p.ATTRIBUTE_DATE1 + "'," +
                     "getdate(),'" + p.CATEGORY_NAME + "','" +
                     p.CURRENCY_CODE + "','" + p.DELIVER_TO_LOCATION_CODE + "','" + p.DELIVER_TO_ORGANIZATION_CODE + "','" +
@@ -222,7 +234,7 @@ namespace XCustPr
                     p.ATTRIBUTE_TIMESTAMP8 + "','" + p.ATTRIBUTE_TIMESTAMP9 + "','" + p.ATTRIBUTE_TIMESTAMP10 + "','" +
                     p.LAST_UPDATE_DATE + "',getdate(),'" + p.CREATE_BY + "','" +
                     p.LAST_UPDATE_BY + "','" + p.LINE_TYPE + "','" + p.AGREEMENT_NUMBER + "','" +
-                    p.UOM_CODE+"') ";
+                    p.UOM_CODE + "','" + p.request_id +"','"+ p.AGREEMENT_LINE_NUMBER + "','" + p.ATTRIBUTE_CATEGORY + "'," + p.Price + ") ";
                 chk = conn.ExecuteNonQueryAutoIncrement(sql, "kfc_po");
                 //chk = p.RowNumber;
                 //chk = p.Code;

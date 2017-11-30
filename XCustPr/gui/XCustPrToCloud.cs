@@ -32,6 +32,8 @@ namespace XCustPr
         ControlMain Cm;
         String[] filePO;
 
+        String requestId = "";
+
         private ListViewColumnSorter lvwColumnSorter;
 
         private void InitializeComponent()
@@ -209,7 +211,7 @@ namespace XCustPr
             // move file
             lv1.Items.Clear();
             filePO = cRDPO.Cm.getFileinFolder(cRDPO.Cm.initC.PathInitial);
-            cRDPO.processLinfoxPOtoErpPR(filePO, lv1, this, pB1);
+            requestId =  cRDPO.processLinfoxPOtoErpPR(filePO, lv1, this, pB1);
             //lv1.Items.Add(AddToList((1), "", ""));
             //1. ดึงข้อมูลตาม group by filename เพราะ field filename เป็นตัวแบ่งข้อมูลแต่ละfile
             //2. ดึงข้อมูล where ตาม filename เพื่อ validate ถ้า validate ผ่าน ก็ update validate_flag = 'Y'
@@ -240,7 +242,7 @@ namespace XCustPr
             //        }
             //    }
             //}
-            cRDPO.processGenCSV(lv1, this, pB1);
+            cRDPO.processGenCSV(lv1, this, pB1, requestId);
         }
         private void btnWebService_Click(object sender, EventArgs e)
         {

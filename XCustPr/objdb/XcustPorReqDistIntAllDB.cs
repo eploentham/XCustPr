@@ -91,6 +91,7 @@ namespace XCustPr
             xCPRDIA.CREATION_DATE = "CREATION_DATE";            
             xCPRDIA.CREATE_BY = "CREATE_BY";
             xCPRDIA.LAST_UPDATE_BY = "LAST_UPDATE_BY";
+            xCPRDIA.request_id = "request_id";
 
             xCPRDIA.pkField = "";
             xCPRDIA.table = "xcust_por_req_dist_int_all";
@@ -109,6 +110,13 @@ namespace XCustPr
         {
             DataTable dt = new DataTable();
             String sql = "select * From " + xCPRDIA.table;
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
+        }
+        public DataTable selectGenTextCSV(String requestId)
+        {
+            DataTable dt = new DataTable();
+            String sql = "select * From " + xCPRDIA.table+" Where "+xCPRDIA.request_id+"='"+requestId+"'";
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
@@ -157,7 +165,7 @@ namespace XCustPr
                     xCPRDIA.ATTRIBUTE_TIMESTAMP5 + "," + xCPRDIA.ATTRIBUTE_TIMESTAMP6 + "," + xCPRDIA.ATTRIBUTE_TIMESTAMP7 + "," +
                     xCPRDIA.ATTRIBUTE_TIMESTAMP8 + "," + xCPRDIA.ATTRIBUTE_TIMESTAMP9 + "," + xCPRDIA.ATTRIBUTE_TIMESTAMP10 + "," +
                     xCPRDIA.DISTRIBUTION_CURRENCY_AMT + "," + xCPRDIA.LAST_UPDATE_DATE + "," +
-                    xCPRDIA.CREATION_DATE + "," + xCPRDIA.CREATE_BY + "," + xCPRDIA.LAST_UPDATE_BY +
+                    xCPRDIA.CREATION_DATE + "," + xCPRDIA.CREATE_BY + "," + xCPRDIA.LAST_UPDATE_BY + "," + xCPRDIA.request_id +
                     ") " +
                     "Values('" + p.ATTRIBUTE1 + "','" + p.ATTRIBUTE_DATE1 + "'," +
                     "getdate(),'" + p.CHARGE_ACCOUNT_SEGMENT1 + "','" + 
@@ -183,7 +191,7 @@ namespace XCustPr
                     p.ATTRIBUTE_TIMESTAMP5 + "','" + p.ATTRIBUTE_TIMESTAMP6 + "','" + p.ATTRIBUTE_TIMESTAMP7 + "','" +
                     p.ATTRIBUTE_TIMESTAMP8 + "','" + p.ATTRIBUTE_TIMESTAMP9 + "','" + p.ATTRIBUTE_TIMESTAMP10 + "','" +
                     p.DISTRIBUTION_CURRENCY_AMT + "','" + p.LAST_UPDATE_DATE + "','" +
-                    p.CREATION_DATE + "','" + p.CREATE_BY + "','" + p.LAST_UPDATE_BY + "'" +
+                    p.CREATION_DATE + "','" + p.CREATE_BY + "','" + p.LAST_UPDATE_BY + "','" + p.request_id + "'" +
                     ") ";
                 chk = conn.ExecuteNonQueryAutoIncrement(sql, "kfc_po");
                 //chk = p.RowNumber;

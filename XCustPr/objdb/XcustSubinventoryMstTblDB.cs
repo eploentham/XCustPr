@@ -27,7 +27,7 @@ namespace XCustPr
             xCSIMT.DESCRIPTION = "DESCRIPTION";
             xCSIMT.LAST_UPDATE_DATE = "LAST_UPDATE_DATE";
             xCSIMT.LOCATOR_TYPE = "LOCATOR_TYPE";
-            xCSIMT.ORGAINZATION_ID = "ORGAINZATION_ID";
+            xCSIMT.ORGAINZATION_ID = "ORGANIZATION_ID";
             xCSIMT.SECONDARY_INVENTORY_NAME = "SECONDARY_INVENTORY_NAME";
             xCSIMT.SUBINVENTORY_ID = "SUBINVENTORY_ID";
 
@@ -72,7 +72,7 @@ namespace XCustPr
             DataTable dt = new DataTable();
             String chk = "";
             String sql = "select * From " + xCSIMT.table +
-                " Where " + xCSIMT.SUBINVENTORY_ID + " = '" + ordId + "' and " + xCSIMT.attribute1 + " = '" + StoreCode + "'";
+                " Where " + xCSIMT.ORGAINZATION_ID + " = '" + ordId + "' and  (" + xCSIMT.attribute1 + " = '" + StoreCode + "' or "+xCSIMT.attribute2+ " = '" + StoreCode+"') ";
             dt = conn.selectData(sql, "kfc_po");
             if (dt.Rows.Count > 0)
             {

@@ -120,7 +120,24 @@ namespace XCustPr
             {
                 return true;
             }
-            else{
+            else
+            {
+                return false;
+            }
+        }
+        public Boolean validateItemCodeByOrgRefLinfox(String OrgId, String itemCode)
+        {
+            DataTable dt = new DataTable();
+            String chk = "";
+            String sql = "select * From " + xCIMT.table + 
+                " where " + xCIMT.ITEM_CODE + "  = '" + itemCode + "' and " + xCIMT.ORGAINZATION_ID + " ='" + OrgId + "'";
+            dt = conn.selectData(sql, "kfc_po");
+            if (dt.Rows.Count > 0)
+            {
+                return true;
+            }
+            else
+            {
                 return false;
             }
         }

@@ -71,6 +71,7 @@ namespace XCustPr
             xCLFPT.ERP_PO_NUMBER = "ERP_PO_NUMBER";
             xCLFPT.ERP_PO_LINE_NUMBER = "ERP_PO_LINE_NUMBER";
             xCLFPT.ERP_QTY = "ERP_QTY";
+            xCLFPT.request_id = "request_id";
 
             //xCLFPT.table = "xcust_linfox_pr_tbl";
             xCLFPT.table = "xcust_linfox_pr_int_tbl";
@@ -102,6 +103,18 @@ namespace XCustPr
             String sql = "select * From " + xCLFPT.table + " Where " + xCLFPT.file_name + "='aaaaaaaaaa'";
             dt = conn.selectData(sql, "kfc_po");
             return dt;
+        }
+        public String getRequestID()
+        {
+            String chk = "";
+            DataTable dt = new DataTable();
+            String sql = "select next value for xcust_request_id ";
+            dt = conn.selectData(sql, "kfc_po");
+            if (dt.Rows.Count > 0)
+            {
+                chk = dt.Rows[0][0].ToString();
+            }
+            return chk;
         }
         public void DeleteLinfoxTemp()
         {
@@ -164,7 +177,7 @@ namespace XCustPr
 
             return chk;
         }
-        public void insertBluk(List<String> linfox, String filename, String host, MaterialProgressBar pB1)
+        public void insertBluk(List<String> linfox, String filename, String host, MaterialProgressBar pB1, String requestId)
         {
             int i = 0;
             TimeZoneInfo tz = TimeZoneInfo.FindSystemTimeZoneById("US Eastern Standard Time");
@@ -193,6 +206,7 @@ namespace XCustPr
                     validateFlag = "N";
                     String qty = "";
                     qty = aaa[8].Equals("")?"0": aaa[8];
+                    requestId = requestId.Equals("") ? "0" : requestId;
                     //bbb += "('" + aaa[0] + "','" +
                     //aaa[11] + "','" + errMsg + "','" + aaa[6] + "','" +
                     //aaa[2] + "','" + aaa[4] + "','" + aaa[5] + "','" +
@@ -204,14 +218,14 @@ namespace XCustPr
                         .Append(",").Append(xCLFPT.DELIVERY_INSTRUCTION).Append(",").Append(xCLFPT.VALIDATE_FLAG).Append(",").Append(xCLFPT.PROCESS_FLAG)
                         .Append(",").Append(xCLFPT.ERROR_MSG).Append(",").Append(xCLFPT.create_by).Append(",").Append(xCLFPT.create_date)
                         .Append(",").Append(xCLFPT.last_update_by).Append(",").Append(xCLFPT.last_update_date).Append(",").Append(xCLFPT.file_name)
-                        .Append(",").Append(xCLFPT.store_code).Append(",").Append(xCLFPT.REQUEST_TIME).Append(") Values ('")
+                        .Append(",").Append(xCLFPT.store_code).Append(",").Append(xCLFPT.REQUEST_TIME).Append(",").Append(xCLFPT.request_id).Append(") Values ('")
                         .Append(aaa[0]).Append("','").Append(aaa[1]).Append("','").Append(aaa[2])
                         .Append("','").Append(aaa[3]).Append("','").Append(aaa[4]).Append("','").Append(aaa[5])
                         .Append("','").Append(aaa[7]).Append("',").Append(aaa[8]).Append(",'").Append(aaa[9])                        
                         .Append("','").Append(aaa[10]).Append("','").Append(validateFlag).Append("','").Append(processFlag)
                         .Append("','").Append(errMsg).Append("','").Append(createBy).Append("',").Append(createDate)
                         .Append(",'").Append(lastUpdateBy).Append("',").Append(lastUpdateTime).Append(",'").Append(filename.Trim().Replace(initC.PathProcess,""))
-                        .Append("','").Append(aaa[11]).Append("','").Append(aaa[6]).Append("') ");
+                        .Append("','").Append(aaa[11]).Append("','").Append(aaa[6]).Append("','").Append(requestId).Append("') ");
                     chk = conn.ExecuteNonQuery(sql.ToString(), host);
                 }
             }
