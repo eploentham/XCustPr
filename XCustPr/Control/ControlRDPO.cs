@@ -642,19 +642,19 @@ namespace XCustPr
                     string col02 = row[xCPRHIADB.xCPRHIA.IMPORT_SOURCE].ToString();
                     string col03 = row[xCPRHIADB.xCPRHIA.REQ_BU_NAME].ToString();
                     string col04 = row[xCPRHIADB.xCPRHIA.BATCH_ID].ToString();
-                    string col05 = "col12";// รอถาม  Interface Source Line ID
+                    string col05 = "";// รอถาม  Interface Source Line ID
                     string col06 = row[xCPRHIADB.xCPRHIA.STATUS_CODE].ToString();
-                    string col07 = "col12";// รอถาม  Approver
-                    string col08 = "col12";// รอถาม  Entered By*
+                    string col07 = "";// รอถาม  Approver
+                    string col08 = "";// รอถาม  Entered By*
                     string col09 = row[xCPRHIADB.xCPRHIA.REQUITITION_NUMBER].ToString();
                     string col10 = row[xCPRHIADB.xCPRHIA.DESCRIPTIONS].ToString();
 
-                    string col11 = "col12";// รอถาม  Emergency Purchase Order
-                    string col12 = "col12";//Taxation Country
-                    string col13 = "col13";//Taxation Territory
-                    string col14 = "col14";//Document Fiscal Classification Code
-                    string col15 = "col15";//Document Fiscal Classification
-                    string col16 = "col16";//Justification
+                    string col11 = "";// รอถาม  Emergency Purchase Order
+                    string col12 = "";//Taxation Country
+                    string col13 = "";//Taxation Territory
+                    string col14 = "";//Document Fiscal Classification Code
+                    string col15 = "";//Document Fiscal Classification
+                    string col16 = "";//Justification
                     string col17 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE1].ToString();
                     string col18 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE2].ToString();
                     string col19 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE3].ToString();
@@ -758,69 +758,69 @@ namespace XCustPr
                 {
                     string col01 = row[xCPRLIADB.xCPRLIA.REQ_LINE_INTERFACE_ID].ToString();
                     string col02 = row[xCPRLIADB.xCPRLIA.REQ_HEADER_INTERFACE_ID].ToString();
-                    string col03 = "col03";
+                    string col03 = "";
                     string col04 = row[xCPRLIADB.xCPRLIA.DESTINATION_TYPE_CODE].ToString();
                     string col05 = row[xCPRLIADB.xCPRLIA.DELIVER_TO_LOCATION_CODE].ToString();
                     string col06 = row[xCPRLIADB.xCPRLIA.DELIVER_TO_ORGANIZATION_CODE].ToString();
                     string col07 = row[xCPRLIADB.xCPRLIA.DESTINATION_SUBINVENTORY].ToString();
-                    string col08 = "col08";         //Requester
-                    string col09 = "col09";         //Item Description
+                    string col08 = "";         //Requester
+                    string col09 = "";         //Item Description
                     string col10 = row[xCPRLIADB.xCPRLIA.CATEGORY_NAME].ToString();     //Category Name
 
                     string col11 = row[xCPRLIADB.xCPRLIA.NEED_BY_DATE].ToString();     // Need - by Date
                     string col12 = row[xCPRLIADB.xCPRLIA.ITEM_CODE].ToString();
-                    string col13 = "col13";         //Revision
+                    string col13 = "";         //Revision
                     string col14 = row[xCPRLIADB.xCPRLIA.UOM_CODE].ToString();         //UOM Code
                     string col15 = Cm.initC.LINE_TYPE;
                     string col16 = row[xCPRLIADB.xCPRLIA.QTY].ToString();
                     string col17 = row[xCPRLIADB.xCPRLIA.CURRENCY_CODE].ToString();
                     //string col18 = row[xCPRLIADB.xCPRLIA.Price].ToString();
                     string col18 = row[xCPRLIADB.xCPRLIA.ATTRIBUTE_NUMBER10].ToString();// ใน table ไม่มี filed price เลยเอามาฝาก ใส่ ATTRIBUTE_NUMBER10 ไปก่อน
-                    string col19 = "col19";     //Conversion Rate
-                    string col20 = "col20";     //Conversion Date
+                    string col19 = "";     //Conversion Rate
+                    string col20 = "";     //Conversion Date
 
-                    string col21 = "col21";       //Conversion Rate Type
-                    string col22 = "col22";     //Secondary UOM Code
-                    string col23 = "col23";     //Secondary Quantity
-                    string col24 = "col24";     //amount
-                    string col25 = "col25";     //UN Number
-                    string col26 = "col26";     //Hazard Class
+                    string col21 = "";       //Conversion Rate Type
+                    string col22 = "";     //Secondary UOM Code
+                    string col23 = "";     //Secondary Quantity
+                    string col24 = "";     //amount
+                    string col25 = "";     //UN Number
+                    string col26 = "";     //Hazard Class
                     string col27 = row[xCPRLIADB.xCPRLIA.PRC_BU_NAME].ToString();
                     string col28 = row[xCPRLIADB.xCPRLIA.AGREEMENT_NUMBER].ToString();          //Agreement
                     string col29 = row[xCPRLIADB.xCPRLIA.AGREEMENT_LINE_NUMBER].ToString();     //Agreement Line 
                     string col30 = row[xCPRLIADB.xCPRLIA.SUGGESTED_VENDOR_NAME].ToString();             //Supplier
 
                     string col31 = row[xCPRLIADB.xCPRLIA.SUGGESTED_VENDOR_SITE].ToString();     //Supplier Site
-                    string col32 = "col32";     //Supplier Contact
-                    string col33 = "col33";     //phone
-                    string col34 = "col34";     //fax
-                    string col35 = "col35";     //email
-                    string col36 = "col36";     //Supplier Item
-                    string col37 = "col37";     //Suggested Buyer
-                    string col38 = "col38";     //Autosource Flag
-                    string col39 = "col39";     //Negotiated
-                    string col40 = "col40";     //Negotiation Required
+                    string col32 = "";     //Supplier Contact
+                    string col33 = "";     //phone
+                    string col34 = "";     //fax
+                    string col35 = "";     //email
+                    string col36 = "";     //Supplier Item
+                    string col37 = "";     //Suggested Buyer
+                    string col38 = "";     //Autosource Flag
+                    string col39 = "";     //Negotiated
+                    string col40 = "";     //Negotiation Required
 
-                    string col41 = "col41";       //Urgent
-                    string col42 = "col42";     //New Supplier
-                    string col43 = "col43";     //Note to Buyer
-                    string col44 = "col44";     //Note to Receiver
-                    string col45 = "col45";     //Transaction Business Category
-                    string col46 = "col46";     //Transaction Business Category Name
-                    string col47 = "col47";     //Product Type
-                    string col48 = "col48";     //Product Type Name
-                    string col49 = "col49";     //Product-Fiscal Classification
-                    string col50 = "col50";     //Product-Fiscal Classification Name
+                    string col41 = "";       //Urgent
+                    string col42 = "";     //New Supplier
+                    string col43 = "";     //Note to Buyer
+                    string col44 = "";     //Note to Receiver
+                    string col45 = "";     //Transaction Business Category
+                    string col46 = "";     //Transaction Business Category Name
+                    string col47 = "";     //Product Type
+                    string col48 = "";     //Product Type Name
+                    string col49 = "";     //Product-Fiscal Classification
+                    string col50 = "";     //Product-Fiscal Classification Name
 
-                    string col51 = "col51";         //Product Category
-                    string col52 = "col52";         //Product Category Name
-                    string col53 = "col53";         //Intended Use
-                    string col54 = "col54";         //Intended Use Name
-                    string col55 = "col55";         //User-Defined Fiscal Classification
-                    string col56 = "col56";         //User-Defined Fiscal Classification Name
-                    string col57 = "col57";         //Tax Classification Code
-                    string col58 = "col58";         //Tax Classification Name
-                    string col59 = "col59";         //Assessable Value
+                    string col51 = "";         //Product Category
+                    string col52 = "";         //Product Category Name
+                    string col53 = "";         //Intended Use
+                    string col54 = "";         //Intended Use Name
+                    string col55 = "";         //User-Defined Fiscal Classification
+                    string col56 = "";         //User-Defined Fiscal Classification Name
+                    string col57 = "";         //Tax Classification Code
+                    string col58 = "";         //Tax Classification Name
+                    string col59 = "";         //Assessable Value
                     string col60 = row[xCPRLIADB.xCPRLIA.ATTRIBUTE1].ToString();
 
                     string col61 = row[xCPRLIADB.xCPRLIA.ATTRIBUTE2].ToString();
@@ -879,22 +879,22 @@ namespace XCustPr
                     string col110 = row[xCPRLIADB.xCPRLIA.ATTRIBUTE_NUMBER10].ToString();
 
                     string col111 = row[xCPRLIADB.xCPRLIA.ATTRIBUTE_CATEGORY].ToString();       //ATTRIBUTE_CATEGORY
-                    string col112 = "col112";       //Supplier Number
-                    string col113 = "col113";       //Third-Party Tax Registration Number
-                    string col114 = "col114";       //Location of Final Discharge
-                    string col115 = "col115";       //Note To Supplier
-                    string col116 = "col116";       //Carrier
-                    string col117 = "col117";       //Mode Of Transport Code
-                    string col118 = "col118";       //Requested Ship Date
-                    string col119 = "col119";       //Service Level Code
-                    string col120 = "col120";       //Requested Delivery Date
+                    string col112 = "";       //Supplier Number
+                    string col113 = "";       //Third-Party Tax Registration Number
+                    string col114 = "";       //Location of Final Discharge
+                    string col115 = "";       //Note To Supplier
+                    string col116 = "";       //Carrier
+                    string col117 = "";       //Mode Of Transport Code
+                    string col118 = "";       //Requested Ship Date
+                    string col119 = "";       //Service Level Code
+                    string col120 = "";       //Requested Delivery Date
 
-                    string col121 = "col121";       //Orchestration Code
-                    string col122 = "col122";       //Work Order Product
-                    string col123 = "col123";       //Work Order ID
-                    string col124 = "col124";       //Work Order Number
+                    string col121 = "";       //Orchestration Code
+                    string col122 = "";       //Work Order Product
+                    string col123 = "";       //Work Order ID
+                    string col124 = "";       //Work Order Number
                     string col125 = row[xCPRLIADB.xCPRLIA.UOM_CODE].ToString();     //UOM
-                    string col126 = "col126";       //Secondary UOM
+                    string col126 = "";       //Secondary UOM
 
                     //string csvRow = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20}," +
                     //    "{21},{22},{23},{24},{25},{26},{27},{28},{29},{30},{31},{32},{33},{34},{35},{36},{37},{38},{39},{40}," +
@@ -943,40 +943,40 @@ namespace XCustPr
                 {
                     string col01 = row[xCPRDIADB.xCPRDIA.REQ_HEADER_INTERFACE_ID].ToString();
                     string col02 = row[xCPRDIADB.xCPRDIA.REQ_LINE_INTERFACE_ID].ToString(); //REQ_LINE_INTERFACE_ID
-                    string col03 = "col03";     //Percentage
+                    string col03 = "";     //Percentage
                     string col04 = row[xCPRDIADB.xCPRDIA.REQ_DIST_INTERFACE_ID].ToString();     //Distribution
                     string col05 = row[xCPRDIADB.xCPRDIA.QTY].ToString();         //Quantity
-                    string col06 = "col06";     //Amount
-                    string col07 = "col07";     //Project Name
-                    string col08 = "col08";     //Task Name
-                    string col09 = "col09";     //Expenditure Type
-                    string col10 = "col10";     //Expenditure Item Date
+                    string col06 = "";     //Amount
+                    string col07 = "";     //Project Name
+                    string col08 = "";     //Task Name
+                    string col09 = "";     //Expenditure Type
+                    string col10 = "";     //Expenditure Item Date
 
-                    string col11 = "col11";       //Expenditure Organization
-                    string col12 = "col12";     //Billable
-                    string col13 = "col13";     //Capitalizable
-                    string col14 = "col14";     //PJC_USER_DEF_ATTRIBUTE1
-                    string col15 = "col15";     //PJC_USER_DEF_ATTRIBUTE2
-                    string col16 = "col16";
-                    string col17 = "col17";
-                    string col18 = "col18";
-                    string col19 = "col19";
-                    string col20 = "col20";
+                    string col11 = "";       //Expenditure Organization
+                    string col12 = "";     //Billable
+                    string col13 = "";     //Capitalizable
+                    string col14 = "";     //PJC_USER_DEF_ATTRIBUTE1
+                    string col15 = "";     //PJC_USER_DEF_ATTRIBUTE2
+                    string col16 = "";
+                    string col17 = "";
+                    string col18 = "";
+                    string col19 = "";
+                    string col20 = "";
 
-                    string col21 = "col21";
-                    string col22 = "col22";
-                    string col23 = "col23";
-                    string col24 = "col24";
-                    string col25 = "col25";
-                    string col26 = "col26";
-                    string col27 = "col27";
-                    string col28 = "col28";
-                    string col29 = "col29";
-                    string col30 = "col30";
+                    string col21 = "";
+                    string col22 = "";
+                    string col23 = "";
+                    string col24 = "";
+                    string col25 = "";
+                    string col26 = "";
+                    string col27 = "";
+                    string col28 = "";
+                    string col29 = "";
+                    string col30 = "";
 
-                    string col31 = "col31";
-                    string col32 = "col32";
-                    string col33 = "col33";
+                    string col31 = "";
+                    string col32 = "";
+                    string col33 = "";
                     string col34 = row[xCPRDIADB.xCPRDIA.ATTRIBUTE1].ToString();         //ATTRIBUTE1 
                     string col35 = row[xCPRDIADB.xCPRDIA.ATTRIBUTE2].ToString();
                     string col36 = row[xCPRDIADB.xCPRDIA.ATTRIBUTE3].ToString();
@@ -1067,12 +1067,12 @@ namespace XCustPr
                     string col112 = "";       //CHARGE_ACCOUNT_SEGMENT28
                     string col113 = "";       //CHARGE_ACCOUNT_SEGMENT29
                     string col114 = "";       //CHARGE_ACCOUNT_SEGMENT30
-                    string col115 = "col115";       //Work Type
-                    string col116 = "col116";       //Budget Date
-                    string col117 = "col117";       //Project Number
-                    string col118 = "col118";       //Contract Name
-                    string col119 = "col119";       //Contract Number
-                    string col120 = "col120";       //Funding Source Name
+                    string col115 = "";       //Work Type
+                    string col116 = "";       //Budget Date
+                    string col117 = "";       //Project Number
+                    string col118 = "";       //Contract Name
+                    string col119 = "";       //Contract Number
+                    string col120 = "";       //Funding Source Name
 
                     //string csvRow = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20}," +
                     //    "{21},{22},{23},{24},{25},{26},{27},{28},{29},{30},{31},{32},{33},{34},{35},{36},{37},{38},{39},{40}," +
@@ -1660,7 +1660,8 @@ namespace XCustPr
             //{
             //    return "false";
             //}
-            sql = "Select xcbaht.*, xcblt."+xCBALTDB.xCBALT.PRICE+" From " + xCBAHTDB.xCBAHT.table +
+            sql = "Select xcbaht.*, xcblt."+xCBALTDB.xCBALT.PRICE+ ", "+ xCBALTDB.xCBALT.PRICE_LIMIT + " " +
+                " From " + xCBAHTDB.xCBAHT.table +
                 " xcbaht " +
                 "left join "+xCBALTDB.xCBALT.table+ " xcblt ON xcblt." + xCBALTDB.xCBALT.PO_HEADER_ID+ "=xcbaht."+xCBAHTDB.xCBAHT.PO_HEADER_ID+" "+
                 "Where xcbaht." + xCBAHTDB.xCBAHT.SUPPLIER_CODE + "  = '" + supp_code + "' " +
@@ -1671,34 +1672,41 @@ namespace XCustPr
             {
                 if (dt.Rows.Count == 1)
                 {
-                    if(dt.Rows[0][xCBAHTDB.xCBAHT.MIN_RELEASE_AMT] != null)
+                    if ((dt.Rows[0][xCBALTDB.xCBALT.PRICE_LIMIT] == null) || (dt.Rows[0][xCBALTDB.xCBALT.PRICE_LIMIT].ToString().Equals("")))
                     {
-                        int.TryParse(dt.Rows[0][xCBAHTDB.xCBAHT.MIN_RELEASE_AMT].ToString(), out min);
-                        if (dt.Rows[0][xCBAHTDB.xCBAHT.AGREEMENT_AMT] != null)
+                        chk = dt.Rows[0][xCBAHTDB.xCBAHT.AGREEMENT_NUMBER].ToString().Trim() + "," + price1;
+                    }
+                    else
+                    {
+                        if (dt.Rows[0][xCBAHTDB.xCBAHT.MIN_RELEASE_AMT] != null)
                         {
-                            int.TryParse(dt.Rows[0][xCBAHTDB.xCBAHT.AGREEMENT_AMT].ToString(), out amt);
-                            if (dt.Rows[0]["price"] != null)
+                            int.TryParse(dt.Rows[0][xCBAHTDB.xCBAHT.MIN_RELEASE_AMT].ToString(), out min);
+                            if (dt.Rows[0][xCBAHTDB.xCBAHT.AGREEMENT_AMT] != null)
                             {
-                                double.TryParse(dt.Rows[0]["price"].ToString(), out price1);
-                                if ((price1 * qty1) <= amt)
+                                int.TryParse(dt.Rows[0][xCBAHTDB.xCBAHT.AGREEMENT_AMT].ToString(), out amt);
+                                if (dt.Rows[0]["price"] != null)
                                 {
-                                    if ((price1 * qty1) >= min)
+                                    double.TryParse(dt.Rows[0]["price"].ToString(), out price1);
+                                    if ((price1 * qty1) <= amt)
                                     {
-                                        chk = dt.Rows[0][xCBAHTDB.xCBAHT.AGREEMENT_NUMBER].ToString().Trim()+","+ price1;
+                                        if ((price1 * qty1) >= min)
+                                        {
+                                            chk = dt.Rows[0][xCBAHTDB.xCBAHT.AGREEMENT_NUMBER].ToString().Trim() + "," + price1;
+                                        }
+                                        else
+                                        {
+                                            chk = "false,026";
+                                        }
                                     }
                                     else
                                     {
-                                        chk = "false,026";
+                                        chk = "false,025";
                                     }
                                 }
                                 else
                                 {
-                                    chk = "false,025";
+                                    chk = "false,";
                                 }
-                            }
-                            else
-                            {
-                                chk = "false,";
                             }
                         }
                     }
