@@ -246,7 +246,7 @@ namespace XCustPr
                     connBIT.Close();
                     comMainhis.Dispose();
                 }
-            }            
+            }
             else if (host == "kfc_po")
             {
                 SqlCommand com = new SqlCommand();

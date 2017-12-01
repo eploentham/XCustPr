@@ -880,16 +880,16 @@ namespace XCustPr
                     string col99 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_TIMESTAMP9].ToString().Equals("0") ? "" : row[xCPRLIADB.xCPRLIA.ATTRIBUTE_TIMESTAMP9].ToString();
                     string col100 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_TIMESTAMP10].ToString().Equals("0") ? "" : row[xCPRLIADB.xCPRLIA.ATTRIBUTE_TIMESTAMP10].ToString();
 
-                    string col101 = row[xCPRLIADB.xCPRLIA.ATTRIBUTE_NUMBER1].ToString();       //ATTRIBUTE_NUMBER1
-                    string col102 = row[xCPRLIADB.xCPRLIA.ATTRIBUTE_NUMBER2].ToString();
-                    string col103 = row[xCPRLIADB.xCPRLIA.ATTRIBUTE_NUMBER3].ToString();
-                    string col104 = row[xCPRLIADB.xCPRLIA.ATTRIBUTE_NUMBER4].ToString();
-                    string col105 = row[xCPRLIADB.xCPRLIA.ATTRIBUTE_NUMBER5].ToString();
-                    string col106 = row[xCPRLIADB.xCPRLIA.ATTRIBUTE_NUMBER6].ToString();
-                    string col107 = row[xCPRLIADB.xCPRLIA.ATTRIBUTE_NUMBER7].ToString();
-                    string col108 = row[xCPRLIADB.xCPRLIA.ATTRIBUTE_NUMBER8].ToString();
-                    string col109 = row[xCPRLIADB.xCPRLIA.ATTRIBUTE_NUMBER9].ToString();
-                    string col110 = row[xCPRLIADB.xCPRLIA.ATTRIBUTE_NUMBER10].ToString();
+                    string col101 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_NUMBER1].ToString().Equals("0") ? "" : row[xCPRLIADB.xCPRLIA.ATTRIBUTE_NUMBER1].ToString();       //ATTRIBUTE_NUMBER1
+                    string col102 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_NUMBER2].ToString().Equals("0") ? "" : row[xCPRLIADB.xCPRLIA.ATTRIBUTE_NUMBER2].ToString();
+                    string col103 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_NUMBER3].ToString().Equals("0") ? "" : row[xCPRLIADB.xCPRLIA.ATTRIBUTE_NUMBER3].ToString();
+                    string col104 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_NUMBER4].ToString().Equals("0") ? "" : row[xCPRLIADB.xCPRLIA.ATTRIBUTE_NUMBER4].ToString();
+                    string col105 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_NUMBER5].ToString().Equals("0") ? "" : row[xCPRLIADB.xCPRLIA.ATTRIBUTE_NUMBER5].ToString();
+                    string col106 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_NUMBER6].ToString().Equals("0") ? "" : row[xCPRLIADB.xCPRLIA.ATTRIBUTE_NUMBER6].ToString();
+                    string col107 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_NUMBER7].ToString().Equals("0") ? "" : row[xCPRLIADB.xCPRLIA.ATTRIBUTE_NUMBER7].ToString();
+                    string col108 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_NUMBER8].ToString().Equals("0") ? "" : row[xCPRLIADB.xCPRLIA.ATTRIBUTE_NUMBER8].ToString();
+                    string col109 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_NUMBER9].ToString().Equals("0") ? "" : row[xCPRLIADB.xCPRLIA.ATTRIBUTE_NUMBER9].ToString();
+                    string col110 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_NUMBER10].ToString().Equals("0") ? "" : row[xCPRLIADB.xCPRLIA.ATTRIBUTE_NUMBER10].ToString();
 
                     string col111 = row[xCPRLIADB.xCPRLIA.ATTRIBUTE_CATEGORY].ToString();       //ATTRIBUTE_CATEGORY
                     string col112 = "";       //Supplier Number
@@ -1034,17 +1034,17 @@ namespace XCustPr
                     string col71 = row[xCPRDIADB.xCPRDIA.ATTRIBUTE_TIMESTAMP8].ToString();
                     string col72 = row[xCPRDIADB.xCPRDIA.ATTRIBUTE_TIMESTAMP9].ToString();
                     string col73 = row[xCPRDIADB.xCPRDIA.ATTRIBUTE_TIMESTAMP10].ToString();
-                    string col74 = row[xCPRDIADB.xCPRDIA.ATTRIBUTE_NUMBER1].ToString();      //ATTRIBUTE_NUMBER1
-                    string col75 = row[xCPRDIADB.xCPRDIA.ATTRIBUTE_NUMBER2].ToString();
-                    string col76 = row[xCPRDIADB.xCPRDIA.ATTRIBUTE_NUMBER3].ToString();
-                    string col77 = row[xCPRDIADB.xCPRDIA.ATTRIBUTE_NUMBER4].ToString();
-                    string col78 = row[xCPRDIADB.xCPRDIA.ATTRIBUTE_NUMBER5].ToString();
-                    string col79 = row[xCPRDIADB.xCPRDIA.ATTRIBUTE_NUMBER6].ToString();
-                    string col80 = row[xCPRDIADB.xCPRDIA.ATTRIBUTE_NUMBER7].ToString();
+                    string col74 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_NUMBER1].ToString().Equals("0") ? "" : row[xCPRDIADB.xCPRDIA.ATTRIBUTE_NUMBER1].ToString();      //ATTRIBUTE_NUMBER1
+                    string col75 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_NUMBER2].ToString().Equals("0") ? "" : row[xCPRDIADB.xCPRDIA.ATTRIBUTE_NUMBER2].ToString();
+                    string col76 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_NUMBER3].ToString().Equals("0") ? "" : row[xCPRDIADB.xCPRDIA.ATTRIBUTE_NUMBER3].ToString();
+                    string col77 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_NUMBER4].ToString().Equals("0") ? "" : row[xCPRDIADB.xCPRDIA.ATTRIBUTE_NUMBER4].ToString();
+                    string col78 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_NUMBER5].ToString().Equals("0") ? "" : row[xCPRDIADB.xCPRDIA.ATTRIBUTE_NUMBER5].ToString();
+                    string col79 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_NUMBER6].ToString().Equals("0") ? "" : row[xCPRDIADB.xCPRDIA.ATTRIBUTE_NUMBER6].ToString();
+                    string col80 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_NUMBER7].ToString().Equals("0") ? "" : row[xCPRDIADB.xCPRDIA.ATTRIBUTE_NUMBER7].ToString();
 
-                    string col81 = row[xCPRDIADB.xCPRDIA.ATTRIBUTE_NUMBER8].ToString();
-                    string col82 = row[xCPRDIADB.xCPRDIA.ATTRIBUTE_NUMBER9].ToString();
-                    string col83 = row[xCPRDIADB.xCPRDIA.ATTRIBUTE_NUMBER10].ToString();
+                    string col81 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_NUMBER8].ToString().Equals("0") ? "" : row[xCPRDIADB.xCPRDIA.ATTRIBUTE_NUMBER8].ToString();
+                    string col82 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_NUMBER9].ToString().Equals("0") ? "" : row[xCPRDIADB.xCPRDIA.ATTRIBUTE_NUMBER9].ToString();
+                    string col83 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_NUMBER9].ToString().Equals("0") ? "" : row[xCPRDIADB.xCPRDIA.ATTRIBUTE_NUMBER9].ToString();
                     //string col84 = row[xCPRDIADB.xCPRDIA.ATTRIBUTE_CATEGORY].ToString();        //ATTRIBUTE_CATEGORY
                     string col84 = "";      // ในtable ไม่มี field นี้
                     string col85 = row[xCPRDIADB.xCPRDIA.CHARGE_ACCOUNT_SEGMENT1].ToString();
@@ -1722,7 +1722,7 @@ namespace XCustPr
                 {
                     if ((dt.Rows[0][xCBALTDB.xCBALT.PRICE_LIMIT] == null) || (dt.Rows[0][xCBALTDB.xCBALT.PRICE_LIMIT].ToString().Equals("")))
                     {
-                        chk = dt.Rows[0][xCBAHTDB.xCBAHT.AGREEMENT_NUMBER].ToString().Trim() + "," + price1+","+ dt.Rows[0][xCBALTDB.xCBALT.LINE_NUMBER].ToString().Trim();
+                        chk = dt.Rows[0][xCBAHTDB.xCBAHT.AGREEMENT_NUMBER].ToString().Trim() + "," + dt.Rows[0][xCBALTDB.xCBALT.PRICE].ToString().Trim() + ","+ dt.Rows[0][xCBALTDB.xCBALT.LINE_NUMBER].ToString().Trim();
                     }
                     else
                     {
