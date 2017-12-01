@@ -92,6 +92,7 @@ namespace XCustPr
             xCPRDIA.CREATE_BY = "CREATE_BY";
             xCPRDIA.LAST_UPDATE_BY = "LAST_UPDATE_BY";
             xCPRDIA.request_id = "request_id";
+            xCPRDIA.price = "price";
 
             xCPRDIA.pkField = "";
             xCPRDIA.table = "xcust_por_req_dist_int_all";
@@ -130,17 +131,17 @@ namespace XCustPr
                 //    return "";
                 //}
                 //p.RowNumber = selectMaxRowNumber(p.YearId);
-                //p.Active = "1";
-                //p.ATTRIBUTE_NUMBER1 = p.ATTRIBUTE_NUMBER1.Equals("") ? "0" : p.ATTRIBUTE_NUMBER1;
-                //p.ATTRIBUTE_NUMBER2 = p.ATTRIBUTE_NUMBER2.Equals("") ? "0" : p.ATTRIBUTE_NUMBER2;
-                //p.ATTRIBUTE_NUMBER3 = p.ATTRIBUTE_NUMBER3.Equals("") ? "0" : p.ATTRIBUTE_NUMBER3;
-                //p.ATTRIBUTE_NUMBER4 = p.ATTRIBUTE_NUMBER4.Equals("") ? "0" : p.ATTRIBUTE_NUMBER4;
-                //p.ATTRIBUTE_NUMBER5 = p.ATTRIBUTE_NUMBER5.Equals("") ? "0" : p.ATTRIBUTE_NUMBER5;
-                //p.ATTRIBUTE_NUMBER6 = p.ATTRIBUTE_NUMBER6.Equals("") ? "0" : p.ATTRIBUTE_NUMBER6;
-                //p.ATTRIBUTE_NUMBER7 = p.ATTRIBUTE_NUMBER7.Equals("") ? "0" : p.ATTRIBUTE_NUMBER7;
-                //p.ATTRIBUTE_NUMBER8 = p.ATTRIBUTE_NUMBER8.Equals("") ? "0" : p.ATTRIBUTE_NUMBER8;
-                //p.ATTRIBUTE_NUMBER9 = p.ATTRIBUTE_NUMBER9.Equals("") ? "0" : p.ATTRIBUTE_NUMBER9;
-                //p.ATTRIBUTE_NUMBER10 = p.ATTRIBUTE_NUMBER10.Equals("") ? "0" : p.ATTRIBUTE_NUMBER10;
+                p.price = p.price.Equals("")?"null":p.price;
+                p.ATTRIBUTE_NUMBER1 = p.ATTRIBUTE_NUMBER1.Equals("") ? "null" : p.ATTRIBUTE_NUMBER1;
+                p.ATTRIBUTE_NUMBER2 = p.ATTRIBUTE_NUMBER2.Equals("") ? "null" : p.ATTRIBUTE_NUMBER2;
+                p.ATTRIBUTE_NUMBER3 = p.ATTRIBUTE_NUMBER3.Equals("") ? "null" : p.ATTRIBUTE_NUMBER3;
+                p.ATTRIBUTE_NUMBER4 = p.ATTRIBUTE_NUMBER4.Equals("") ? "null" : p.ATTRIBUTE_NUMBER4;
+                p.ATTRIBUTE_NUMBER5 = p.ATTRIBUTE_NUMBER5.Equals("") ? "null" : p.ATTRIBUTE_NUMBER5;
+                p.ATTRIBUTE_NUMBER6 = p.ATTRIBUTE_NUMBER6.Equals("") ? "null" : p.ATTRIBUTE_NUMBER6;
+                p.ATTRIBUTE_NUMBER7 = p.ATTRIBUTE_NUMBER7.Equals("") ? "null" : p.ATTRIBUTE_NUMBER7;
+                p.ATTRIBUTE_NUMBER8 = p.ATTRIBUTE_NUMBER8.Equals("") ? "null" : p.ATTRIBUTE_NUMBER8;
+                p.ATTRIBUTE_NUMBER9 = p.ATTRIBUTE_NUMBER9.Equals("") ? "null" : p.ATTRIBUTE_NUMBER9;
+                p.ATTRIBUTE_NUMBER10 = p.ATTRIBUTE_NUMBER10.Equals("") ? "null" : p.ATTRIBUTE_NUMBER10;
                 sql = "Insert Into " + xCPRDIA.table + "(" + xCPRDIA.ATTRIBUTE1 + "," + xCPRDIA.ATTRIBUTE_DATE1 + ","+
                     xCPRDIA.ATTRIBUTE_TIMESTAMP1 + "," + xCPRDIA.CHARGE_ACCOUNT_SEGMENT1 + "," +
                     xCPRDIA.CHARGE_ACCOUNT_SEGMENT2 + "," + xCPRDIA.CHARGE_ACCOUNT_SEGMENT3 + "," + xCPRDIA.CHARGE_ACCOUNT_SEGMENT4 + "," +
@@ -165,10 +166,10 @@ namespace XCustPr
                     xCPRDIA.ATTRIBUTE_TIMESTAMP5 + "," + xCPRDIA.ATTRIBUTE_TIMESTAMP6 + "," + xCPRDIA.ATTRIBUTE_TIMESTAMP7 + "," +
                     xCPRDIA.ATTRIBUTE_TIMESTAMP8 + "," + xCPRDIA.ATTRIBUTE_TIMESTAMP9 + "," + xCPRDIA.ATTRIBUTE_TIMESTAMP10 + "," +
                     xCPRDIA.DISTRIBUTION_CURRENCY_AMT + "," + xCPRDIA.LAST_UPDATE_DATE + "," +
-                    xCPRDIA.CREATION_DATE + "," + xCPRDIA.CREATE_BY + "," + xCPRDIA.LAST_UPDATE_BY + "," + xCPRDIA.request_id +
+                    xCPRDIA.CREATION_DATE + "," + xCPRDIA.CREATE_BY + "," + xCPRDIA.LAST_UPDATE_BY + "," + xCPRDIA.request_id + "," + xCPRDIA.price +
                     ") " +
-                    "Values('" + p.ATTRIBUTE1 + "','" + p.ATTRIBUTE_DATE1 + "'," +
-                    "getdate(),'" + p.CHARGE_ACCOUNT_SEGMENT1 + "','" + 
+                    "Values('" + p.ATTRIBUTE1 + "','" + p.ATTRIBUTE_DATE1 + "','" +
+                    p.ATTRIBUTE_TIMESTAMP1 + "','" + p.CHARGE_ACCOUNT_SEGMENT1 + "','" + 
                     p.CHARGE_ACCOUNT_SEGMENT2 + "','" + p.CHARGE_ACCOUNT_SEGMENT3 + "','" + p.CHARGE_ACCOUNT_SEGMENT4 + "','" +
                     p.CHARGE_ACCOUNT_SEGMENT5 + "','" + p.CHARGE_ACCOUNT_SEGMENT6 + "'," + p.REQ_LINE_INTERFACE_ID + ",'" +
                     p.REQ_HEADER_INTERFACE_ID + "','" + p.PROCESS_FLAG + "','" + p.REQ_DIST_INTERFACE_ID + "'," + 
@@ -179,11 +180,11 @@ namespace XCustPr
                     p.ATTRIBUTE11 + "','" + p.ATTRIBUTE12 + "','" + p.ATTRIBUTE13 + "','" +
                     p.ATTRIBUTE14 + "','" + p.ATTRIBUTE15 + "','" + p.ATTRIBUTE16 + "','" +
                     p.ATTRIBUTE17 + "','" + p.ATTRIBUTE18 + "','" + p.ATTRIBUTE19 + "','" +
-                    p.ATTRIBUTE20 + "','" +
-                    p.ATTRIBUTE_NUMBER1 + "','" + p.ATTRIBUTE_NUMBER2 + "','" + p.ATTRIBUTE_NUMBER3 + "','" +
-                    p.ATTRIBUTE_NUMBER4 + "','" + p.ATTRIBUTE_NUMBER5 + "','" + p.ATTRIBUTE_NUMBER6 + "','" +
-                    p.ATTRIBUTE_NUMBER7 + "','" + p.ATTRIBUTE_NUMBER8 + "','" + p.ATTRIBUTE_NUMBER9 + "','" +
-                    p.ATTRIBUTE_NUMBER10 + "','" +
+                    p.ATTRIBUTE20 + "'," +
+                    p.ATTRIBUTE_NUMBER1 + "," + p.ATTRIBUTE_NUMBER2 + "," + p.ATTRIBUTE_NUMBER3 + "," +
+                    p.ATTRIBUTE_NUMBER4 + "," + p.ATTRIBUTE_NUMBER5 + "," + p.ATTRIBUTE_NUMBER6 + "," +
+                    p.ATTRIBUTE_NUMBER7 + "," + p.ATTRIBUTE_NUMBER8 + "," + p.ATTRIBUTE_NUMBER9 + "," +
+                    p.ATTRIBUTE_NUMBER10 + ",'" +
                     p.ATTRIBUTE_DATE2 + "','" + p.ATTRIBUTE_DATE3 + "','" + p.ATTRIBUTE_DATE4 + "','" +
                     p.ATTRIBUTE_DATE5 + "','" + p.ATTRIBUTE_DATE6 + "','" + p.ATTRIBUTE_DATE7 + "','" +
                     p.ATTRIBUTE_DATE8 + "','" + p.ATTRIBUTE_DATE9 + "','" + p.ATTRIBUTE_DATE10 + "','" +
@@ -191,7 +192,7 @@ namespace XCustPr
                     p.ATTRIBUTE_TIMESTAMP5 + "','" + p.ATTRIBUTE_TIMESTAMP6 + "','" + p.ATTRIBUTE_TIMESTAMP7 + "','" +
                     p.ATTRIBUTE_TIMESTAMP8 + "','" + p.ATTRIBUTE_TIMESTAMP9 + "','" + p.ATTRIBUTE_TIMESTAMP10 + "','" +
                     p.DISTRIBUTION_CURRENCY_AMT + "','" + p.LAST_UPDATE_DATE + "','" +
-                    p.CREATION_DATE + "','" + p.CREATE_BY + "','" + p.LAST_UPDATE_BY + "','" + p.request_id + "'" +
+                    p.CREATION_DATE + "','" + p.CREATE_BY + "','" + p.LAST_UPDATE_BY + "','" + p.request_id + "'," + p.price + "" +
                     ") ";
                 chk = conn.ExecuteNonQueryAutoIncrement(sql, "kfc_po");
                 //chk = p.RowNumber;

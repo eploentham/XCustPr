@@ -110,6 +110,7 @@ namespace XCustPr
             xCPRLIA.AGREEMENT_LINE_NUMBER = "AGREEMENT_LINE_NUMBER";
             xCPRLIA.UOM_CODE = "UOM_CODE";
             xCPRLIA.request_id = "request_id";
+            xCPRLIA.delivery_date = "delivery_date";
             //xCPRLIA.Price = "";
 
             xCPRLIA.table = "xcust_por_req_line_int_all";
@@ -164,16 +165,16 @@ namespace XCustPr
                 //}
                 //p.RowNumber = selectMaxRowNumber(p.YearId);
                 //p.Active = "1";
-                //p.ATTRIBUTE_NUMBER1 = p.ATTRIBUTE_NUMBER1.Equals("") ? "0" : p.ATTRIBUTE_NUMBER1;
-                //p.ATTRIBUTE_NUMBER2 = p.ATTRIBUTE_NUMBER2.Equals("") ? "0" : p.ATTRIBUTE_NUMBER2;
-                //p.ATTRIBUTE_NUMBER3 = p.ATTRIBUTE_NUMBER3.Equals("") ? "0" : p.ATTRIBUTE_NUMBER3;
-                //p.ATTRIBUTE_NUMBER4 = p.ATTRIBUTE_NUMBER4.Equals("") ? "0" : p.ATTRIBUTE_NUMBER4;
-                //p.ATTRIBUTE_NUMBER5 = p.ATTRIBUTE_NUMBER5.Equals("") ? "0" : p.ATTRIBUTE_NUMBER5;
-                //p.ATTRIBUTE_NUMBER6 = p.ATTRIBUTE_NUMBER6.Equals("") ? "0" : p.ATTRIBUTE_NUMBER6;
-                //p.ATTRIBUTE_NUMBER7 = p.ATTRIBUTE_NUMBER7.Equals("") ? "0" : p.ATTRIBUTE_NUMBER7;
-                //p.ATTRIBUTE_NUMBER8 = p.ATTRIBUTE_NUMBER8.Equals("") ? "0" : p.ATTRIBUTE_NUMBER8;
-                //p.ATTRIBUTE_NUMBER9 = p.ATTRIBUTE_NUMBER9.Equals("") ? "0" : p.ATTRIBUTE_NUMBER9;
-                //p.ATTRIBUTE_NUMBER10 = p.ATTRIBUTE_NUMBER10.Equals("") ? "0" : p.ATTRIBUTE_NUMBER10;
+                p.ATTRIBUTE_NUMBER1 = p.ATTRIBUTE_NUMBER1.Equals("") ? "null" : p.ATTRIBUTE_NUMBER1;
+                p.ATTRIBUTE_NUMBER2 = p.ATTRIBUTE_NUMBER2.Equals("") ? "null" : p.ATTRIBUTE_NUMBER2;
+                p.ATTRIBUTE_NUMBER3 = p.ATTRIBUTE_NUMBER3.Equals("") ? "null" : p.ATTRIBUTE_NUMBER3;
+                p.ATTRIBUTE_NUMBER4 = p.ATTRIBUTE_NUMBER4.Equals("") ? "null" : p.ATTRIBUTE_NUMBER4;
+                p.ATTRIBUTE_NUMBER5 = p.ATTRIBUTE_NUMBER5.Equals("") ? "null" : p.ATTRIBUTE_NUMBER5;
+                p.ATTRIBUTE_NUMBER6 = p.ATTRIBUTE_NUMBER6.Equals("") ? "null" : p.ATTRIBUTE_NUMBER6;
+                p.ATTRIBUTE_NUMBER7 = p.ATTRIBUTE_NUMBER7.Equals("") ? "null" : p.ATTRIBUTE_NUMBER7;
+                p.ATTRIBUTE_NUMBER8 = p.ATTRIBUTE_NUMBER8.Equals("") ? "null" : p.ATTRIBUTE_NUMBER8;
+                p.ATTRIBUTE_NUMBER9 = p.ATTRIBUTE_NUMBER9.Equals("") ? "null" : p.ATTRIBUTE_NUMBER9;
+                p.ATTRIBUTE_NUMBER10 = p.ATTRIBUTE_NUMBER10.Equals("") ? "null" : p.ATTRIBUTE_NUMBER10;
 
                 p.Price = p.Price.Equals("") ? "0" : p.Price;
                 p.ATTRIBUTE_DATE2 = "";
@@ -205,9 +206,9 @@ namespace XCustPr
                     xCPRLIA.ATTRIBUTE_TIMESTAMP8 + "," + xCPRLIA.ATTRIBUTE_TIMESTAMP9 + "," + xCPRLIA.ATTRIBUTE_TIMESTAMP10 + "," +
                     xCPRLIA.LAST_UPDATE_DATE + "," + xCPRLIA.CREATION_DATE + "," + xCPRLIA.CREATE_BY + "," +
                     xCPRLIA.LAST_UPDATE_BY + "," + xCPRLIA.LINE_TYPE + "," + xCPRLIA.AGREEMENT_NUMBER + ","+
-                    xCPRLIA.UOM_CODE + "," + xCPRLIA.request_id + "," + xCPRLIA.AGREEMENT_LINE_NUMBER + "," + xCPRLIA.ATTRIBUTE_CATEGORY + "," + xCPRLIA.Price + ") " +
-                    "Values('" + p.ATTRIBUTE1 + "','" + p.ATTRIBUTE_DATE1 + "'," +
-                    "getdate(),'" + p.CATEGORY_NAME + "','" +
+                    xCPRLIA.UOM_CODE + "," + xCPRLIA.request_id + "," + xCPRLIA.AGREEMENT_LINE_NUMBER + "," + xCPRLIA.ATTRIBUTE_CATEGORY + "," + xCPRLIA.Price + "," + xCPRLIA.delivery_date + ") " +
+                    "Values('" + p.ATTRIBUTE1 + "','" + p.ATTRIBUTE_DATE1 + "','" +
+                    p.ATTRIBUTE_TIMESTAMP1 + "','" + p.CATEGORY_NAME + "','" +
                     p.CURRENCY_CODE + "','" + p.DELIVER_TO_LOCATION_CODE + "','" + p.DELIVER_TO_ORGANIZATION_CODE + "','" +
                     p.DESTINATION_TYPE_CODE + "','" + p.ITEM_CODE + "','" +
                     p.NEED_BY_DATE + "'," + p.REQ_LINE_INTERFACE_ID + ",'" +
@@ -221,11 +222,11 @@ namespace XCustPr
                     p.ATTRIBUTE11 + "','" + p.ATTRIBUTE12 + "','" + p.ATTRIBUTE13 + "','" +
                     p.ATTRIBUTE14 + "','" + p.ATTRIBUTE15 + "','" + p.ATTRIBUTE16 + "','" +
                     p.ATTRIBUTE17 + "','" + p.ATTRIBUTE18 + "','" + p.ATTRIBUTE19 + "','" +
-                    p.ATTRIBUTE20 + "','" +
-                    p.ATTRIBUTE_NUMBER1 + "','" + p.ATTRIBUTE_NUMBER2 + "','" + p.ATTRIBUTE_NUMBER3 + "','" +
-                    p.ATTRIBUTE_NUMBER4 + "','" + p.ATTRIBUTE_NUMBER5 + "','" + p.ATTRIBUTE_NUMBER6 + "','" +
-                    p.ATTRIBUTE_NUMBER7 + "','" + p.ATTRIBUTE_NUMBER8 + "','" + p.ATTRIBUTE_NUMBER9 + "','" +
-                    p.ATTRIBUTE_NUMBER10 + "','" +
+                    p.ATTRIBUTE20 + "'," +
+                    p.ATTRIBUTE_NUMBER1 + "," + p.ATTRIBUTE_NUMBER2 + "," + p.ATTRIBUTE_NUMBER3 + "," +
+                    p.ATTRIBUTE_NUMBER4 + "," + p.ATTRIBUTE_NUMBER5 + "," + p.ATTRIBUTE_NUMBER6 + "," +
+                    p.ATTRIBUTE_NUMBER7 + "," + p.ATTRIBUTE_NUMBER8 + "," + p.ATTRIBUTE_NUMBER9 + "," +
+                    p.ATTRIBUTE_NUMBER10 + ",'" +
                     p.ATTRIBUTE_DATE2 + "','" + p.ATTRIBUTE_DATE3 + "','" + p.ATTRIBUTE_DATE4 + "','" +
                     p.ATTRIBUTE_DATE5 + "','" + p.ATTRIBUTE_DATE6 + "','" + p.ATTRIBUTE_DATE7 + "','" +
                     p.ATTRIBUTE_DATE8 + "','" + p.ATTRIBUTE_DATE9 + "','" + p.ATTRIBUTE_DATE10 + "','" +
@@ -234,7 +235,7 @@ namespace XCustPr
                     p.ATTRIBUTE_TIMESTAMP8 + "','" + p.ATTRIBUTE_TIMESTAMP9 + "','" + p.ATTRIBUTE_TIMESTAMP10 + "','" +
                     p.LAST_UPDATE_DATE + "',getdate(),'" + p.CREATE_BY + "','" +
                     p.LAST_UPDATE_BY + "','" + p.LINE_TYPE + "','" + p.AGREEMENT_NUMBER + "','" +
-                    p.UOM_CODE + "','" + p.request_id +"','"+ p.AGREEMENT_LINE_NUMBER + "','" + p.ATTRIBUTE_CATEGORY + "'," + p.Price + ") ";
+                    p.UOM_CODE + "','" + p.request_id +"','"+ p.AGREEMENT_LINE_NUMBER + "','" + p.ATTRIBUTE_CATEGORY + "'," + p.Price + ",'" + p.delivery_date + "') ";
                 chk = conn.ExecuteNonQueryAutoIncrement(sql, "kfc_po");
                 //chk = p.RowNumber;
                 //chk = p.Code;

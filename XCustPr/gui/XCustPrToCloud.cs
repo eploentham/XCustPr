@@ -248,13 +248,13 @@ namespace XCustPr
         {
             //throw new NotImplementedException();
             // move file
-            //cRDPO.processRDPO(filePO);
+            cRDPO.processCallWebService(lv1, this, pB1);
             //FtpWebRequest request;
             //cRDPO.validateOrderDateMinCurrDate("");
 
             //EndpointAddress endpointAddress = new EndpointAddress(new Uri("https://host:port/icCnSetupCreditRulesPublicService/CreditRuleService"));
             //cRDPO.ImportMasterXCUST_VALUE_SET_MST_TBL();
-            
+
         }
         private void btnFTP_Click(object sender, EventArgs e)
         {
