@@ -91,6 +91,22 @@ namespace XCustPr
                 return "";
             }
         }
+        public String getSupplierNameBySupplierCode(String suppCode)
+        {
+            DataTable dt = new DataTable();
+            String chk = "";
+            String sql = "Select " + xCSMT.SUPPLIER_NAME + " From " + xCSMT.table + " Where " + xCSMT.SUPPLIER_NUMBER + "  = '" + suppCode + "'";
+            dt = conn.selectData(sql, "kfc_po");
+            if (dt.Rows.Count > 0)
+            {
+                chk = dt.Rows[0][0].ToString().Trim();
+                return chk;
+            }
+            else
+            {
+                return "";
+            }
+        }
         public Boolean getDirectSupplierBySupplierCode(String suppCode)
         {
             DataTable dt = new DataTable();

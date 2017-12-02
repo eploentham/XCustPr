@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -290,7 +291,7 @@ namespace XCustPr
                 listXcustPRHIA.Add(xcprhia1);
             }
         }
-        private void addXcustPRLIAFromxCLFPT(DataRow row, String subInv_code, String price, String agreementnumber, String agreementLinbNumber, String supplierSiteCode)
+        private void addXcustPRLIAFromxCLFPT(DataRow row, String subInv_code, String price, String agreementnumber, String agreementLinbNumber, String supplierSiteCode, String suppName)
         {
             XcustPorReqLineIntAll item = new XcustPorReqLineIntAll();
             item.REQ_HEADER_INTERFACE_ID = row[xCLFPTDB.xCLFPT.PO_NUMBER].ToString();
@@ -316,7 +317,7 @@ namespace XCustPr
             item.ATTRIBUTE2 = row[xCLFPTDB.xCLFPT.LINE_NUMBER].ToString();
             item.AGREEMENT_LINE_NUMBER = agreementLinbNumber;
             item.ATTRIBUTE_CATEGORY = "LINFOX_PR";
-            item.SUGGESTED_VENDOR_NAME = row[xCLFPTDB.xCLFPT.SUPPLIER_CODE].ToString();
+            item.SUGGESTED_VENDOR_NAME = suppName;
             item.SUGGESTED_VENDOR_SITE = supplierSiteCode;
             item.Price = price;
             item.delivery_date = row[xCLFPTDB.xCLFPT.REQUEST_DATE].ToString();
@@ -642,7 +643,7 @@ namespace XCustPr
         }
         public void processGenCSVxCPRHIA(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String flag, String requestId)
         {
-            var file = Cm.initC.PathArchive+ "PorReqHeadersInterfaceAl.csv";
+            var file = Cm.initC.PathArchive+ "PorReqHeadersInterfaceAll.csv";
             DataTable dt;
             if (flag.Equals("PO001"))
             {
@@ -667,7 +668,8 @@ namespace XCustPr
                     string col07 = Cm.initC.POAPPROVER;// รอถาม  Approver
                     string col08 = Cm.initC.POAPPROVER_EMAIL;
                     string col09 = Cm.initC.BU_NAME;// รอถาม  Entered By*
-                    string col10 = row[xCPRHIADB.xCPRHIA.REQUITITION_NUMBER].ToString();
+                    //string col10 = row[xCPRHIADB.xCPRHIA.REQUITITION_NUMBER].ToString();
+                    String col10 = "";
 
                     string col11 = row[xCPRHIADB.xCPRHIA.DESCRIPTIONS].ToString();
                     string col12 = "";//Taxation Country
@@ -761,7 +763,7 @@ namespace XCustPr
         }
         public void processGenCSVxCPRLIA(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String flag, String requestId)
         {
-            var file = Cm.initC.PathArchive + "PorReqLinesInterfaceAl.csv";
+            var file = Cm.initC.PathArchive + "PorReqLinesInterfaceAll.csv";
             DataTable dt;
             if (flag.Equals("PO001"))
             {
@@ -788,7 +790,8 @@ namespace XCustPr
                     string col09 = "";         //Item Description
                     string col10 = row[xCPRLIADB.xCPRLIA.CATEGORY_NAME].ToString();     //Category Name
 
-                    string col11 = row[xCPRLIADB.xCPRLIA.NEED_BY_DATE].ToString();     // Need - by Date
+                    string col11 = row[xCPRLIADB.xCPRLIA.NEED_BY_DATE].ToString();     // Need - by Date        ok formet date
+
                     string col12 = row[xCPRLIADB.xCPRLIA.ITEM_CODE].ToString();
                     string col13 = "";         //Revision
                     string col14 = row[xCPRLIADB.xCPRLIA.UOM_CODE].ToString();         //UOM Code
@@ -910,7 +913,7 @@ namespace XCustPr
                     string col118 = "";       //Requested Ship Date
                     string col119 = "";       //Service Level Code
                     DateTime dtDeli = DateTime.Parse(row[xCPRLIADB.xCPRLIA.delivery_date].ToString());
-                    string col120 = dtDeli.Year.ToString()+"-"+dtDeli.ToString("MMM")+"-"+dtDeli.Day.ToString("00");       //Requested Delivery Date
+                    string col120 = dtDeli.Year.ToString()+"-"+dtDeli.ToString("MM")+"-"+dtDeli.Day.ToString("00");       //Requested Delivery Date
 
                     string col121 = "";       //Orchestration Code
                     string col122 = "";       //Work Order Product
@@ -965,7 +968,7 @@ namespace XCustPr
         }
         public void processGenCSVxCPRDIA(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String flag, String requestId)
         {
-            var file = Cm.initC.PathArchive + "PorReqDistInterfaceAl.csv";
+            var file = Cm.initC.PathArchive + "PorReqDistsInterfaceAll.csv";
             DataTable dt;
             if (flag.Equals("PO001"))
             {
@@ -1144,10 +1147,16 @@ namespace XCustPr
         public void processGenZIP(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String flag)
         {
             addListView("create zip file " + Cm.initC.PathProcess, "Validate", lv1, form1);
+            String currDate = System.DateTime.Now.ToString("yyyyMMdd");
+            String currTime = System.DateTime.Now.ToString("HHmmsss");
+
+            //var result = DateTime.ParseExact(currDate+" "+currTime,
+            //                     new CultureInfo("en-US"));
+
             String filenameZip = "", ilename2 = "", ilename3 = "", filename="";
             if (flag.Equals("PO001"))
             {
-                filenameZip = Cm.initC.PathZip + "\\xcustpr.zip";
+                filenameZip = Cm.initC.PathZip + "\\LINFOX_PR_"+ currDate +currTime+ ".zip";
                 filename = @Cm.initC.PathArchive;
             }
             else
@@ -1187,9 +1196,18 @@ namespace XCustPr
             String time = System.DateTime.Now.ToString("HH:mm:ss");
             foreach (XcustPorReqHeaderIntAll xcprhia in listXcustPRHIA)
             {
-                if(insertXcustPorReqHeaderIntAll(xcprhia, date, time).Equals("1"))
+                String seqH = "";
+                seqH = insertXcustPorReqHeaderIntAll(xcprhia, date, time);
+                int seqH1 = 0;
+                if(int.TryParse(seqH,out seqH1))
                 {
-                    
+                    //foreach (XcustPorReqLineIntAll xcprlia in listXcustPRLIA)
+                    //{
+                    //    if (xcprhia.REQ_HEADER_INTERFACE_ID.Trim().Equals(xcprhia.REQ_HEADER_INTERFACE_ID))
+                    //    {
+                    //        String chk = xCPRLIADB.insert(xcprlia);
+                    //    }
+                    //}
                 }
             }
             foreach (XcustPorReqLineIntAll xcprlia in listXcustPRLIA)
@@ -1201,6 +1219,17 @@ namespace XCustPr
             {
                 //XcustPorReqLineIntAll xcprlia = xCPRLIADB.setData(row, xCLFPTDB.xCLFPT);
                 String chk = xCPRDIADB.insert(xcprdia);
+            }
+        }
+        public void processInsertTable1()
+        {
+            DataTable dt = new DataTable();
+            dt = xCLFPTDB.selectValidateFlagYGroupByPoNumber();
+            foreach(DataRow row in dt.Rows)
+            {
+                String poNumber = "";
+                poNumber = row[xCLFPTDB.xCLFPT.PO_NUMBER].ToString();
+
             }
         }
         /*
@@ -1362,6 +1391,7 @@ namespace XCustPr
                         lVPr.Add(vPP);
                         cntErr++;
                     }
+                    
                     //Error PO001-010 : Invalid Subinventory Code
                     //subInv_code = xCSIMTDB.validateSubInventoryCode1(initC.ORGANIZATION_code.Trim(), row[xCLFPTDB.xCLFPT.store_code].ToString().Trim());
                     subInv_code = xCSIMTDB.validateSubInventoryCode1(Org, row[xCLFPTDB.xCLFPT.store_code].ToString().Trim());
@@ -1371,6 +1401,28 @@ namespace XCustPr
                         vPP.Filename = rowG[xCLFPTDB.xCLFPT.file_name].ToString().Trim();
                         vPP.Message = "Error PO001-010 ";
                         vPP.Validate = "row " + row1 + " store_code =" + row[xCLFPTDB.xCLFPT.store_code].ToString().Trim() + " ORGANIZATION_code " + Cm.initC.ORGANIZATION_code.Trim();
+                        lVPr.Add(vPP);
+                        cntErr++;
+                    }
+                    chk = xCLFPTDB.validateGL("11", "00000", "219120", "000000", "00", "0000", buCode);//ต้องแก้ไข เพราะ agreement เข้า method มีค่าเป็น date
+                    if (!chk)
+                    {
+                        vPP = new ValidatePrPo();
+                        vPP.Filename = rowG[xCLFPTDB.xCLFPT.file_name].ToString().Trim();
+                        vPP.Message = "Error PO001-029  ";
+                        vPP.Validate = "row " + row1 + " validateGL";
+                        lVPr.Add(vPP);
+                        cntErr++;
+                    }
+                    DateTime reDate = DateTime.Parse(xCLFPTDB.xCLFPT.dateYearToDB( row[xCLFPTDB.xCLFPT.REQUEST_DATE].ToString()));
+                    String currDate1 = System.DateTime.Now.Year.ToString() + "-" + System.DateTime.Now.Month.ToString("00") + "-" + System.DateTime.Now.Day.ToString("00");
+                    DateTime currdate = DateTime.Parse(currDate1);
+                    if (DateTime.Compare(currdate, reDate) >= 1)
+                    {
+                        vPP = new ValidatePrPo();
+                        vPP.Filename = rowG[xCLFPTDB.xCLFPT.file_name].ToString().Trim();
+                        vPP.Message = "Error PO001-030 ";
+                        vPP.Validate = "row " + row1 + " request date <= current date " + row[xCLFPTDB.xCLFPT.REQUEST_DATE].ToString();
                         lVPr.Add(vPP);
                         cntErr++;
                     }
@@ -1390,6 +1442,8 @@ namespace XCustPr
                     //if (!xCSMTDB.validateSupplierBySupplierCode(row[xCLFPTDB.xCLFPT.SUPPLIER_CODE].ToString().Trim()))
                     String vendorId = "";
                     vendorId = xCSMTDB.validateSupplierBySupplierCode1(row[xCLFPTDB.xCLFPT.SUPPLIER_CODE].ToString().Trim());
+                    String suppName = "";
+                    suppName = xCSMTDB.getSupplierNameBySupplierCode(row[xCLFPTDB.xCLFPT.SUPPLIER_CODE].ToString().Trim());
                     if (vendorId.Equals(""))
                     {
                         vPP = new ValidatePrPo();
@@ -1508,7 +1562,7 @@ namespace XCustPr
                         row[xCLFPTDB.xCLFPT.AGREEEMENT_NUMBER] = blanketAgreement;
                         row[xCLFPTDB.xCLFPT.PRICE] = price;
                         row.EndEdit();
-                        addXcustPRLIAFromxCLFPT(row, subInv_code, price, blanketAgreement, agreementLineNumber, supplierSiteCode);
+                        addXcustPRLIAFromxCLFPT(row, subInv_code, price, blanketAgreement, agreementLineNumber, supplierSiteCode, suppName);
                         addXcustPRDIAFromxCLFPT(row, subInv_code, price);
                         xCLFPTDB.updateValidateFlag(row[xCLFPTDB.xCLFPT.PO_NUMBER].ToString().Trim(), row[xCLFPTDB.xCLFPT.LINE_NUMBER].ToString().Trim(),"Y", blanketAgreement, "kfc_po");
                     }
@@ -1842,7 +1896,7 @@ namespace XCustPr
             //byte[] byteArraytext = Encoding.UTF8.GetBytes(text);
             byte[] toEncodeAsBytestext = System.Text.ASCIIEncoding.ASCII.GetBytes(text);
             String Arraytext = System.Convert.ToBase64String(toEncodeAsBytestext);
-
+            
             uri = @" <soapenv:Envelope xmlns:soapenv ='http://schemas.xmlsoap.org/soap/envelope/' xmlns:typ='http://xmlns.oracle.com/oracle/apps/fnd/applcore/webservices/types/' xmlns:web='http://xmlns.oracle.com/oracle/apps/fnd/applcore/webservices/'> " +
                     "<soapenv:Header/> " +
                         "<soapenv:Body> " +

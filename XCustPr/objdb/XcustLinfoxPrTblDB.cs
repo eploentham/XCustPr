@@ -104,6 +104,7 @@ namespace XCustPr
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
+        
         public String getRequestID()
         {
             String chk = "";
@@ -113,6 +114,30 @@ namespace XCustPr
             if (dt.Rows.Count > 0)
             {
                 chk = dt.Rows[0][0].ToString();
+            }
+            return chk;
+        }
+        public Boolean validateGL(String seg1, String seg2, String seg3, String seg4, String seg5, String seg6, String bu_name)
+        {
+            Boolean chk = false;
+            DataTable dt = new DataTable();
+            String sql = "select code_combination_id "+
+                        "from xcust_gl_code_combinations_tbl glc " +
+                        ", xcust_bu_mst_tbl  BU " +
+                        ",xcust_gl_ledger_mst_tbl gll " +
+                        "where BU.PRIMARY_LEDGER_ID = gll.ledger_id " +
+                        "and gll.CHART_OF_ACCOUNTS_ID = glc.CHART_OF_ACCOUNTS_ID " +
+                        "and BU.BU_NAME = '"+ bu_name + "' " +
+                        "and glc.segment1 = '" +seg1+"' " +
+                        "and glc.segment2 = '" + seg2 + "' " +
+                        "and glc.segment3 = '" + seg3 + "' " +
+                        "and glc.segment4 = '" + seg4 + "' " +
+                        "and glc.segment5 = '" + seg5 + "' " +
+                        "and glc.segment6 = '" + seg6 + "' " ;
+            dt = conn.selectData(sql, "kfc_po");
+            if (dt.Rows.Count == 1)
+            {
+                chk = true;
             }
             return chk;
         }
@@ -176,6 +201,18 @@ namespace XCustPr
             chk = conn.ExecuteNonQuery(sql, "kfc_po");
 
             return chk;
+        }
+        public DataTable selectLinfoxGroupBy()
+        {
+            DataTable dt = new DataTable();
+            String sql = "";
+
+            sql = "Select po_number From "+xCLFPT.table+
+                " Where "+xCLFPT.VALIDATE_FLAG+"='Y' "+
+                " Group By "+xCLFPT.PO_NUMBER+","+xCLFPT.file_name+" "+
+                " ";
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
         }
         public void insertBluk(List<String> linfox, String filename, String host, MaterialProgressBar pB1, String requestId)
         {

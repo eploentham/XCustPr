@@ -152,10 +152,12 @@ namespace XCustPr
         }
         public void processGenTextLinfox(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
         {
+            addListView("processGenTextLinfox", "Web Service", lv1, form1);
             DataTable dtLinfoxPoNumber = new DataTable();
             dtLinfoxPoNumber = xCLPTDB.selectPO002GenTextLinfoxGroupByERPPONumber();
             if (dtLinfoxPoNumber.Rows.Count > 0)
             {
+                addListView("processGenTextLinfox พบข้อมูล "+dtLinfoxPoNumber.Rows.Count, "Web Service", lv1, form1);
                 foreach (DataRow linfox in dtLinfoxPoNumber.Rows)
                 {
                     String erpPONumber = "";
@@ -169,7 +171,12 @@ namespace XCustPr
                     xCLPTDB.updateOutBoundFlag(dt.Rows[0][xCLPTDB.xCLFPT.PO_NUMBER].ToString(), dt.Rows[0][xCLPTDB.xCLFPT.LINE_NUMBER].ToString());     
                 }
                 pB1.Visible = false;
+                addListView("processGenTextLinfox gen log file ", "Web Service", lv1, form1);
                 Cm.logProcess("xcustpo002", lVPr, dateStart, lVfile);   // gen log
+            }
+            else
+            {
+                addListView("processGenTextLinfox  ไม่พบข้อมูล", "Web Service", lv1, form1);
             }
         }
         public void writeTextLinfox(String erpPONumber, DataTable dt)
@@ -237,6 +244,23 @@ namespace XCustPr
                 lVPr.Add(vPP);
                 cntErr++;       // gen log
             }
+        }
+        private void addListView(String col1, String col2, MaterialListView lv1, Form form1)
+        {
+            lv1.Items.Add(AddToList((lv1.Items.Count + 1), col1, col2));
+            form1.Refresh();
+        }
+        private ListViewItem AddToList(int col1, string col2, string col3)
+        {
+            //int i = 0;
+            string[] array = new string[3];
+            array[0] = col1.ToString();
+            //i = lv.Items.Count();
+            //array[0] = lv.Items.Count();
+            array[1] = col2;
+            array[2] = col3;
+
+            return (new ListViewItem(array));
         }
     }
 }

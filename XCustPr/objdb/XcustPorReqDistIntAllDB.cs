@@ -133,6 +133,19 @@ namespace XCustPr
             }
             return chk;
         }
+        public String selectReqLineNumber(String reqH, String reqL)
+        {
+            DataTable dt = new DataTable();
+            String chk = "";
+            String sql = "SELECT REQ_LINE_INTERFACE_ID From XCUST_POR_REQ_LINE_INT_ALL " +
+                "Where ATTRIBUTE2 ='" + reqL + "' and  REQ_HEADER_INTERFACE_ID = '"+reqH+"' ;";
+            dt = conn.selectData(sql, "kfc_po");
+            if (dt.Rows.Count > 0)
+            {
+                chk = dt.Rows[0][0].ToString().Trim();
+            }
+            return chk;
+        }
         public String genSeqReqDistNumber()
         {
             DataTable dt = new DataTable();
@@ -155,9 +168,13 @@ namespace XCustPr
                 //    return "";
                 //}
                 //p.RowNumber = selectMaxRowNumber(p.YearId);
-                p.REQ_DIST_INTERFACE_ID = genSeqReqDistNumber();
-                String seqH = selectReqHeaderNumber(p.REQ_HEADER_INTERFACE_ID);
-                p.REQ_HEADER_INTERFACE_ID = seqH;
+                //p.REQ_DIST_INTERFACE_ID = genSeqReqDistNumber();
+                //String seqH = selectReqHeaderNumber(p.REQ_HEADER_INTERFACE_ID);s
+                //String seqL = selectReqLineNumber(p.REQ_HEADER_INTERFACE_ID, p.REQ_LINE_INTERFACE_ID);
+
+                //p.REQ_HEADER_INTERFACE_ID = seqH;
+                //p.REQ_LINE_INTERFACE_ID = seqL;
+                
                 p.price = p.price.Equals("")?"null":p.price;
                 p.ATTRIBUTE_NUMBER1 = p.ATTRIBUTE_NUMBER1.Equals("") ? "null" : p.ATTRIBUTE_NUMBER1;
                 p.ATTRIBUTE_NUMBER2 = p.ATTRIBUTE_NUMBER2.Equals("") ? "null" : p.ATTRIBUTE_NUMBER2;
