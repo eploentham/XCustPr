@@ -154,6 +154,30 @@ namespace XCustPr
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
+        public String genSeqReqLineNumber()
+        {
+            DataTable dt = new DataTable();
+            String chk = "";
+            String sql = "SELECT next value for xcust_po_req_line_seq ;";
+            dt = conn.selectData(sql, "kfc_po");
+            if (dt.Rows.Count > 0)
+            {
+                chk = dt.Rows[0][0].ToString().Trim();
+            }
+            return chk;
+        }
+        public String selectReqHeaderNumber(String attr2)
+        {
+            DataTable dt = new DataTable();
+            String chk = "";
+            String sql = "SELECT REQ_HEADER_INTERFACE_ID From XCUST_POR_REQ_HEADER_INT_ALL Where ATTRIBUTE2 ='" + attr2 + "' ;";
+            dt = conn.selectData(sql, "kfc_po");
+            if (dt.Rows.Count > 0)
+            {
+                chk = dt.Rows[0][0].ToString().Trim();
+            }
+            return chk;
+        }
         public String insert(XcustPorReqLineIntAll p)
         {
             String sql = "", chk = "";
@@ -165,6 +189,10 @@ namespace XCustPr
                 //}
                 //p.RowNumber = selectMaxRowNumber(p.YearId);
                 //p.Active = "1";
+                String seqL = genSeqReqLineNumber();
+                String seqH = selectReqHeaderNumber(p.REQ_HEADER_INTERFACE_ID);
+                p.REQ_HEADER_INTERFACE_ID = seqH;
+                p.REQ_LINE_INTERFACE_ID = seqL;
                 p.ATTRIBUTE_NUMBER1 = p.ATTRIBUTE_NUMBER1.Equals("") ? "null" : p.ATTRIBUTE_NUMBER1;
                 p.ATTRIBUTE_NUMBER2 = p.ATTRIBUTE_NUMBER2.Equals("") ? "null" : p.ATTRIBUTE_NUMBER2;
                 p.ATTRIBUTE_NUMBER3 = p.ATTRIBUTE_NUMBER3.Equals("") ? "null" : p.ATTRIBUTE_NUMBER3;
@@ -236,7 +264,11 @@ namespace XCustPr
                     p.LAST_UPDATE_DATE + "',getdate(),'" + p.CREATE_BY + "','" +
                     p.LAST_UPDATE_BY + "','" + p.LINE_TYPE + "','" + p.AGREEMENT_NUMBER + "','" +
                     p.UOM_CODE + "','" + p.request_id +"','"+ p.AGREEMENT_LINE_NUMBER + "','" + p.ATTRIBUTE_CATEGORY + "'," + p.Price + ",'" + p.delivery_date + "') ";
-                chk = conn.ExecuteNonQueryAutoIncrement(sql, "kfc_po");
+                chk = conn.ExecuteNonQuery(sql, "kfc_po");
+                if (chk.Equals("1"))
+                {
+                    chk = seqL;
+                }
                 //chk = p.RowNumber;
                 //chk = p.Code;
             }
@@ -245,7 +277,6 @@ namespace XCustPr
                 //MessageBox.Show("Error " + ex.ToString(), "insert Doctor");
                 chk = ex.Message;
             }
-
             return chk;
         }
     }

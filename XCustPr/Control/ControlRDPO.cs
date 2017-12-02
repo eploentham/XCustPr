@@ -301,7 +301,7 @@ namespace XCustPr
             item.DELIVER_TO_LOCATION_CODE = row[xCLFPTDB.xCLFPT.deriver_to_location].ToString();
             item.DESTINATION_SUBINVENTORY = subInv_code;
             item.CATEGORY_NAME = row[xCLFPTDB.xCLFPT.ITEM_CATEGORY_NAME].ToString();
-            item.NEED_BY_DATE = row[xCLFPTDB.xCLFPT.REQUEST_TIME].ToString();
+            item.NEED_BY_DATE = item.dateYearToDB(row[xCLFPTDB.xCLFPT.ORDER_DATE].ToString());
             item.ITEM_CODE = row[xCLFPTDB.xCLFPT.ITEM_CODE].ToString();
             item.LINE_TYPE = "GOODS";
 
@@ -1577,8 +1577,8 @@ namespace XCustPr
             XcustPorReqHeaderIntAll xCPRHIA = new XcustPorReqHeaderIntAll();
             xCPRHIA.ATTRIBUTE1 = xcprhia.ATTRIBUTE1.Trim();
 
-            xCPRHIA.ATTRIBUTE_DATE1 = date;
-            xCPRHIA.ATTRIBUTE_TIMESTAMP1 = date + " " + time;
+            xCPRHIA.ATTRIBUTE_DATE1 = "";
+            xCPRHIA.ATTRIBUTE_TIMESTAMP1 = "";
             xCPRHIA.BATCH_ID = xcprhia.BATCH_ID;
             xCPRHIA.DESCRIPTIONS = xcprhia.DESCRIPTIONS.Trim();
             xCPRHIA.REQUESTER_EMAIL_ADDR = "";
@@ -1597,91 +1597,91 @@ namespace XCustPr
             chk = xCPRHIADB.insert(xCPRHIA);
             return chk;
         }
-        private void insertXcustPorReqHeaderIntAll(DataRow row, String date, String time)
-        {//row[dc].ToString().Trim().
-            XcustPorReqHeaderIntAll xCPRHIA = new XcustPorReqHeaderIntAll();
-            xCPRHIA.REQ_HEADER_INTERFACE_ID = row[xCLFPTDB.xCLFPT.PO_NUMBER].ToString().Trim();
-            xCPRHIA.INTERFACE_SOURCE_CODE = "";// ค่าจาก parameter import_source
-            xCPRHIA.REQ_BU_NAME = "";// ค่าจาก parameter bu name     PARAMETER.PR_STATAUS        Requisition Number ค่าว่างไปก่อน
-            xCPRHIA.BATCH_ID = "";
-            xCPRHIA.ATTRIBUTE1 = row[xCLFPTDB.xCLFPT.PO_NUMBER].ToString().Trim();
+        //private void insertXcustPorReqHeaderIntAll1(DataRow row, String date, String time)
+        //{//row[dc].ToString().Trim().
+        //    XcustPorReqHeaderIntAll xCPRHIA = new XcustPorReqHeaderIntAll();
+        //    xCPRHIA.REQ_HEADER_INTERFACE_ID = row[xCLFPTDB.xCLFPT.PO_NUMBER].ToString().Trim();
+        //    xCPRHIA.INTERFACE_SOURCE_CODE = "";// ค่าจาก parameter import_source
+        //    xCPRHIA.REQ_BU_NAME = "";// ค่าจาก parameter bu name     PARAMETER.PR_STATAUS        Requisition Number ค่าว่างไปก่อน
+        //    xCPRHIA.BATCH_ID = "";
+        //    xCPRHIA.ATTRIBUTE1 = row[xCLFPTDB.xCLFPT.PO_NUMBER].ToString().Trim();
 
-            xCPRHIA.ATTRIBUTE_DATE1 = "";
-            //xCPRHIA.ATTRIBUTE_TIMESTAMP1 = date+" "+ time;
-            xCPRHIA.ATTRIBUTE_TIMESTAMP1 = "";
+        //    xCPRHIA.ATTRIBUTE_DATE1 = "";
+        //    //xCPRHIA.ATTRIBUTE_TIMESTAMP1 = date+" "+ time;
+        //    xCPRHIA.ATTRIBUTE_TIMESTAMP1 = "";
 
-            xCPRHIA.DESCRIPTIONS = row[xCLFPTDB.xCLFPT.LINE_NUMBER].ToString().Trim();
-            xCPRHIA.REQUESTER_EMAIL_ADDR = "";
+        //    xCPRHIA.DESCRIPTIONS = row[xCLFPTDB.xCLFPT.LINE_NUMBER].ToString().Trim();
+        //    xCPRHIA.REQUESTER_EMAIL_ADDR = "";
             
-            xCPRHIA.ATTRIBUTE_CATEGORY = "";
+        //    xCPRHIA.ATTRIBUTE_CATEGORY = "";
             
-            xCPRHIA.PROCESS_FLAG = "N";
-            xCPRHIA.APPROVER_EMAIL_ADDR = "";
-            xCPRHIA.STATUS_CODE = "";
-            xCPRHIA.REQ_BU_NAME = "";
-            xCPRHIA.REQUITITION_NUMBER = "";
-            xCPRHIA.request_id = row[xCLFPTDB.xCLFPT.request_id].ToString();
-            xCPRHIADB.insert(xCPRHIA);
-        }
-        private void insertXcustPorReqLineIntAll(DataRow row, String date, String time)
-        {
-            XcustPorReqLineIntAll xCPRLIA = new XcustPorReqLineIntAll();
-            xCPRLIA.ATTRIBUTE1 = row[xCLFPTDB.xCLFPT.LINE_NUMBER].ToString().Trim();
-            xCPRLIA.ATTRIBUTE_DATE1 = date;
-            xCPRLIA.ATTRIBUTE_NUMBER1 = "";
-            xCPRLIA.ATTRIBUTE_TIMESTAMP1 = date + " " + time;
-            xCPRLIA.CATEGORY_NAME = row[xCLFPTDB.xCLFPT.ITEM_CATEGORY_NAME].ToString().Trim();
-            xCPRLIA.CURRENCY_CODE = Cm.initC.CURRENCY_CODE;
-            xCPRLIA.DELIVER_TO_LOCATION_CODE = row[xCLFPTDB.xCLFPT.store_code].ToString().Trim();
-            xCPRLIA.DELIVER_TO_ORGANIZATION_CODE = Cm.initC.ORGANIZATION_code;
-            xCPRLIA.Goods = "";
-            xCPRLIA.DESTINATION_TYPE_CODE = "INVENTORY";
-            xCPRLIA.ITEM_CODE = row[xCLFPTDB.xCLFPT.ITEM_CODE].ToString().Trim();
-            xCPRLIA.LINFOX_PR = "";
-            xCPRLIA.NEED_BY_DATE = row[xCLFPTDB.xCLFPT.ORDER_DATE].ToString().Trim();
-            xCPRLIA.REQ_LINE_INTERFACE_ID = row[xCLFPTDB.xCLFPT.LINE_NUMBER].ToString().Trim();
-            xCPRLIA.REQ_HEADER_INTERFACE_ID = row[xCLFPTDB.xCLFPT.PO_NUMBER].ToString().Trim();
-            xCPRLIA.Price = row[xCLFPTDB.xCLFPT.PRICE].ToString().Trim();
-            xCPRLIA.PROCESS_FLAG = "N";
-            xCPRLIA.PRC_BU_NAME = "";
-            xCPRLIA.PR_APPROVER = "";
-            xCPRLIA.QTY = row[xCLFPTDB.xCLFPT.QTY].ToString().Trim();
-            xCPRLIA.REQUESTER_EMAIL_ADDR = Cm.initC.Requester;
-            xCPRLIA.Requisitioning_BU = Cm.initC.BU_NAME;
-            xCPRLIA.DESTINATION_SUBINVENTORY = row[xCLFPTDB.xCLFPT.subinventory_code].ToString().Trim();
-            xCPRLIA.SUGGESTED_VENDOR_NAME = row[xCLFPTDB.xCLFPT.SUPPLIER_CODE].ToString().Trim();
-            xCPRLIA.SUGGESTED_VENDOR_SITE = row[xCLFPTDB.xCLFPT.SUPPLIER_SITE_CODE].ToString().Trim();
-            xCPRLIA.LINE_TYPE = Cm.initC.LINE_TYPE;
-            xCPRLIA.AGREEMENT_NUMBER = row[xCLFPTDB.xCLFPT.AGREEEMENT_NUMBER].ToString();
-            //xCPRLIA.NEED_BY_DATE = "";
-            xCPRLIA.ATTRIBUTE_NUMBER10 = row[xCLFPTDB.xCLFPT.PRICE].ToString().Trim();
-            xCPRLIA.request_id = row[xCLFPTDB.xCLFPT.request_id].ToString();
+        //    xCPRHIA.PROCESS_FLAG = "N";
+        //    xCPRHIA.APPROVER_EMAIL_ADDR = "";
+        //    xCPRHIA.STATUS_CODE = "";
+        //    xCPRHIA.REQ_BU_NAME = "";
+        //    xCPRHIA.REQUITITION_NUMBER = "";
+        //    xCPRHIA.request_id = row[xCLFPTDB.xCLFPT.request_id].ToString();
+        //    xCPRHIADB.insert(xCPRHIA);
+        //}
+        //private void insertXcustPorReqLineIntAll1(DataRow row, String date, String time)
+        //{
+        //    XcustPorReqLineIntAll xCPRLIA = new XcustPorReqLineIntAll();
+        //    xCPRLIA.ATTRIBUTE1 = row[xCLFPTDB.xCLFPT.LINE_NUMBER].ToString().Trim();
+        //    xCPRLIA.ATTRIBUTE_DATE1 = date;
+        //    xCPRLIA.ATTRIBUTE_NUMBER1 = "";
+        //    xCPRLIA.ATTRIBUTE_TIMESTAMP1 = date + " " + time;
+        //    xCPRLIA.CATEGORY_NAME = row[xCLFPTDB.xCLFPT.ITEM_CATEGORY_NAME].ToString().Trim();
+        //    xCPRLIA.CURRENCY_CODE = Cm.initC.CURRENCY_CODE;
+        //    xCPRLIA.DELIVER_TO_LOCATION_CODE = row[xCLFPTDB.xCLFPT.store_code].ToString().Trim();
+        //    xCPRLIA.DELIVER_TO_ORGANIZATION_CODE = Cm.initC.ORGANIZATION_code;
+        //    xCPRLIA.Goods = "";
+        //    xCPRLIA.DESTINATION_TYPE_CODE = "INVENTORY";
+        //    xCPRLIA.ITEM_CODE = row[xCLFPTDB.xCLFPT.ITEM_CODE].ToString().Trim();
+        //    xCPRLIA.LINFOX_PR = "";
+        //    xCPRLIA.NEED_BY_DATE = row[xCLFPTDB.xCLFPT.ORDER_DATE].ToString().Trim();
+        //    xCPRLIA.REQ_LINE_INTERFACE_ID = row[xCLFPTDB.xCLFPT.LINE_NUMBER].ToString().Trim();
+        //    xCPRLIA.REQ_HEADER_INTERFACE_ID = xCPRHIADB.selectReqHeaderNumber(row[xCLFPTDB.xCLFPT.PO_NUMBER].ToString().Trim());
+        //    xCPRLIA.Price = row[xCLFPTDB.xCLFPT.PRICE].ToString().Trim();
+        //    xCPRLIA.PROCESS_FLAG = "N";
+        //    xCPRLIA.PRC_BU_NAME = "";
+        //    xCPRLIA.PR_APPROVER = "";
+        //    xCPRLIA.QTY = row[xCLFPTDB.xCLFPT.QTY].ToString().Trim();
+        //    xCPRLIA.REQUESTER_EMAIL_ADDR = Cm.initC.Requester;
+        //    xCPRLIA.Requisitioning_BU = Cm.initC.BU_NAME;
+        //    xCPRLIA.DESTINATION_SUBINVENTORY = row[xCLFPTDB.xCLFPT.subinventory_code].ToString().Trim();
+        //    xCPRLIA.SUGGESTED_VENDOR_NAME = row[xCLFPTDB.xCLFPT.SUPPLIER_CODE].ToString().Trim();
+        //    xCPRLIA.SUGGESTED_VENDOR_SITE = row[xCLFPTDB.xCLFPT.SUPPLIER_SITE_CODE].ToString().Trim();
+        //    xCPRLIA.LINE_TYPE = Cm.initC.LINE_TYPE;
+        //    xCPRLIA.AGREEMENT_NUMBER = row[xCLFPTDB.xCLFPT.AGREEEMENT_NUMBER].ToString();
+        //    //xCPRLIA.NEED_BY_DATE = "";
+        //    xCPRLIA.ATTRIBUTE_NUMBER10 = row[xCLFPTDB.xCLFPT.PRICE].ToString().Trim();
+        //    xCPRLIA.request_id = row[xCLFPTDB.xCLFPT.request_id].ToString();
             
-            //xCPRLIA.REQ_HEADER_INTERFACE_ID
+        //    //xCPRLIA.REQ_HEADER_INTERFACE_ID
 
-            xCPRLIADB.insert(xCPRLIA);
-        }
-        private void insertXcustPorReqDistIntAll(DataRow row, String date, String time)
-        {
-            XcustPorReqDistIntAll xCPRDIA = new XcustPorReqDistIntAll();
-            xCPRDIA.ATTRIBUTE1 = "";
-            xCPRDIA.ATTRIBUTE_CATEGORY = "";
-            xCPRDIA.ATTRIBUTE_DATE1 = date;
-            xCPRDIA.ATTRIBUTE_NUMBER1 = "";
-            xCPRDIA.ATTRIBUTE_TIMESTAMP1 = date + " " + time;
-            xCPRDIA.CHARGE_ACCOUNT_SEGMENT1 = "";
-            xCPRDIA.CHARGE_ACCOUNT_SEGMENT2 = "";
-            xCPRDIA.CHARGE_ACCOUNT_SEGMENT3 = "";
-            xCPRDIA.CHARGE_ACCOUNT_SEGMENT4 = "";
-            xCPRDIA.CHARGE_ACCOUNT_SEGMENT5 = "";
-            xCPRDIA.CHARGE_ACCOUNT_SEGMENT6 = "";
-            xCPRDIA.REQ_LINE_INTERFACE_ID = row[xCLFPTDB.xCLFPT.LINE_NUMBER].ToString().Trim();
-            xCPRDIA.REQ_HEADER_INTERFACE_ID = row[xCLFPTDB.xCLFPT.PO_NUMBER].ToString().Trim();
-            xCPRDIA.PROCESS_FLAG = "N";
-            xCPRDIA.REQ_DIST_INTERFACE_ID = "";
-            xCPRDIA.QTY = row[xCLFPTDB.xCLFPT.QTY].ToString().Trim();
-            xCPRDIADB.insert(xCPRDIA);
-        }
+        //    xCPRLIADB.insert(xCPRLIA);
+        //}
+        //private void insertXcustPorReqDistIntAll111(DataRow row, String date, String time)
+        //{
+        //    XcustPorReqDistIntAll xCPRDIA = new XcustPorReqDistIntAll();
+        //    xCPRDIA.ATTRIBUTE1 = "";
+        //    xCPRDIA.ATTRIBUTE_CATEGORY = "";
+        //    xCPRDIA.ATTRIBUTE_DATE1 = date;
+        //    xCPRDIA.ATTRIBUTE_NUMBER1 = "";
+        //    xCPRDIA.ATTRIBUTE_TIMESTAMP1 = date + " " + time;
+        //    xCPRDIA.CHARGE_ACCOUNT_SEGMENT1 = "";
+        //    xCPRDIA.CHARGE_ACCOUNT_SEGMENT2 = "";
+        //    xCPRDIA.CHARGE_ACCOUNT_SEGMENT3 = "";
+        //    xCPRDIA.CHARGE_ACCOUNT_SEGMENT4 = "";
+        //    xCPRDIA.CHARGE_ACCOUNT_SEGMENT5 = "";
+        //    xCPRDIA.CHARGE_ACCOUNT_SEGMENT6 = "";
+        //    xCPRDIA.REQ_LINE_INTERFACE_ID = row[xCLFPTDB.xCLFPT.LINE_NUMBER].ToString().Trim();
+        //    xCPRDIA.REQ_HEADER_INTERFACE_ID = row[xCLFPTDB.xCLFPT.PO_NUMBER].ToString().Trim();
+        //    xCPRDIA.PROCESS_FLAG = "N";
+        //    xCPRDIA.REQ_DIST_INTERFACE_ID = "";
+        //    xCPRDIA.QTY = row[xCLFPTDB.xCLFPT.QTY].ToString().Trim();
+        //    xCPRDIADB.insert(xCPRDIA);
+        //}
         /*
          * e.	ทำการหา Blanket Agreement Number โดยใช้ Supplier Code กับ Item Code หาค่า Blanket Agreement ที่ Active อยู่ ณ เวลานั้น 
          * มี Status เป็น Approved -> OPEN  กรณีไม่เจอ หรือเจอมากกว่า 1 ค่าให้ Validatte ไม่ผ่าน -> return false

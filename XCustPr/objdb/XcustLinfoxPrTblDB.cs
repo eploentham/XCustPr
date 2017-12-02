@@ -93,7 +93,7 @@ namespace XCustPr
         public DataTable selectLinfoxByFilename(String filename)
         {
             DataTable dt = new DataTable();
-            String sql = "select * From " + xCLFPT.table + " Where " + xCLFPT.file_name+"='"+filename+"'";
+            String sql = "select * From " + xCLFPT.table + " Where " + xCLFPT.file_name+"='"+filename+"' Order By "+xCLFPT.PO_NUMBER+","+xCLFPT.LINE_NUMBER;
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }

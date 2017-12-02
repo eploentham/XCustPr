@@ -120,12 +120,38 @@ namespace XCustPr
             }
             return chk;
         }
+        public String selectReqHeaderNumber(String attr2)
+        {
+            DataTable dt = new DataTable();
+            String chk = "";
+            String sql = "SELECT "+ xCPRHIA .REQ_HEADER_INTERFACE_ID+ " From "+ xCPRHIA .table+ " Where "+ xCPRHIA .ATTRIBUTE2+ " ='"+attr2+"' ;";
+            dt = conn.selectData(sql, "kfc_po");
+            if (dt.Rows.Count > 0)
+            {
+                chk = dt.Rows[0][0].ToString().Trim();
+            }
+            return chk;
+        }
+        public String genSeqReqHeaderNumber()
+        {
+            DataTable dt = new DataTable();
+            String chk = "";
+            String sql = "SELECT next value for xcust_po_req_header_seq ;";
+            dt = conn.selectData(sql, "kfc_po");
+            if (dt.Rows.Count > 0)
+            {
+                chk = dt.Rows[0][0].ToString().Trim();
+            }
+            return chk;
+        }
         public String insert(XcustPorReqHeaderIntAll p)
         {
             String sql = "", chk = "";
             try
             {
                 String seq = "000000" + genRequisition_Number();
+                String seqH = genSeqReqHeaderNumber();
+                p.REQ_HEADER_INTERFACE_ID = seqH;
                 p.REQUITITION_NUMBER = p.REQUITITION_NUMBER + seq.Substring(seq.Length-6);
                 p.ATTRIBUTE_NUMBER1 = p.ATTRIBUTE_NUMBER1.Equals("") ? "null" : p.ATTRIBUTE_NUMBER1;
                 p.ATTRIBUTE_NUMBER2 = p.ATTRIBUTE_NUMBER2.Equals("") ? "null" : p.ATTRIBUTE_NUMBER2;
@@ -195,8 +221,8 @@ namespace XCustPr
                 //    p.LAST_UPDATE_DATE + "','" + p.CREATION_DATE + "','" + p.IMPORT_SOURCE + "','" +
                 //    p.LAST_UPDATE_BY + 
                 //    "') ";
-                p.ATTRIBUTE_DATE1 = "";
-                p.ATTRIBUTE_TIMESTAMP1 = "";
+                //p.ATTRIBUTE_DATE1 = "";
+                //p.ATTRIBUTE_TIMESTAMP1 = "";
                 sql = "Insert Into " + xCPRHIA.table + "(" + xCPRHIA.ATTRIBUTE1 + "," + xCPRHIA.ATTRIBUTE_DATE1 + "," +
                     xCPRHIA.ATTRIBUTE_TIMESTAMP1 + "," + xCPRHIA.BATCH_ID + "," +
                     xCPRHIA.DESCRIPTIONS + "," + xCPRHIA.REQUESTER_EMAIL_ADDR + "," + xCPRHIA.INTERFACE_SOURCE_CODE + "," +

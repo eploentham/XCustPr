@@ -50,6 +50,7 @@ namespace XCustPr
             }
             return chk;
         }
+        
         public String dateTimeYearToDB(String datetime)
         {
             String chk = "", year = "", month = "", day = "", hh="", mm="";
