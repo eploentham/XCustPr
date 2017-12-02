@@ -733,7 +733,7 @@ namespace XCustPr
                     string col67 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_NUMBER10].ToString().Equals("0") ? "" : row[xCPRHIADB.xCPRHIA.ATTRIBUTE_NUMBER10].ToString();
                     string col68 = row[xCPRHIADB.xCPRHIA.ATTRIBUTE_CATEGORY].ToString();
                     string col69 = "";
-                    string col70 = "";
+                    string col70 = "Y";
                     //string col71 = "col71";
 
                     //string csvRow = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20}," +
