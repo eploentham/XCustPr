@@ -196,10 +196,10 @@ namespace XCustPr
                 //}
                 //p.RowNumber = selectMaxRowNumber(p.YearId);
                 //p.Active = "1";
-                //String seqL = genSeqReqLineNumber();
+                String seqL = genSeqReqLineNumber();
                 //String seqH = selectReqHeaderNumber(p.REQ_HEADER_INTERFACE_ID);
                 //sp.REQ_HEADER_INTERFACE_ID = seqH;
-                //p.REQ_LINE_INTERFACE_ID = seqL;
+                p.REQ_LINE_INTERFACE_ID = seqL;
                 p.ATTRIBUTE_NUMBER1 = p.ATTRIBUTE_NUMBER1.Equals("") ? "null" : p.ATTRIBUTE_NUMBER1;
                 p.ATTRIBUTE_NUMBER2 = p.ATTRIBUTE_NUMBER2.Equals("") ? "null" : p.ATTRIBUTE_NUMBER2;
                 p.ATTRIBUTE_NUMBER3 = p.ATTRIBUTE_NUMBER3.Equals("") ? "null" : p.ATTRIBUTE_NUMBER3;
@@ -274,7 +274,7 @@ namespace XCustPr
                 chk = conn.ExecuteNonQuery(sql, "kfc_po");
                 if (chk.Equals("1"))
                 {
-                    //chk = seqL;
+                    chk = seqL;
                 }
                 //chk = p.RowNumber;
                 //chk = p.Code;

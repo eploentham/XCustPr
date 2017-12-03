@@ -150,8 +150,8 @@ namespace XCustPr
             try
             {
                 String seq = "000000" + genRequisition_Number();
-                //String seqH = genSeqReqHeaderNumber();
-                //p.REQ_HEADER_INTERFACE_ID = seqH;
+                String seqH = genSeqReqHeaderNumber();
+                p.REQ_HEADER_INTERFACE_ID = seqH;
                 p.REQUITITION_NUMBER = p.REQUITITION_NUMBER + seq.Substring(seq.Length-6);
                 p.ATTRIBUTE_NUMBER1 = p.ATTRIBUTE_NUMBER1.Equals("") ? "null" : p.ATTRIBUTE_NUMBER1;
                 p.ATTRIBUTE_NUMBER2 = p.ATTRIBUTE_NUMBER2.Equals("") ? "null" : p.ATTRIBUTE_NUMBER2;
@@ -278,7 +278,7 @@ namespace XCustPr
                 chk = conn.ExecuteNonQuery(sql, "kfc_po");
                 if (chk.Equals("1"))
                 {
-                    //chk = seqH;
+                    chk = seqH;
                 }
                 //chk = p.RowNumber;
                 //chk = p.Code;

@@ -168,13 +168,13 @@ namespace XCustPr
                 //    return "";
                 //}
                 //p.RowNumber = selectMaxRowNumber(p.YearId);
-                //p.REQ_DIST_INTERFACE_ID = genSeqReqDistNumber();
+                p.REQ_DIST_INTERFACE_ID = genSeqReqDistNumber();
                 //String seqH = selectReqHeaderNumber(p.REQ_HEADER_INTERFACE_ID);s
                 //String seqL = selectReqLineNumber(p.REQ_HEADER_INTERFACE_ID, p.REQ_LINE_INTERFACE_ID);
 
                 //p.REQ_HEADER_INTERFACE_ID = seqH;
                 //p.REQ_LINE_INTERFACE_ID = seqL;
-                
+
                 p.price = p.price.Equals("")?"null":p.price;
                 p.ATTRIBUTE_NUMBER1 = p.ATTRIBUTE_NUMBER1.Equals("") ? "null" : p.ATTRIBUTE_NUMBER1;
                 p.ATTRIBUTE_NUMBER2 = p.ATTRIBUTE_NUMBER2.Equals("") ? "null" : p.ATTRIBUTE_NUMBER2;

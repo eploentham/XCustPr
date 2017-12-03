@@ -72,6 +72,7 @@ namespace XCustPr
             xCLFPT.ERP_PO_LINE_NUMBER = "ERP_PO_LINE_NUMBER";
             xCLFPT.ERP_QTY = "ERP_QTY";
             xCLFPT.request_id = "request_id";
+            xCLFPT.supplier_name = "supplier_name";
 
             //xCLFPT.table = "xcust_linfox_pr_tbl";
             xCLFPT.table = "xcust_linfox_pr_int_tbl";
@@ -202,15 +203,28 @@ namespace XCustPr
 
             return chk;
         }
-        public DataTable selectLinfoxGroupBy()
+        public DataTable selectLinfoxGroupByPoNumber(String requestId)
         {
             DataTable dt = new DataTable();
             String sql = "";
 
-            sql = "Select po_number From "+xCLFPT.table+
-                " Where "+xCLFPT.VALIDATE_FLAG+"='Y' "+
-                " Group By "+xCLFPT.PO_NUMBER+","+xCLFPT.file_name+" "+
+            sql = "Select "+xCLFPT.PO_NUMBER+","+xCLFPT.file_name+
+                " From "+xCLFPT.table+
+                " Where "+xCLFPT.VALIDATE_FLAG+"='Y' and "+xCLFPT.request_id+"='"+requestId+"' "+
+                " Group By "+xCLFPT.PO_NUMBER+","+xCLFPT.file_name+
+                " Order By "+xCLFPT.file_name+","+xCLFPT.PO_NUMBER+
                 " ";
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
+        }
+        public DataTable selectLinfoxByPoNumber(String requestId, String poNumber)
+        {
+            DataTable dt = new DataTable();
+            String sql = "";
+            sql = "Select *" +
+                " From "+xCLFPT.table +
+                " Where "+xCLFPT.PO_NUMBER+"='"+poNumber+"' and "+xCLFPT.request_id+"='"+requestId+"' " +
+                " Order By "+xCLFPT.PO_NUMBER+","+xCLFPT.LINE_NUMBER;
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
@@ -276,7 +290,24 @@ namespace XCustPr
 
             return chk;
         }
-        
+        public String updateValidateFlag1(String po_number, String line_number, String flag, String agreement_number, String agreement_line_number
+            ,String supplierSiteCode, String suppName, String subInv_code, String price, String host)
+        {
+            String sql = "", chk = "";
+            Double price1 = 0;
+            Double.TryParse(price, out price1);
+            sql = "Update " + xCLFPT.table + " Set " + xCLFPT.VALIDATE_FLAG + "='" + flag + "'" +
+                ", " + xCLFPT.AGREEEMENT_NUMBER + " ='" + agreement_number + "'" +
+                ", " + xCLFPT.AGREEMENT_LINE_NUMBER+"='"+agreement_line_number+"' " +
+                ", " + xCLFPT.SUPPLIER_SITE_CODE + "='" + supplierSiteCode + "' " +
+                ", " + xCLFPT.supplier_name + "='" + suppName.Replace("'","''") + "' " +
+                ", " + xCLFPT.subinventory_code + "='" + subInv_code + "' " +
+                ", " + xCLFPT.PRICE + "='" + price1.ToString() + "' " +
+                "Where " + xCLFPT.PO_NUMBER + " = '" + po_number + "' and " + xCLFPT.LINE_NUMBER + "='" + line_number + "'";
+            chk = conn.ExecuteNonQuery(sql.ToString(), host);
+
+            return chk;
+        }
         public DataTable selectValidateFlagYGroupByPoNumber()
         {
             DataTable dt = new DataTable();

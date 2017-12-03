@@ -353,6 +353,89 @@ namespace XCustPr
 
             listXcustPRDIA.Add(item);
         }
+        private XcustPorReqHeaderIntAll addXcustPRHIA1(String po_number, String curr_date, String filename, String requestId, int rowH)
+        {
+            XcustPorReqHeaderIntAll item = new XcustPorReqHeaderIntAll();
+            
+            String seq = String.Concat("00" + rowH);
+                
+            //xcprhia1.ATTRIBUTE1 = po_number;
+            item.IMPORT_SOURCE = Cm.initC.ImportSource;
+            item.REQ_BU_NAME = Cm.initC.BU_NAME;
+            item.STATUS_CODE = Cm.initC.PR_STATAUS;
+            item.REQ_HEADER_INTERFACE_ID = po_number;
+            item.BATCH_ID = curr_date.Replace("-", "") + seq.Substring(seq.Length - 2);
+            item.REQUITITION_NUMBER = "PR" + curr_date.Substring(2, 2);
+            item.DESCRIPTIONS = "LINFOX_" + po_number + "_" + filename;
+            item.ATTRIBUTE_CATEGORY = "LINFOX_PR";
+            item.ATTRIBUTE1 = Cm.initC.ImportSource;
+            item.ATTRIBUTE2 = po_number;
+            item.request_id = requestId;
+            //listXcustPRHIA.Add(xcprhia1);
+            return item;
+        }
+        private XcustPorReqLineIntAll addXcustPRLIAFromxCLFPT1(DataRow row)
+        {
+            XcustPorReqLineIntAll item = new XcustPorReqLineIntAll();
+            item.REQ_HEADER_INTERFACE_ID = row[xCLFPTDB.xCLFPT.PO_NUMBER].ToString();
+            item.REQ_LINE_INTERFACE_ID = row[xCLFPTDB.xCLFPT.LINE_NUMBER].ToString();
+            item.DESTINATION_TYPE_CODE = "";
+            item.PRC_BU_NAME = Cm.initC.BU_NAME;
+            item.DELIVER_TO_ORGANIZATION_CODE = Cm.initC.ORGANIZATION_code;
+            item.DELIVER_TO_LOCATION_CODE = row[xCLFPTDB.xCLFPT.deriver_to_location].ToString();
+            item.DESTINATION_SUBINVENTORY = row[xCLFPTDB.xCLFPT.subinventory_code].ToString();
+            item.CATEGORY_NAME = row[xCLFPTDB.xCLFPT.ITEM_CATEGORY_NAME].ToString();
+            item.NEED_BY_DATE = item.dateYearToDB(row[xCLFPTDB.xCLFPT.ORDER_DATE].ToString());
+            item.ITEM_CODE = row[xCLFPTDB.xCLFPT.ITEM_CODE].ToString();
+            item.LINE_TYPE = "GOODS";
+
+            item.QTY = row[xCLFPTDB.xCLFPT.QTY].ToString();
+            item.CURRENCY_CODE = Cm.initC.CURRENCY_CODE;
+            item.AGREEMENT_NUMBER = row[xCLFPTDB.xCLFPT.AGREEEMENT_NUMBER].ToString();
+            item.CURRENCY_UNIT_PRICE = "REQ_HEADER_INTERFACE_ID";//PO_NUMBER
+            //item.Price = row[xCLFPTDB.xCLFPT.PRICE].ToString();
+            item.PROCESS_FLAG = "Y";
+            item.UOM_CODE = row[xCLFPTDB.xCLFPT.UOMCODE].ToString();
+            item.request_id = row[xCLFPTDB.xCLFPT.request_id].ToString();
+            item.ATTRIBUTE2 = row[xCLFPTDB.xCLFPT.LINE_NUMBER].ToString();
+            item.AGREEMENT_LINE_NUMBER = row[xCLFPTDB.xCLFPT.AGREEMENT_LINE_NUMBER].ToString();
+            item.ATTRIBUTE_CATEGORY = "LINFOX_PR";
+            item.SUGGESTED_VENDOR_NAME = row[xCLFPTDB.xCLFPT.supplier_name].ToString();
+            item.SUGGESTED_VENDOR_SITE = row[xCLFPTDB.xCLFPT.SUPPLIER_SITE_CODE].ToString();
+            item.Price = row[xCLFPTDB.xCLFPT.PRICE].ToString();
+            item.delivery_date = row[xCLFPTDB.xCLFPT.REQUEST_DATE].ToString();
+
+            return item;
+        }
+        private XcustPorReqDistIntAll addXcustPRDIAFromxCLFPT1(DataRow row)
+        {
+            XcustPorReqDistIntAll item = new XcustPorReqDistIntAll();
+            item.REQ_HEADER_INTERFACE_ID = row[xCLFPTDB.xCLFPT.PO_NUMBER].ToString();
+            item.REQ_LINE_INTERFACE_ID = row[xCLFPTDB.xCLFPT.LINE_NUMBER].ToString();
+            item.CHARGE_ACCOUNT_SEGMENT2 = row[xCLFPTDB.xCLFPT.subinventory_code].ToString();
+            item.CHARGE_ACCOUNT_SEGMENT1 = "11";
+            item.CHARGE_ACCOUNT_SEGMENT3 = "216133";
+            item.CHARGE_ACCOUNT_SEGMENT4 = "000000";
+            item.CHARGE_ACCOUNT_SEGMENT5 = "00";
+            item.CHARGE_ACCOUNT_SEGMENT6 = "0000";
+
+            //item.DELIVER_TO_ORGANIZATION_CODE = initC.ORGANIZATION_code;
+            //item.DELIVER_TO_LOCATION_CODE = row[xCLFPTDB.xCLFPT.deriver_to_location].ToString();
+            //item.DESTINATION_SUBINVENTORY = row[xCLFPTDB.xCLFPT.subinventory_code].ToString();
+            //item.CATEGORY_NAME = row[xCLFPTDB.xCLFPT.ITEM_CATEGORY_NAME].ToString();
+            //item.NEED_BY_DATE = row[xCLFPTDB.xCLFPT.REQUEST_TIME].ToString();
+            //item.ITEM_CODE = row[xCLFPTDB.xCLFPT.ITEM_CODE].ToString();
+            //item.LINE_TYPE = "";
+
+            item.QTY = row[xCLFPTDB.xCLFPT.QTY].ToString();
+            item.request_id = row[xCLFPTDB.xCLFPT.request_id].ToString();
+            item.price = row[xCLFPTDB.xCLFPT.PRICE].ToString();
+            //item.CURRENCY_UNIT_PRICE = "REQ_HEADER_INTERFACE_ID";//PO_NUMBER
+            //item.Price = row[xCLFPTDB.xCLFPT.PRICE].ToString();
+            item.PROCESS_FLAG = "Y";
+
+            return item;
+        }
         /*
          * check แค่ format ว่า เป็น yyyymmdd เท่านั้น
          * Error PO001-002 : Date Format not correct 
@@ -1221,15 +1304,36 @@ namespace XCustPr
                 String chk = xCPRDIADB.insert(xcprdia);
             }
         }
-        public void processInsertTable1()
+        public void processInsertTable1(String requestId, MaterialListView lv1, Form form1, MaterialProgressBar pB1)
         {
+            addListView("insert table " + Cm.initC.PathProcess, "Validate", lv1, form1);
+            String currDate = System.DateTime.Now.ToString("yyyy-MM-dd");
+            int rowH = 0;
             DataTable dt = new DataTable();
-            dt = xCLFPTDB.selectValidateFlagYGroupByPoNumber();
+            dt = xCLFPTDB.selectLinfoxGroupByPoNumber(requestId);
             foreach(DataRow row in dt.Rows)
             {
+                rowH++;
                 String poNumber = "";
                 poNumber = row[xCLFPTDB.xCLFPT.PO_NUMBER].ToString();
+                DataTable dtLinfox = new DataTable();
+                dtLinfox = xCLFPTDB.selectLinfoxByPoNumber(requestId, poNumber);
+                XcustPorReqHeaderIntAll xCPorRHIA = addXcustPRHIA1(poNumber, currDate, row[xCLFPTDB.xCLFPT.file_name].ToString(), requestId, rowH);
+                String seqH = "";
+                seqH = xCPRHIADB.insert(xCPorRHIA);
+                foreach (DataRow rowLinfox in dtLinfox.Rows)
+                {
+                    XcustPorReqLineIntAll xCPorRLIA = new XcustPorReqLineIntAll();
+                    xCPorRLIA = addXcustPRLIAFromxCLFPT1(rowLinfox);
+                    xCPorRLIA.REQ_HEADER_INTERFACE_ID = seqH;
+                    String seqL = xCPRLIADB.insert(xCPorRLIA);
 
+                    XcustPorReqDistIntAll xCPorRDIA = new XcustPorReqDistIntAll();
+                    xCPorRDIA = addXcustPRDIAFromxCLFPT1(rowLinfox);
+                    xCPorRDIA.REQ_HEADER_INTERFACE_ID = seqH;
+                    xCPorRDIA.REQ_LINE_INTERFACE_ID = seqL;
+                    String chk = xCPRDIADB.insert(xCPorRDIA);
+                }
             }
         }
         /*
@@ -1564,7 +1668,9 @@ namespace XCustPr
                         row.EndEdit();
                         addXcustPRLIAFromxCLFPT(row, subInv_code, price, blanketAgreement, agreementLineNumber, supplierSiteCode, suppName);
                         addXcustPRDIAFromxCLFPT(row, subInv_code, price);
-                        xCLFPTDB.updateValidateFlag(row[xCLFPTDB.xCLFPT.PO_NUMBER].ToString().Trim(), row[xCLFPTDB.xCLFPT.LINE_NUMBER].ToString().Trim(),"Y", blanketAgreement, "kfc_po");
+                        //xCLFPTDB.updateValidateFlag(row[xCLFPTDB.xCLFPT.PO_NUMBER].ToString().Trim(), row[xCLFPTDB.xCLFPT.LINE_NUMBER].ToString().Trim(),"Y", blanketAgreement, "kfc_po");
+                        xCLFPTDB.updateValidateFlag1(row[xCLFPTDB.xCLFPT.PO_NUMBER].ToString().Trim(), row[xCLFPTDB.xCLFPT.LINE_NUMBER].ToString().Trim()
+                            , "Y", blanketAgreement, agreementLineNumber, supplierSiteCode, suppName, subInv_code, price, "kfc_po");
                     }
                     if (cntErr > 0)   // gen log
                     {
