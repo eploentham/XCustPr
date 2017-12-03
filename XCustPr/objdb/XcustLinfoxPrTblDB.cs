@@ -228,7 +228,7 @@ namespace XCustPr
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
-        public void insertBluk(List<String> linfox, String filename, String host, MaterialProgressBar pB1, String requestId)
+        public void insertBluk(List<String> linfox, String filename, String host, MaterialProgressBar pB1, String requestId, ControlMain Cm)
         {
             int i = 0;
             TimeZoneInfo tz = TimeZoneInfo.FindSystemTimeZoneById("US Eastern Standard Time");
@@ -278,8 +278,40 @@ namespace XCustPr
                         .Append(",'").Append(lastUpdateBy).Append("',").Append(lastUpdateTime).Append(",'").Append(filename.Trim().Replace(initC.PathProcess,""))
                         .Append("','").Append(aaa[11]).Append("','").Append(aaa[6]).Append("','").Append(requestId).Append("') ");
                     chk = conn.ExecuteNonQuery(sql.ToString(), host);
+                    if (chk.Length > 1)
+                    {
+                        String date1 = System.DateTime.Now.ToString("yyyy-MM-dd");
+                        String time1 = System.DateTime.Now.ToString("HH_mm_ss");
+                        String dateStart = date + " " + time;       //gen log
+
+                        List<ValidatePrPo> lVPr = new List<ValidatePrPo>();   // gen log
+                        List<ValidateFileName> lVfile = new List<ValidateFileName>();   // gen log
+                        ValidatePrPo vPP = new ValidatePrPo();   // gen log
+                        vPP = new ValidatePrPo();
+                        vPP.Filename = filename;
+                        vPP.Message = "Error PO001 Structure text file error" ;
+                        vPP.Validate = "";
+                        lVPr.Add(vPP);
+
+                        ValidateFileName vF = new ValidateFileName();   // gen log
+                        vF.recordError = "1";   // gen log
+                        vF.totalError = "1";   // gen log
+                        lVfile.Add(vF);   // gen log
+                        Cm.logProcess("xcustpo001", lVPr, dateStart, lVfile);   // gen log
+                        break;
+                    }
                 }
             }
+        }
+        public String updateErrorMessage(String po_number, String line_number, String msg, String host)
+        {
+            String sql = "", chk = "";
+            sql = "Update " + xCLFPT.table + " Set " + xCLFPT.ERROR_MSG + "="+ xCLFPT.ERROR_MSG + "+'," + msg.Replace("'","''") + "' " +
+                ", "+xCLFPT.VALIDATE_FLAG+"='E' " +//VALIDATE_FLAG
+                "Where " + xCLFPT.PO_NUMBER + " = '" + po_number + "' and " + xCLFPT.LINE_NUMBER + "='" + line_number + "'";
+            chk = conn.ExecuteNonQuery(sql.ToString(), host);
+
+            return chk;
         }
         public String updateValidateFlag(String po_number, String line_number, String flag, String agreement_number, String host)
         {

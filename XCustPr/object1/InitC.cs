@@ -8,7 +8,9 @@ namespace XCustPr
 {
     public class InitC
     {
-        public String PathInitial = "", PathProcess="",PathError="",PathArchive="", BU_NAME="", APPROVER_EMAIL="", Requester="";
+        public String PathInitial = "", PathProcess="",PathError="",PathArchive="", PathLog = "", BU_NAME="", APPROVER_EMAIL="", Requester="";
+
+        public String pathLogErr = "";
 
         public String databaseDBBIT = "bithis_demo1";             //bit
         public String hostDBBIT = "172.25.1.153";
@@ -64,19 +66,33 @@ namespace XCustPr
         public String portDBKFCPO = "3306";
 
         public String PO005PathInitial = "", PO005PathProcess = "", PO005PathError = "", PO005PathArchive = "", PO005ImportSource="", PO005pathZip="";
+        public String PO005PathLog = "";
+
         public String PO003PathInitial = "", PO003PathProcess = "", PO003PathError = "", PO003PathArchive = "", PO003ImportSource = "", PO003RECEIPT_SOURCE="", PO003TRANSACTION_TYPE="";
+        public String PO003PathLog = "";
+
         public String PO004PathInitial = "", PO004PathProcess = "", PO004PathError = "", PO004RECEIPT_SOURCE = "", PO004ImportSource = "", PO004ZipFileSearch="", PO004RECEIPT_TRANSACTION_TYPE="";
         public String PO004SOURCE_DOCUMENT_CODE = "", PO004RECEIPT_SOURCE_CODE="", PO004INTERFACE_SOURCE_CODE="";
+        public String PO004PathLog = "";
+
         public String PO008PathInitial = "", PO008PathProcess = "", PO008PathError = "", PO008PathArchive = "", PO008ImportSource = "", PO008ZipFileSearch = "", PO008LEGAL_ENTITY="", PO008BUYER="";
+        public String PO008PathLog = "";
+
         public String PO004FileType = "";
         public String PO007PathInitial = "";
-        public String PO002PathInitial = "", PO002PathDestinaion = "";
+        public String PO007PathLog = "";
+
+        public String PO002PathInitial = "", PO002PathDestinaion = "", PO002PathLog = "";
         public String PO006PathInitial = "", PO006ReRun="", Po006DeliveryDate="";
+        public String PO006PathLog = "";
+
         public String ExtractZipPathZipExtractRead = "", ExtractZipPathZipExtract="";
 
         public String AP001PathInitial = "", AP001PathProcess = "", AP001PathError = "", AP001PathArchive = "", AP001ImportSource = "", AP001LEGAL_ENTITY="", AP001INVOICE_TYPE="";
-        public String AP004PathInitial = "", AP004PathProcess = "", AP004PathError = "", AP004PathArchive = "", AP004ImportSource="";
+        public String AP001PathLog = "";
 
+        public String AP004PathInitial = "", AP004PathProcess = "", AP004PathError = "", AP004PathArchive = "", AP004ImportSource="";
+        public String AP004PathLog = "";
 
 
     }

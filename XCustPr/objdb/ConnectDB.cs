@@ -260,7 +260,8 @@ namespace XCustPr
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception("ExecuteNonQuery::Error occured.", ex);
+                    //throw new Exception("ExecuteNonQuery::Error occured.", ex);//logException
+                    logException(ex.Message.ToString(), sql);
                     toReturn = ex.Message;
                 }
                 finally
@@ -295,6 +296,17 @@ namespace XCustPr
                 }
             }
             return toReturn;
+        }
+        public void logException(String ex, String sql)
+        {
+            String date = System.DateTime.Now.ToString("yyyy-MM-dd");
+            String txt = "";
+            String time = System.DateTime.Now.ToString("HH_mm_ss");
+            using (var stream = File.AppendText(initC.pathLogErr+"\\" + "log_error_" + date.Replace("-", "_").Replace(":", "_") + ".log"))
+            {
+                txt = System.DateTime.Now.ToString("HH_mm_ss")+"->"+ex + sql+Environment.NewLine;
+                stream.WriteLine(txt);
+            }
         }
         public String ExecuteNonQueryForConvert(String sql, String host)
         {
