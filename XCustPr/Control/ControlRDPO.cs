@@ -642,7 +642,7 @@ namespace XCustPr
         }
         public void processGenCSVxCPRHIA(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String flag, String requestId)
         {
-            var file = Cm.initC.PathArchive+ "PorReqHeadersInterfaceAl.csv";
+            var file = Cm.initC.PathArchive+ "PorReqHeadersInterfaceAll.csv";
             DataTable dt;
             if (flag.Equals("PO001"))
             {
@@ -761,7 +761,7 @@ namespace XCustPr
         }
         public void processGenCSVxCPRLIA(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String flag, String requestId)
         {
-            var file = Cm.initC.PathArchive + "PorReqLinesInterfaceAl.csv";
+            var file = Cm.initC.PathArchive + "PorReqLinesInterfaceAll.csv";
             DataTable dt;
             if (flag.Equals("PO001"))
             {
@@ -965,7 +965,7 @@ namespace XCustPr
         }
         public void processGenCSVxCPRDIA(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String flag, String requestId)
         {
-            var file = Cm.initC.PathArchive + "PorReqDistInterfaceAl.csv";
+            var file = Cm.initC.PathArchive + "PorReqDistsInterfaceAll.csv";
             DataTable dt;
             if (flag.Equals("PO001"))
             {
@@ -1148,7 +1148,7 @@ namespace XCustPr
             if (flag.Equals("PO001"))
             {
                 filenameZip = Cm.initC.PathZip + "\\xcustpr.zip";
-                filename = @Cm.initC.PathArchive;
+                filename = @Cm.initC.PathArchive;s
             }
             else
             {
