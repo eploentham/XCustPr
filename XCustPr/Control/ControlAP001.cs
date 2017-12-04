@@ -736,7 +736,7 @@ namespace XCustPr
             String filenameZip = "", ilename2 = "", ilename3 = "", filename = "";
             if (flag.Equals("AP001"))
             {
-                filenameZip = Cm.initC.PathZip + "\\xcustpr.zip";
+                filenameZip = Cm.initC.PathFileCSV + "\\xcustpr.zip";
                 filename = @Cm.initC.PathArchive;
             }
             else

@@ -89,9 +89,14 @@ namespace XCustPr
                 MessageBox.Show("Path PO001PathArchive empty", "createFolderPO001");
                 return;
             }
-            if (initC.PathZip.Equals(""))
+            if (initC.PathFileCSV.Equals(""))
             {
-                MessageBox.Show("Path PO001PathZip empty", "createFolderPO001");
+                MessageBox.Show("Path PO001PathFileCSV empty", "createFolderPO001");
+                return;
+            }
+            if (initC.PathFileZip.Equals(""))
+            {
+                MessageBox.Show("Path PO001PathFileZip empty", "createFolderPO001");
                 return;
             }
             if (initC.PathLog.Equals(""))
@@ -103,7 +108,8 @@ namespace XCustPr
             createFolderPO001PathInitial();
             createFolderPO001PathError();
             createFolderPO001PathArchive();
-            createFolderPO001PathZip();
+            createFolderPO001PathFileCSV();
+            createFolder(initC.PathFileZip);
             createFolder(initC.PathLog);
         }
         public void createFolderPO004()
@@ -385,11 +391,11 @@ namespace XCustPr
             if (!folderExists)
                 Directory.CreateDirectory(initC.PathArchive);
         }
-        public void createFolderPO001PathZip()
+        public void createFolderPO001PathFileCSV()
         {
-            bool folderExists = Directory.Exists(initC.PathZip);
+            bool folderExists = Directory.Exists(initC.PathFileCSV);
             if (!folderExists)
-                Directory.CreateDirectory(initC.PathZip);
+                Directory.CreateDirectory(initC.PathFileCSV);
         }
         public String[] getFileinFolder(String path)
         {
@@ -471,8 +477,8 @@ namespace XCustPr
             initC.EmailHost = iniFile.Read("EmailHost");        // orc backoffice
             initC.EmailSender = iniFile.Read("EmailSender");
             initC.FTPServer = iniFile.Read("FTPServer");
-            initC.PathZipExtract = iniFile.Read("PathZipExtract");
-            initC.PathZip = iniFile.Read("PathZip");
+            initC.PathFileZip = iniFile.Read("PathFileZip");
+            initC.PathFileCSV = iniFile.Read("PathFileCSV");
 
             initC.databaseDBKFCPO = iniFile.Read("databaseDBKFCPO");        // orc BIT
             initC.hostDBKFCPO = iniFile.Read("hostDBKFCPO");
@@ -924,15 +930,15 @@ namespace XCustPr
             String[] filePO;
             if (flag.Equals("PO001"))
             {
-                filePO = getFileinFolder(initC.PathZip);
+                filePO = getFileinFolder(initC.PathFileCSV);
             }
             else if (flag.Equals("PO005"))
             {
-                filePO = getFileinFolder(initC.PathZip);
+                filePO = getFileinFolder(initC.PathFileCSV);
             }
             else
             {
-                filePO = getFileinFolder(initC.PathZip);
+                filePO = getFileinFolder(initC.PathFileCSV);
             }
 
             String text = System.IO.File.ReadAllText(filePO[0]);

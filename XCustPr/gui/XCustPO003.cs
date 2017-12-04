@@ -209,7 +209,7 @@ namespace XCustPr
             XmlDocument soapEnvelopeXml = new XmlDocument();
             const Int32 BufferSize = 128;
             String[] filePO;
-            filePO = Cm.getFileinFolder(Cm.initC.PathZip);
+            filePO = Cm.getFileinFolder(Cm.initC.PathFileCSV);
             String text = System.IO.File.ReadAllText(filePO[0]);
             //byte[] byteArraytext = Encoding.UTF8.GetBytes(text);
             byte[] toEncodeAsBytestext = System.Text.ASCIIEncoding.ASCII.GetBytes(text);
