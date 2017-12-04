@@ -24,18 +24,22 @@ namespace XCustPr
             //MessageBox.Show("args "+ args.Length, "");
             if (System.Diagnostics.Process.GetCurrentProcess().ProcessName.ToLower().Equals("xcustpo001"))
             {
+                Cm.initC.pathLogErr = Cm.initC.PathLog;
                 Application.Run(new XCustPrToCloud(Cm));
             }
             else if(System.Diagnostics.Process.GetCurrentProcess().ProcessName.ToLower().Equals("xcustpo004"))
             {
+                Cm.initC.pathLogErr = Cm.initC.PO004PathLog;
                 Application.Run(new XCustPO004(Cm));
             }
             else if (System.Diagnostics.Process.GetCurrentProcess().ProcessName.ToLower().Equals("xcustpo005"))
             {
+                Cm.initC.pathLogErr = Cm.initC.PO005PathLog;
                 Application.Run(new XCustPO005(Cm));
             }
             else if (System.Diagnostics.Process.GetCurrentProcess().ProcessName.ToLower().Equals("xcustpo003"))
             {
+                Cm.initC.pathLogErr = Cm.initC.PO006PathLog;
                 Application.Run(new XCustPO003(Cm));
             }
             else if (System.Diagnostics.Process.GetCurrentProcess().ProcessName.ToLower().Equals("xcustextractzip"))
@@ -44,6 +48,7 @@ namespace XCustPr
             }
             else if (System.Diagnostics.Process.GetCurrentProcess().ProcessName.ToLower().Equals("xcustpo008"))
             {
+                Cm.initC.pathLogErr = Cm.initC.PO008PathLog;
                 Application.Run(new XCustPO008(Cm));
             }
             else if (System.Diagnostics.Process.GetCurrentProcess().ProcessName.ToLower().Equals("xcustvalueset"))
@@ -52,14 +57,17 @@ namespace XCustPr
             }
             else if (System.Diagnostics.Process.GetCurrentProcess().ProcessName.ToLower().Equals("xcustpo002"))
             {
+                Cm.initC.pathLogErr = Cm.initC.PO002PathLog;
                 Application.Run(new XCustPO002(Cm));
             }
             else if (System.Diagnostics.Process.GetCurrentProcess().ProcessName.ToLower().Equals("xcustpo007"))
             {
+                Cm.initC.pathLogErr = Cm.initC.PO007PathLog;
                 Application.Run(new XCustPO007(Cm));
             }
             else if (System.Diagnostics.Process.GetCurrentProcess().ProcessName.ToLower().Equals("xcustpo006"))
             {
+                Cm.initC.pathLogErr = Cm.initC.PO006PathLog;
                 Application.Run(new XCustPO006(Cm));
             }
             else if (System.Diagnostics.Process.GetCurrentProcess().ProcessName.ToLower().Equals("xcustpows"))
@@ -76,14 +84,17 @@ namespace XCustPr
             }
             else if (System.Diagnostics.Process.GetCurrentProcess().ProcessName.ToLower().Equals("xcustap001"))
             {
+                Cm.initC.pathLogErr = Cm.initC.PathLog;
                 Application.Run(new XCustAP001(Cm));
             }
             else if (System.Diagnostics.Process.GetCurrentProcess().ProcessName.ToLower().Equals("xcustap004"))
             {
+                Cm.initC.pathLogErr = Cm.initC.PO004PathLog;
                 Application.Run(new XCustAP004(Cm));
             }
             else
             {
+                Cm.initC.pathLogErr = Cm.initC.PathLog;
                 //Application.Run(new XCustPO008(Cm));
                 //Application.Run(new XCustPO004(Cm));
                 //Application.Run(new XCustPO005(Cm));

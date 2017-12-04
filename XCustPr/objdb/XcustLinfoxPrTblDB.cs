@@ -72,6 +72,7 @@ namespace XCustPr
             xCLFPT.ERP_PO_LINE_NUMBER = "ERP_PO_LINE_NUMBER";
             xCLFPT.ERP_QTY = "ERP_QTY";
             xCLFPT.request_id = "request_id";
+            xCLFPT.supplier_name = "supplier_name";
 
             //xCLFPT.table = "xcust_linfox_pr_tbl";
             xCLFPT.table = "xcust_linfox_pr_int_tbl";
@@ -104,6 +105,7 @@ namespace XCustPr
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
+        
         public String getRequestID()
         {
             String chk = "";
@@ -113,6 +115,30 @@ namespace XCustPr
             if (dt.Rows.Count > 0)
             {
                 chk = dt.Rows[0][0].ToString();
+            }
+            return chk;
+        }
+        public Boolean validateGL(String seg1, String seg2, String seg3, String seg4, String seg5, String seg6, String bu_name)
+        {
+            Boolean chk = false;
+            DataTable dt = new DataTable();
+            String sql = "select code_combination_id "+
+                        "from xcust_gl_code_combinations_tbl glc " +
+                        ", xcust_bu_mst_tbl  BU " +
+                        ",xcust_gl_ledger_mst_tbl gll " +
+                        "where BU.PRIMARY_LEDGER_ID = gll.ledger_id " +
+                        "and gll.CHART_OF_ACCOUNTS_ID = glc.CHART_OF_ACCOUNTS_ID " +
+                        "and BU.BU_NAME = '"+ bu_name + "' " +
+                        "and glc.segment1 = '" +seg1+"' " +
+                        "and glc.segment2 = '" + seg2 + "' " +
+                        "and glc.segment3 = '" + seg3 + "' " +
+                        "and glc.segment4 = '" + seg4 + "' " +
+                        "and glc.segment5 = '" + seg5 + "' " +
+                        "and glc.segment6 = '" + seg6 + "' " ;
+            dt = conn.selectData(sql, "kfc_po");
+            if (dt.Rows.Count == 1)
+            {
+                chk = true;
             }
             return chk;
         }
@@ -177,7 +203,32 @@ namespace XCustPr
 
             return chk;
         }
-        public void insertBluk(List<String> linfox, String filename, String host, MaterialProgressBar pB1, String requestId)
+        public DataTable selectLinfoxGroupByPoNumber(String requestId)
+        {
+            DataTable dt = new DataTable();
+            String sql = "";
+
+            sql = "Select "+xCLFPT.PO_NUMBER+","+xCLFPT.file_name+
+                " From "+xCLFPT.table+
+                " Where "+xCLFPT.VALIDATE_FLAG+"='Y' and "+xCLFPT.request_id+"='"+requestId+"' "+
+                " Group By "+xCLFPT.PO_NUMBER+","+xCLFPT.file_name+
+                " Order By "+xCLFPT.file_name+","+xCLFPT.PO_NUMBER+
+                " ";
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
+        }
+        public DataTable selectLinfoxByPoNumber(String requestId, String poNumber)
+        {
+            DataTable dt = new DataTable();
+            String sql = "";
+            sql = "Select *" +
+                " From "+xCLFPT.table +
+                " Where "+xCLFPT.PO_NUMBER+"='"+poNumber+"' and "+xCLFPT.request_id+"='"+requestId+"' " +
+                " Order By "+xCLFPT.PO_NUMBER+","+xCLFPT.LINE_NUMBER;
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
+        }
+        public void insertBluk(List<String> linfox, String filename, String host, MaterialProgressBar pB1, String requestId, ControlMain Cm)
         {
             int i = 0;
             TimeZoneInfo tz = TimeZoneInfo.FindSystemTimeZoneById("US Eastern Standard Time");
@@ -227,8 +278,40 @@ namespace XCustPr
                         .Append(",'").Append(lastUpdateBy).Append("',").Append(lastUpdateTime).Append(",'").Append(filename.Trim().Replace(initC.PathProcess,""))
                         .Append("','").Append(aaa[11]).Append("','").Append(aaa[6]).Append("','").Append(requestId).Append("') ");
                     chk = conn.ExecuteNonQuery(sql.ToString(), host);
+                    if (chk.Length > 1)
+                    {
+                        String date1 = System.DateTime.Now.ToString("yyyy-MM-dd");
+                        String time1 = System.DateTime.Now.ToString("HH_mm_ss");
+                        String dateStart = date + " " + time;       //gen log
+
+                        List<ValidatePrPo> lVPr = new List<ValidatePrPo>();   // gen log
+                        List<ValidateFileName> lVfile = new List<ValidateFileName>();   // gen log
+                        ValidatePrPo vPP = new ValidatePrPo();   // gen log
+                        vPP = new ValidatePrPo();
+                        vPP.Filename = filename;
+                        vPP.Message = "Error PO001 Structure text file error" ;
+                        vPP.Validate = "";
+                        lVPr.Add(vPP);
+
+                        ValidateFileName vF = new ValidateFileName();   // gen log
+                        vF.recordError = "1";   // gen log
+                        vF.totalError = "1";   // gen log
+                        lVfile.Add(vF);   // gen log
+                        Cm.logProcess("xcustpo001", lVPr, dateStart, lVfile);   // gen log
+                        break;
+                    }
                 }
             }
+        }
+        public String updateErrorMessage(String po_number, String line_number, String msg, String host)
+        {
+            String sql = "", chk = "";
+            sql = "Update " + xCLFPT.table + " Set " + xCLFPT.ERROR_MSG + "="+ xCLFPT.ERROR_MSG + "+'," + msg.Replace("'","''") + "' " +
+                ", "+xCLFPT.VALIDATE_FLAG+"='E' " +//VALIDATE_FLAG
+                "Where " + xCLFPT.PO_NUMBER + " = '" + po_number + "' and " + xCLFPT.LINE_NUMBER + "='" + line_number + "'";
+            chk = conn.ExecuteNonQuery(sql.ToString(), host);
+
+            return chk;
         }
         public String updateValidateFlag(String po_number, String line_number, String flag, String agreement_number, String host)
         {
@@ -239,7 +322,24 @@ namespace XCustPr
 
             return chk;
         }
-        
+        public String updateValidateFlag1(String po_number, String line_number, String flag, String agreement_number, String agreement_line_number
+            ,String supplierSiteCode, String suppName, String subInv_code, String price, String host)
+        {
+            String sql = "", chk = "";
+            Double price1 = 0;
+            Double.TryParse(price, out price1);
+            sql = "Update " + xCLFPT.table + " Set " + xCLFPT.VALIDATE_FLAG + "='" + flag + "'" +
+                ", " + xCLFPT.AGREEEMENT_NUMBER + " ='" + agreement_number + "'" +
+                ", " + xCLFPT.AGREEMENT_LINE_NUMBER+"='"+agreement_line_number+"' " +
+                ", " + xCLFPT.SUPPLIER_SITE_CODE + "='" + supplierSiteCode + "' " +
+                ", " + xCLFPT.supplier_name + "='" + suppName.Replace("'","''") + "' " +
+                ", " + xCLFPT.subinventory_code + "='" + subInv_code + "' " +
+                ", " + xCLFPT.PRICE + "='" + price1.ToString() + "' " +
+                "Where " + xCLFPT.PO_NUMBER + " = '" + po_number + "' and " + xCLFPT.LINE_NUMBER + "='" + line_number + "'";
+            chk = conn.ExecuteNonQuery(sql.ToString(), host);
+
+            return chk;
+        }
         public DataTable selectValidateFlagYGroupByPoNumber()
         {
             DataTable dt = new DataTable();

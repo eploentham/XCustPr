@@ -473,27 +473,28 @@ namespace XCustPr
                 item.VENDOR_SITE = data2[46].Trim();      
                 item.REQUISITION_HEADER_ID = data2[47].Trim();
                 item.REQUISITION_LINE_ID = data2[48].Trim();
-                //item.ATTRIBUTE_CATEGORY = data2[49].Trim();       //ATTRIBUTE_CATEGORY_L
-                //item.VENDOR_SITE_ID = data2[50].Trim();     //ATTRIBUTE1_L
+                item.ATTRIBUTE_CATEGORY_L = data2[49].Trim();       //ATTRIBUTE_CATEGORY_L
+                item.ATTRIBUTE1_L = data2[50].Trim();     //ATTRIBUTE1_L
 
-                //item.VENDOR_SITE_ID = data2[51].Trim();     //ATTRIBUTE2_L
-                //item.ATTRIBUTE_CATEGORY = data2[52].Trim();     //ATTRIBUTE3_L
-                item.PO_HEADER_ID = data2[53].Trim();
-                item.PO_LINE_ID = data2[54].Trim();
-                item.DESTINATION_TYPE = data2[55].Trim();
-                item.DELIVER_TO_LOC = data2[56].Trim();
-                item.PRODUCT_TYPE = data2[57].Trim();
-                item.ASSESSABLE_VALUE = data2[58].Trim();
-                item.DELIVER_TO_LOC_LINFOX = data2[59].Trim();
+                item.ATTRIBUTE2_L = data2[51].Trim();     //ATTRIBUTE2_L
+                item.ATTRIBUTE3_L = data2[52].Trim();     //ATTRIBUTE3_L
+                item.TAX_CODE = data2[53].Trim();
+                item.TAX_AMOUNT = data2[54].Trim();
+                item.ACC_SEGMENT1 = data2[55].Trim();
+                item.ACC_SEGMENT2 = data2[56].Trim();
+                item.ACC_SEGMENT3 = data2[57].Trim();
+                item.ACC_SEGMENT4 = data2[58].Trim();
+                item.ACC_SEGMENT5 = data2[59].Trim();
 
-                item.TAX_AMOUNT = "";
-                item.TAX_CODE = "";
-                item.ACC_SEGMENT1 = "";
-                item.ACC_SEGMENT2 = "";
-                item.ACC_SEGMENT3 = "";
-                item.ACC_SEGMENT4 = "";
-                item.ACC_SEGMENT5 = "";
-                item.ACC_SEGMENT6 = "";
+                item.ACC_SEGMENT6 = data2[60].Trim();
+                item.COUNT_AP_INVOICE = data2[61].Trim();
+                item.DESTINATION_TYPE = data2[64].Trim();
+                item.DELIVER_TO_LOC = data2[65].Trim();
+                item.PRODUCT_TYPE = data2[66].Trim();
+                item.ASSESSABLE_VALUE = data2[67].Trim();
+                item.DELIVER_TO_LOC_LINFOX = data2[68].Trim();
+                //item.ACC_SEGMENT5 = "";
+                //item.ACC_SEGMENT6 = "";
 
                 //int VALUE_SET_ID = 0, VALUE_SET_CODE = 1, VALUE_ID = 2, VALUE = 3, DESCRIPTION = 4, ENABLED_FLAG = 5, LAST_UPDATE_DATE = 6, CREATION_DATE = 7;
 

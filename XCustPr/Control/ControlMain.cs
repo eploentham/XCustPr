@@ -94,11 +94,17 @@ namespace XCustPr
                 MessageBox.Show("Path PO001PathZip empty", "createFolderPO001");
                 return;
             }
+            if (initC.PathLog.Equals(""))
+            {
+                MessageBox.Show("Path PO001PathLog empty", "createFolderPO001");
+                return;
+            }
             createFolderPO001PathProcess();
             createFolderPO001PathInitial();
             createFolderPO001PathError();
             createFolderPO001PathArchive();
             createFolderPO001PathZip();
+            createFolder(initC.PathLog);
         }
         public void createFolderPO004()
         {
@@ -117,10 +123,16 @@ namespace XCustPr
                 MessageBox.Show("Path PO004PathProcess empty", "createFolderPO004");
                 return;
             }
+            if (initC.PO004PathLog.Equals(""))
+            {
+                MessageBox.Show("Path PO004PathLog empty", "createFolderPO004");
+                return;
+            }
             //createFolder(initC.PO004PathArchive);
             createFolder(initC.PO004PathError);
             createFolder(initC.PO004PathInitial);
             createFolder(initC.PO004PathProcess);
+            createFolder(initC.PO004PathLog);
         }
         public void createFolderPO005()
         {
@@ -149,11 +161,17 @@ namespace XCustPr
                 MessageBox.Show("Path PO005PathZip empty", "createFolderPO005");
                 return;
             }
+            if (initC.PO005PathLog.Equals(""))
+            {
+                MessageBox.Show("Path PO005PathLog empty", "createFolderPO005");
+                return;
+            }
             createFolder(initC.PO005PathArchive);
             createFolder(initC.PO005PathError);
             createFolder(initC.PO005PathInitial);
             createFolder(initC.PO005PathProcess);
             createFolder(initC.PO005pathZip);
+            createFolder(initC.PO005PathLog);
         }
         public void createFolderPO003()
         {
@@ -177,10 +195,16 @@ namespace XCustPr
                 MessageBox.Show("Path PO003PathArchive empty", "createFolderPO003");
                 return;
             }
+            if (initC.PO003PathLog.Equals(""))
+            {
+                MessageBox.Show("Path PO003Pathlog empty", "createFolderPO003");
+                return;
+            }
             createFolder(initC.PO003PathArchive);
             createFolder(initC.PO003PathError);
             createFolder(initC.PO003PathInitial);
             createFolder(initC.PO003PathProcess);
+            createFolder(initC.PO003PathLog);
         }
         public void createFolderPO008()
         {
@@ -201,19 +225,30 @@ namespace XCustPr
             }
             if (initC.PO008PathArchive.Equals(""))
             {
-                MessageBox.Show("Path PO003PathArchive empty", "createFolderPO008");
+                MessageBox.Show("Path PO008PathArchive empty", "createFolderPO008");
+                return;
+            }
+            if (initC.PO008PathLog.Equals(""))
+            {
+                MessageBox.Show("Path PO008PathLog empty", "createFolderPO008");
                 return;
             }
             createFolder(initC.PO008PathArchive);
             createFolder(initC.PO008PathError);
             createFolder(initC.PO008PathInitial);
             createFolder(initC.PO008PathProcess);
+            createFolder(initC.PO008PathLog);
         }
         public void createFolderPO007()
         {
             if (initC.PO007PathInitial.Equals(""))
             {
                 MessageBox.Show("Path PO007PathInitial empty", "createFolderPO007");
+                return;
+            }
+            if (initC.PO007PathLog.Equals(""))
+            {
+                MessageBox.Show("Path PO007PathLog empty", "createFolderPO007");
                 return;
             }
             createFolder(initC.PO007PathInitial);
@@ -225,7 +260,13 @@ namespace XCustPr
                 MessageBox.Show("Path PO006PathInitial empty", "createFolderPO006");
                 return;
             }
+            if (initC.PO006PathLog.Equals(""))
+            {
+                MessageBox.Show("Path PO006Pathlog empty", "createFolderPO006");
+                return;
+            }
             createFolder(initC.PO006PathInitial);
+            createFolder(initC.PO006PathLog);
         }
         public void createFolderPO002()
         {
@@ -239,8 +280,14 @@ namespace XCustPr
                 MessageBox.Show("Path PO002PathDestinaion empty", "createFolderPO002");
                 return;
             }
+            if (initC.PO002PathLog.Equals(""))
+            {
+                MessageBox.Show("Path PO002PathLog empty", "createFolderPO002");
+                return;
+            }
             createFolder(initC.PO002PathInitial);
             createFolder(initC.PO002PathDestinaion);
+            createFolder(initC.PO002PathLog);
         }
         public void createFolderAP001()
         {
@@ -264,10 +311,16 @@ namespace XCustPr
                 MessageBox.Show("Path AP001PathArchive empty", "createFolderAP001");
                 return;
             }
+            if (initC.AP001PathLog.Equals(""))
+            {
+                MessageBox.Show("Path AP001PathLog empty", "createFolderAP001");
+                return;
+            }
             createFolder(initC.AP001PathInitial);
             createFolder(initC.AP001PathProcess);
             createFolder(initC.AP001PathError);
             createFolder(initC.AP001PathArchive);
+            createFolder(initC.AP001PathLog);
         }
         public void createFolderAP004()
         {
@@ -296,11 +349,17 @@ namespace XCustPr
                 MessageBox.Show("Path AP004ImportSource empty", "createFolderAP004");
                 return;
             }
+            if (initC.AP004PathLog.Equals(""))
+            {
+                MessageBox.Show("Path AP004pathLog empty", "createFolderAP004");
+                return;
+            }
             createFolder(initC.AP004PathInitial);
             createFolder(initC.AP004PathProcess);
             createFolder(initC.AP004PathError);
             createFolder(initC.AP004PathArchive);
             createFolder(initC.AP004ImportSource);
+            createFolder(initC.AP004PathLog);
         }
         public void createFolderPO001PathProcess()
         {
@@ -400,6 +459,14 @@ namespace XCustPr
             initC.EmailPassword = iniFile.Read("EmailPassword");
             initC.EmailSMTPSecure = iniFile.Read("EmailSMTPSecure");
             initC.PathLinfox = iniFile.Read("PathLinfox");
+            initC.PathLog = iniFile.Read("PathLog");
+            initC.PO002PathLog = iniFile.Read("PO002PathLog");
+            initC.PO003PathLog = iniFile.Read("PO003PathLog");
+            initC.PO004PathLog = iniFile.Read("PO004PathLog");
+            initC.PO005PathLog = iniFile.Read("PO005PathLog");
+            initC.PO006PathLog = iniFile.Read("PO006PathLog");
+            initC.PO007PathLog = iniFile.Read("PO007PathLog");
+            initC.PO008PathLog = iniFile.Read("PO008PathLog");
 
             initC.EmailHost = iniFile.Read("EmailHost");        // orc backoffice
             initC.EmailSender = iniFile.Read("EmailSender");
@@ -773,14 +840,33 @@ namespace XCustPr
             }
             return chk;
         }
-        public void logProcess(String programname, List<ValidatePrPo> lVPr, String startdatetime, List<ValidateFileName> listfile)
+        public String getPathLogProcess(String programname)
         {
-            String line1 = "", parameter = "", programstart = "", filename = "", recordError = "", txt = "";
-            int cntErr = 0, err = 0;
+            String path = "";
             if (programname.ToLower().Equals("xcustpo001"))
             {
-                line1 = "Program : XCUST Interface PR<Linfox>To PO(ERP)" + Environment.NewLine;
+                path = initC.PathLog;
             }
+            else if (programname.ToLower().Equals("xcustpo002"))
+            {
+
+            }
+            else if (programname.ToLower().Equals("xcustpo003"))
+            {
+
+            }
+            else if (programname.ToLower().Equals("xcustpo004"))
+            {
+
+            }
+            return path;
+        }
+        public void logProcess(String programname, List<ValidatePrPo> lVPr, String startdatetime, List<ValidateFileName> listfile)
+        {
+            String line1 = "", parameter = "", programstart = "", filename = "", recordError = "", txt = "", path="";
+            int cntErr = 0, err = 0;
+            line1 = "Program : XCUST Interface PR<Linfox>To PO(ERP)" + Environment.NewLine;
+            path = getPathLogProcess(programname);
             parameter = "Parameter : " + Environment.NewLine;
             parameter += "           Path Initial :" + initC.PathInitial + Environment.NewLine;
             parameter += "           Path Process :" + initC.PathProcess + Environment.NewLine;
@@ -810,7 +896,8 @@ namespace XCustPr
                     recordError += "     ====>Error" + vPr.Message + Environment.NewLine;
                 }
             }
-            using (var stream = File.CreateText(Environment.CurrentDirectory + "\\" + programname + "_" + startdatetime.Replace("-", "_").Replace(":", "_") + ".log"))
+            //using (var stream = File.CreateText(Environment.CurrentDirectory + "\\" + programname + "_" + startdatetime.Replace("-", "_").Replace(":", "_") + ".log"))
+            using (var stream = File.CreateText(path + programname + "_" + startdatetime.Replace("-", "_").Replace(":", "_") + ".log"))
             {
                 txt = line1;
                 txt += parameter;
@@ -827,6 +914,7 @@ namespace XCustPr
                 stream.WriteLine(txt);
             }
         }
+        
         public void callWebService(String flag)
         {
             String uri = "", dump = "";

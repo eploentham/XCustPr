@@ -86,6 +86,15 @@ namespace XCustPr
             xCPO.ACC_SEGMENT5 = "ACC_SEGMENT5";
             xCPO.ACC_SEGMENT6 = "ACC_SEGMENT6";
 
+            xCPO.ATTRIBUTE1_L = "ATTRIBUTE1_L";
+            xCPO.ATTRIBUTE2_L = "ATTRIBUTE2_L";
+            xCPO.ATTRIBUTE3_L = "ATTRIBUTE3_L";
+            xCPO.ATTRIBUTE_CATEGORY_L = "ATTRIBUTE_CATEGORY_L";
+
+            xCPO.COUNT_AP_INVOICE = "COUNT_AP_INVOICE";
+            xCPO.PRODUCT_TYPE = "PRODUCT_TYPE";
+            xCPO.ASSESSABLE_VALUE = "ASSESSABLE_VALUE";
+
             xCPO.table = "xcust_PO_TBL";
 
         }

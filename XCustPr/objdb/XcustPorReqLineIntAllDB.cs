@@ -178,6 +178,13 @@ namespace XCustPr
             }
             return chk;
         }
+        public DataTable selectReqLineNumber(String reqH, String lineNumber)
+        {
+            DataTable dt = new DataTable();
+            String sql = "select * From " + xCPRLIA.table + " Where " + xCPRLIA.ATTRIBUTE2 + "='" + lineNumber + "' and "+xCPRLIA.REQ_HEADER_INTERFACE_ID+"='"+reqH+"' s";
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
+        }
         public String insert(XcustPorReqLineIntAll p)
         {
             String sql = "", chk = "";
@@ -190,8 +197,8 @@ namespace XCustPr
                 //p.RowNumber = selectMaxRowNumber(p.YearId);
                 //p.Active = "1";
                 String seqL = genSeqReqLineNumber();
-                String seqH = selectReqHeaderNumber(p.REQ_HEADER_INTERFACE_ID);
-                p.REQ_HEADER_INTERFACE_ID = seqH;
+                //String seqH = selectReqHeaderNumber(p.REQ_HEADER_INTERFACE_ID);
+                //sp.REQ_HEADER_INTERFACE_ID = seqH;
                 p.REQ_LINE_INTERFACE_ID = seqL;
                 p.ATTRIBUTE_NUMBER1 = p.ATTRIBUTE_NUMBER1.Equals("") ? "null" : p.ATTRIBUTE_NUMBER1;
                 p.ATTRIBUTE_NUMBER2 = p.ATTRIBUTE_NUMBER2.Equals("") ? "null" : p.ATTRIBUTE_NUMBER2;

@@ -276,6 +276,10 @@ namespace XCustPr
                     p.LAST_UPDATE_BY + "','" + p.request_id +
                     "') ";
                 chk = conn.ExecuteNonQuery(sql, "kfc_po");
+                if (chk.Equals("1"))
+                {
+                    chk = seqH;
+                }
                 //chk = p.RowNumber;
                 //chk = p.Code;
             }
