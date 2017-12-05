@@ -249,7 +249,7 @@ namespace XCustPr
         {
             //throw new NotImplementedException();
             // move file
-            cRDPO.processCallWebService(lv1, this, pB1);
+            cRDPO.processCallWebService(lv1, this, pB1, requestId);
             //FtpWebRequest request;
             //cRDPO.validateOrderDateMinCurrDate("");
 

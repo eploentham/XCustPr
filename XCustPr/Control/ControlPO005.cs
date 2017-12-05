@@ -462,7 +462,7 @@ namespace XCustPr
                     foreach (XcustPorReqDistIntAll xcprdia in listXcustPRDIA)
                     {
                         //XcustPorReqLineIntAll xcprlia = xCPRLIADB.setData(row, xCLFPTDB.xCLFPT);
-                        String chk = xCPRDIADB.insert(xcprdia);
+                        String chk = xCPRDIADB.insert(xcprdia, Cm.initC.PO005PathLog);
                     }
                 }
             }

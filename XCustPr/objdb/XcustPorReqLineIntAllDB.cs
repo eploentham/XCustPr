@@ -185,6 +185,24 @@ namespace XCustPr
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
+        public String updateDocumentId(String documentId, String requestId, String pathLog)
+        {
+            String chk = "", sql = "";
+
+            try
+            {
+                sql = "Update " + xCPRLIA.table + " Set " +
+                    //"document_id ='" + documentId + "' " +
+                    " " + xCPRLIA.PROCESS_FLAG + "='Y' " +
+                    "Where " + xCPRLIA.request_id + "='" + requestId + "'";
+                chk = conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
+            }
+            catch (Exception ex)
+            {
+                //MessageBox.Show("Error " + ex.ToString(), "insert Doctor");
+            }
+            return chk;
+        }
         public String insert(XcustPorReqLineIntAll p, String pathLog)
         {
             String sql = "", chk = "";

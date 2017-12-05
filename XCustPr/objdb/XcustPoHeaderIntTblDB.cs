@@ -101,5 +101,21 @@ namespace XCustPr
 
             return chk;
         }
+        public String updateDocumentId(String documentId, String requestId)
+        {
+            String chk = "", sql="";
+
+            try
+            {
+                sql = "Update "+xCPHIT.table+" Set " +
+                    "document_id ='"+ documentId+"' " +
+                    "Where "+xCPHIT;
+            }
+            catch (Exception ex)
+            {
+                //MessageBox.Show("Error " + ex.ToString(), "insert Doctor");
+            }
+            return chk;
+        }
     }
 }

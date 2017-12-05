@@ -144,6 +144,24 @@ namespace XCustPr
             }
             return chk;
         }
+        public String updateDocumentId(String documentId, String requestId, String pathLog)
+        {
+            String chk = "", sql = "";
+
+            try
+            {
+                sql = "Update " + xCPRHIA.table + " Set " +
+                    "document_id ='" + documentId + "' " +
+                    ","+xCPRHIA.PROCESS_FLAG+"='Y' "+
+                    "Where " + xCPRHIA.request_id+"='"+requestId+"'";
+                chk = conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
+            }
+            catch (Exception ex)
+            {
+                //MessageBox.Show("Error " + ex.ToString(), "insert Doctor");
+            }
+            return chk;
+        }
         public String insert(XcustPorReqHeaderIntAll p, String pathLog)
         {
             String sql = "", chk = "";

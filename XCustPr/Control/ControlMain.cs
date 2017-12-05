@@ -915,7 +915,7 @@ namespace XCustPr
             }
             else if (programname.ToLower().Equals("xcustpo002"))
             {
-
+                path = initC.PO002PathLog;
             }
             else if (programname.ToLower().Equals("xcustpo003"))
             {

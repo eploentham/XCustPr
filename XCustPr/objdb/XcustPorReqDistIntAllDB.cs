@@ -158,7 +158,25 @@ namespace XCustPr
             }
             return chk;
         }
-        public String insert(XcustPorReqDistIntAll p)
+        public String updateDocumentId(String documentId, String requestId, String pathLog)
+        {
+            String chk = "", sql = "";
+
+            try
+            {
+                sql = "Update " + xCPRDIA.table + " Set " +
+                    //"document_id ='" + documentId + "' " +
+                    " " + xCPRDIA.PROCESS_FLAG + "='Y' " +
+                    "Where " + xCPRDIA.request_id + "='" + requestId + "'";
+                chk = conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
+            }
+            catch (Exception ex)
+            {
+                //MessageBox.Show("Error " + ex.ToString(), "insert Doctor");
+            }
+            return chk;
+        }
+        public String insert(XcustPorReqDistIntAll p, String pathLog)
         {
             String sql = "", chk = "";
             try
@@ -238,7 +256,7 @@ namespace XCustPr
                     p.DISTRIBUTION_CURRENCY_AMT + "','" + p.LAST_UPDATE_DATE + "','" +
                     p.CREATION_DATE + "','" + p.CREATE_BY + "','" + p.LAST_UPDATE_BY + "','" + p.request_id + "'," + p.price + "" +
                     ") ";
-                chk = conn.ExecuteNonQueryAutoIncrement(sql, "kfc_po");
+                chk = conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
                 //chk = p.RowNumber;
                 //chk = p.Code;
             }
