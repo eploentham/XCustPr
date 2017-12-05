@@ -103,8 +103,8 @@ namespace XCustPr
         }
         public void processWebService(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
         {
-            cPRPOWS.setXcustPRTbl(lv1, form1, pB1);
-            cPRPOWS.setXcustPOTbl(lv1, form1, pB1);
+            cPRPOWS.setXcustPRTbl(lv1, form1, pB1, Cm.initC.PO002PathLog);
+            cPRPOWS.setXcustPOTbl(lv1, form1, pB1, Cm.initC.PO002PathLog);
         }
         public void processMapping(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
         {
@@ -166,7 +166,7 @@ namespace XCustPr
                     dt = xCLPTDB.selectPO002GenTextLinfox(erpPONumber);
                     writeTextLinfox(erpPONumber,dt);
                     // f.	Update po_trb ว่า gen_outbound_flag เรียบร้อย 
-                    xCPOTDB.updateOutBoundFlag(dt.Rows[0][xCLPTDB.xCLFPT.PO_NUMBER].ToString(), dt.Rows[0][xCLPTDB.xCLFPT.LINE_NUMBER].ToString());
+                    xCPOTDB.updateOutBoundFlag(dt.Rows[0][xCLPTDB.xCLFPT.PO_NUMBER].ToString(), dt.Rows[0][xCLPTDB.xCLFPT.LINE_NUMBER].ToString(), Cm.initC.PO002PathLog);
                     //d.Program update ข้อมูล XCUST_LINFOX_PR_TBL.GEN_OUTBOUND_FLAG = 'Y'
                     xCLPTDB.updateOutBoundFlag(dt.Rows[0][xCLPTDB.xCLFPT.PO_NUMBER].ToString(), dt.Rows[0][xCLPTDB.xCLFPT.LINE_NUMBER].ToString());     
                 }

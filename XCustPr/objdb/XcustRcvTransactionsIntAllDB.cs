@@ -112,7 +112,7 @@ namespace XCustPr
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
-        public String insert(XcustRcvTransactionsIntAll p)
+        public String insert(XcustRcvTransactionsIntAll p, String pathLog)
         {
             String sql = "", chk = "";
             try
@@ -181,7 +181,7 @@ namespace XCustPr
                     p.LAST_UPDATE_DATE + "',getdate(),'" + p.IMPORT_SOURCE + "','" +
                     p.LAST_UPDATE_BY + "','" + p.ATTRIBUTE1 +
                     "')";
-                chk = conn.ExecuteNonQuery(sql, "kfc_po");
+                chk = conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
             }
             catch (Exception ex)
             {

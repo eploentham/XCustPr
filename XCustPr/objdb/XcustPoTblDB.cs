@@ -111,12 +111,12 @@ namespace XCustPr
             }
             return chk;
         }
-        public void deletexCPR(String po_header_id, String po_line_id)
+        public void deletexCPR(String po_header_id, String po_line_id, String pathLog)
         {
             String sql = "Delete From " + xCPO.table + " Where " + xCPO.PO_HEADER_ID + "='" + po_header_id + "' and " + xCPO.PO_LINE_ID + "='" + po_line_id + "'";
-            conn.ExecuteNonQuery(sql, "kfc_po");
+            conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
         }
-        public String updateOutBoundFlag(String linfox_po_number, String linfox_po_line_number)
+        public String updateOutBoundFlag(String linfox_po_number, String linfox_po_line_number, String pathLog)
         {
             String sql = "", chk = "";
             sql = "Update " + xCPO.table + " " +
@@ -126,20 +126,20 @@ namespace XCustPr
                 "Left Join xcust_po_tbl po On  po.REQUISITION_HEADER_ID = PR.REQUISITION_HEADER_ID and po.REQUISITION_LINE_ID = PR.REQUISITION_LINE_ID " +
                 "Where PR.ATTRIBUTE1_L = '" + linfox_po_number + "' " +
                 "and PR.ATTRIBUTE2_L = '" + linfox_po_line_number + "') " ;
-
+            conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
             return chk;
         }
-        public String insertxCPR(XcustPoTbl p)
+        public String insertxCPR(XcustPoTbl p, String pathLog)
         {
             String sql = "", chk = "";
             if (selectDupPk(p.PO_HEADER_ID, p.PO_LINE_ID))
             {
-                deletexCPR(p.PO_HEADER_ID, p.PO_LINE_ID);
+                deletexCPR(p.PO_HEADER_ID, p.PO_LINE_ID, pathLog);
             }
-            chk = insert(p);
+            chk = insert(p, pathLog);
             return chk;
         }
-        public String insert(XcustPoTbl p)
+        public String insert(XcustPoTbl p, String pathLog)
         {
             String sql = "", chk = "";
             try
@@ -198,7 +198,7 @@ namespace XCustPr
                     p.ACC_SEGMENT5 + "','" + p.ACC_SEGMENT6 + "'" +
 
                     ") ";
-                chk = conn.ExecuteNonQuery(sql, "kfc_po");
+                chk = conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
                 //chk = p.RowNumber;
                 //chk = p.Code;
             }

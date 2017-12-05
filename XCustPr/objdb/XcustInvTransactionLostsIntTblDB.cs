@@ -97,7 +97,7 @@ namespace XCustPr
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
-        public String insert(XcustInvTransactionLostsIntTbl p)
+        public String insert(XcustInvTransactionLostsIntTbl p, String pathLog)
         {
             String sql = "", chk = "";
             try
@@ -159,7 +159,7 @@ namespace XCustPr
                     p.ATTRIBUTE_TIMESTAMP8 + "','" + p.ATTRIBUTE_TIMESTAMP9 + "','" + p.ATTRIBUTE_TIMESTAMP10 + "','" +
                     p.LAST_UPDATE_DATE + "','" + p.CREATION_DATE + "','" + p.IMPORT_SOURCE + "','" +
                     p.LAST_UPDATE_BY +"')";
-                chk = conn.ExecuteNonQuery(sql, "kfc_po");
+                chk = conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
             }
             catch (Exception ex)
             {

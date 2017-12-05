@@ -196,7 +196,7 @@ namespace XCustPr
 
             cPo003.processGetTempTableToValidate(lv1, this, pB1);
 
-            cPo003.processInsertTable(lv1, this, pB1);
+            cPo003.processInsertTable(lv1, this, pB1, Cm.initC.PO003PathLog);
         }
         private void btnPrepare_Click(object sender, EventArgs e)
         {

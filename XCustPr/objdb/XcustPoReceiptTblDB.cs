@@ -172,22 +172,22 @@ namespace XCustPr
             }
             return chk;
         }
-        public void deletexCPoR(String po_header_id, String po_line_id)
+        public void deletexCPoR(String po_header_id, String po_line_id, String pathLog)
         {
             String sql = "Delete From " + xCPoR.table + " Where " + xCPoR.PO_HEADER_ID + "='" + po_header_id + "' and " + xCPoR.PO_LINE_ID + "='" + po_line_id + "'";
-            conn.ExecuteNonQuery(sql, "kfc_po");
+            conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
         }
-        public String insertxCPoR(XcustPoReceiptTbl p)
+        public String insertxCPoR(XcustPoReceiptTbl p, String pathLog)
         {
             String sql = "", chk = "";
             if (selectDupPk(p.PO_HEADER_ID, p.PO_LINE_ID))
             {
-                deletexCPoR(p.PO_HEADER_ID, p.PO_LINE_ID);
+                deletexCPoR(p.PO_HEADER_ID, p.PO_LINE_ID, pathLog);
             }
-            chk = insert(p);
+            chk = insert(p, pathLog);
             return chk;
         }
-        public String insert(XcustPoReceiptTbl p)
+        public String insert(XcustPoReceiptTbl p, String pathLog)
         {
             String sql = "", chk = "";
             try
@@ -286,7 +286,7 @@ namespace XCustPr
                     p.LOT_NUMBER + "'" +
 
                     ") ";
-                chk = conn.ExecuteNonQuery(sql, "kfc_po");
+                chk = conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
                 //chk = p.RowNumber;
                 //chk = p.Code;
             }

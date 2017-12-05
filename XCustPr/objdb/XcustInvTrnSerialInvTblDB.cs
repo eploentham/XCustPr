@@ -31,7 +31,7 @@ namespace XCustPr
 
             xCITSIT.table = "XCUST_INV_TRN_SERIAL_INT_TBL";
         }
-        public String insert(XcustInvTrnSerialInvTbl p)
+        public String insert(XcustInvTrnSerialInvTbl p, String pathLog)
         {
             String sql = "", chk = "";
             String createBy = "0", createDate = "GETDATE()", last_update_by = "0", lastUpdateTime = "null";
@@ -49,7 +49,7 @@ namespace XCustPr
                     lastUpdateTime + ",'" + p.PROCESS_FLAG + "','" + p.TO_SERIAL_NUMBER + "','" +                    
 
                     ")";
-                chk = conn.ExecuteNonQuery(sql, "kfc_po");
+                chk = conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
             }
             catch (Exception ex)
             {

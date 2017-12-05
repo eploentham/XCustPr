@@ -86,10 +86,10 @@ namespace XCustPr
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
-        public void DeleteMmxTemp()
+        public void DeleteMmxTemp(String pathLog)
         {
             String sql = "Delete From " + xCLPRIT.table;
-            conn.ExecuteNonQuery(sql, "kfc_po");
+            conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
         }
         public String dateYearShortToDB(String date)
         {
@@ -103,7 +103,7 @@ namespace XCustPr
 
             return chk;
         }
-        public void insertBluk(List<String> rcv, String filename, String host, MaterialProgressBar pB1)
+        public void insertBluk(List<String> rcv, String filename, String host, MaterialProgressBar pB1, String pathLog)
         {
             int i = 0;
             TimeZoneInfo tz = TimeZoneInfo.FindSystemTimeZoneById("US Eastern Standard Time");
@@ -172,7 +172,7 @@ namespace XCustPr
                         .Append("','").Append(supplier_code/*.PO_STATUS*/).Append("','").Append(SUPPLIER_SITE_CODE).Append("','").Append(uom_code)
                         .Append("','").Append(uom_code1/*SUPPLIER_CODE*/).Append("','").Append(uom_code2).Append("','").Append(validate_flag)
                         .Append("','").Append(vendor_remark).Append("') ");
-                    conn.ExecuteNonQuery(sql.ToString(), host);
+                    conn.ExecuteNonQuery(sql.ToString(), host, pathLog);
                 }
             }
         }

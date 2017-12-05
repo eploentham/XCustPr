@@ -47,7 +47,6 @@ namespace XCustPr
         {
             cVS = new ControlValueSet(Cm);
             
-
             initCompoment();
             pB1.Visible = false;
             lvwColumnSorter = new ListViewColumnSorter();
@@ -106,8 +105,7 @@ namespace XCustPr
             txtFileName.Hint = lb1.Text;
             txtFileName.Enter += txtFileName_Enter;
             txtFileName.Leave += txtFileName_Leave;
-
-
+            
             btnRead = new MaterialFlatButton();
             btnRead.Font = cVS.fV1;
             btnRead.Text = "Web Service";
@@ -115,8 +113,6 @@ namespace XCustPr
             Controls.Add(btnRead);
             btnRead.Location = new System.Drawing.Point(grd1, line1);
             btnRead.Click += btnRead_Click;
-
-            
 
             pB1 = new MaterialProgressBar();
             Controls.Add(pB1);

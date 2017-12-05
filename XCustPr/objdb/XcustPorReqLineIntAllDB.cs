@@ -185,7 +185,7 @@ namespace XCustPr
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
-        public String insert(XcustPorReqLineIntAll p)
+        public String insert(XcustPorReqLineIntAll p, String pathLog)
         {
             String sql = "", chk = "";
             try
@@ -271,7 +271,7 @@ namespace XCustPr
                     p.LAST_UPDATE_DATE + "',getdate(),'" + p.CREATE_BY + "','" +
                     p.LAST_UPDATE_BY + "','" + p.LINE_TYPE + "','" + p.AGREEMENT_NUMBER + "','" +
                     p.UOM_CODE + "','" + p.request_id +"','"+ p.AGREEMENT_LINE_NUMBER + "','" + p.ATTRIBUTE_CATEGORY + "'," + p.Price + ",'" + p.delivery_date + "') ";
-                chk = conn.ExecuteNonQuery(sql, "kfc_po");
+                chk = conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
                 if (chk.Equals("1"))
                 {
                     chk = seqL;

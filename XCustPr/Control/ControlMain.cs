@@ -367,6 +367,42 @@ namespace XCustPr
             createFolder(initC.AP004ImportSource);
             createFolder(initC.AP004PathLog);
         }
+        public void createFolderValueSet()
+        {
+            if (initC.ValueSetPathLog.Equals(""))
+            {
+                MessageBox.Show("Path ValueSetPathLog empty", "createFolderValueSet");
+                return;
+            }
+            createFolder(initC.ValueSetPathLog);
+        }
+        public void createFolderPoRWebService()
+        {
+            if (initC.PoRWebServicePathLog.Equals(""))
+            {
+                MessageBox.Show("Path PoRWebServicePathLog empty", "createFolderPoRWebServicePathLog");
+                return;
+            }
+            createFolder(initC.PoRWebServicePathLog);
+        }
+        public void createFolderPOWebService()
+        {
+            if (initC.POWebServicePathLog.Equals(""))
+            {
+                MessageBox.Show("Path POWebServicePathLog empty", "createFolderPOWebServicePathLog");
+                return;
+            }
+            createFolder(initC.PoRWebServicePathLog);
+        }
+        public void createFolderPRWebService()
+        {
+            if (initC.PRWebServicePathLog.Equals(""))
+            {
+                MessageBox.Show("Path PRWebServicePathLog empty", "createFolderPRWebServicePathLog");
+                return;
+            }
+            createFolder(initC.PoRWebServicePathLog);
+        }
         public void createFolderPO001PathProcess()
         {
             bool folderExists = Directory.Exists(initC.PathProcess);
@@ -422,6 +458,26 @@ namespace XCustPr
         {
             System.IO.File.Move(@sourceFile, @destinationFile);
         }
+        public void moveFile(String sourceFile, String path, String destinationFile)
+        {
+            String date = System.DateTime.Now.ToString("yyyy_MM_dd");
+            String time = System.DateTime.Now.ToString("HH_mm_ss");
+            String filename1 = destinationFile;
+            
+            if (File.Exists(path + destinationFile))
+            {
+                String[] filename11 = destinationFile.Split('.');
+                if (filename11.Length >= 2)
+                {
+                    filename1 = filename11[0] + "_new_" + date + "_" + time + "." + filename11[1];
+                }
+                else
+                {
+                    filename1 += "_new";
+                }
+            }
+            System.IO.File.Move(@sourceFile, path+ filename1);
+        }
         public void deleteFile(String sourceFile)
         {
             if (System.IO.File.Exists(sourceFile))
@@ -473,6 +529,10 @@ namespace XCustPr
             initC.PO006PathLog = iniFile.Read("PO006PathLog");
             initC.PO007PathLog = iniFile.Read("PO007PathLog");
             initC.PO008PathLog = iniFile.Read("PO008PathLog");
+            initC.ValueSetPathLog = iniFile.Read("ValueSetPathLog");
+            initC.PoRWebServicePathLog = iniFile.Read("PoRWebServicePathLog");
+            initC.PRWebServicePathLog = iniFile.Read("PRWebServicePathLog");
+            initC.POWebServicePathLog = iniFile.Read("POWebServicePathLog");
 
             initC.EmailHost = iniFile.Read("EmailHost");        // orc backoffice
             initC.EmailSender = iniFile.Read("EmailSender");

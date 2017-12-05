@@ -239,20 +239,22 @@ namespace XCustPr
         public void deletexCPR(String requisition_header_id, String requisition_line_id)
         {
             String sql = "Delete From "+xCPR.table+ " Where " + xCPR.REQUISITION_HEADER_ID + "='" + requisition_header_id + "' and " + xCPR.REQUISITION_LINE_ID + "='" + requisition_line_id + "'";
-            conn.ExecuteNonQuery(sql, "kfc_po");
+            conn.ExecuteNonQuery(sql, "kfc_po", initC.PO002PathLog);
         }
-        public String insertxCPR(XcustPrTbl p)
+        public String insertxCPR(XcustPrTbl p, String pathLog)
         {
             String sql = "", chk="";
             if (selectDupPk(p.REQUISITION_HEADER_ID, p.REQUISITION_LINE_ID))
             {
                 deletexCPR(p.REQUISITION_HEADER_ID, p.REQUISITION_LINE_ID);
             }
-            chk = insert(p);
+            chk = insert(p, pathLog);
             return chk;
         }
-        private String insert(XcustPrTbl p)
+        private String insert(XcustPrTbl p, String pathLog)
         {
+            String date = System.DateTime.Now.ToString("yyyy-MM-dd");
+            String time = System.DateTime.Now.ToString("HH:mm:ss");
             String sql = "", chk = "";
             try
             {
@@ -310,15 +312,35 @@ namespace XCustPr
                     p.UOM_CODE + "','" + p.VENDOR_ID + "','" + p.VENDOR_SITE_ID + "'" +                    
 
                     ") ";
-                chk = conn.ExecuteNonQuery(sql, "kfc_po");
+                chk = conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
+                
                 //chk = p.RowNumber;
                 //chk = p.Code;
             }
             catch (Exception ex)
             {
+                chk = ex.Message;
                 //MessageBox.Show("Error " + ex.ToString(), "insert Doctor");
-            }
+                //String date1 = System.DateTime.Now.ToString("yyyy-MM-dd");
+                //String time1 = System.DateTime.Now.ToString("HH_mm_ss");
+                //String dateStart = date + " " + time;       //gen log
 
+                //List<ValidatePrPo> lVPr = new List<ValidatePrPo>();   // gen log
+                //List<ValidateFileName> lVfile = new List<ValidateFileName>();   // gen log
+                //ValidatePrPo vPP = new ValidatePrPo();   // gen log
+                //vPP = new ValidatePrPo();
+                //vPP.Filename = "Table XCUST_PR_TBL";
+                //vPP.Message = "Error PO002 Structure text file error "+ ex.Message;
+                //vPP.Validate = "";
+                //lVPr.Add(vPP);
+
+                //ValidateFileName vF = new ValidateFileName();   // gen log
+                //vF.recordError = "1";   // gen log
+                //vF.totalError = "1";   // gen log
+                //lVfile.Add(vF);   // gen log
+                //Cm.logProcess("xcustpo002", lVPr, dateStart, lVfile);   // gen log
+            }
+            
             return chk;
         }
     }

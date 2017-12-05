@@ -121,7 +121,7 @@ namespace XCustPr
                 Cm.moveFile(aa, Cm.initC.PO005PathProcess + aa.Replace(Cm.initC.PO005PathInitial, ""));
             }
             addListView("Clear temp table", "", lv1, form1);
-            xCMPITDB.DeleteMmxTemp();//  clear temp table
+            xCMPITDB.DeleteMmxTemp(Cm.initC.PO005PathLog);//  clear temp table
             //c.	จากนัน Program ทำการอ่าน File ใน Folder Path Process มาไว้ยัง Table XCUST_MMX_PR_TBL ด้วย Validate Flag = ‘N’ ,PROCES_FLAG = ‘N’
             // insert xcust_mmx_pr_int_tbl
             filePOProcess = Cm.getFileinFolder(Cm.initC.PO005PathProcess);
@@ -132,7 +132,7 @@ namespace XCustPr
                 addListView("insert temp table " + aa, "", lv1, form1);
                 //conn.BulkToMySQL("kfc_po", linfox);       // ย้ายจาก MySQL ไป MSSQL
                 pB1.Visible = true;
-                xCMPITDB.insertBluk(mmx, aa, "kfc_po", pB1);
+                xCMPITDB.insertBluk(mmx, aa, "kfc_po", pB1, Cm.initC.PO005PathLog);
                 pB1.Visible = false;
             }
         }
@@ -415,7 +415,7 @@ namespace XCustPr
                         vPP.Message = "Error PO005-" + blanketAgreement.Replace("flase", "");
                         vPP.Validate = "row " + row1 + " store_code=" + row[xCMPITDB.xCMPIT.store_code].ToString().Trim() + " CHARGE_ACCOUNT_SEGMENT6 ";
                         lVPr.Add(vPP);
-                        xCMPITDB.updateValidateFlag(row[xCMPITDB.xCMPIT.po_number].ToString().Trim(), row[xCMPITDB.xCMPIT.AGREEMENT_LINE_NUMBER].ToString().Trim(), "E", "", "kfc_po");
+                        xCMPITDB.updateValidateFlag(row[xCMPITDB.xCMPIT.po_number].ToString().Trim(), row[xCMPITDB.xCMPIT.AGREEMENT_LINE_NUMBER].ToString().Trim(), "E", "", "kfc_po", Cm.initC.PO005PathLog);
                         cntErr++;       // gen log
                     }
                     else
@@ -427,7 +427,7 @@ namespace XCustPr
                         row.EndEdit();
                         addXcustPRLIAFromxCLFPT(row);
                         addXcustPRDIAFromxCLFPT(row);
-                        xCMPITDB.updateValidateFlag(row[xCMPITDB.xCMPIT.po_number].ToString().Trim(), row[xCMPITDB.xCMPIT.AGREEMENT_LINE_NUMBER].ToString().Trim(), "Y", blanketAgreement, "kfc_po");
+                        xCMPITDB.updateValidateFlag(row[xCMPITDB.xCMPIT.po_number].ToString().Trim(), row[xCMPITDB.xCMPIT.AGREEMENT_LINE_NUMBER].ToString().Trim(), "Y", blanketAgreement, "kfc_po", Cm.initC.PO005PathLog);
                     }
                     if (cntErr > 0)
                     {
@@ -457,7 +457,7 @@ namespace XCustPr
                     foreach (XcustPorReqLineIntAll xcprlia in listXcustPRLIA)
                     {
                         //XcustPorReqLineIntAll xcprlia = xCPRLIADB.setData(row, xCLFPTDB.xCLFPT);
-                        String chk = xCPRLIADB.insert(xcprlia);
+                        String chk = xCPRLIADB.insert(xcprlia, Cm.initC.PO005PathLog);
                     }
                     foreach (XcustPorReqDistIntAll xcprdia in listXcustPRDIA)
                     {
@@ -489,7 +489,7 @@ namespace XCustPr
             xCPRHIA.ATTRIBUTE1 = xcprhia.ATTRIBUTE1;
             xCPRHIA.REQ_BU_NAME = xcprhia.REQ_BU_NAME;
             xCPRHIA.STATUS_CODE = xcprhia.STATUS_CODE;
-            chk = xCPRHIADB.insert(xCPRHIA);
+            chk = xCPRHIADB.insert(xCPRHIA, Cm.initC.PO005PathLog);
             return chk;
         }
         /*

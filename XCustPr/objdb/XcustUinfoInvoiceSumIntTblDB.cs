@@ -34,10 +34,10 @@ namespace XCustPr
 
             xCUiISIT.table = "XCUST_UINFO_INVOICE_SUM_INT_TBL";
         }
-        public void DeleteTemp()
+        public void DeleteTemp(string pathLog)
         {
             String sql = "Delete From " + xCUiISIT.table;
-            conn.ExecuteNonQuery(sql, "kfc_po");
+            conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
         }
         public DataTable selectAll()
         {
@@ -46,7 +46,7 @@ namespace XCustPr
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
-        public void insertBluk(List<String> uinfo, DataTable dtFixLen, String filename, String host, MaterialProgressBar pB1)
+        public void insertBluk(List<String> uinfo, DataTable dtFixLen, String filename, String host, MaterialProgressBar pB1, String pathLog)
         {
             foreach (String aa in uinfo)
             {
@@ -67,10 +67,10 @@ namespace XCustPr
                 item.GL_DATE = item.dateShowToDB(item.GL_DATE);
                 item.TAX_AMOUNT = item.TAX_AMOUNT.Replace(",","").Replace(".00", "");
                 item.BASE_AMOUNT = item.TAX_AMOUNT.Replace(",", "").Replace(".00", "");
-                insert(item);
+                insert(item, pathLog);
             }
         }
-        public String insert(XcustUinfoInvoiceSumIntTbl p)
+        public String insert(XcustUinfoInvoiceSumIntTbl p, String pathLog)
         {
             String sql = "", chk = "";
             try
@@ -94,7 +94,7 @@ namespace XCustPr
                     p.VALIDATE_FLAG + "' " + 
                     
                     ") ";
-                chk = conn.ExecuteNonQuery(sql, "kfc_po");
+                chk = conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
                 //chk = p.RowNumber;                                                                                                                   
                 //chk = p.Code;
             }

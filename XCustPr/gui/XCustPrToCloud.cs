@@ -219,7 +219,8 @@ namespace XCustPr
             cRDPO.processGetTempTableToValidate(lv1, this, pB1, requestId);
             
             //cRDPO.processInsertTable(lv1, this, pB1);
-            cRDPO.processInsertTable1(requestId, lv1, this, pB1);
+            //cRDPO.processInsertTable1(requestId, lv1, this, pB1);
+            cRDPO.processInsertTable2(requestId, lv1, this, pB1);
         }
         private void btnPrepare_Click(object sender, EventArgs e)
         {

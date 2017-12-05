@@ -43,7 +43,8 @@ namespace XCustPr
         {
             conn = new ConnectDB("kfc_po", Cm.initC);        //standard
             vPrPo = new ValidatePrPo();
-
+            Cm.createFolderPOWebService();
+            Cm.createFolderPRWebService();
             xCPRDB = new XcustPrTblDB(conn, Cm.initC);
             xCPODB = new XcustPoTblDB(conn, Cm.initC);
 
@@ -52,7 +53,7 @@ namespace XCustPr
             fV1B = new Font(fontName, fontSize9, FontStyle.Bold);        //standard
             fV1 = new Font(fontName, fontSize8, FontStyle.Regular);        //standard
         }
-        public void setXcustPRTbl(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
+        public void setXcustPRTbl(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String pathLog)
         {
             String uri = "", dump = "";
             //HttpWebRequest request = CreateWebRequest();
@@ -190,11 +191,15 @@ namespace XCustPr
             //var nodesTable = doc1.DocumentNode.Descendants("tr");
             String[] data1 = decodedString.Split('\n');
             //foreach (var nodeTr in nodesTable)
+            addListView("setXcustPRTbl จำนวนข้อมูล" + data1.Length, "Web Service", lv1, form1);
+            pB1.Visible = true;
+            pB1.Minimum = 0;
+            pB1.Maximum = data1.Length;
             for (int row = 0; row < data1.Length; row++)
             {
                 if (row == 0) continue;
                 if (data1[row].Length <= 0) continue;
-                
+                pB1.Value = row;
                 String[] data2 = data1[row].Split(',');
                 XcustPrTbl item = new XcustPrTbl();
                 item.REQUISITION_NUMBER = data2[0].Trim();
@@ -270,12 +275,12 @@ namespace XCustPr
 
                 //int VALUE_SET_ID = 0, VALUE_SET_CODE = 1, VALUE_ID = 2, VALUE = 3, DESCRIPTION = 4, ENABLED_FLAG = 5, LAST_UPDATE_DATE = 6, CREATION_DATE = 7;
 
-                xCPRDB.insertxCPR(item);
+                xCPRDB.insertxCPR(item, pathLog);
             }
-
+            pB1.Visible = false;
             Console.WriteLine(decodedString);
         }
-        public void setXcustPOTbl(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
+        public void setXcustPOTbl(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String pathLog)
         {
             String uri = "", dump = "";
             //HttpWebRequest request = CreateWebRequest();
@@ -413,11 +418,15 @@ namespace XCustPr
             //var nodesTable = doc1.DocumentNode.Descendants("tr");
             String[] data1 = decodedString.Split('\n');
             //foreach (var nodeTr in nodesTable)
+            addListView("setXcustPRTbl จำนวนข้อมูล" + data1.Length, "Web Service", lv1, form1);
+            pB1.Visible = true;
+            pB1.Minimum = 0;
+            pB1.Maximum = data1.Length;
             for (int row = 0; row < data1.Length; row++)
             {
                 if (row == 0) continue;
                 if (data1[row].Length <= 0) continue;
-
+                pB1.Value = row;
                 String[] data2 = data1[row].Split(',');
                 XcustPoTbl item = new XcustPoTbl();
                 item.PRC_BU = data2[0].Trim().Replace(@"""", "");
@@ -498,9 +507,9 @@ namespace XCustPr
 
                 //int VALUE_SET_ID = 0, VALUE_SET_CODE = 1, VALUE_ID = 2, VALUE = 3, DESCRIPTION = 4, ENABLED_FLAG = 5, LAST_UPDATE_DATE = 6, CREATION_DATE = 7;
 
-                xCPODB.insertxCPR(item);
+                xCPODB.insertxCPR(item, pathLog);
             }
-
+            pB1.Visible = false;
             Console.WriteLine(decodedString);
         }
         private void addListView(String col1, String col2, MaterialListView lv1, Form form1)

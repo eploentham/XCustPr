@@ -94,6 +94,10 @@ namespace XCustPr
         public String AP004PathInitial = "", AP004PathProcess = "", AP004PathError = "", AP004PathArchive = "", AP004ImportSource="";
         public String AP004PathLog = "";
 
+        public String ValueSetPathLog = "";
 
+        public String PoRWebServicePathLog = "";
+        public String POWebServicePathLog = "";
+        public String PRWebServicePathLog = "";
     }
 }

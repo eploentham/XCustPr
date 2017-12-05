@@ -48,7 +48,7 @@ namespace XCustPr
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
-        public String insert(XcustPoLineLocIntTbl p)
+        public String insert(XcustPoLineLocIntTbl p, String pathLog)
         {
             String sql = "", chk = "";
             try
@@ -74,7 +74,7 @@ namespace XCustPr
                     p.interface_line_location_key + "','" + last_update_by + "',null,'" +
                     p.need_by_date + "','" + p.process_flag + "','" + p.shipment_number + "'" +
                     ") ";
-                chk = conn.ExecuteNonQuery(sql, "kfc_po");
+                chk = conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
                 //chk = p.RowNumber;
                 //chk = p.Code;
             }

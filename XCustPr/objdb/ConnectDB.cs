@@ -220,7 +220,7 @@ namespace XCustPr
             return toReturn;
         }
 
-        public String ExecuteNonQuery(String sql, String host)
+        public String ExecuteNonQuery(String sql, String host, String pathLog)
         {
             String toReturn = "";
             if (host == "bit")
@@ -261,7 +261,7 @@ namespace XCustPr
                 catch (Exception ex)
                 {
                     //throw new Exception("ExecuteNonQuery::Error occured.", ex);//logException
-                    logException(ex.Message.ToString(), sql);
+                    logException(ex.Message.ToString(), sql, pathLog);
                     toReturn = ex.Message;
                 }
                 finally
@@ -297,12 +297,12 @@ namespace XCustPr
             }
             return toReturn;
         }
-        public void logException(String ex, String sql)
+        public void logException(String ex, String sql, String path)
         {
             String date = System.DateTime.Now.ToString("yyyy-MM-dd");
             String txt = "";
             String time = System.DateTime.Now.ToString("HH_mm_ss");
-            using (var stream = File.AppendText(initC.pathLogErr+"\\" + "log_error_" + date.Replace("-", "_").Replace(":", "_") + ".log"))
+            using (var stream = File.AppendText(path + "\\" + "log_error_" + date.Replace("-", "_").Replace(":", "_") + ".log"))
             {
                 txt = System.DateTime.Now.ToString("HH_mm_ss")+"->"+ex + sql+Environment.NewLine;
                 stream.WriteLine(txt);

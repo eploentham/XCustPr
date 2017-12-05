@@ -53,10 +53,10 @@ namespace XCustPr
             xCMPoRIT.table = "xcust_mmx_po_rcp_int_tbl";
             xCMPoRIT.pkField = "";
         }
-        public void DeleteMmxTemp()
+        public void DeleteMmxTemp(String pathLog)
         {
             String sql = "Delete From " + xCMPoRIT.table;
-            conn.ExecuteNonQuery(sql, "kfc_po");
+            conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
         }
         public DataTable selectAll()
         {
@@ -79,13 +79,13 @@ namespace XCustPr
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
-        public void updateValidate(String store_code, String item_code, String invoice_no, String file_name, String flag, String message)
+        public void updateValidate(String store_code, String item_code, String invoice_no, String file_name, String flag, String message, String pathLog)
         {
             String sql = "";
             sql = "Update "+xCMPoRIT.table+" "+
                 "Set "+xCMPoRIT.validate_flag+"='" +flag+"' "+
                 "Where "+xCMPoRIT.store_code+"='"+store_code+"' and "+xCMPoRIT.item_code+"='"+item_code+"' and "+xCMPoRIT.INVOICE_NO+"='"+invoice_no+"' and "+xCMPoRIT.file_name+"='"+file_name+"'";
-            conn.ExecuteNonQuery(sql, "kfc_po");
+            conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
         }
         public DataTable gePOReceipt(String ITEM_CODE, String SUPPLIER_NUMBER)
         {
@@ -104,7 +104,7 @@ namespace XCustPr
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
-        public void insertBluk(List<String> linfox, String filename, String host, MaterialProgressBar pB1)
+        public void insertBluk(List<String> linfox, String filename, String host, MaterialProgressBar pB1, String pathLog)
         {
             int i = 0;
             TimeZoneInfo tz = TimeZoneInfo.FindSystemTimeZoneById("US Eastern Standard Time");
@@ -166,7 +166,7 @@ namespace XCustPr
                         .Append("','").Append(po_line_number).Append("','").Append(po_number).Append("','").Append(process_flag)
                         .Append("','").Append(RECEIVE_QTY).Append("','").Append(lastUpdateTime).Append("','").Append(store_cocde)
                         .Append("','").Append(supplier_code).Append("','").Append(validate_flag).Append("') ");
-                    conn.ExecuteNonQuery(sql.ToString(), host);
+                    conn.ExecuteNonQuery(sql.ToString(), host, pathLog);
                 }
             }
         }

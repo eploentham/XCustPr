@@ -84,10 +84,10 @@ namespace XCustPr
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
-        public void DeleteMmxTemp()
+        public void DeleteMmxTemp(String pathLog)
         {
             String sql = "Delete From " + xCMPIT.table;
-            conn.ExecuteNonQuery(sql, "kfc_po");
+            conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
         }
         public String dateYearShortToDB(String date)
         {
@@ -113,7 +113,7 @@ namespace XCustPr
 
             return chk;
         }
-        public void insertBluk(List<String> mmx, String filename, String host, MaterialProgressBar pB1)
+        public void insertBluk(List<String> mmx, String filename, String host, MaterialProgressBar pB1, String pathLog)
         {
             int i = 0;
             TimeZoneInfo tz = TimeZoneInfo.FindSystemTimeZoneById("US Eastern Standard Time");
@@ -177,16 +177,16 @@ namespace XCustPr
                         .Append("','").Append(orderDate).Append("','").Append(aaa[0]/*STRORE_NO*/).Append("','").Append(aaa[4]/*Subinventory Code*/)
                         .Append("','").Append(aaa[2]/*SUPPLIER_CODE*/).Append("','','").Append(uom_code)
                         .Append("','").Append(validateFlag).Append("') ");
-                    conn.ExecuteNonQuery(sql.ToString(), host);
+                    conn.ExecuteNonQuery(sql.ToString(), host, pathLog);
                 }
             }
         }
-        public String updateValidateFlag(String po_number, String line_number, String flag, String agreement_number, String host)
+        public String updateValidateFlag(String po_number, String line_number, String flag, String agreement_number, String host, String pathLog)
         {
             String sql = "";
             sql = "Update " + xCMPIT.table + " Set " + xCMPIT.Validate_flag + "='" + flag + "', " + xCMPIT.AGREEEMENT_NUMBER + " ='" + agreement_number + "' " +
                 "Where " + xCMPIT.po_number + " = '" + po_number + "' and " + xCMPIT.AGREEMENT_LINE_NUMBER + "='" + line_number + "'";
-            conn.ExecuteNonQuery(sql.ToString(), host);
+            conn.ExecuteNonQuery(sql.ToString(), host, pathLog);
 
             return "";
         }

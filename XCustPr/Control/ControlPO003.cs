@@ -136,7 +136,7 @@ namespace XCustPr
                 Cm.moveFile(aa, Cm.initC.PO003PathProcess + aa.Replace(Cm.initC.PO003PathInitial, ""));
             }
             addListView("Clear temp table", "", lv1, form1);
-            xCLPRITDB.DeleteMmxTemp();//  clear temp table     
+            xCLPRITDB.DeleteMmxTemp(Cm.initC.PO003PathLog);//  clear temp table     
             //c.	จากนัน Program ทำการอ่าน File ใน Folder Path Process มาไว้ยัง Table XCUST_MMX_PR_TBL ด้วย Validate Flag = ‘N’ ,PROCES_FLAG = ‘N’
             // insert xcust_mmx_pr_int_tbl
             filePOProcess = Cm.getFileinFolder(Cm.initC.PO003PathProcess);
@@ -147,7 +147,7 @@ namespace XCustPr
                 addListView("insert temp table " + aa, "", lv1, form1);
                 //conn.BulkToMySQL("kfc_po", linfox);       // ย้ายจาก MySQL ไป MSSQL   
                 pB1.Visible = true;
-                xCLPRITDB.insertBluk(rcv, aa, "kfc_po", pB1);
+                xCLPRITDB.insertBluk(rcv, aa, "kfc_po", pB1, Cm.initC.PO003PathLog);
                 pB1.Visible = false;
             }
         }
@@ -362,29 +362,29 @@ namespace XCustPr
          * g.	กรณีที่ Validat ผ่าน จะเอาข้อมูล Insert ลง table XCUST_POR_REQ_HEADER_INT_ALL
          * ,XCUST_POR_REQ_LINE_INT_ALL ,XCUST_POR_REQ_DIST_INT_ALLและ Update Validate_flag = ‘Y’
          */
-        public void processInsertTable(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
+        public void processInsertTable(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String pathLog)
         {
             addListView("insert table " + Cm.initC.PO005PathProcess, "Validate", lv1, form1);
             String date = System.DateTime.Now.ToString("yyyy-MM-dd");
             String time = System.DateTime.Now.ToString("HH:mm:ss");
             foreach (XcustRcvHeadersIntAll xcprhia in listXcustRHIA)
             {
-                if (insertXcustPorReqHeaderIntAll(xcprhia, date, time).Equals("1"))
+                if (insertXcustPorReqHeaderIntAll(xcprhia, date, time, pathLog).Equals("1"))
                 {
                     foreach (XcustRcvTransactionsIntAll xcprlia in listXcusTRTIA)
                     {
                         //XcustPorReqLineIntAll xcprlia = xCPRLIADB.setData(row, xCLFPTDB.xCLFPT);
-                        String chk = xCRTIADB.insert(xcprlia);
+                        String chk = xCRTIADB.insert(xcprlia, pathLog);
                     }
                     foreach (XcustInvTransactionLostsIntTbl xcprdia in listXcusITLIT)
                     {
                         //XcustPorReqLineIntAll xcprlia = xCPRLIADB.setData(row, xCLFPTDB.xCLFPT);
-                        String chk = xITLITDB.insert(xcprdia);
+                        String chk = xITLITDB.insert(xcprdia, pathLog);
                     }
                 }
             }
         }
-        private String insertXcustPorReqHeaderIntAll(XcustRcvHeadersIntAll xcprhia, String date, String time)
+        private String insertXcustPorReqHeaderIntAll(XcustRcvHeadersIntAll xcprhia, String date, String time, String pathLog)
         {//row[dc].ToString().Trim().
             String chk = "";
             XcustRcvHeadersIntAll xCRHIA = xcprhia;
@@ -406,7 +406,7 @@ namespace XCustPr
             //xCRHIA.ATTRIBUTE1 = xcprhia.ATTRIBUTE1;
             //xCRHIA.REQ_BU_NAME = xcprhia.REQ_BU_NAME;
             //xCRHIA.STATUS_CODE = xcprhia.STATUS_CODE;
-            chk = xCRHIADB.insert(xCRHIA);
+            chk = xCRHIADB.insert(xCRHIA, pathLog);
             return chk;
         }
         /*

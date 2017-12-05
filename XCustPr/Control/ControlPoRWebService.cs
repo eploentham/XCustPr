@@ -43,7 +43,7 @@ namespace XCustPr
             vPrPo = new ValidatePrPo();
 
             xCPoRDB = new XcustPoReceiptTblDB(conn, Cm.initC);
-
+            Cm.createFolderPoRWebService();
             fontSize9 = 9.75f;        //standard
             fontSize8 = 8.25f;        //standard
             fV1B = new Font(fontName, fontSize9, FontStyle.Bold);        //standard
@@ -329,7 +329,7 @@ namespace XCustPr
                 
                 //int VALUE_SET_ID = 0, VALUE_SET_CODE = 1, VALUE_ID = 2, VALUE = 3, DESCRIPTION = 4, ENABLED_FLAG = 5, LAST_UPDATE_DATE = 6, CREATION_DATE = 7;
 
-                xCPoRDB.insertxCPoR(item);
+                xCPoRDB.insertxCPoR(item, Cm.initC.PoRWebServicePathLog);
             }
 
             Console.WriteLine(decodedString);

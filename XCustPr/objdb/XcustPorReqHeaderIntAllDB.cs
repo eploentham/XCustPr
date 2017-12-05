@@ -144,7 +144,7 @@ namespace XCustPr
             }
             return chk;
         }
-        public String insert(XcustPorReqHeaderIntAll p)
+        public String insert(XcustPorReqHeaderIntAll p, String pathLog)
         {
             String sql = "", chk = "";
             try
@@ -275,7 +275,7 @@ namespace XCustPr
                     p.LAST_UPDATE_DATE + "','" + p.CREATION_DATE + "','" + p.IMPORT_SOURCE + "','" +
                     p.LAST_UPDATE_BY + "','" + p.request_id +
                     "') ";
-                chk = conn.ExecuteNonQuery(sql, "kfc_po");
+                chk = conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
                 if (chk.Equals("1"))
                 {
                     chk = seqH;

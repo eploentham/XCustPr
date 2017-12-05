@@ -192,7 +192,7 @@ namespace XCustPr
                     + ",'" + data1[VALUE_SET_CODE] + "'," + data1[VALUE_SET_ID] + ")";
             }
 
-            chk = conn.ExecuteNonQuery(sql.ToString(), host);
+            chk = conn.ExecuteNonQuery(sql.ToString(), host, initC.ValueSetPathLog);
             return chk;
         }
         public String insertFromxCVSMT(XcustValueSetMstTbl item, String host)
@@ -222,7 +222,7 @@ namespace XCustPr
                     + ",'" + item.VALUE_SET_CODE + "'," + item.VALUE_SET_ID + ")";
             }
 
-            chk = conn.ExecuteNonQuery(sql.ToString(), host);
+            chk = conn.ExecuteNonQuery(sql.ToString(), host, initC.ValueSetPathLog);
             return chk;
         }
     }
