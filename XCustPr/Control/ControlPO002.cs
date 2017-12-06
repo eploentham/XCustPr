@@ -118,7 +118,7 @@ namespace XCustPr
                 {
                     DataTable dt = new DataTable();
                     //b.Program ทำการ mapping ข้อมูลกับ table XCUST_PR_PO_INFO_TBL แล้ว update ข้อมูล field ERP_PO_NUMBER ,ERP_QTY ที่ table XCUST_LINFOX_PR_TBL
-                    dt = xCPRTDB.selectPRPO(linfox[xCLPTDB.xCLFPT.PO_NUMBER].ToString(), linfox[xCLPTDB.xCLFPT.LINE_NUMBER].ToString());
+                    dt = xCPRTDB.selectPRPO(linfox[xCLPTDB.xCLFPT.PO_NUMBER].ToString(), linfox[xCLPTDB.xCLFPT.LINE_NUMBER].ToString(), "LINFOX");
                     if (dt.Rows.Count > 0)
                     {
                         foreach(DataRow prpo in dt.Rows)

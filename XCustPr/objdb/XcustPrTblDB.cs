@@ -121,15 +121,21 @@ namespace XCustPr
             return dt;
         }
 
-        public DataTable selectPRPO(String linfox_po_number, String linfox_po_line_number)
+        public DataTable selectPRPO(String linfox_po_number, String linfox_po_line_number, String flag)
         {
             DataTable dt = new DataTable();
-            String sql = "SELECT po.PO_HEADER_ID, po.PO_LINE_ID,po.SEGMENT1 po_number,po.LINE_NUM po_line_number, po.QUANTITY/*, po.header_id*/ "+
-                "From xcust_pr_tbl PR "+
+            //String sql = "SELECT po.PO_HEADER_ID, po.PO_LINE_ID,po.SEGMENT1 po_number,po.LINE_NUM po_line_number, po.QUANTITY/*, po.header_id*/ "+
+            //    "From xcust_pr_tbl PR "+
+            //    "Left Join xcust_po_tbl po On  po.REQUISITION_HEADER_ID = PR.REQUISITION_HEADER_ID and po.REQUISITION_LINE_ID = PR.REQUISITION_LINE_ID  " +
+            //    "Where  "+                ""+
+            //    " PR.ATTRIBUTE1_L = '"+ linfox_po_number + "' "+
+            //    "and PR.ATTRIBUTE2_L = '"+ linfox_po_line_number + "' ";
+            String sql = "SELECT po.PO_HEADER_ID, po.PO_LINE_ID,po.SEGMENT1 po_number,po.LINE_NUM po_line_number, po.QUANTITY/*, po.header_id*/ " +
+                "From xcust_pr_tbl PR " +
                 "Left Join xcust_po_tbl po On  po.REQUISITION_HEADER_ID = PR.REQUISITION_HEADER_ID and po.REQUISITION_LINE_ID = PR.REQUISITION_LINE_ID  " +
-                "Where  "+                ""+
-                " PR.ATTRIBUTE1_L = '"+ linfox_po_number + "' "+
-                "and PR.ATTRIBUTE2_L = '"+ linfox_po_line_number + "' ";
+                "Where  " + "" +
+                " PR.ATTRIBUTE2 = '" + linfox_po_number + "' " +
+                "and PR.ATTRIBUTE2_L = '" + linfox_po_line_number + "' and ATTRIBUTE1 = '"+flag+"'";
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
