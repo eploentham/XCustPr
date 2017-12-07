@@ -386,6 +386,16 @@ namespace XCustPr
 
             return chk;
         }
+        public String updateErrorMessagePO002(String po_number, String line_number, String msg, String requestId, String host, String pathLog)
+        {
+            String sql = "", chk = "";
+            sql = "Update " + xCLFPT.table + " Set " + xCLFPT.ERROR_MSG + "=" + xCLFPT.ERROR_MSG + "+'," + msg.Replace("'", "''") + "' " +
+                ", " + xCLFPT.VALIDATE_FLAG + "='E' " +//VALIDATE_FLAG
+                "Where " + xCLFPT.PO_NUMBER + " = '" + po_number + "' and " + xCLFPT.LINE_NUMBER + "='" + line_number + "' and " + xCLFPT.request_id + "='" + requestId + "'";
+            chk = conn.ExecuteNonQuery(sql.ToString(), host, pathLog);
+
+            return chk;
+        }
         public String updateValidateFlagY(String po_number, String line_number, String requestId, String host, String pathLog)
         {
             String sql = "", chk = "";

@@ -197,6 +197,7 @@
     <Compile Include="objdb\XcustItemMstTblDB.cs" />
     <Compile Include="objdb\XcustLinfoxPoRcpIntTblDB.cs" />
     <Compile Include="objdb\XcustLinfoxPrTblDB.cs" />
+    <Compile Include="objdb\XcustLogModuleDB.cs" />
     <Compile Include="objdb\XcustMmxPoRcpIntTblDB.cs" />
     <Compile Include="objdb\XcustMmxPrIntTblDB.cs" />
     <Compile Include="objdb\XcustMmxPrRcpIntTblDB.cs" />
@@ -214,6 +215,7 @@
     <Compile Include="objdb\XcustUinfoInvoiceSumIntTblDB.cs" />
     <Compile Include="object1\XcustApInvIntTbl.cs" />
     <Compile Include="object1\XcustApInvLinesIntTbl.cs" />
+    <Compile Include="object1\XcustLogModule.cs" />
     <Compile Include="object1\XcustPoReceiptTbl.cs" />
     <Compile Include="object1\XcustPoTbl.cs" />
     <Compile Include="objdb\XcustPrTblDB.cs" />

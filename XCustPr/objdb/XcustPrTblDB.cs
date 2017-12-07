@@ -135,7 +135,7 @@ namespace XCustPr
                 "Left Join xcust_po_tbl po On  po.REQUISITION_HEADER_ID = PR.REQUISITION_HEADER_ID and po.REQUISITION_LINE_ID = PR.REQUISITION_LINE_ID  " +
                 "Where  " + "" +
                 " PR.ATTRIBUTE2 = '" + linfox_po_number + "' " +
-                "and PR.ATTRIBUTE2_L = '" + linfox_po_line_number + "' and ATTRIBUTE1 = '"+flag+"'";
+                "and PR.ATTRIBUTE2_L = '" + linfox_po_line_number + "' and pr.ATTRIBUTE1 = '"+flag+"'";
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
