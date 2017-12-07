@@ -157,6 +157,9 @@ namespace XCustPr
         public void processGenTextLinfox(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
         {
             addListView("processGenTextLinfox", "Web Service", lv1, form1);
+            String date = System.DateTime.Now.ToString("yyyy-MM-dd");
+            String time = System.DateTime.Now.ToString("HH_mm_ss");
+            dateStart = date + " " + time;       //gen log
             DataTable dtLinfoxPoNumber = new DataTable();
             dtLinfoxPoNumber = xCLFPTDB.selectPO002GenTextLinfoxGroupByERPPONumber();
             if (dtLinfoxPoNumber.Rows.Count > 0)
@@ -169,14 +172,18 @@ namespace XCustPr
                     DataTable dt = new DataTable();
                     dt = xCLFPTDB.selectPO002GenTextLinfox(erpPONumber);
                     writeTextLinfox(erpPONumber,dt);
+
                     // f.	Update po_trb ว่า gen_outbound_flag เรียบร้อย 
                     xCPOTDB.updateOutBoundFlag(dt.Rows[0][xCLFPTDB.xCLFPT.PO_NUMBER].ToString(), dt.Rows[0][xCLFPTDB.xCLFPT.LINE_NUMBER].ToString(), Cm.initC.PO002PathLog);
                     //d.Program update ข้อมูล XCUST_LINFOX_PR_TBL.GEN_OUTBOUND_FLAG = 'Y'
+
+                    //update xcust_linfox_pr_int_tbl set GEN_OUTBOUD_FLAG = null where GEN_OUTBOUD_FLAG = 'Y'
                     xCLFPTDB.updateOutBoundFlag(dt.Rows[0][xCLFPTDB.xCLFPT.PO_NUMBER].ToString(), dt.Rows[0][xCLFPTDB.xCLFPT.LINE_NUMBER].ToString());     
                 }
                 pB1.Visible = false;
                 addListView("processGenTextLinfox gen log file ", "Web Service", lv1, form1);
                 Cm.logProcess("xcustpo002", lVPr, dateStart, lVfile);   // gen log
+                xCLFPTDB.logProcessPO002("xcustpo002", dateStart);   // gen log
             }
             else
             {

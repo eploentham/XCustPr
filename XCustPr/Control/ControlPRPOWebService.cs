@@ -60,6 +60,8 @@ namespace XCustPr
             XmlDocument soapEnvelopeXml = new XmlDocument();
             const Int32 BufferSize = 128;
             String[] filePO;
+            DateTime currDate = System.DateTime.Now.AddDays(-1);
+            String date = currDate.Month.ToString("00") + "-" + currDate.Day.ToString("00") + "-" + currDate.Year.ToString();
             addListView("setXcustPRTbl ", "Web Service", lv1, form1);
             //filePO = Cm.getFileinFolder(Cm.initC.PathZip);
             //String text = System.IO.File.ReadAllText(filePO[0]);
@@ -80,14 +82,14 @@ namespace XCustPr
                                     "<pub:multiValuesAllowed>False</pub:multiValuesAllowed> " +
                                     "<pub:name>p_creation_dte_frm</pub:name> " +
                                     "<pub:values> " +
-                                        "<pub:item></pub:item> " +
+                                        "<pub:item>" + date + "</pub:item> " +
                                     "</pub:values>" +
                                 "</pub:item>" +
                                 "<pub:item>" +
                                 "<pub:multiValuesAllowed>False</pub:multiValuesAllowed>" +
                                 "<pub:name>p_creation_dte_to</pub:name>" +
                                 "<pub:values>" +
-                                "<pub:item></pub:item>" +
+                                "<pub:item>" + date + "</pub:item>" +
                                 "</pub:values>" +
                                 "</pub:item> " +
                                 "<pub:item>" +
@@ -266,7 +268,7 @@ namespace XCustPr
                     item.ATTRIBUTE2_L = data2[54].Trim();
                     item.ATTRIBUTE3_L = data2[55].Trim();
                     item.ATTRIBUTE_CATEGORY_L = data2[56].Trim();
-                    item.BUDGET_DATE = data2[57].Trim();
+                    item.BUDGET_DATE = data2[57].Trim().Replace(@"""", "");
                     item.FUNDS_STATUS = data2[58].Trim();
                     item.REQUISITION_LINE_ID = data2[59].Trim();
                     item.PERCENT = data2[60].Trim();
@@ -296,6 +298,8 @@ namespace XCustPr
             const Int32 BufferSize = 128;
             String[] filePO;
             addListView("setXcustPOTbl ", "Web Service", lv1, form1);
+            DateTime currDate = System.DateTime.Now.AddDays(-1);
+            String date = currDate.Month.ToString("00")+"-"+currDate.Day.ToString("00")+"-"+currDate.Year.ToString();
             //filePO = Cm.getFileinFolder(Cm.initC.PathZip);
             //String text = System.IO.File.ReadAllText(filePO[0]);
             //byte[] byteArraytext = Encoding.UTF8.GetBytes(text);
@@ -343,14 +347,14 @@ namespace XCustPr
                                 "<pub:multiValuesAllowed>False</pub:multiValuesAllowed> " +
                                 "<pub:name>p_creation_dte_frm</pub:name> " +
                                 "<pub:values> " +
-                                "<pub:item></pub:item> " +
+                                "<pub:item>"+ date + "</pub:item> " +
                                 "</pub:values> " +
                                 "</pub:item>  " +
                                 "<pub:item> " +
                                 "<pub:multiValuesAllowed>False</pub:multiValuesAllowed> " +
                                 "<pub:name>p_creation_date_to</pub:name> " +
                                 "<pub:values> " +
-                                "<pub:item></pub:item> " +
+                                "<pub:item>"+ date + "</pub:item> " +
                                 "</pub:values> " +
                                 "</pub:item> " +
                                 "</pub:parameterNameValues>   " +
@@ -477,7 +481,7 @@ namespace XCustPr
                     item.EMAIL_ADDRESS = data2[32].Trim();
                     item.SUPP_NAME = data2[33].Trim().Replace(@"""", "");
                     item.VENDOR_SITE = data2[34].Trim().Replace(@"""", "");
-                    item.PAYMENT_TERM = data2[35].Trim();
+                    item.PAYMENT_TERM = data2[35].Trim().Replace(@"""", "");
                     item.LINE_TYPE_ID = data2[36].Trim();
                     item.LINE_STATUS = data2[37].Trim().Replace(@"""", "");
                     item.LINE_NUM = data2[38].Trim();
@@ -510,11 +514,18 @@ namespace XCustPr
                     item.DESTINATION_TYPE = data2[64].Trim();
                     item.DELIVER_TO_LOC = data2[65].Trim();
                     item.PRODUCT_TYPE = data2[66].Trim();
-                    item.ASSESSABLE_VALUE = data2[67].Trim();
+                    item.ASSESSABLE_VALUE = data2[67].Trim().Replace("|#",",");
                     item.DELIVER_TO_LOC_LINFOX = data2[68].Trim();
                     //item.ACC_SEGMENT5 = "";
                     //item.ACC_SEGMENT6 = "";
-
+                    if (item.ASSESSABLE_VALUE.ToLower().Equals("goods"))
+                    {
+                        dump = "";
+                    }
+                    if (item.ASSESSABLE_VALUE.ToLower().Equals("services"))
+                    {
+                        dump = "";
+                    }
                     //int VALUE_SET_ID = 0, VALUE_SET_CODE = 1, VALUE_ID = 2, VALUE = 3, DESCRIPTION = 4, ENABLED_FLAG = 5, LAST_UPDATE_DATE = 6, CREATION_DATE = 7;
 
                     xCPODB.insertxCPR(item, pathLog);
@@ -523,7 +534,6 @@ namespace XCustPr
                 {
 
                 }
-                
             }
             pB1.Visible = false;
             Console.WriteLine(decodedString);

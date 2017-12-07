@@ -931,6 +931,10 @@ namespace XCustPr
         {
             String line1 = "", parameter = "", programstart = "", filename = "", recordError = "", txt = "", path="";
             int cntErr = 0, err = 0;
+            if (programname.Equals("xcustpo001"))
+            {
+
+            }
             line1 = "Program : XCUST Interface PR<Linfox>To PO(ERP)" + Environment.NewLine;
             path = getPathLogProcess(programname);
             parameter = "Parameter : " + Environment.NewLine;

@@ -271,7 +271,15 @@ namespace XCustPr
                 //p.RowNumber = selectMaxRowNumber(p.YearId);
                 //p.Active = "1";
                 String last_update_by = "0", creation_by = "0";
-                p.AMOUNT = p.AMOUNT.Equals("") ? "0" : p.AMOUNT;
+                p.UNIT_PRICE = p.UNIT_PRICE.Equals("") ? "null" : p.UNIT_PRICE;
+                p.DESTINATION_ORGANIZATION_ID = p.DESTINATION_ORGANIZATION_ID.Equals("") ? "null" : p.DESTINATION_ORGANIZATION_ID;
+                p.PERCENT = p.PERCENT.Equals("") ? "null" : p.PERCENT;
+                //p.CURRENCY_AMOUNT = p.CURRENCY_AMOUNT.Equals("") ? "null" : p.CURRENCY_AMOUNT;
+                p.VENDOR_ID = p.VENDOR_ID.Equals("") ? "null" : p.VENDOR_ID;
+                p.VENDOR_SITE_ID = p.VENDOR_SITE_ID.Equals("") ? "null" : p.VENDOR_SITE_ID;
+                //p.SECONDARY_QUANTITY = p.SECONDARY_QUANTITY.Equals("") ? "null" : p.SECONDARY_QUANTITY;
+
+                p.AMOUNT = p.AMOUNT.Equals("") ? "null" : p.AMOUNT;
                 p.CURRENCY_AMOUNT = p.CURRENCY_AMOUNT.Equals("") ? "0" : p.CURRENCY_AMOUNT;
                 p.SECONDARY_QUANTITY = p.SECONDARY_QUANTITY.Equals("") ? "0" : p.SECONDARY_QUANTITY;
                 sql = "Insert Into " + xCPR.table + "(" + xCPR.AMOUNT + "," + xCPR.ATTRIBUTE1 + "," + xCPR.ATTRIBUTE10 + "," +
@@ -307,15 +315,15 @@ namespace XCustPr
                     p.ATTRIBUTE20 + "','" + p.ATTRIBUTE_CATEGORY + "','" + p.ATTRIBUTE_CATEGORY_L + "','" +
                     p.BUDGET_DATE + "','" + p.CHARGE_ACCOUNT + "','" + p.CONVERSION_DATE + "','" +
                     p.CREATED_BY + "','" + p.CREATION_DATE + "'," + p.CURRENCY_AMOUNT + ",'" +
-                    p.DESCRIPTION + "','" + p.DESTINATION_ORGANIZATION_ID + "','" + p.DESTINATION_TYPE_CODE + "','" +
+                    p.DESCRIPTION + "'," + p.DESTINATION_ORGANIZATION_ID + ",'" + p.DESTINATION_TYPE_CODE + "','" +
                     p.DISTRIBUTION + "','" + p.DISTRIBUTION_CURRENCY_AMOUNT + "','" + p.DOCUMENT_STATUS + "','" +
                     p.FUNDS_STATUS + "','" + p.ITEM_DESCRIPTION + "','" + p.ITEM_ID + "','" +
                     p.LAST_UPDATE_DATE + "','" + p.LINE_NUMBER + "','" + p.LINE_TYPE + "','" +
-                    p.LOCATION + "','" + p.NAME + "','" + p.PERCENT + "','" +
+                    p.LOCATION + "','" + p.NAME + "'," + p.PERCENT + ",'" +
                     p.PO_ORDER + "','" + p.REQUISITION_HEADER_ID + "','" + p.REQUISITION_LINE_ID + "','" +
                     p.REQUISITION_NUMBER + "','" + p.REQ_BU_ID + "'," + p.SECONDARY_QUANTITY + ",'" +
-                    p.SECONDARY_UOM_CODE + "','" + p.SOURCE_TYPE_CODE + "','" + p.UNIT_PRICE + "','" +
-                    p.UOM_CODE + "','" + p.VENDOR_ID + "','" + p.VENDOR_SITE_ID + "'" +                    
+                    p.SECONDARY_UOM_CODE + "','" + p.SOURCE_TYPE_CODE + "'," + p.UNIT_PRICE + ",'" +
+                    p.UOM_CODE + "'," + p.VENDOR_ID + "," + p.VENDOR_SITE_ID + " " +                    
 
                     ") ";
                 chk = conn.ExecuteNonQuery(sql, "kfc_po", pathLog);

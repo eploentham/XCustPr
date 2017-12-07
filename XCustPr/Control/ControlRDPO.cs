@@ -1772,7 +1772,7 @@ namespace XCustPr
             addListView("gen log file  ", "Validate", lv1, form1);
             xCLFPTDB.logProcessPO001("xcustpo001", dateStart, requestId);   // gen log
             addListView("move file to archive error  ", "Validate", lv1, form1);
-            moveFileToFolderArchiveError(requestId);
+            //moveFileToFolderArchiveError(requestId);  02 767 9333 446
         }
         private void moveFileToFolderArchiveError(String requestId)
         {
@@ -2257,6 +2257,8 @@ namespace XCustPr
             xCPRDIADB.updateDocumentId(actNumber, requestId, Cm.initC.pathLogErr);
             xCLPTDB.updatePrcessFlag(requestId, "kfc_po", Cm.initC.pathLogErr);
             Console.WriteLine(doc);
+
+            moveFileToFolderArchiveError(requestId);
         }
     }
 }

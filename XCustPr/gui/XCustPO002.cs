@@ -209,13 +209,15 @@ namespace XCustPr
             //cParams = "xcustpowebservice_run=on";
             //filename = Path.Combine("XCustPoWS.exe");
             //Cm.runCommand(filename, cParams);
-            
+
             cPo002.processWebService(lv1, this, pB1);
             cPo002.processMapping(lv1, this, pB1);
+
+            cPo002.processGenTextLinfox(lv1, this, pB1);
         }
         private void btnPrepare_Click(object sender, EventArgs e)
         {
-            cPo002.processGenTextLinfox(lv1, this, pB1);
+            //cPo002.processGenTextLinfox(lv1, this, pB1);
         }
         private void btnWebService_Click(object sender, EventArgs e)
         {
