@@ -1443,6 +1443,7 @@ namespace XCustPr
                 vPP.Validate = "";
                 lVPr.Add(vPP);
                 cntErr++;       // gen log
+
             }
             
             //Error PO001-009 : Invalid Deliver-to Organization
@@ -1880,7 +1881,7 @@ namespace XCustPr
                 }
             }
             addListView("Clear temp table", "", lv1, form1);
-            xCLFPTDB.DeleteLinfoxTemp();//  clear temp table
+            //xCLFPTDB.DeleteLinfoxTemp();//  clear temp table
             //c.	จากนัน Program ทำการอ่าน File ใน Folder Path Process มาไว้ยัง Table XCUST_LINFOX_PR_TBL ด้วย Validate Flag = ‘N’ ,PROCES_FLAG = ‘N’
             // insert XCUST_LINFOX_PR_TBL
             filePOProcess = Cm.getFileinFolder(Cm.initC.PathProcess);
