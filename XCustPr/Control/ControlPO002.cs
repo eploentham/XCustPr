@@ -156,7 +156,7 @@ namespace XCustPr
         }
         public void processGenTextLinfox(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
         {
-            addListView("processGenTextLinfox", "Web Service", lv1, form1);
+            addListView("เข้า processGenTextLinfox", "Web Service", lv1, form1);
             String date = System.DateTime.Now.ToString("yyyy-MM-dd");
             String time = System.DateTime.Now.ToString("HH_mm_ss");
             dateStart = date + " " + time;       //gen log

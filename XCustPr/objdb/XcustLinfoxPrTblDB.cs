@@ -249,7 +249,7 @@ namespace XCustPr
         {
             DataTable dt = new DataTable();
             String sql = "";
-            sql = "Select *" +
+            sql = "Select * " +
                 " From "+xCLFPT.table +
                 " Where "+xCLFPT.PO_NUMBER+"='"+poNumber+"' and "+xCLFPT.request_id+"='"+requestId+"' " +
                 " Order By "+xCLFPT.PO_NUMBER+","+xCLFPT.LINE_NUMBER;

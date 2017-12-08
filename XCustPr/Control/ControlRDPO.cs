@@ -1243,18 +1243,8 @@ namespace XCustPr
             String filenameZip = "", ilename2 = "", ilename3 = "", filename="";
             if (flag.Equals("PO001"))
             {
-<<<<<<< HEAD
-<<<<<<< HEAD
-                filenameZip = Cm.initC.PathZip + "\\xcustpr.zip";
-                filename = @Cm.initC.PathArchive;s
-=======
-                filenameZip = Cm.initC.PathZip + "\\LINFOX_PR_"+ currDate +currTime+ ".zip";
-                filename = @Cm.initC.PathArchive;
->>>>>>> 76c7f6255ec05db6453ee469807afa08602830cc
-=======
                 filenameZip = Cm.initC.PathFileZip + "\\LINFOX_PR_"+ currDate +currTime+ ".zip";
                 filename = @Cm.initC.PathFileCSV;
->>>>>>> 0edec91dfd35278ba9ae2fa7528c7218f51c76c2
             }
             else
             {
