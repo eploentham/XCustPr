@@ -89,9 +89,14 @@ namespace XCustPr
                 MessageBox.Show("Path PO001PathArchive empty", "createFolderPO001");
                 return;
             }
-            if (initC.PathZip.Equals(""))
+            if (initC.PathFileCSV.Equals(""))
             {
-                MessageBox.Show("Path PO001PathZip empty", "createFolderPO001");
+                MessageBox.Show("Path PO001PathFileCSV empty", "createFolderPO001");
+                return;
+            }
+            if (initC.PathFileZip.Equals(""))
+            {
+                MessageBox.Show("Path PO001PathFileZip empty", "createFolderPO001");
                 return;
             }
             if (initC.PathLog.Equals(""))
@@ -103,7 +108,8 @@ namespace XCustPr
             createFolderPO001PathInitial();
             createFolderPO001PathError();
             createFolderPO001PathArchive();
-            createFolderPO001PathZip();
+            createFolderPO001PathFileCSV();
+            createFolder(initC.PathFileZip);
             createFolder(initC.PathLog);
         }
         public void createFolderPO004()
@@ -361,6 +367,42 @@ namespace XCustPr
             createFolder(initC.AP004ImportSource);
             createFolder(initC.AP004PathLog);
         }
+        public void createFolderValueSet()
+        {
+            if (initC.ValueSetPathLog.Equals(""))
+            {
+                MessageBox.Show("Path ValueSetPathLog empty", "createFolderValueSet");
+                return;
+            }
+            createFolder(initC.ValueSetPathLog);
+        }
+        public void createFolderPoRWebService()
+        {
+            if (initC.PoRWebServicePathLog.Equals(""))
+            {
+                MessageBox.Show("Path PoRWebServicePathLog empty", "createFolderPoRWebServicePathLog");
+                return;
+            }
+            createFolder(initC.PoRWebServicePathLog);
+        }
+        public void createFolderPOWebService()
+        {
+            if (initC.POWebServicePathLog.Equals(""))
+            {
+                MessageBox.Show("Path POWebServicePathLog empty", "createFolderPOWebServicePathLog");
+                return;
+            }
+            createFolder(initC.PoRWebServicePathLog);
+        }
+        public void createFolderPRWebService()
+        {
+            if (initC.PRWebServicePathLog.Equals(""))
+            {
+                MessageBox.Show("Path PRWebServicePathLog empty", "createFolderPRWebServicePathLog");
+                return;
+            }
+            createFolder(initC.PoRWebServicePathLog);
+        }
         public void createFolderPO001PathProcess()
         {
             bool folderExists = Directory.Exists(initC.PathProcess);
@@ -385,11 +427,11 @@ namespace XCustPr
             if (!folderExists)
                 Directory.CreateDirectory(initC.PathArchive);
         }
-        public void createFolderPO001PathZip()
+        public void createFolderPO001PathFileCSV()
         {
-            bool folderExists = Directory.Exists(initC.PathZip);
+            bool folderExists = Directory.Exists(initC.PathFileCSV);
             if (!folderExists)
-                Directory.CreateDirectory(initC.PathZip);
+                Directory.CreateDirectory(initC.PathFileCSV);
         }
         public String[] getFileinFolder(String path)
         {
@@ -415,6 +457,26 @@ namespace XCustPr
         public void moveFile(String sourceFile, String destinationFile)
         {
             System.IO.File.Move(@sourceFile, @destinationFile);
+        }
+        public void moveFile(String sourceFile, String path, String destinationFile)
+        {
+            String date = System.DateTime.Now.ToString("yyyy_MM_dd");
+            String time = System.DateTime.Now.ToString("HH_mm_ss");
+            String filename1 = destinationFile;
+            
+            if (File.Exists(path + destinationFile))
+            {
+                String[] filename11 = destinationFile.Split('.');
+                if (filename11.Length >= 2)
+                {
+                    filename1 = filename11[0] + "_new_" + date + "_" + time + "." + filename11[1];
+                }
+                else
+                {
+                    filename1 += "_new";
+                }
+            }
+            System.IO.File.Move(@sourceFile, path+ filename1);
         }
         public void deleteFile(String sourceFile)
         {
@@ -467,12 +529,16 @@ namespace XCustPr
             initC.PO006PathLog = iniFile.Read("PO006PathLog");
             initC.PO007PathLog = iniFile.Read("PO007PathLog");
             initC.PO008PathLog = iniFile.Read("PO008PathLog");
+            initC.ValueSetPathLog = iniFile.Read("ValueSetPathLog");
+            initC.PoRWebServicePathLog = iniFile.Read("PoRWebServicePathLog");
+            initC.PRWebServicePathLog = iniFile.Read("PRWebServicePathLog");
+            initC.POWebServicePathLog = iniFile.Read("POWebServicePathLog");
 
             initC.EmailHost = iniFile.Read("EmailHost");        // orc backoffice
             initC.EmailSender = iniFile.Read("EmailSender");
             initC.FTPServer = iniFile.Read("FTPServer");
-            initC.PathZipExtract = iniFile.Read("PathZipExtract");
-            initC.PathZip = iniFile.Read("PathZip");
+            initC.PathFileZip = iniFile.Read("PathFileZip");
+            initC.PathFileCSV = iniFile.Read("PathFileCSV");
 
             initC.databaseDBKFCPO = iniFile.Read("databaseDBKFCPO");        // orc BIT
             initC.hostDBKFCPO = iniFile.Read("hostDBKFCPO");
@@ -849,7 +915,7 @@ namespace XCustPr
             }
             else if (programname.ToLower().Equals("xcustpo002"))
             {
-
+                path = initC.PO002PathLog;
             }
             else if (programname.ToLower().Equals("xcustpo003"))
             {
@@ -865,6 +931,10 @@ namespace XCustPr
         {
             String line1 = "", parameter = "", programstart = "", filename = "", recordError = "", txt = "", path="";
             int cntErr = 0, err = 0;
+            if (programname.Equals("xcustpo001"))
+            {
+
+            }
             line1 = "Program : XCUST Interface PR<Linfox>To PO(ERP)" + Environment.NewLine;
             path = getPathLogProcess(programname);
             parameter = "Parameter : " + Environment.NewLine;
@@ -924,15 +994,15 @@ namespace XCustPr
             String[] filePO;
             if (flag.Equals("PO001"))
             {
-                filePO = getFileinFolder(initC.PathZip);
+                filePO = getFileinFolder(initC.PathFileCSV);
             }
             else if (flag.Equals("PO005"))
             {
-                filePO = getFileinFolder(initC.PathZip);
+                filePO = getFileinFolder(initC.PathFileCSV);
             }
             else
             {
-                filePO = getFileinFolder(initC.PathZip);
+                filePO = getFileinFolder(initC.PathFileCSV);
             }
 
             String text = System.IO.File.ReadAllText(filePO[0]);

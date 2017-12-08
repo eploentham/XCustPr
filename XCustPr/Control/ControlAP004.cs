@@ -124,8 +124,8 @@ namespace XCustPr
                 Cm.moveFile(aa, Cm.initC.AP004PathProcess + aa.Replace(Cm.initC.AP004PathInitial, ""));
             }
             addListView("Clear temp table", "", lv1, form1);
-            xCUiIDTDB.DeleteTemp();//  clear temp table     
-            xCUiISITDB.DeleteTemp();//  clear temp table     
+            xCUiIDTDB.DeleteTemp(Cm.initC.AP004PathLog);//  clear temp table     
+            xCUiISITDB.DeleteTemp(Cm.initC.AP004PathLog);//  clear temp table     
             //c.	จากนัน Program ทำการอ่าน File ใน Folder Path Process มาไว้ยัง Table XCUST_MMX_PR_TBL ด้วย Validate Flag = ‘N’ ,PROCES_FLAG = ‘N’
             // insert xcust_mmx_pr_int_tbl
             filePOProcess = Cm.getFileinFolder(Cm.initC.AP004PathProcess);
@@ -140,11 +140,11 @@ namespace XCustPr
                 pB1.Visible = true;
                 if (aa.Replace(Cm.initC.AP004PathProcess,"").ToLower().IndexOf("detail")>=0)
                 {
-                    xCUiIDTDB.insertBluk(rcv, dtFixLen, aa, "kfc_po", pB1);
+                    xCUiIDTDB.insertBluk(rcv, dtFixLen, aa, "kfc_po", pB1,Cm.initC.AP004PathLog);
                 }
                 else
                 {
-                    xCUiISITDB.insertBluk(rcv, dtFixLenH, aa, "kfc_po", pB1);
+                    xCUiISITDB.insertBluk(rcv, dtFixLenH, aa, "kfc_po", pB1 ,Cm.initC.AP004PathLog);
                 }
                 
                 pB1.Visible = false;
@@ -291,7 +291,7 @@ namespace XCustPr
             foreach (XcustApInvLinesIntTbl xcprlia in listXcustApILIT)
             {
                 //XcustPorReqLineIntAll xcprlia = xCPRLIADB.setData(row, xCLFPTDB.xCLFPT);
-                String chk = xCApILITDB.insert(xcprlia);
+                String chk = xCApILITDB.insert(xcprlia, Cm.initC.AP004PathLog);
             }
         }
         private String insertXcustApInvIntTbl(XcustApInvIntTbl xcprhia, String date, String time)
@@ -299,7 +299,7 @@ namespace XCustPr
             String chk = "";
             XcustApInvIntTbl xCRHIA = xcprhia;
 
-            chk = xCApIITDB.insert(xCRHIA);
+            chk = xCApIITDB.insert(xCRHIA, Cm.initC.AP004PathLog);
             return chk;
         }
         /*

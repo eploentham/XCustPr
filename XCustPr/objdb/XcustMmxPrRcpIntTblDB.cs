@@ -68,10 +68,10 @@ namespace XCustPr
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
-        public void DeleteMmxTemp()
+        public void DeleteMmxTemp(String pathLog)
         {
             String sql = "Delete From " + xCMPrRIT.table;
-            conn.ExecuteNonQuery(sql, "kfc_po");
+            conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
         }
         public void insertBluk(List<String> mmx, String filename, String host, MaterialProgressBar pB1)
         {

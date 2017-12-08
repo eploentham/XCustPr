@@ -144,7 +144,25 @@ namespace XCustPr
             }
             return chk;
         }
-        public String insert(XcustPorReqHeaderIntAll p)
+        public String updateDocumentId(String documentId, String requestId, String pathLog)
+        {
+            String chk = "", sql = "";
+
+            try
+            {
+                sql = "Update " + xCPRHIA.table + " Set " +
+                    "document_id ='" + documentId + "' " +
+                    ","+xCPRHIA.PROCESS_FLAG+"='Y' "+
+                    "Where " + xCPRHIA.request_id+"='"+requestId+"'";
+                chk = conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
+            }
+            catch (Exception ex)
+            {
+                //MessageBox.Show("Error " + ex.ToString(), "insert Doctor");
+            }
+            return chk;
+        }
+        public String insert(XcustPorReqHeaderIntAll p, String pathLog)
         {
             String sql = "", chk = "";
             try
@@ -275,7 +293,7 @@ namespace XCustPr
                     p.LAST_UPDATE_DATE + "','" + p.CREATION_DATE + "','" + p.IMPORT_SOURCE + "','" +
                     p.LAST_UPDATE_BY + "','" + p.request_id +
                     "') ";
-                chk = conn.ExecuteNonQuery(sql, "kfc_po");
+                chk = conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
                 if (chk.Equals("1"))
                 {
                     chk = seqH;

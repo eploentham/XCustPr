@@ -46,7 +46,7 @@ namespace XCustPr
 
             xCITIT.table = "XCUST_INV_TRN_INT_TBL";
         }
-        public String insert(XcustInvTrnIntTbl p)
+        public String insert(XcustInvTrnIntTbl p, String pathLog)
         {
             String sql = "", chk = "";
             String createBy = "0", createDate = "GETDATE()", last_update_by = "0", lastUpdateTime = "null";
@@ -72,7 +72,7 @@ namespace XCustPr
                     p.TRANSACTION_TYPE_NAME + "','" + p.TRANSFER_LOCATOR_NAME + "','" + p.TRANSFER_ORGANIZATION_NAME + "','" +
                     p.TRANSFER_SUBINVENTORY_CODE + "','" + p.UOM + "','" + 
                     ")";
-                chk = conn.ExecuteNonQuery(sql, "kfc_po");
+                chk = conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
             }
             catch (Exception ex)
             {

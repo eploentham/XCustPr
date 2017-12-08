@@ -211,7 +211,7 @@ namespace XCustPr
             cAp001.processTextFileSupplier(filePO, lv1, this, pB1);
             cAp001.processGetTempTableToValidate(lv1, this, pB1);
 
-            cAp001.processInsertTable(lv1, this, pB1);
+            cAp001.processInsertTable(lv1, this, pB1, Cm.initC.AP001PathLog);
         }
 
         private void TxtFileName_Leave(object sender, EventArgs e)

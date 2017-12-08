@@ -81,7 +81,7 @@ namespace XCustPr
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
-        public String insert(XcustApInvLinesIntTbl p)
+        public String insert(XcustApInvLinesIntTbl p, String pathLog)
         {
             String sql = "", chk = "";
             try
@@ -144,7 +144,7 @@ namespace XCustPr
                     p.TAX_REGIME_CODE + "'" +
                     
                     ") ";
-                chk = conn.ExecuteNonQuery(sql, "kfc_po");
+                chk = conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
                 //chk = p.RowNumber;
                 //chk = p.Code;
             }

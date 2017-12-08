@@ -159,7 +159,7 @@ namespace XCustPr
                 Cm.moveFile(aa, Cm.initC.PO004PathProcess + aa.Replace(Cm.initC.PO004PathInitial, ""));
             }
             addListView("Clear temp table", "", lv1, form1);
-            xCMPoRITDB.DeleteMmxTemp();//  clear temp table     
+            xCMPoRITDB.DeleteMmxTemp(Cm.initC.PO004PathLog);//  clear temp table     
             //c.	จากนัน Program ทำการอ่าน File ใน Folder Path Process มาไว้ยัง Table XCUST_MMX_PR_TBL ด้วย Validate Flag = ‘N’ ,PROCES_FLAG = ‘N’
             // insert xcust_mmx_pr_int_tbl
             filePOProcess = Cm.getFileinFolder(Cm.initC.PO004PathProcess);
@@ -170,7 +170,7 @@ namespace XCustPr
                 addListView("insert temp table " + aa, "", lv1, form1);
                 //conn.BulkToMySQL("kfc_po", linfox);       // ย้ายจาก MySQL ไป MSSQL   
                 pB1.Visible = true;
-                xCMPoRITDB.insertBluk(rcv, aa, "kfc_po", pB1);
+                xCMPoRITDB.insertBluk(rcv, aa, "kfc_po", pB1, Cm.initC.PO004PathLog);
                 pB1.Visible = false;
             }
         }
@@ -300,7 +300,7 @@ namespace XCustPr
 
 
                                         xCMPoRITDB.updateValidate(row[xCMPoRITDB.xCMPoRIT.store_code].ToString().Trim(), row[xCMPoRITDB.xCMPoRIT.item_code].ToString().Trim()
-                                            , row[xCMPoRITDB.xCMPoRIT.INVOICE_NO].ToString().Trim(), row[xCMPoRITDB.xCMPoRIT.file_name].ToString().Trim(), "Y", "");
+                                            , row[xCMPoRITDB.xCMPoRIT.INVOICE_NO].ToString().Trim(), row[xCMPoRITDB.xCMPoRIT.file_name].ToString().Trim(), "Y", "", Cm.initC.PO004PathLog);
 
 
                                         qtyMMx -= qtyerp;
@@ -316,13 +316,13 @@ namespace XCustPr
                             else//-	กรณียอด QTY ไม่เพียงพอสำหรับการ Receipt
                             {
                                 xCMPoRITDB.updateValidate(row[xCMPoRITDB.xCMPoRIT.store_code].ToString().Trim(), row[xCMPoRITDB.xCMPoRIT.item_code].ToString().Trim()
-                                , row[xCMPoRITDB.xCMPoRIT.INVOICE_NO].ToString().Trim(), row[xCMPoRITDB.xCMPoRIT.file_name].ToString().Trim(), "E", "Error PO004-006 : PO QTY is less than Receipt QTY");
+                                , row[xCMPoRITDB.xCMPoRIT.INVOICE_NO].ToString().Trim(), row[xCMPoRITDB.xCMPoRIT.file_name].ToString().Trim(), "E", "Error PO004-006 : PO QTY is less than Receipt QTY", Cm.initC.PO004PathLog);
                             }
                         }
                         else//ไม่พบ      -	กรณี Map ไม่เจอ PO ,PO Line
                         {
                             xCMPoRITDB.updateValidate(row[xCMPoRITDB.xCMPoRIT.store_code].ToString().Trim(), row[xCMPoRITDB.xCMPoRIT.item_code].ToString().Trim()
-                                , row[xCMPoRITDB.xCMPoRIT.INVOICE_NO].ToString().Trim(), row[xCMPoRITDB.xCMPoRIT.file_name].ToString().Trim(),"E", "Error PO004-005 : Not found PO Number/PO Line");
+                                , row[xCMPoRITDB.xCMPoRIT.INVOICE_NO].ToString().Trim(), row[xCMPoRITDB.xCMPoRIT.file_name].ToString().Trim(),"E", "Error PO004-005 : Not found PO Number/PO Line", Cm.initC.PO004PathLog);
                         }
                     }
                     else
@@ -350,12 +350,12 @@ namespace XCustPr
                     foreach (XcustRcvTransactionsIntAll xcprlia in listXcusTRTIA)
                     {
                         //XcustPorReqLineIntAll xcprlia = xCPRLIADB.setData(row, xCLFPTDB.xCLFPT);
-                        String chk = xCRTIADB.insert(xcprlia);
+                        String chk = xCRTIADB.insert(xcprlia, Cm.initC.PO004PathLog);
                     }
                     foreach (XcustInvTransactionLostsIntTbl xcprdia in listXcusITLIT)
                     {
                         //XcustPorReqLineIntAll xcprlia = xCPRLIADB.setData(row, xCLFPTDB.xCLFPT);
-                        String chk = xITLITDB.insert(xcprdia);
+                        String chk = xITLITDB.insert(xcprdia, Cm.initC.PO004PathLog);
                     }
                 }
             }
@@ -382,7 +382,7 @@ namespace XCustPr
             //xCPRHIA.ATTRIBUTE1 = xcprhia.ATTRIBUTE1;
             //xCPRHIA.REQ_BU_NAME = xcprhia.REQ_BU_NAME;
             //xCPRHIA.STATUS_CODE = xcprhia.STATUS_CODE;
-            chk = xCRHIADB.insert(xcprhia);
+            chk = xCRHIADB.insert(xcprhia, Cm.initC.PO004PathLog);
             return chk;
         }
         private void addXcustListHeader(String ref1, String supplier_code, String SUPPLIER_SITE_CODE, String Supplier_Site_Code)

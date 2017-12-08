@@ -135,7 +135,7 @@ namespace XCustPr
                 Cm.moveFile(aa, Cm.initC.PO008PathProcess + aa.Replace(Cm.initC.PO008PathInitial, ""));
             }
             addListView("Clear temp table", "", lv1, form1);
-            xCCPITDB.DeleteCedarTemp();//  clear temp table
+            xCCPITDB.DeleteCedarTemp(Cm.initC.PO008PathLog);//  clear temp table
             //c.	จากนัน Program ทำการอ่าน File ใน Folder Path Process มาไว้ยัง Table XCUST_MMX_PR_TBL ด้วย Validate Flag = ‘N’ ,PROCES_FLAG = ‘N’
             // insert xcust_mmx_pr_int_tbl
             filePOProcess = Cm.getFileinFolder(Cm.initC.PO008PathProcess);
@@ -146,7 +146,7 @@ namespace XCustPr
                 addListView("insert temp table " + aa, "", lv1, form1);
                 //conn.BulkToMySQL("kfc_po", linfox);       // ย้ายจาก MySQL ไป MSSQL
                 pB1.Visible = true;
-                xCCPITDB.insertBluk(mmx, aa, "kfc_po", pB1);
+                xCCPITDB.insertBluk(mmx, aa, "kfc_po", pB1, Cm.initC.PO008PathLog);
                 pB1.Visible = false;
             }
         }
@@ -555,7 +555,7 @@ namespace XCustPr
                     foreach (XcustPoLineLocIntTbl xcprdia in listXcustPLLIT)
                     {
                         //XcustPorReqLineIntAll xcprlia = xCPRLIADB.setData(row, xCLFPTDB.xCLFPT);
-                        String chk = xCPLLITDB.insert(xcprdia);
+                        String chk = xCPLLITDB.insert(xcprdia, Cm.initC.PO008PathLog);
                     }
                     foreach (XcustPoDistIntTbl xcprdia in listXcustPDIT)
                     {
@@ -587,7 +587,7 @@ namespace XCustPr
             //xCPRHIA.ATTRIBUTE1 = xcprhia.ATTRIBUTE1;
             //xCPRHIA.REQ_BU_NAME = xcprhia.REQ_BU_NAME;
             //xCPRHIA.STATUS_CODE = xcprhia.STATUS_CODE;
-            chk = xCPHITDB.insert(xcprhia);
+            chk = xCPHITDB.insert(xcprhia, Cm.initC.PO008PathLog);
             return chk;
         }
         private void addXcustListHeader(String wo_no, String branch_plant, String supplier_code, String supplier_site_code)
@@ -725,7 +725,7 @@ namespace XCustPr
             String filenameZip = "", ilename2 = "", ilename3 = "", filename = "";
             if (flag.Equals("PO008"))
             {
-                filenameZip = Cm.initC.PathZip + "\\xcustpr.zip";
+                filenameZip = Cm.initC.PathFileCSV + "\\xcustpr.zip";
                 filename = @Cm.initC.PathArchive;
             }
             else

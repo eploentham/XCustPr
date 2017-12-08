@@ -111,12 +111,12 @@ namespace XCustPr
             }
             return chk;
         }
-        public void deletexCPR(String po_header_id, String po_line_id)
+        public void deletexCPR(String po_header_id, String po_line_id, String pathLog)
         {
             String sql = "Delete From " + xCPO.table + " Where " + xCPO.PO_HEADER_ID + "='" + po_header_id + "' and " + xCPO.PO_LINE_ID + "='" + po_line_id + "'";
-            conn.ExecuteNonQuery(sql, "kfc_po");
+            conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
         }
-        public String updateOutBoundFlag(String linfox_po_number, String linfox_po_line_number)
+        public String updateOutBoundFlag(String linfox_po_number, String linfox_po_line_number, String pathLog)
         {
             String sql = "", chk = "";
             sql = "Update " + xCPO.table + " " +
@@ -126,20 +126,20 @@ namespace XCustPr
                 "Left Join xcust_po_tbl po On  po.REQUISITION_HEADER_ID = PR.REQUISITION_HEADER_ID and po.REQUISITION_LINE_ID = PR.REQUISITION_LINE_ID " +
                 "Where PR.ATTRIBUTE1_L = '" + linfox_po_number + "' " +
                 "and PR.ATTRIBUTE2_L = '" + linfox_po_line_number + "') " ;
-
+            conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
             return chk;
         }
-        public String insertxCPR(XcustPoTbl p)
+        public String insertxCPR(XcustPoTbl p, String pathLog)
         {
             String sql = "", chk = "";
             if (selectDupPk(p.PO_HEADER_ID, p.PO_LINE_ID))
             {
-                deletexCPR(p.PO_HEADER_ID, p.PO_LINE_ID);
+                deletexCPR(p.PO_HEADER_ID, p.PO_LINE_ID, pathLog);
             }
-            chk = insert(p);
+            chk = insert(p, pathLog);
             return chk;
         }
-        public String insert(XcustPoTbl p)
+        public String insert(XcustPoTbl p, String pathLog)
         {
             String sql = "", chk = "";
             try
@@ -150,6 +150,19 @@ namespace XCustPr
                 //}
                 //p.RowNumber = selectMaxRowNumber(p.YearId);
                 //p.Active = "1";
+
+                if (p.QUANTITY.ToLower().Equals("PCS"))
+                {
+                    chk = "";
+                }
+
+                p.SOLDTO_LE_ID = p.SOLDTO_LE_ID.Equals("") ? "null" : p.SOLDTO_LE_ID;
+                p.ASSESSABLE_VALUE = p.ASSESSABLE_VALUE.Equals("") ? "null" : p.ASSESSABLE_VALUE;
+                p.SHIP_TO_LOCATION_ID = p.SHIP_TO_LOCATION_ID.Equals("") ? "null" : p.SHIP_TO_LOCATION_ID;
+                p.REQUISITION_HEADER_ID = p.REQUISITION_HEADER_ID.Equals("") ? "null" : p.REQUISITION_HEADER_ID;
+                p.REQUISITION_LINE_ID = p.REQUISITION_LINE_ID.Equals("") ? "null" : p.REQUISITION_LINE_ID;
+                p.QUANTITY = p.QUANTITY.Equals("") ? "null" : p.QUANTITY;
+                p.QUANTITY_RECEIPT = p.QUANTITY_RECEIPT.Equals("") ? "null" : p.QUANTITY_RECEIPT;
                 String last_update_by = "0", creation_by = "0";
                 p.TAX_AMOUNT = p.TAX_AMOUNT.Equals("") ? "0" : p.TAX_AMOUNT;
                 sql = "Insert Into " + xCPO.table + "(" + xCPO.AGENT_ID + "," + xCPO.APPROVED_DATE + "," + xCPO.APPROVED_FLAG + "," +
@@ -175,8 +188,8 @@ namespace XCustPr
                     xCPO.ACC_SEGMENT5 + "," + xCPO.ACC_SEGMENT6 +
 
                     ") " +
-                    "Values(" + p.AGENT_ID + ",'" + p.APPROVED_DATE + "','" + p.APPROVED_FLAG + "','" +
-                    p.ASSESSABLE_VALUE + "','" + p.ATTRIBUTE1 + "','" + p.ATTRIBUTE2 + "','" +
+                    "Values(" + p.AGENT_ID + ",'" + p.APPROVED_DATE + "','" + p.APPROVED_FLAG + "'," +
+                    p.ASSESSABLE_VALUE + ",'" + p.ATTRIBUTE1 + "','" + p.ATTRIBUTE2 + "','" +
                     p.ATTRIBUTE3 + "','" + p.ATTRIBUTE4 + "','" + p.ATTRIBUTE_CATEGORY + "','" +
                     p.BILLTO_BU + "','" + p.BILLTO_BU_ID + "','" + p.BILL_TO_LOCATION_ID + "','" +
                     p.BUYER + "','" + p.CATEGORY_NM + "','" + p.CREATION_DATE + "','" +
@@ -186,11 +199,11 @@ namespace XCustPr
                     p.LAST_UPDATED_BY + "','" + p.LINE_NUM + "','" + p.LINE_STATUS + "','" +
                     p.LINE_TYPE_ID + "','" + p.PAYMENT_TERM + "','" + p.PO_HEADER_ID + "','" +
                     p.PO_LINE_ID + "','" + p.PRC_BU + "','" + p.PRC_BU_ID + "','" +
-                    p.PRODUCT_TYPE + "','" + p.QUANTITY + "','" + p.QUANTITY_RECEIPT + "','" +
-                    p.REQUISITION_HEADER_ID + "','" + p.REQUISITION_LINE_ID + "','" + p.REQ_BU + "','" +
+                    p.PRODUCT_TYPE + "'," + p.QUANTITY + "," + p.QUANTITY_RECEIPT + "," +
+                    p.REQUISITION_HEADER_ID + "," + p.REQUISITION_LINE_ID + ",'" + p.REQ_BU + "','" +
                     p.REQ_BU_ID + "','" + p.REVISED_DATE + "','" + p.REVISION_NUM + "','" +
-                    p.SEGMENT1 + "','" + p.SHIP_TO_LOCATION_ID + "','" + p.SOLDTO_LE + "','" +
-                    p.SOLDTO_LE_ID + "','" + p.SUPPLIER_NOTIF_METHOD + "','" + p.SUPP_NAME + "','" +
+                    p.SEGMENT1 + "'," + p.SHIP_TO_LOCATION_ID + ",'" + p.SOLDTO_LE + "'," +
+                    p.SOLDTO_LE_ID + ",'" + p.SUPPLIER_NOTIF_METHOD + "','" + p.SUPP_NAME + "','" +
                     p.TYPE_LOOKUP_CODE + "','" + p.UNIT_PRICE + "','" + p.UOM_CODE + "','" +
                     p.VENDOR_CONTACT_ID + "','" + p.VENDOR_ID + "','" + p.VENDOR_SITE + "','" +
                     p.TAX_AMOUNT + "','" + p.TAX_CODE + "','" + p.ACC_SEGMENT1 + "','" +
@@ -198,7 +211,7 @@ namespace XCustPr
                     p.ACC_SEGMENT5 + "','" + p.ACC_SEGMENT6 + "'" +
 
                     ") ";
-                chk = conn.ExecuteNonQuery(sql, "kfc_po");
+                chk = conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
                 //chk = p.RowNumber;
                 //chk = p.Code;
             }

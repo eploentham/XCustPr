@@ -56,8 +56,8 @@ namespace XCustPr
         public String EmailHost = "hisorc_ba";        // orc backoffice
         public String EmailSender = "172.25.1.153";
         public String FTPServer = "root";
-        public String PathZipExtract = "Ekartc2c5";
-        public String PathZip = "3306";
+        public String PathFileZip = "Ekartc2c5";
+        public String PathFileCSV = "3306";
 
         public String databaseDBKFCPO = "bithis";        // orc BIT
         public String hostDBKFCPO = "172.25.1.153";
@@ -94,6 +94,10 @@ namespace XCustPr
         public String AP004PathInitial = "", AP004PathProcess = "", AP004PathError = "", AP004PathArchive = "", AP004ImportSource="";
         public String AP004PathLog = "";
 
+        public String ValueSetPathLog = "";
 
+        public String PoRWebServicePathLog = "";
+        public String POWebServicePathLog = "";
+        public String PRWebServicePathLog = "";
     }
 }

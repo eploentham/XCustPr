@@ -41,10 +41,10 @@ namespace XCustPr
 
             xCSIIT.table = "XCUST_SUP_INVOICE_INT_TBL";
         }
-        public void DeleteTemp()
+        public void DeleteTemp(String pathLog)
         {
             String sql = "Delete From " + xCSIIT.table;
-            conn.ExecuteNonQuery(sql, "kfc_po");
+            conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
         }
         public DataTable selectAll()
         {
@@ -67,7 +67,7 @@ namespace XCustPr
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
-        public void insertBluk(List<String> supplier, String filename, String host, MaterialProgressBar pB1)
+        public void insertBluk(List<String> supplier, String filename, String host, MaterialProgressBar pB1, String pathLog)
         {
             int i = 0;
             pB1.Minimum = 0;
@@ -95,11 +95,11 @@ namespace XCustPr
                 item.VALIDATE_FLAG = "";
                 item.PROCESS_FLAG = "";
                 item.ERROR_MSG = "";
-                insert(item);
+                insert(item, pathLog);
             }
             
         }
-        public String insert(XcustSupInvoiceIntTbl p)
+        public String insert(XcustSupInvoiceIntTbl p, String pathLog)
         {
             String sql = "", chk = "";
             try
@@ -125,7 +125,7 @@ namespace XCustPr
                     p.TOTAL2 + ",'" + p.VALIDATE_FLAG + "'," + p.VAT_AMOUNT + "," +
                     p.VAT_AMOUNT2 + "" +
                     ") ";
-                chk = conn.ExecuteNonQuery(sql, "kfc_po");
+                chk = conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
                 //chk = p.RowNumber;
                 //chk = p.Code;
             }

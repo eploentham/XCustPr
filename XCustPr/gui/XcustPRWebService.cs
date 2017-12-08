@@ -59,7 +59,7 @@ namespace XCustPr
             lb2.Text = lb2.Text + " " + Cm.xcustpowebservice_run;
             if (Cm.xcustprwebservice_run.ToLower().Equals("on"))
             {
-                cPrWS.setXcustPRTbl(lv1, this, pB1);
+                cPrWS.setXcustPRTbl(lv1, this, pB1, Cm.initC.PRWebServicePathLog);
             }
             //int i = 1;
         }
@@ -135,7 +135,7 @@ namespace XCustPr
         }
         private void btnRead_Click(object sender, EventArgs e)
         {
-            cPrWS.setXcustPRTbl(lv1, this, pB1);
+            cPrWS.setXcustPRTbl(lv1, this, pB1, Cm.initC.PRWebServicePathLog);
         }
         private void txtFileName_Leave(object sender, EventArgs e)
         {

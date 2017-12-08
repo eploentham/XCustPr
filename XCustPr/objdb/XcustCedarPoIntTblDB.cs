@@ -70,10 +70,10 @@ namespace XCustPr
 
             xCCPIT.table = "XCUST_CEDAR_PO_INT_TBL";
         }
-        public void DeleteCedarTemp()
+        public void DeleteCedarTemp(string pathLog)
         {
             String sql = "Delete From " + xCCPIT.table;
-            conn.ExecuteNonQuery(sql, "kfc_po");
+            conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
         }
         public DataTable selectCedarGroupByFilename()
         {
@@ -89,7 +89,7 @@ namespace XCustPr
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
-        public void insertBluk(List<String> cedar, String filename, String host, MaterialProgressBar pB1)
+        public void insertBluk(List<String> cedar, String filename, String host, MaterialProgressBar pB1, String pathLog)
         {
             int i = 0;
             TimeZoneInfo tz = TimeZoneInfo.FindSystemTimeZoneById("US Eastern Standard Time");
@@ -205,7 +205,7 @@ namespace XCustPr
                         .Append(",'").Append(validate_flag).Append("',").Append(vat).Append(",'").Append(week)
                         .Append("','").Append(work_type).Append("','").Append(wo_no).Append("','").Append(xno)                        
                         .Append("') ");
-                    conn.ExecuteNonQuery(sql.ToString(), host);
+                    conn.ExecuteNonQuery(sql.ToString(), host, pathLog);
                 }
             }
         }

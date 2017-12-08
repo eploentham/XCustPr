@@ -43,7 +43,8 @@ namespace XCustPr
         {
             conn = new ConnectDB("kfc_po", Cm.initC);        //standard
             vPrPo = new ValidatePrPo();
-
+            Cm.createFolderPOWebService();
+            Cm.createFolderPRWebService();
             xCPRDB = new XcustPrTblDB(conn, Cm.initC);
             xCPODB = new XcustPoTblDB(conn, Cm.initC);
 
@@ -52,13 +53,15 @@ namespace XCustPr
             fV1B = new Font(fontName, fontSize9, FontStyle.Bold);        //standard
             fV1 = new Font(fontName, fontSize8, FontStyle.Regular);        //standard
         }
-        public void setXcustPRTbl(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
+        public void setXcustPRTbl(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String pathLog)
         {
             String uri = "", dump = "";
             //HttpWebRequest request = CreateWebRequest();
             XmlDocument soapEnvelopeXml = new XmlDocument();
             const Int32 BufferSize = 128;
             String[] filePO;
+            DateTime currDate = System.DateTime.Now.AddDays(-1);
+            String date = currDate.Month.ToString("00") + "-" + currDate.Day.ToString("00") + "-" + currDate.Year.ToString();
             addListView("setXcustPRTbl ", "Web Service", lv1, form1);
             //filePO = Cm.getFileinFolder(Cm.initC.PathZip);
             //String text = System.IO.File.ReadAllText(filePO[0]);
@@ -79,14 +82,14 @@ namespace XCustPr
                                     "<pub:multiValuesAllowed>False</pub:multiValuesAllowed> " +
                                     "<pub:name>p_creation_dte_frm</pub:name> " +
                                     "<pub:values> " +
-                                        "<pub:item></pub:item> " +
+                                        "<pub:item>" + date + "</pub:item> " +
                                     "</pub:values>" +
                                 "</pub:item>" +
                                 "<pub:item>" +
                                 "<pub:multiValuesAllowed>False</pub:multiValuesAllowed>" +
                                 "<pub:name>p_creation_dte_to</pub:name>" +
                                 "<pub:values>" +
-                                "<pub:item></pub:item>" +
+                                "<pub:item>" + date + "</pub:item>" +
                                 "</pub:values>" +
                                 "</pub:item> " +
                                 "<pub:item>" +
@@ -190,92 +193,104 @@ namespace XCustPr
             //var nodesTable = doc1.DocumentNode.Descendants("tr");
             String[] data1 = decodedString.Split('\n');
             //foreach (var nodeTr in nodesTable)
+            addListView("setXcustPRTbl จำนวนข้อมูล", "Web Service", lv1, form1);
+            pB1.Visible = true;
+            pB1.Minimum = 0;
+            pB1.Maximum = data1.Length;
             for (int row = 0; row < data1.Length; row++)
             {
-                if (row == 0) continue;
-                if (data1[row].Length <= 0) continue;
+                try
+                {
+                    if (row == 0) continue;
+                    if (data1[row].Length <= 0) continue;
+                    pB1.Value = row;
+                    String[] data2 = data1[row].Split(',');
+                    XcustPrTbl item = new XcustPrTbl();
+                    item.REQUISITION_NUMBER = data2[0].Trim();
+                    item.REQUISITION_HEADER_ID = data2[1].Trim();
+                    item.REQUISITION_LINE_ID = data2[2].Trim();
+                    item.REQ_BU_ID = data2[3].Trim();
+                    item.NAME = data2[4].Trim().Replace(@"""", "");
+                    item.CREATION_DATE = xCPRDB.xCPR.dateYearToDB(data2[5].Trim());
+                    item.FUNDS_STATUS = data2[6].Trim();
+                    item.DESCRIPTION = data2[7].Trim().Replace(@"""", "");
+                    item.ATTRIBUTE1 = data2[8].Trim();
+                    item.ATTRIBUTE2 = data2[9].Trim();
+                    item.ATTRIBUTE3 = data2[10].Trim();
+
+                    item.ATTRIBUTE4 = data2[11].Trim();
+                    item.ATTRIBUTE5 = data2[12].Trim();
+                    item.ATTRIBUTE6 = data2[13].Trim();
+                    item.ATTRIBUTE7 = data2[14].Trim();
+                    item.ATTRIBUTE8 = data2[15].Trim();
+                    item.ATTRIBUTE9 = data2[16].Trim();
+                    item.ATTRIBUTE10 = data2[17].Trim();
+                    item.ATTRIBUTE11 = data2[18].Trim();
+                    item.ATTRIBUTE12 = data2[19].Trim();
+                    item.ATTRIBUTE13 = data2[20].Trim();
+
+                    item.ATTRIBUTE14 = data2[21].Trim();
+                    item.ATTRIBUTE15 = data2[22].Trim();
+                    item.ATTRIBUTE16 = data2[23].Trim();
+                    item.ATTRIBUTE17 = data2[24].Trim();
+                    item.ATTRIBUTE18 = data2[25].Trim();
+                    item.ATTRIBUTE19 = data2[26].Trim();
+                    item.ATTRIBUTE20 = data2[27].Trim();
+                    item.LAST_UPDATE_DATE = data2[28].Trim();
+                    item.LINE_NUMBER = data2[29].Trim();
+                    item.LINE_TYPE = data2[30].Trim();
+
+                    item.UOM_CODE = data2[31].Trim();
+                    item.UNIT_PRICE = data2[32].Trim();
+                    item.ITEM_ID = data2[33].Trim();
+                    item.ITEM_DESCRIPTION = data2[34].Trim().Replace(@"""", "");
+                    item.AMOUNT = data2[35].Trim();
+                    item.CURRENCY_AMOUNT = data2[36].Trim();
+                    item.PO_ORDER = data2[37].Trim();
+                    item.SECONDARY_UOM_CODE = data2[38].Trim();
+                    item.SECONDARY_QUANTITY = data2[39].Trim();
+                    item.CREATED_BY = data2[40].Trim();
+
+                    item.DESTINATION_TYPE_CODE = data2[41].Trim();
+                    item.DESTINATION_ORGANIZATION_ID = data2[42].Trim();
+                    item.SOURCE_TYPE_CODE = data2[43].Trim();
+                    item.DOCUMENT_STATUS = data2[44].Trim();
+                    //item.ATTRIBUTE_CATEGORY = data2[45].Trim();     //CATEGORY
+                    //item.CONVERSION_DATE = data2[46].Trim();      //CONVERSION_TYPE
+                    item.CONVERSION_DATE = data2[47].Trim();
+                    //item.CONVERSION_DATE = data2[48].Trim();//CONVERSION_RATE
+                    item.LOCATION = data2[49].Trim();
+                    item.VENDOR_SITE_ID = data2[50].Trim();
+
+                    item.VENDOR_SITE_ID = data2[51].Trim();
+                    item.ATTRIBUTE_CATEGORY = data2[52].Trim();
+                    item.ATTRIBUTE1_L = data2[53].Trim();
+                    item.ATTRIBUTE2_L = data2[54].Trim();
+                    item.ATTRIBUTE3_L = data2[55].Trim();
+                    item.ATTRIBUTE_CATEGORY_L = data2[56].Trim();
+                    item.BUDGET_DATE = data2[57].Trim().Replace(@"""", "");
+                    item.FUNDS_STATUS = data2[58].Trim();
+                    item.REQUISITION_LINE_ID = data2[59].Trim();
+                    item.PERCENT = data2[60].Trim();
+
+                    item.DISTRIBUTION_CURRENCY_AMOUNT = data2[61].Trim();
+                    item.DISTRIBUTION = data2[62].Trim();
+                    item.CHARGE_ACCOUNT = data2[63].Trim();
+
+                    //int VALUE_SET_ID = 0, VALUE_SET_CODE = 1, VALUE_ID = 2, VALUE = 3, DESCRIPTION = 4, ENABLED_FLAG = 5, LAST_UPDATE_DATE = 6, CREATION_DATE = 7;
+
+                    xCPRDB.insertxCPR(item, pathLog);
+                }
+                catch(Exception ex)
+                {
+
+                }
                 
-                String[] data2 = data1[row].Split(',');
-                XcustPrTbl item = new XcustPrTbl();
-                item.REQUISITION_NUMBER = data2[0].Trim();
-                item.REQUISITION_HEADER_ID = data2[1].Trim();
-                item.REQUISITION_LINE_ID = data2[2].Trim();
-                item.REQ_BU_ID = data2[3].Trim();
-                item.NAME = data2[4].Trim().Replace(@"""","");
-                item.CREATION_DATE = xCPRDB.xCPR.dateYearToDB(data2[5].Trim());
-                item.FUNDS_STATUS = data2[6].Trim();
-                item.DESCRIPTION = data2[7].Trim().Replace(@"""", "");
-                item.ATTRIBUTE1 = data2[8].Trim();
-                item.ATTRIBUTE2 = data2[9].Trim();
-                item.ATTRIBUTE3 = data2[10].Trim();
-
-                item.ATTRIBUTE4 = data2[11].Trim();
-                item.ATTRIBUTE5 = data2[12].Trim();
-                item.ATTRIBUTE6 = data2[13].Trim();
-                item.ATTRIBUTE7 = data2[14].Trim();
-                item.ATTRIBUTE8 = data2[15].Trim();
-                item.ATTRIBUTE9 = data2[16].Trim();
-                item.ATTRIBUTE10 = data2[17].Trim();
-                item.ATTRIBUTE11 = data2[18].Trim();
-                item.ATTRIBUTE12 = data2[19].Trim();
-                item.ATTRIBUTE13 = data2[20].Trim();
-
-                item.ATTRIBUTE14 = data2[21].Trim();
-                item.ATTRIBUTE15 = data2[22].Trim();
-                item.ATTRIBUTE16 = data2[23].Trim();
-                item.ATTRIBUTE17 = data2[24].Trim();
-                item.ATTRIBUTE18 = data2[25].Trim();
-                item.ATTRIBUTE19 = data2[26].Trim();
-                item.ATTRIBUTE20 = data2[27].Trim();
-                item.LAST_UPDATE_DATE = data2[28].Trim();
-                item.LINE_NUMBER = data2[29].Trim();
-                item.LINE_TYPE = data2[30].Trim();
-
-                item.UOM_CODE = data2[31].Trim();
-                item.UNIT_PRICE = data2[32].Trim();
-                item.ITEM_ID = data2[33].Trim();
-                item.ITEM_DESCRIPTION = data2[34].Trim().Replace(@"""", "");
-                item.AMOUNT = data2[35].Trim();
-                item.CURRENCY_AMOUNT = data2[36].Trim();
-                item.PO_ORDER = data2[37].Trim();
-                item.SECONDARY_UOM_CODE = data2[38].Trim();
-                item.SECONDARY_QUANTITY = data2[39].Trim();
-                item.CREATED_BY = data2[40].Trim();
-
-                item.DESTINATION_TYPE_CODE = data2[41].Trim();
-                item.DESTINATION_ORGANIZATION_ID = data2[42].Trim();
-                item.SOURCE_TYPE_CODE = data2[43].Trim();
-                item.DOCUMENT_STATUS = data2[44].Trim();
-                //item.ATTRIBUTE_CATEGORY = data2[45].Trim();     //CATEGORY
-                //item.CONVERSION_DATE = data2[46].Trim();      //CONVERSION_TYPE
-                item.CONVERSION_DATE = data2[47].Trim();
-                //item.CONVERSION_DATE = data2[48].Trim();//CONVERSION_RATE
-                item.LOCATION = data2[49].Trim();         
-                item.VENDOR_SITE_ID = data2[50].Trim();
-
-                item.VENDOR_SITE_ID = data2[51].Trim();
-                item.ATTRIBUTE_CATEGORY = data2[52].Trim();
-                item.ATTRIBUTE1_L = data2[53].Trim();
-                item.ATTRIBUTE2_L = data2[54].Trim();
-                item.ATTRIBUTE3_L = data2[55].Trim();
-                item.ATTRIBUTE_CATEGORY_L = data2[56].Trim();
-                item.BUDGET_DATE = data2[57].Trim();
-                item.FUNDS_STATUS = data2[58].Trim();
-                item.REQUISITION_LINE_ID = data2[59].Trim();
-                item.PERCENT = data2[60].Trim();
-
-                item.DISTRIBUTION_CURRENCY_AMOUNT = data2[61].Trim();
-                item.DISTRIBUTION = data2[62].Trim();
-                item.CHARGE_ACCOUNT = data2[63].Trim();
-
-                //int VALUE_SET_ID = 0, VALUE_SET_CODE = 1, VALUE_ID = 2, VALUE = 3, DESCRIPTION = 4, ENABLED_FLAG = 5, LAST_UPDATE_DATE = 6, CREATION_DATE = 7;
-
-                xCPRDB.insertxCPR(item);
             }
-
+            pB1.Visible = false;
             Console.WriteLine(decodedString);
         }
-        public void setXcustPOTbl(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
+        public void setXcustPOTbl(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String pathLog)
         {
             String uri = "", dump = "";
             //HttpWebRequest request = CreateWebRequest();
@@ -283,6 +298,8 @@ namespace XCustPr
             const Int32 BufferSize = 128;
             String[] filePO;
             addListView("setXcustPOTbl ", "Web Service", lv1, form1);
+            DateTime currDate = System.DateTime.Now.AddDays(-1);
+            String date = currDate.Month.ToString("00")+"-"+currDate.Day.ToString("00")+"-"+currDate.Year.ToString();
             //filePO = Cm.getFileinFolder(Cm.initC.PathZip);
             //String text = System.IO.File.ReadAllText(filePO[0]);
             //byte[] byteArraytext = Encoding.UTF8.GetBytes(text);
@@ -330,14 +347,14 @@ namespace XCustPr
                                 "<pub:multiValuesAllowed>False</pub:multiValuesAllowed> " +
                                 "<pub:name>p_creation_dte_frm</pub:name> " +
                                 "<pub:values> " +
-                                "<pub:item></pub:item> " +
+                                "<pub:item>"+ date + "</pub:item> " +
                                 "</pub:values> " +
                                 "</pub:item>  " +
                                 "<pub:item> " +
                                 "<pub:multiValuesAllowed>False</pub:multiValuesAllowed> " +
                                 "<pub:name>p_creation_date_to</pub:name> " +
                                 "<pub:values> " +
-                                "<pub:item></pub:item> " +
+                                "<pub:item>"+ date + "</pub:item> " +
                                 "</pub:values> " +
                                 "</pub:item> " +
                                 "</pub:parameterNameValues>   " +
@@ -413,94 +430,112 @@ namespace XCustPr
             //var nodesTable = doc1.DocumentNode.Descendants("tr");
             String[] data1 = decodedString.Split('\n');
             //foreach (var nodeTr in nodesTable)
+            addListView("setXcustPRTbl จำนวนข้อมูล" , "Web Service", lv1, form1);
+            pB1.Visible = true;
+            pB1.Minimum = 0;
+            pB1.Maximum = data1.Length;
             for (int row = 0; row < data1.Length; row++)
             {
-                if (row == 0) continue;
-                if (data1[row].Length <= 0) continue;
+                try
+                {
+                    if (row == 0) continue;
+                    if (data1[row].Length <= 0) continue;
+                    pB1.Value = row;
+                    String[] data2 = data1[row].Split(',');
+                    XcustPoTbl item = new XcustPoTbl();
+                    item.PRC_BU = data2[0].Trim().Replace(@"""", "");
+                    item.PO_HEADER_ID = data2[1].Trim();
+                    item.PRC_BU_ID = data2[2].Trim();
+                    item.REQ_BU = data2[3].Trim().Replace(@"""", "");
+                    item.REQ_BU_ID = data2[4].Trim().Replace(@"""", "");
+                    item.SOLDTO_LE = data2[5].Trim().Replace(@"""", "");
+                    item.PO_LINE_ID = data2[6].Trim();
+                    item.SOLDTO_LE_ID = data2[7].Trim().Replace(@"""", "");
+                    item.BILLTO_BU = data2[8].Trim().Replace(@"""", "");
+                    item.BILLTO_BU_ID = data2[9].Trim();
+                    item.SEGMENT1 = data2[10].Trim();
 
-                String[] data2 = data1[row].Split(',');
-                XcustPoTbl item = new XcustPoTbl();
-                item.PRC_BU = data2[0].Trim().Replace(@"""", "");
-                item.PO_HEADER_ID = data2[1].Trim();
-                item.PRC_BU_ID = data2[2].Trim();
-                item.REQ_BU = data2[3].Trim().Replace(@"""", "");
-                item.REQ_BU_ID = data2[4].Trim().Replace(@"""", "");
-                item.SOLDTO_LE = data2[5].Trim().Replace(@"""", "");
-                item.PO_LINE_ID = data2[6].Trim();
-                item.SOLDTO_LE_ID = data2[7].Trim().Replace(@"""", "");
-                item.BILLTO_BU = data2[8].Trim().Replace(@"""", "");
-                item.BILLTO_BU_ID = data2[9].Trim();
-                item.SEGMENT1 = data2[10].Trim();
+                    item.DOCUMENT_STATUS = data2[11].Trim().Replace(@"""", "");
+                    item.BUYER = data2[12].Trim();
+                    item.CREATION_DATE = xCPODB.xCPO.dateTimeYearToDB(data2[13].Trim().Replace(@"""", ""));
+                    item.AGENT_ID = data2[14].Trim();
+                    item.TYPE_LOOKUP_CODE = data2[15].Trim();
+                    item.LAST_UPDATED_BY = data2[16].Trim();
+                    item.SHIP_TO_LOCATION_ID = data2[17].Trim();
+                    item.BILL_TO_LOCATION_ID = data2[18].Trim();
+                    item.CURRENCY_CODE = data2[19].Trim();
+                    item.REVISION_NUM = data2[20].Trim();
 
-                item.DOCUMENT_STATUS = data2[11].Trim().Replace(@"""", "");
-                item.BUYER = data2[12].Trim();
-                item.CREATION_DATE = xCPODB.xCPO.dateTimeYearToDB(data2[13].Trim().Replace(@"""", ""));
-                item.AGENT_ID = data2[14].Trim();
-                item.TYPE_LOOKUP_CODE = data2[15].Trim();
-                item.LAST_UPDATED_BY = data2[16].Trim();
-                item.SHIP_TO_LOCATION_ID = data2[17].Trim();
-                item.BILL_TO_LOCATION_ID = data2[18].Trim();
-                item.CURRENCY_CODE = data2[19].Trim();
-                item.REVISION_NUM = data2[20].Trim();
+                    item.REVISED_DATE = data2[21].Trim();
+                    item.APPROVED_FLAG = data2[22].Trim();
+                    item.APPROVED_DATE = data2[23].Trim();
+                    item.ATTRIBUTE_CATEGORY = data2[24].Trim();
+                    item.ATTRIBUTE1 = data2[25].Trim();
+                    item.ATTRIBUTE2 = data2[26].Trim();
+                    item.ATTRIBUTE3 = data2[27].Trim();
+                    item.ATTRIBUTE4 = data2[28].Trim();
+                    //item.LINE_NUMBER = data2[29].Trim();        //ATTRIBUTE5
+                    item.VENDOR_CONTACT_ID = data2[30].Trim();
 
-                item.REVISED_DATE = data2[21].Trim();
-                item.APPROVED_FLAG = data2[22].Trim();
-                item.APPROVED_DATE = data2[23].Trim();
-                item.ATTRIBUTE_CATEGORY = data2[24].Trim();
-                item.ATTRIBUTE1 = data2[25].Trim();
-                item.ATTRIBUTE2 = data2[26].Trim();
-                item.ATTRIBUTE3 = data2[27].Trim();
-                item.ATTRIBUTE4 = data2[28].Trim();
-                //item.LINE_NUMBER = data2[29].Trim();        //ATTRIBUTE5
-                item.VENDOR_CONTACT_ID = data2[30].Trim();
+                    item.SUPPLIER_NOTIF_METHOD = data2[31].Trim();
+                    item.EMAIL_ADDRESS = data2[32].Trim();
+                    item.SUPP_NAME = data2[33].Trim().Replace(@"""", "");
+                    item.VENDOR_SITE = data2[34].Trim().Replace(@"""", "");
+                    item.PAYMENT_TERM = data2[35].Trim().Replace(@"""", "");
+                    item.LINE_TYPE_ID = data2[36].Trim();
+                    item.LINE_STATUS = data2[37].Trim().Replace(@"""", "");
+                    item.LINE_NUM = data2[38].Trim();
+                    item.CATEGORY_NM = data2[39].Trim();
+                    item.ITEM_ID = data2[40].Trim();
 
-                item.SUPPLIER_NOTIF_METHOD = data2[31].Trim();
-                item.EMAIL_ADDRESS = data2[32].Trim();
-                item.SUPP_NAME = data2[33].Trim().Replace(@"""", "");
-                item.VENDOR_SITE = data2[34].Trim().Replace(@"""", "");
-                item.PAYMENT_TERM = data2[35].Trim();
-                item.LINE_TYPE_ID = data2[36].Trim();
-                item.LINE_STATUS = data2[37].Trim().Replace(@"""", "");
-                item.LINE_NUM = data2[38].Trim();
-                item.CATEGORY_NM = data2[39].Trim();
-                item.ITEM_ID = data2[40].Trim();
+                    item.ITEM_DESCRIPTION = data2[41].Trim().Replace(@"""", "");
+                    item.UOM_CODE = data2[42].Trim();
+                    item.QUANTITY = data2[43].Trim();
+                    item.UNIT_PRICE = data2[44].Trim();
+                    item.VENDOR_ID = data2[45].Trim();
+                    item.VENDOR_SITE = data2[46].Trim();
+                    item.REQUISITION_HEADER_ID = data2[47].Trim();
+                    item.REQUISITION_LINE_ID = data2[48].Trim();
+                    item.ATTRIBUTE_CATEGORY_L = data2[49].Trim();       //ATTRIBUTE_CATEGORY_L
+                    item.ATTRIBUTE1_L = data2[50].Trim();     //ATTRIBUTE1_L
 
-                item.ITEM_DESCRIPTION = data2[41].Trim().Replace(@"""", "");
-                item.UOM_CODE = data2[42].Trim();
-                item.QUANTITY = data2[43].Trim();
-                item.UNIT_PRICE = data2[44].Trim();
-                item.VENDOR_ID = data2[45].Trim();     
-                item.VENDOR_SITE = data2[46].Trim();      
-                item.REQUISITION_HEADER_ID = data2[47].Trim();
-                item.REQUISITION_LINE_ID = data2[48].Trim();
-                item.ATTRIBUTE_CATEGORY_L = data2[49].Trim();       //ATTRIBUTE_CATEGORY_L
-                item.ATTRIBUTE1_L = data2[50].Trim();     //ATTRIBUTE1_L
+                    item.ATTRIBUTE2_L = data2[51].Trim();     //ATTRIBUTE2_L
+                    item.ATTRIBUTE3_L = data2[52].Trim();     //ATTRIBUTE3_L
+                    item.TAX_CODE = data2[53].Trim();
+                    item.TAX_AMOUNT = data2[54].Trim();
+                    item.ACC_SEGMENT1 = data2[55].Trim();
+                    item.ACC_SEGMENT2 = data2[56].Trim();
+                    item.ACC_SEGMENT3 = data2[57].Trim();
+                    item.ACC_SEGMENT4 = data2[58].Trim();
+                    item.ACC_SEGMENT5 = data2[59].Trim();
 
-                item.ATTRIBUTE2_L = data2[51].Trim();     //ATTRIBUTE2_L
-                item.ATTRIBUTE3_L = data2[52].Trim();     //ATTRIBUTE3_L
-                item.TAX_CODE = data2[53].Trim();
-                item.TAX_AMOUNT = data2[54].Trim();
-                item.ACC_SEGMENT1 = data2[55].Trim();
-                item.ACC_SEGMENT2 = data2[56].Trim();
-                item.ACC_SEGMENT3 = data2[57].Trim();
-                item.ACC_SEGMENT4 = data2[58].Trim();
-                item.ACC_SEGMENT5 = data2[59].Trim();
+                    item.ACC_SEGMENT6 = data2[60].Trim();
+                    item.COUNT_AP_INVOICE = data2[61].Trim();
+                    item.DESTINATION_TYPE = data2[64].Trim();
+                    item.DELIVER_TO_LOC = data2[65].Trim();
+                    item.PRODUCT_TYPE = data2[66].Trim();
+                    item.ASSESSABLE_VALUE = data2[67].Trim().Replace("|#",",");
+                    item.DELIVER_TO_LOC_LINFOX = data2[68].Trim();
+                    //item.ACC_SEGMENT5 = "";
+                    //item.ACC_SEGMENT6 = "";
+                    if (item.ASSESSABLE_VALUE.ToLower().Equals("goods"))
+                    {
+                        dump = "";
+                    }
+                    if (item.ASSESSABLE_VALUE.ToLower().Equals("services"))
+                    {
+                        dump = "";
+                    }
+                    //int VALUE_SET_ID = 0, VALUE_SET_CODE = 1, VALUE_ID = 2, VALUE = 3, DESCRIPTION = 4, ENABLED_FLAG = 5, LAST_UPDATE_DATE = 6, CREATION_DATE = 7;
 
-                item.ACC_SEGMENT6 = data2[60].Trim();
-                item.COUNT_AP_INVOICE = data2[61].Trim();
-                item.DESTINATION_TYPE = data2[64].Trim();
-                item.DELIVER_TO_LOC = data2[65].Trim();
-                item.PRODUCT_TYPE = data2[66].Trim();
-                item.ASSESSABLE_VALUE = data2[67].Trim();
-                item.DELIVER_TO_LOC_LINFOX = data2[68].Trim();
-                //item.ACC_SEGMENT5 = "";
-                //item.ACC_SEGMENT6 = "";
+                    xCPODB.insertxCPR(item, pathLog);
+                }
+                catch (Exception ex)
+                {
 
-                //int VALUE_SET_ID = 0, VALUE_SET_CODE = 1, VALUE_ID = 2, VALUE = 3, DESCRIPTION = 4, ENABLED_FLAG = 5, LAST_UPDATE_DATE = 6, CREATION_DATE = 7;
-
-                xCPODB.insertxCPR(item);
+                }
             }
-
+            pB1.Visible = false;
             Console.WriteLine(decodedString);
         }
         private void addListView(String col1, String col2, MaterialListView lv1, Form form1)

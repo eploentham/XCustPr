@@ -58,7 +58,7 @@ namespace XCustPr
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
-        public String insert(XcustPoHeaderIntTbl p)
+        public String insert(XcustPoHeaderIntTbl p, String pathLog)
         {
             String sql = "", chk = "";
             try
@@ -90,7 +90,7 @@ namespace XCustPr
                     p.soldto_re_name + "','" + p.supplier_code + "','" + p.supplier_site_code + "','" +
                     p.vendor_contact + "','" + p.billto_bu_name + "','" + p.DOCUMENT_ID + "'" +
                     ") ";
-                chk = conn.ExecuteNonQuery(sql, "kfc_po");
+                chk = conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
                 //chk = p.RowNumber;
                 //chk = p.Code;
             }
@@ -99,6 +99,22 @@ namespace XCustPr
                 //MessageBox.Show("Error " + ex.ToString(), "insert Doctor");
             }
 
+            return chk;
+        }
+        public String updateDocumentId(String documentId, String requestId)
+        {
+            String chk = "", sql="";
+
+            try
+            {
+                sql = "Update "+xCPHIT.table+" Set " +
+                    "document_id ='"+ documentId+"' " +
+                    "Where "+xCPHIT;
+            }
+            catch (Exception ex)
+            {
+                //MessageBox.Show("Error " + ex.ToString(), "insert Doctor");
+            }
             return chk;
         }
     }

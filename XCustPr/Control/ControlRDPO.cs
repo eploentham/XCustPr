@@ -38,6 +38,8 @@ namespace XCustPr
         public XcustPorReqLineIntAllDB xCPRLIADB;     // table จริง
         public XcustPorReqDistIntAllDB xCPRDIADB;     // table จริง
 
+        public XcustLinfoxPrTblDB xCLPTDB;
+
         public XcustBuMstTblDB xCBMTDB;
         public XcustDeriverLocatorMstTblDB xCDLMTDB;
         public XcustDeriverOrganizationMstTblDB xCDOMTDB;
@@ -87,6 +89,8 @@ namespace XCustPr
             xCPRHIADB = new XcustPorReqHeaderIntAllDB(conn);
             xCPRLIADB = new XcustPorReqLineIntAllDB(conn, Cm.initC);
             xCPRDIADB = new XcustPorReqDistIntAllDB(conn);
+            xCLPTDB = new XcustLinfoxPrTblDB(conn, Cm.initC);
+
             xCBMTDB = new XcustBuMstTblDB(conn, Cm.initC);
             xCDLMTDB = new XcustDeriverLocatorMstTblDB(conn, Cm.initC);
             xCDOMTDB = new XcustDeriverOrganizationMstTblDB(conn, Cm.initC);
@@ -726,7 +730,7 @@ namespace XCustPr
         }
         public void processGenCSVxCPRHIA(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String flag, String requestId)
         {
-            var file = Cm.initC.PathArchive+ "PorReqHeadersInterfaceAll.csv";
+            var file = Cm.initC.PathFileCSV+ "PorReqHeadersInterfaceAll.csv";
             DataTable dt;
             if (flag.Equals("PO001"))
             {
@@ -846,7 +850,7 @@ namespace XCustPr
         }
         public void processGenCSVxCPRLIA(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String flag, String requestId)
         {
-            var file = Cm.initC.PathArchive + "PorReqLinesInterfaceAll.csv";
+            var file = Cm.initC.PathFileCSV + "PorReqLinesInterfaceAll.csv";
             DataTable dt;
             if (flag.Equals("PO001"))
             {
@@ -1051,7 +1055,7 @@ namespace XCustPr
         }
         public void processGenCSVxCPRDIA(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String flag, String requestId)
         {
-            var file = Cm.initC.PathArchive + "PorReqDistsInterfaceAll.csv";
+            var file = Cm.initC.PathFileCSV + "PorReqDistsInterfaceAll.csv";
             DataTable dt;
             if (flag.Equals("PO001"))
             {
@@ -1229,7 +1233,7 @@ namespace XCustPr
         }
         public void processGenZIP(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String flag)
         {
-            addListView("create zip file " + Cm.initC.PathProcess, "Validate", lv1, form1);
+            addListView("create zip file " + Cm.initC.PathFileCSV, "Validate", lv1, form1);
             String currDate = System.DateTime.Now.ToString("yyyyMMdd");
             String currTime = System.DateTime.Now.ToString("HHmmsss");
 
@@ -1240,12 +1244,17 @@ namespace XCustPr
             if (flag.Equals("PO001"))
             {
 <<<<<<< HEAD
+<<<<<<< HEAD
                 filenameZip = Cm.initC.PathZip + "\\xcustpr.zip";
                 filename = @Cm.initC.PathArchive;s
 =======
                 filenameZip = Cm.initC.PathZip + "\\LINFOX_PR_"+ currDate +currTime+ ".zip";
                 filename = @Cm.initC.PathArchive;
 >>>>>>> 76c7f6255ec05db6453ee469807afa08602830cc
+=======
+                filenameZip = Cm.initC.PathFileZip + "\\LINFOX_PR_"+ currDate +currTime+ ".zip";
+                filename = @Cm.initC.PathFileCSV;
+>>>>>>> 0edec91dfd35278ba9ae2fa7528c7218f51c76c2
             }
             else
             {
@@ -1301,12 +1310,12 @@ namespace XCustPr
             foreach (XcustPorReqLineIntAll xcprlia in listXcustPRLIA)
             {
                 //XcustPorReqLineIntAll xcprlia = xCPRLIADB.setData(row, xCLFPTDB.xCLFPT);
-                String chk = xCPRLIADB.insert(xcprlia);
+                String chk = xCPRLIADB.insert(xcprlia, Cm.initC.pathLogErr);
             }
             foreach (XcustPorReqDistIntAll xcprdia in listXcustPRDIA)
             {
                 //XcustPorReqLineIntAll xcprlia = xCPRLIADB.setData(row, xCLFPTDB.xCLFPT);
-                String chk = xCPRDIADB.insert(xcprdia);
+                String chk = xCPRDIADB.insert(xcprdia, Cm.initC.PathLog);
             }
         }
         public void processInsertTable1(String requestId, MaterialListView lv1, Form form1, MaterialProgressBar pB1)
@@ -1325,21 +1334,78 @@ namespace XCustPr
                 dtLinfox = xCLFPTDB.selectLinfoxByPoNumber(requestId, poNumber);
                 XcustPorReqHeaderIntAll xCPorRHIA = addXcustPRHIA1(poNumber, currDate, row[xCLFPTDB.xCLFPT.file_name].ToString(), requestId, rowH);
                 String seqH = "";
-                seqH = xCPRHIADB.insert(xCPorRHIA);
+                seqH = xCPRHIADB.insert(xCPorRHIA, Cm.initC.pathLogErr);
                 foreach (DataRow rowLinfox in dtLinfox.Rows)
                 {
                     XcustPorReqLineIntAll xCPorRLIA = new XcustPorReqLineIntAll();
                     xCPorRLIA = addXcustPRLIAFromxCLFPT1(rowLinfox);
                     xCPorRLIA.REQ_HEADER_INTERFACE_ID = seqH;
-                    String seqL = xCPRLIADB.insert(xCPorRLIA);
+                    String seqL = xCPRLIADB.insert(xCPorRLIA, Cm.initC.pathLogErr);
 
                     XcustPorReqDistIntAll xCPorRDIA = new XcustPorReqDistIntAll();
                     xCPorRDIA = addXcustPRDIAFromxCLFPT1(rowLinfox);
                     xCPorRDIA.REQ_HEADER_INTERFACE_ID = seqH;
                     xCPorRDIA.REQ_LINE_INTERFACE_ID = seqL;
-                    String chk = xCPRDIADB.insert(xCPorRDIA);
+                    String chk = xCPRDIADB.insert(xCPorRDIA, Cm.initC.PO005PathLog);
                 }
             }
+            xCLFPTDB.updatePrcessFlag(requestId, "kfc_po", Cm.initC.pathLogErr);
+        }
+        public void processInsertTable2(String requestId, MaterialListView lv1, Form form1, MaterialProgressBar pB1)
+        {
+            addListView("insert table " + Cm.initC.PathProcess, "Validate", lv1, form1);
+            String currDate = System.DateTime.Now.ToString("yyyy-MM-dd");
+            int rowH = 0;
+            DataTable dt = new DataTable();
+            dt = xCLFPTDB.selectFilenameByRequestId(requestId);     //moveFileToFolderArchiveError
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    String filename = "", rowCnt = "";
+                    filename = row[xCLFPTDB.xCLFPT.file_name].ToString();
+                    rowCnt = row["row_Cnt"].ToString();
+                    String cnt = "";
+                    cnt = xCLFPTDB.getCountNoErrorByFilename(requestId, filename);
+
+                    if (cnt.Equals(rowCnt))
+                    {
+                        //ที่ ผ่าน ทั้ง file
+                        DataTable dtFilename = new DataTable();
+                        //dtFilename = xCLFPTDB.selectLinfoxByFilename(filename, requestId);
+                        dtFilename = xCLFPTDB.selectLinfoxGroupByPoNumber(filename, requestId);
+                        if (dtFilename.Rows.Count > 0)
+                        {
+                            foreach(DataRow rowFilename in dtFilename.Rows)
+                            {
+                                rowH++;
+                                String poNumber = "";
+                                poNumber = rowFilename[xCLFPTDB.xCLFPT.PO_NUMBER].ToString();
+                                DataTable dtLinfox = new DataTable();
+                                dtLinfox = xCLFPTDB.selectLinfoxByPoNumber(requestId, poNumber);
+                                XcustPorReqHeaderIntAll xCPorRHIA = addXcustPRHIA1(poNumber, currDate, row[xCLFPTDB.xCLFPT.file_name].ToString(), requestId, rowH);
+                                String seqH = "";
+                                seqH = xCPRHIADB.insert(xCPorRHIA, Cm.initC.pathLogErr);
+                                foreach (DataRow rowLinfox in dtLinfox.Rows)
+                                {
+                                    XcustPorReqLineIntAll xCPorRLIA = new XcustPorReqLineIntAll();
+                                    xCPorRLIA = addXcustPRLIAFromxCLFPT1(rowLinfox);
+                                    xCPorRLIA.REQ_HEADER_INTERFACE_ID = seqH;
+                                    String seqL = xCPRLIADB.insert(xCPorRLIA, Cm.initC.pathLogErr);
+
+                                    XcustPorReqDistIntAll xCPorRDIA = new XcustPorReqDistIntAll();
+                                    xCPorRDIA = addXcustPRDIAFromxCLFPT1(rowLinfox);
+                                    xCPorRDIA.REQ_HEADER_INTERFACE_ID = seqH;
+                                    xCPorRDIA.REQ_LINE_INTERFACE_ID = seqL;
+                                    String chk = xCPRDIADB.insert(xCPorRDIA, Cm.initC.PO005PathLog);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+            xCLFPTDB.updatePrcessFlag(requestId, "kfc_po", Cm.initC.pathLogErr);
         }
         /*
          *d. จากนั้น Program จะเอาข้อมูลจาก Table XCUST_LINFOX_PR_TBL มาทำการ Validate 
@@ -1350,7 +1416,7 @@ namespace XCustPr
          * Validate ไม่ผ่าน ลบ temp where ตาม filename
          * h.	กรณีที่ Validate ไม่ผ่าน จะะ Update Validate_flag = ‘E’ พร้อมระบุ Error Message
          */
-        public void processGetTempTableToValidate(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
+        public void processGetTempTableToValidate(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String requestId)
         {
             addListView("อ่าน file จาก " + Cm.initC.PathProcess, "Validate", lv1, form1);
             pB1.Visible = true;
@@ -1383,10 +1449,11 @@ namespace XCustPr
                 chk = false;
                 vPP = new ValidatePrPo();
                 vPP.Filename = "PO001 Parameter ";
-                vPP.Message = "Error PO001-004 : Invalid Requisitioning BU";
+                vPP.Message = " PO001-004 : Invalid Requisitioning BU";
                 vPP.Validate = "";
                 lVPr.Add(vPP);
                 cntErr++;       // gen log
+
             }
             
             //Error PO001-009 : Invalid Deliver-to Organization
@@ -1396,7 +1463,7 @@ namespace XCustPr
                 chk = false;
                 vPP = new ValidatePrPo();
                 vPP.Filename = "PO001 Parameter ";
-                vPP.Message = "Error PO001-009 : Invalid Deliver-to Organization";
+                vPP.Message = " PO001-009 : Invalid Deliver-to Organization";
                 vPP.Validate = "";
                 lVPr.Add(vPP);
                 cntErr++;       // gen log
@@ -1406,7 +1473,7 @@ namespace XCustPr
                 chk = false;
                 vPP = new ValidatePrPo();
                 vPP.Filename = "PO001 Parameter ";
-                vPP.Message = "Error PO001-009 : Duppicate Deliver-to Organization";
+                vPP.Message = " PO001-009 : Duppicate Deliver-to Organization";
                 vPP.Validate = "";
                 lVPr.Add(vPP);
                 cntErr++;       // gen log
@@ -1419,7 +1486,7 @@ namespace XCustPr
                 chk = false;
                 vPP = new ValidatePrPo();
                 vPP.Filename = "PO001 Parameter ";
-                vPP.Message = "Error PO001-008 : Invalid Deliver To Location";
+                vPP.Message = " PO001-008 : Invalid Deliver To Location";
                 vPP.Validate = "";
                 lVPr.Add(vPP);
                 cntErr++;       // gen log
@@ -1431,7 +1498,7 @@ namespace XCustPr
                 chk = false;
                 vPP = new ValidatePrPo();
                 vPP.Filename = "PO001 Parameter ";
-                vPP.Message = "Error PO001-013 : Invalid Currency Code";
+                vPP.Message = " PO001-013 : Invalid Currency Code";
                 vPP.Validate = "";
                 lVPr.Add(vPP);
                 cntErr++;       // gen log
@@ -1442,7 +1509,7 @@ namespace XCustPr
                 chk = false;
                 vPP = new ValidatePrPo();
                 vPP.Filename = "PO001 Parameter ";
-                vPP.Message = "Error PO001-014 : Invalid Procurement BU";
+                vPP.Message = " PO001-014 : Invalid Procurement BU";
                 vPP.Validate = "";
                 lVPr.Add(vPP);
                 cntErr++;       // gen log
@@ -1480,11 +1547,11 @@ namespace XCustPr
                     {
                         vPP = new ValidatePrPo();
                         vPP.Filename = rowG[xCLFPTDB.xCLFPT.file_name].ToString().Trim();
-                        vPP.Message = "Error PO001-006 ";
+                        vPP.Message = " PO001-006 : Invalid data type";
                         vPP.Validate = "row "+ row1 + " QTY=" + row[xCLFPTDB.xCLFPT.QTY].ToString();
                         lVPr.Add(vPP);
                         cntErr++;       // gen log
-                        xCLFPTDB.updateErrorMessage(poNumber, lineNumber, "Error PO001-006 ", "kfc_po");
+                        xCLFPTDB.updateErrorMessage(poNumber, lineNumber, "Error PO001-006 : Invalid data type", requestId, "kfc_po", Cm.initC.pathLogErr);
                     }
                     //Error PO001-002 : Invalid data type
                     chk = validateDate(row[xCLFPTDB.xCLFPT.ORDER_DATE].ToString());
@@ -1492,22 +1559,22 @@ namespace XCustPr
                     {
                         vPP = new ValidatePrPo();
                         vPP.Filename = rowG[xCLFPTDB.xCLFPT.file_name].ToString().Trim();
-                        vPP.Message = "Error PO001-002 ";
+                        vPP.Message = " PO001-002 : Date Format not correct";
                         vPP.Validate = "row " + row1 + " ORDER_DATE=" + row[xCLFPTDB.xCLFPT.ORDER_DATE].ToString();
                         lVPr.Add(vPP);
                         cntErr++;       // gen log
-                        xCLFPTDB.updateErrorMessage(poNumber, lineNumber, "Error PO001-002 ", "kfc_po");
+                        xCLFPTDB.updateErrorMessage(poNumber, lineNumber, "Error PO001-002 : Date Format not correct", requestId, "kfc_po", Cm.initC.pathLogErr);
                     }
                     chk = validateDate(row[xCLFPTDB.xCLFPT.REQUEST_DATE].ToString());//ต้องแก้ไข เพราะ agreement เข้า method มีค่าเป็น date
                     if (!chk)
                     {
                         vPP = new ValidatePrPo();
                         vPP.Filename = rowG[xCLFPTDB.xCLFPT.file_name].ToString().Trim();
-                        vPP.Message = "Error PO001-002 ";
+                        vPP.Message = " PO001-002 : Date Format not correct";
                         vPP.Validate = "row " + row1 + " REQUEST_DATE=" + row[xCLFPTDB.xCLFPT.REQUEST_DATE].ToString();
                         lVPr.Add(vPP);
                         cntErr++;
-                        xCLFPTDB.updateErrorMessage(poNumber, lineNumber, "Error PO001-002 ", "kfc_po");
+                        xCLFPTDB.updateErrorMessage(poNumber, lineNumber, "Error PO001-002 : Date Format not correct", requestId, "kfc_po", Cm.initC.pathLogErr);
                     }
                     
                     //Error PO001-010 : Invalid Subinventory Code
@@ -1517,22 +1584,22 @@ namespace XCustPr
                     {
                         vPP = new ValidatePrPo();
                         vPP.Filename = rowG[xCLFPTDB.xCLFPT.file_name].ToString().Trim();
-                        vPP.Message = "Error PO001-010 ";
+                        vPP.Message = " PO001-010 : Invalid Subinventory Code";
                         vPP.Validate = "row " + row1 + " store_code =" + row[xCLFPTDB.xCLFPT.store_code].ToString().Trim() + " ORGANIZATION_code " + Cm.initC.ORGANIZATION_code.Trim();
                         lVPr.Add(vPP);
                         cntErr++;
-                        xCLFPTDB.updateErrorMessage(poNumber, lineNumber, "Error PO001-010 ", "kfc_po");
+                        xCLFPTDB.updateErrorMessage(poNumber, lineNumber, "Error PO001-010 : Invalid Subinventory Code", requestId, "kfc_po", Cm.initC.pathLogErr);
                     }
                     chk = xCLFPTDB.validateGL("11", "00000", "219120", "000000", "00", "0000", buCode);//ต้องแก้ไข เพราะ agreement เข้า method มีค่าเป็น date
                     if (!chk)
                     {
                         vPP = new ValidatePrPo();
                         vPP.Filename = rowG[xCLFPTDB.xCLFPT.file_name].ToString().Trim();
-                        vPP.Message = "Error PO001-029  ";
+                        vPP.Message = " PO001-029 : validateGL ";
                         vPP.Validate = "row " + row1 + " validateGL";
                         lVPr.Add(vPP);
                         cntErr++;
-                        xCLFPTDB.updateErrorMessage(poNumber, lineNumber, "Error PO001-029 ", "kfc_po");
+                        xCLFPTDB.updateErrorMessage(poNumber, lineNumber, "Error PO001-029 : validateGL ", requestId, "kfc_po", Cm.initC.pathLogErr);
                     }
                     DateTime reDate = DateTime.Parse(xCLFPTDB.xCLFPT.dateYearToDB( row[xCLFPTDB.xCLFPT.REQUEST_DATE].ToString()));
                     String currDate1 = System.DateTime.Now.Year.ToString() + "-" + System.DateTime.Now.Month.ToString("00") + "-" + System.DateTime.Now.Day.ToString("00");
@@ -1541,11 +1608,11 @@ namespace XCustPr
                     {
                         vPP = new ValidatePrPo();
                         vPP.Filename = rowG[xCLFPTDB.xCLFPT.file_name].ToString().Trim();
-                        vPP.Message = "Error PO001-030 ";
+                        vPP.Message = " PO001-030 : request_date < current date ";
                         vPP.Validate = "row " + row1 + " request date <= current date " + row[xCLFPTDB.xCLFPT.REQUEST_DATE].ToString();
                         lVPr.Add(vPP);
                         cntErr++;
-                        xCLFPTDB.updateErrorMessage(poNumber, lineNumber, "Error PO001-030 ", "kfc_po");
+                        xCLFPTDB.updateErrorMessage(poNumber, lineNumber, "Error PO001-030 : request_date < current date ", requestId, "kfc_po", Cm.initC.pathLogErr);
                     }
 
                     // Error PO001 - 011 : Invalid Item Number
@@ -1554,11 +1621,11 @@ namespace XCustPr
                     {
                         vPP = new ValidatePrPo();
                         vPP.Filename = rowG[xCLFPTDB.xCLFPT.file_name].ToString().Trim();
-                        vPP.Message = "Error PO001-011 ";
+                        vPP.Message = " PO001-011 : Invalid Item Number ";
                         vPP.Validate = "row " + row1 + " store_code=" + row[xCLFPTDB.xCLFPT.store_code].ToString().Trim() + " item_code " + row[xCLFPTDB.xCLFPT.ITEM_CODE].ToString().Trim();
                         lVPr.Add(vPP);
                         cntErr++;
-                        xCLFPTDB.updateErrorMessage(poNumber, lineNumber, "Error PO001-011 ", "kfc_po");
+                        xCLFPTDB.updateErrorMessage(poNumber, lineNumber, "Error PO001-011 : Invalid Item Number ", requestId, "kfc_po", Cm.initC.pathLogErr);
                     }
                     // Error PO001-015 : Invalid Supplier
                     //if (!xCSMTDB.validateSupplierBySupplierCode(row[xCLFPTDB.xCLFPT.SUPPLIER_CODE].ToString().Trim()))
@@ -1570,26 +1637,25 @@ namespace XCustPr
                     {
                         vPP = new ValidatePrPo();
                         vPP.Filename = rowG[xCLFPTDB.xCLFPT.file_name].ToString().Trim();
-                        vPP.Message = "Error PO001-015 ";
+                        vPP.Message = " PO001-015 : Invalid Supplier";
                         vPP.Validate = "row " + row1 + " store_code=" + row[xCLFPTDB.xCLFPT.store_code].ToString().Trim() + " supplier_code " + row[xCLFPTDB.xCLFPT.SUPPLIER_CODE].ToString().Trim();
                         lVPr.Add(vPP);
                         cntErr++;
-                        xCLFPTDB.updateErrorMessage(poNumber, lineNumber, "Error PO001-015 ", "kfc_po");
+                        xCLFPTDB.updateErrorMessage(poNumber, lineNumber, "Error PO001-015 : Invalid Supplier", requestId, "kfc_po", Cm.initC.pathLogErr);
                     }
                     String supplierSiteCode = "";
                     supplierSiteCode = xCSSMTDB.getMinVendorSiteIdByVendorId(vendorId);
-
 
                     // Error PO001-016 :  Invalid UOM
                     if (!xCUMTDB.validateUOMCodeByUOMCode(row[xCLFPTDB.xCLFPT.UOMCODE].ToString().Trim()))
                     {
                         vPP = new ValidatePrPo();
                         vPP.Filename = rowG[xCLFPTDB.xCLFPT.file_name].ToString().Trim();
-                        vPP.Message = "Error PO001-016 ";
+                        vPP.Message = " PO001-016 : Invalid UOM";
                         vPP.Validate = "row " + row1 + " store_code=" + row[xCLFPTDB.xCLFPT.store_code].ToString().Trim() + " uom_code " + row[xCLFPTDB.xCLFPT.UOMCODE].ToString().Trim();
                         lVPr.Add(vPP);
                         cntErr++;
-                        xCLFPTDB.updateErrorMessage(poNumber, lineNumber, "Error PO001-016 ", "kfc_po");
+                        xCLFPTDB.updateErrorMessage(poNumber, lineNumber, "Error PO001-016 : Invalid UOM", requestId, "kfc_po", Cm.initC.pathLogErr);
                     }
                     // Error PO001-017 : Invalid CHARGE_ACCOUNT_SEGMENT1
                     //if (!xCVSMTDB.validateValueBySegment1("COMPANY RD CLOUD","Y", "11"))// ต้องแก้ Fix code อยู่
@@ -1597,11 +1663,11 @@ namespace XCustPr
                     {
                         vPP = new ValidatePrPo();
                         vPP.Filename = row[xCLFPTDB.xCLFPT.file_name].ToString().Trim();
-                        vPP.Message = "Error PO001-017 ";
+                        vPP.Message = " PO001-017 : Invalid CHARGE_ACCOUNT_SEGMENT1";
                         vPP.Validate = "row " + row1 + " store_code=" + row[xCLFPTDB.xCLFPT.store_code].ToString().Trim() + " CHARGE_ACCOUNT_SEGMENT1 " ;
                         lVPr.Add(vPP);
                         cntErr++;
-                        xCLFPTDB.updateErrorMessage(poNumber, lineNumber, "Error PO001-017 ", "kfc_po");
+                        xCLFPTDB.updateErrorMessage(poNumber, lineNumber, "Error PO001-017 : Invalid CHARGE_ACCOUNT_SEGMENT1", requestId, "kfc_po", Cm.initC.pathLogErr);
                     }
                     // Error PO001-018 : Invalid CHARGE_ACCOUNT_SEGMENT2
                     //if (!xCVSMTDB.validateValueBySegment2("STORE RD CLOUD", "Y", "00000"))// ต้องแก้ Fix code อยู่
@@ -1609,11 +1675,11 @@ namespace XCustPr
                     {
                         vPP = new ValidatePrPo();
                         vPP.Filename = rowG[xCLFPTDB.xCLFPT.file_name].ToString().Trim();
-                        vPP.Message = "Error PO001-018 ";
+                        vPP.Message = " PO001-018 : Invalid CHARGE_ACCOUNT_SEGMENT2";
                         vPP.Validate = "row " + row1 + " store_code=" + row[xCLFPTDB.xCLFPT.store_code].ToString().Trim() + " CHARGE_ACCOUNT_SEGMENT2 ";
                         lVPr.Add(vPP);
                         cntErr++;
-                        xCLFPTDB.updateErrorMessage(poNumber, lineNumber, "Error PO001-018 ", "kfc_po");
+                        xCLFPTDB.updateErrorMessage(poNumber, lineNumber, "Error PO001-018 : Invalid CHARGE_ACCOUNT_SEGMENT2", requestId, "kfc_po", Cm.initC.pathLogErr);
                     }
                     // Error PO001-019 : Invalid CHARGE_ACCOUNT_SEGMENT3
                     //if (!xCVSMTDB.validateValueBySegment3("ACCOUNT RD CLOUD", "Y", "117101"))// ต้องแก้ Fix code อยู่
@@ -1621,11 +1687,11 @@ namespace XCustPr
                     {
                         vPP = new ValidatePrPo();
                         vPP.Filename = rowG[xCLFPTDB.xCLFPT.file_name].ToString().Trim();
-                        vPP.Message = "Error PO001-019 ";
+                        vPP.Message = " PO001-019 : Invalid CHARGE_ACCOUNT_SEGMENT3";
                         vPP.Validate = "row " + row1 + " store_code=" + row[xCLFPTDB.xCLFPT.store_code].ToString().Trim() + " CHARGE_ACCOUNT_SEGMENT3 ";
                         lVPr.Add(vPP);
                         cntErr++;
-                        xCLFPTDB.updateErrorMessage(poNumber, lineNumber, "Error PO001-019 ", "kfc_po");
+                        xCLFPTDB.updateErrorMessage(poNumber, lineNumber, "Error PO001-019 : Invalid CHARGE_ACCOUNT_SEGMENT3", requestId, "kfc_po", Cm.initC.pathLogErr);
                     }
                     // Error PO001-020 : Invalid CHARGE_ACCOUNT_SEGMENT4
                     //if (!xCVSMTDB.validateValueBySegment4("PROJECT RD CLOUD", "Y", subInv_code))// ต้องแก้ Fix code อยู่
@@ -1633,11 +1699,11 @@ namespace XCustPr
                     {
                         vPP = new ValidatePrPo();
                         vPP.Filename = rowG[xCLFPTDB.xCLFPT.file_name].ToString().Trim();
-                        vPP.Message = "Error PO001-020 ";
+                        vPP.Message = " PO001-020 : Invalid CHARGE_ACCOUNT_SEGMENT4";
                         vPP.Validate = "row " + row1 + " store_code=" + row[xCLFPTDB.xCLFPT.store_code].ToString().Trim() + " CHARGE_ACCOUNT_SEGMENT4 ";
                         lVPr.Add(vPP);
                         cntErr++;
-                        xCLFPTDB.updateErrorMessage(poNumber, lineNumber, "Error PO001-020 ", "kfc_po");
+                        xCLFPTDB.updateErrorMessage(poNumber, lineNumber, "Error PO001-020 : Invalid CHARGE_ACCOUNT_SEGMENT4", requestId, "kfc_po", Cm.initC.pathLogErr);
                     }
                     // Error PO001-021 : Invalid CHARGE_ACCOUNT_SEGMENT5
                     //if (!xCVSMTDB.validateValueBySegment5("FUTURE1 RD CLOUD", "Y", "00"))// ต้องแก้ Fix code อยู่
@@ -1645,11 +1711,11 @@ namespace XCustPr
                     {
                         vPP = new ValidatePrPo();
                         vPP.Filename = rowG[xCLFPTDB.xCLFPT.file_name].ToString().Trim();
-                        vPP.Message = "Error PO001-021 ";
+                        vPP.Message = " PO001-021 : Invalid CHARGE_ACCOUNT_SEGMENT5";
                         vPP.Validate = "row " + row1 + " store_code=" + row[xCLFPTDB.xCLFPT.store_code].ToString().Trim() + " CHARGE_ACCOUNT_SEGMENT5 ";
                         lVPr.Add(vPP);
                         cntErr++;
-                        xCLFPTDB.updateErrorMessage(poNumber, lineNumber, "Error PO001-021 ", "kfc_po");
+                        xCLFPTDB.updateErrorMessage(poNumber, lineNumber, "Error PO001-021 : Invalid CHARGE_ACCOUNT_SEGMENT5", requestId, "kfc_po", Cm.initC.pathLogErr);
                     }
                     // Error PO001-022 : Invalid CHARGE_ACCOUNT_SEGMENT6
                     //if (!xCVSMTDB.validateValueBySegment6("FUTURE2 RD CLOUD", "Y", "0000"))// ต้องแก้ Fix code อยู่
@@ -1657,11 +1723,11 @@ namespace XCustPr
                     {
                         vPP = new ValidatePrPo();
                         vPP.Filename = rowG[xCLFPTDB.xCLFPT.file_name].ToString().Trim();
-                        vPP.Message = "Error PO001-022 ";
+                        vPP.Message = " PO001-022 : Invalid CHARGE_ACCOUNT_SEGMENT6";
                         vPP.Validate = "row " + row1 + " store_code=" + row[xCLFPTDB.xCLFPT.store_code].ToString().Trim() + " CHARGE_ACCOUNT_SEGMENT6 ";
                         lVPr.Add(vPP);
                         cntErr++;
-                        xCLFPTDB.updateErrorMessage(poNumber, lineNumber, "Error PO001-022 ", "kfc_po");
+                        xCLFPTDB.updateErrorMessage(poNumber, lineNumber, "Error PO001-022 : Invalid CHARGE_ACCOUNT_SEGMENT6 ", requestId, "kfc_po", Cm.initC.pathLogErr);
                     }
                     
                     blanketAgreement = getBlanketAgreement(row[xCLFPTDB.xCLFPT.SUPPLIER_CODE].ToString().Trim(), 
@@ -1678,12 +1744,12 @@ namespace XCustPr
                     {
                         vPP = new ValidatePrPo();
                         vPP.Filename = rowG[xCLFPTDB.xCLFPT.file_name].ToString().Trim();
-                        vPP.Message = "Error PO001-"+ blanketAgreement.Replace("false","");
+                        vPP.Message = " PO001-"+ blanketAgreement.Replace("false","");
                         vPP.Validate = "row " + row1 + " store_code=" + row[xCLFPTDB.xCLFPT.store_code].ToString().Trim() + " agreementLineNumber ";
                         lVPr.Add(vPP);
-                        xCLFPTDB.updateValidateFlag(row[xCLFPTDB.xCLFPT.PO_NUMBER].ToString().Trim(), row[xCLFPTDB.xCLFPT.LINE_NUMBER].ToString().Trim(), "E","", "kfc_po");
+                        xCLFPTDB.updateValidateFlag(row[xCLFPTDB.xCLFPT.PO_NUMBER].ToString().Trim(), row[xCLFPTDB.xCLFPT.LINE_NUMBER].ToString().Trim(), "E","", "kfc_po", Cm.initC.pathLogErr);
                         cntErr++;       // gen log
-                        xCLFPTDB.updateErrorMessage(poNumber, lineNumber, "Error PO001-" + blanketAgreement.Replace("false", ""), "kfc_po");
+                        xCLFPTDB.updateErrorMessage(poNumber, lineNumber, "Error PO001-" + blanketAgreement.Replace("false", ""), requestId, "kfc_po", Cm.initC.pathLogErr);
                     }
                     else
                     {
@@ -1696,8 +1762,8 @@ namespace XCustPr
                         addXcustPRLIAFromxCLFPT(row, subInv_code, price, blanketAgreement, agreementLineNumber, supplierSiteCode, suppName);
                         addXcustPRDIAFromxCLFPT(row, subInv_code, price);
                         //xCLFPTDB.updateValidateFlag(row[xCLFPTDB.xCLFPT.PO_NUMBER].ToString().Trim(), row[xCLFPTDB.xCLFPT.LINE_NUMBER].ToString().Trim(),"Y", blanketAgreement, "kfc_po");
-                        xCLFPTDB.updateValidateFlag1(row[xCLFPTDB.xCLFPT.PO_NUMBER].ToString().Trim(), row[xCLFPTDB.xCLFPT.LINE_NUMBER].ToString().Trim()
-                            , "Y", blanketAgreement, agreementLineNumber, supplierSiteCode, suppName, subInv_code, price, "kfc_po");
+                        xCLFPTDB.updateValidateFlag2(row[xCLFPTDB.xCLFPT.PO_NUMBER].ToString().Trim(), row[xCLFPTDB.xCLFPT.LINE_NUMBER].ToString().Trim()
+                            , blanketAgreement, agreementLineNumber, supplierSiteCode, suppName, subInv_code, price, "kfc_po", Cm.initC.pathLogErr);
                     }
                     if (cntErr > 0)   // gen log
                     {
@@ -1710,7 +1776,62 @@ namespace XCustPr
                 lVfile.Add(vF);   // gen log
             }
             pB1.Visible = false;
-            Cm.logProcess("xcustpo001", lVPr, dateStart, lVfile);   // gen log
+            //Cm.logProcess("xcustpo001", lVPr, dateStart, lVfile);   // gen log
+            addListView("Update Validate Flag  ", "Validate", lv1, form1);
+            updateValidateFlagY(requestId);
+            addListView("gen log file  ", "Validate", lv1, form1);
+            xCLFPTDB.logProcessPO001("xcustpo001", dateStart, requestId);   // gen log
+            addListView("move file to archive error  ", "Validate", lv1, form1);
+            //moveFileToFolderArchiveError(requestId);  02 767 9333 446
+        }
+        private void moveFileToFolderArchiveError(String requestId)
+        {
+            String chk = "";
+            DataTable dt = new DataTable();
+            dt = xCLFPTDB.selectFilenameByRequestId(requestId);
+            if (dt.Rows.Count > 0)
+            {
+                foreach(DataRow row in dt.Rows)
+                {
+                    String filename = "", rowCnt="";
+                    filename = row[xCLFPTDB.xCLFPT.file_name].ToString();
+                    rowCnt = row["row_Cnt"].ToString();
+                    String cnt = "";
+                    cnt = xCLFPTDB.getCountNoErrorByFilename(requestId, filename);
+                    if (cnt.Equals(rowCnt))
+                    {
+                        
+                        Cm.moveFile(Cm.initC.PathProcess + filename, Cm.initC.PathArchive, filename);
+                    }
+                    else
+                    {
+                        Cm.moveFile(Cm.initC.PathProcess + filename, Cm.initC.PathError , filename);
+                    }
+                }
+            }
+        }
+        private void updateValidateFlagY(String requestId)
+        {
+            DataTable dt = new DataTable();
+            dt = xCLFPTDB.selectLinfoxByRequestId(requestId);
+            if (dt.Rows.Count > 0)
+            {
+                foreach(DataRow row in dt.Rows)
+                {
+                    String poNumber = "", lineNumber = "",chk="";
+                    poNumber = row[xCLFPTDB.xCLFPT.PO_NUMBER].ToString();
+                    lineNumber = row[xCLFPTDB.xCLFPT.LINE_NUMBER].ToString();
+                    if (poNumber.Equals("12819344"))
+                    {
+                        chk = "";
+                    }
+                    if (row[xCLFPTDB.xCLFPT.ERROR_MSG].ToString().Length == 0)
+                    {
+                        xCLFPTDB.updateValidateFlagY(row[xCLFPTDB.xCLFPT.PO_NUMBER].ToString(), row[xCLFPTDB.xCLFPT.LINE_NUMBER].ToString(), row[xCLFPTDB.xCLFPT.request_id].ToString(), "kfc_po", Cm.initC.pathLogErr);
+                    }
+                }
+                
+            }
         }
         public String processLinfoxPOtoErpPR(String[] filePO, MaterialListView lv1, Form form1, MaterialProgressBar pB1)
         {
@@ -1729,17 +1850,17 @@ namespace XCustPr
             List<ValidatePrPo> lVPr = new List<ValidatePrPo>();   // gen log
             ValidatePrPo vPP = new ValidatePrPo();   // gen log
             addListView("อ่าน fileจาก" + Cm.initC.PathInitial, "", lv1, form1);
-            foreach (string aa in filePO)
+            foreach (string filename in filePO)
             {
-                addListView("ย้าย file " + aa, "", lv1, form1);
-                if (File.Exists(Cm.initC.PathProcess + aa.Replace(Cm.initC.PathInitial, "")))
+                addListView("ย้าย file " + filename, "", lv1, form1);
+                if (File.Exists(Cm.initC.PathProcess + filename.Replace(Cm.initC.PathInitial, "")))
                 {
                     ValidateFileName vF = new ValidateFileName();   // gen log
-                    vF.fileName = aa.Replace(Cm.initC.PathInitial, "");   // gen log
+                    vF.fileName = filename.Replace(Cm.initC.PathInitial, "");   // gen log
                     vF.recordTotal = "1";   // gen log
 
                     vPP = new ValidatePrPo();
-                    vPP.Filename = aa.Replace(Cm.initC.PathInitial, "");
+                    vPP.Filename = filename.Replace(Cm.initC.PathInitial, "");
                     vPP.Message = "Error File Exists ";
                     vPP.Validate = "";
                     lVPr.Add(vPP);
@@ -1748,29 +1869,29 @@ namespace XCustPr
                     
                     lVfile.Add(vF);   // gen log
                     Cm.logProcess("xcustpo001", lVPr, dateStart, lVfile);   // gen log
-                    String filename1 = "";
-                    filename1 = aa.Replace(Cm.initC.PathInitial, "");
-                    if (File.Exists(Cm.initC.PathError + aa.Replace(Cm.initC.PathInitial, "")))
-                    {
-                        String[] filename11 = filename1.Split('.');
-                        if (filename11.Length >= 2)
-                        {
-                            filename1 = filename11[0] + "_new"+ date+"_"+ time + "." + filename11[1];
-                        }
-                        else
-                        {
-                            filename1 += "_new";
-                        }
-                    }
-                    Cm.moveFile(aa, Cm.initC.PathError + filename1);
+                    //String filename1 = "";
+                    //filename1 = aa.Replace(Cm.initC.PathInitial, "");
+                    //if (File.Exists(Cm.initC.PathError + aa.Replace(Cm.initC.PathInitial, "")))
+                    //{
+                    //    String[] filename11 = filename1.Split('.');
+                    //    if (filename11.Length >= 2)
+                    //    {
+                    //        filename1 = filename11[0] + "_new"+ date+"_"+ time + "." + filename11[1];
+                    //    }
+                    //    else
+                    //    {
+                    //        filename1 += "_new";
+                    //    }
+                    //}
+                    Cm.moveFile(filename, Cm.initC.PathError, filename);
                 }
                 else
                 {
-                    Cm.moveFile(aa, Cm.initC.PathProcess + aa.Replace(Cm.initC.PathInitial, ""));
+                    Cm.moveFile(filename, Cm.initC.PathProcess + filename.Replace(Cm.initC.PathInitial, ""));
                 }
             }
             addListView("Clear temp table", "", lv1, form1);
-            xCLFPTDB.DeleteLinfoxTemp();//  clear temp table
+            //xCLFPTDB.DeleteLinfoxTemp();//  clear temp table
             //c.	จากนัน Program ทำการอ่าน File ใน Folder Path Process มาไว้ยัง Table XCUST_LINFOX_PR_TBL ด้วย Validate Flag = ‘N’ ,PROCES_FLAG = ‘N’
             // insert XCUST_LINFOX_PR_TBL
             filePOProcess = Cm.getFileinFolder(Cm.initC.PathProcess);
@@ -1783,7 +1904,7 @@ namespace XCustPr
                 addListView("insert temp table " + aa, "", lv1, form1);
                 //conn.BulkToMySQL("kfc_po", linfox);       // ย้ายจาก MySQL ไป MSSQL
                 pB1.Visible = true;
-                xCLFPTDB.insertBluk(linfox, aa, "kfc_po", pB1, requestId, Cm);
+                xCLFPTDB.insertBluk(linfox, aa, "kfc_po", pB1, requestId, Cm, Cm.initC.pathLogErr);
                 pB1.Visible = false;
             }
             return requestId;
@@ -1820,7 +1941,7 @@ namespace XCustPr
             xCPRHIA.REQ_BU_NAME = xcprhia.REQ_BU_NAME;
             xCPRHIA.STATUS_CODE = xcprhia.STATUS_CODE;
             xCPRHIA.request_id = xcprhia.request_id;
-            chk = xCPRHIADB.insert(xCPRHIA);
+            chk = xCPRHIADB.insert(xCPRHIA, Cm.initC.pathLogErr);
             return chk;
         }
         //private void insertXcustPorReqHeaderIntAll1(DataRow row, String date, String time)
@@ -2051,7 +2172,7 @@ namespace XCustPr
                 }
             }
         }
-        public void processCallWebService(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
+        public void processCallWebService(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String requestId)
         {
             addListView("callWebService " , "web service", lv1, form1);
             String uri = "", dump = "";
@@ -2062,11 +2183,12 @@ namespace XCustPr
             String filename = "";
             
             addListView("callWebService อ่าน file ZIP", "web service", lv1, form1);
-            filePO = Cm.getFileinFolder(Cm.initC.PathZip);
-            String text = System.IO.File.ReadAllText(filePO[0]);
-            filename = filePO[0].Replace(Cm.initC.PathZip, "");
+            filePO = Cm.getFileinFolder(Cm.initC.PathFileCSV);
+            //String text = System.IO.File.ReadAllText(filePO[0]);
+            filename = filePO[0].Replace(Cm.initC.PathFileCSV, "");
             //byte[] byteArraytext = Encoding.UTF8.GetBytes(text);
-            byte[] toEncodeAsBytestext = System.Text.ASCIIEncoding.ASCII.GetBytes(text);
+            //byte[] toEncodeAsBytestext = System.Text.ASCIIEncoding.ASCII.GetBytes(text);
+            byte[] toEncodeAsBytestext = System.IO.File.ReadAllBytes(filePO[0]);
             String Arraytext = System.Convert.ToBase64String(toEncodeAsBytestext);
             
             uri = @" <soapenv:Envelope xmlns:soapenv ='http://schemas.xmlsoap.org/soap/envelope/' xmlns:typ='http://xmlns.oracle.com/oracle/apps/fnd/applcore/webservices/types/' xmlns:web='http://xmlns.oracle.com/oracle/apps/fnd/applcore/webservices/'> " +
@@ -2140,7 +2262,13 @@ namespace XCustPr
                     }
                 }
             }
+            xCPRHIADB.updateDocumentId(actNumber, requestId, Cm.initC.pathLogErr);
+            xCPRLIADB.updateDocumentId(actNumber, requestId, Cm.initC.pathLogErr);
+            xCPRDIADB.updateDocumentId(actNumber, requestId, Cm.initC.pathLogErr);
+            xCLPTDB.updatePrcessFlag(requestId, "kfc_po", Cm.initC.pathLogErr);
             Console.WriteLine(doc);
+
+            moveFileToFolderArchiveError(requestId);
         }
     }
 }

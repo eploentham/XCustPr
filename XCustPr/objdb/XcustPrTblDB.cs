@@ -121,15 +121,21 @@ namespace XCustPr
             return dt;
         }
 
-        public DataTable selectPRPO(String linfox_po_number, String linfox_po_line_number)
+        public DataTable selectPRPO(String linfox_po_number, String linfox_po_line_number, String flag)
         {
             DataTable dt = new DataTable();
-            String sql = "SELECT po.PO_HEADER_ID, po.PO_LINE_ID,po.SEGMENT1 po_number,po.LINE_NUM po_line_number, po.QUANTITY/*, po.header_id*/ "+
-                "From xcust_pr_tbl PR "+
+            //String sql = "SELECT po.PO_HEADER_ID, po.PO_LINE_ID,po.SEGMENT1 po_number,po.LINE_NUM po_line_number, po.QUANTITY/*, po.header_id*/ "+
+            //    "From xcust_pr_tbl PR "+
+            //    "Left Join xcust_po_tbl po On  po.REQUISITION_HEADER_ID = PR.REQUISITION_HEADER_ID and po.REQUISITION_LINE_ID = PR.REQUISITION_LINE_ID  " +
+            //    "Where  "+                ""+
+            //    " PR.ATTRIBUTE1_L = '"+ linfox_po_number + "' "+
+            //    "and PR.ATTRIBUTE2_L = '"+ linfox_po_line_number + "' ";
+            String sql = "SELECT po.PO_HEADER_ID, po.PO_LINE_ID,po.SEGMENT1 po_number,po.LINE_NUM po_line_number, po.QUANTITY/*, po.header_id*/ " +
+                "From xcust_pr_tbl PR " +
                 "Left Join xcust_po_tbl po On  po.REQUISITION_HEADER_ID = PR.REQUISITION_HEADER_ID and po.REQUISITION_LINE_ID = PR.REQUISITION_LINE_ID  " +
-                "Where  "+                ""+
-                " PR.ATTRIBUTE1_L = '"+ linfox_po_number + "' "+
-                "and PR.ATTRIBUTE2_L = '"+ linfox_po_line_number + "' ";
+                "Where  " + "" +
+                " PR.ATTRIBUTE2 = '" + linfox_po_number + "' " +
+                "and PR.ATTRIBUTE2_L = '" + linfox_po_line_number + "' and pr.ATTRIBUTE1 = '"+flag+"'";
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
@@ -239,20 +245,22 @@ namespace XCustPr
         public void deletexCPR(String requisition_header_id, String requisition_line_id)
         {
             String sql = "Delete From "+xCPR.table+ " Where " + xCPR.REQUISITION_HEADER_ID + "='" + requisition_header_id + "' and " + xCPR.REQUISITION_LINE_ID + "='" + requisition_line_id + "'";
-            conn.ExecuteNonQuery(sql, "kfc_po");
+            conn.ExecuteNonQuery(sql, "kfc_po", initC.PO002PathLog);
         }
-        public String insertxCPR(XcustPrTbl p)
+        public String insertxCPR(XcustPrTbl p, String pathLog)
         {
             String sql = "", chk="";
             if (selectDupPk(p.REQUISITION_HEADER_ID, p.REQUISITION_LINE_ID))
             {
                 deletexCPR(p.REQUISITION_HEADER_ID, p.REQUISITION_LINE_ID);
             }
-            chk = insert(p);
+            chk = insert(p, pathLog);
             return chk;
         }
-        private String insert(XcustPrTbl p)
+        private String insert(XcustPrTbl p, String pathLog)
         {
+            String date = System.DateTime.Now.ToString("yyyy-MM-dd");
+            String time = System.DateTime.Now.ToString("HH:mm:ss");
             String sql = "", chk = "";
             try
             {
@@ -263,7 +271,15 @@ namespace XCustPr
                 //p.RowNumber = selectMaxRowNumber(p.YearId);
                 //p.Active = "1";
                 String last_update_by = "0", creation_by = "0";
-                p.AMOUNT = p.AMOUNT.Equals("") ? "0" : p.AMOUNT;
+                p.UNIT_PRICE = p.UNIT_PRICE.Equals("") ? "null" : p.UNIT_PRICE;
+                p.DESTINATION_ORGANIZATION_ID = p.DESTINATION_ORGANIZATION_ID.Equals("") ? "null" : p.DESTINATION_ORGANIZATION_ID;
+                p.PERCENT = p.PERCENT.Equals("") ? "null" : p.PERCENT;
+                //p.CURRENCY_AMOUNT = p.CURRENCY_AMOUNT.Equals("") ? "null" : p.CURRENCY_AMOUNT;
+                p.VENDOR_ID = p.VENDOR_ID.Equals("") ? "null" : p.VENDOR_ID;
+                p.VENDOR_SITE_ID = p.VENDOR_SITE_ID.Equals("") ? "null" : p.VENDOR_SITE_ID;
+                //p.SECONDARY_QUANTITY = p.SECONDARY_QUANTITY.Equals("") ? "null" : p.SECONDARY_QUANTITY;
+
+                p.AMOUNT = p.AMOUNT.Equals("") ? "null" : p.AMOUNT;
                 p.CURRENCY_AMOUNT = p.CURRENCY_AMOUNT.Equals("") ? "0" : p.CURRENCY_AMOUNT;
                 p.SECONDARY_QUANTITY = p.SECONDARY_QUANTITY.Equals("") ? "0" : p.SECONDARY_QUANTITY;
                 sql = "Insert Into " + xCPR.table + "(" + xCPR.AMOUNT + "," + xCPR.ATTRIBUTE1 + "," + xCPR.ATTRIBUTE10 + "," +
@@ -299,26 +315,46 @@ namespace XCustPr
                     p.ATTRIBUTE20 + "','" + p.ATTRIBUTE_CATEGORY + "','" + p.ATTRIBUTE_CATEGORY_L + "','" +
                     p.BUDGET_DATE + "','" + p.CHARGE_ACCOUNT + "','" + p.CONVERSION_DATE + "','" +
                     p.CREATED_BY + "','" + p.CREATION_DATE + "'," + p.CURRENCY_AMOUNT + ",'" +
-                    p.DESCRIPTION + "','" + p.DESTINATION_ORGANIZATION_ID + "','" + p.DESTINATION_TYPE_CODE + "','" +
+                    p.DESCRIPTION + "'," + p.DESTINATION_ORGANIZATION_ID + ",'" + p.DESTINATION_TYPE_CODE + "','" +
                     p.DISTRIBUTION + "','" + p.DISTRIBUTION_CURRENCY_AMOUNT + "','" + p.DOCUMENT_STATUS + "','" +
                     p.FUNDS_STATUS + "','" + p.ITEM_DESCRIPTION + "','" + p.ITEM_ID + "','" +
                     p.LAST_UPDATE_DATE + "','" + p.LINE_NUMBER + "','" + p.LINE_TYPE + "','" +
-                    p.LOCATION + "','" + p.NAME + "','" + p.PERCENT + "','" +
+                    p.LOCATION + "','" + p.NAME + "'," + p.PERCENT + ",'" +
                     p.PO_ORDER + "','" + p.REQUISITION_HEADER_ID + "','" + p.REQUISITION_LINE_ID + "','" +
                     p.REQUISITION_NUMBER + "','" + p.REQ_BU_ID + "'," + p.SECONDARY_QUANTITY + ",'" +
-                    p.SECONDARY_UOM_CODE + "','" + p.SOURCE_TYPE_CODE + "','" + p.UNIT_PRICE + "','" +
-                    p.UOM_CODE + "','" + p.VENDOR_ID + "','" + p.VENDOR_SITE_ID + "'" +                    
+                    p.SECONDARY_UOM_CODE + "','" + p.SOURCE_TYPE_CODE + "'," + p.UNIT_PRICE + ",'" +
+                    p.UOM_CODE + "'," + p.VENDOR_ID + "," + p.VENDOR_SITE_ID + " " +                    
 
                     ") ";
-                chk = conn.ExecuteNonQuery(sql, "kfc_po");
+                chk = conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
+                
                 //chk = p.RowNumber;
                 //chk = p.Code;
             }
             catch (Exception ex)
             {
+                chk = ex.Message;
                 //MessageBox.Show("Error " + ex.ToString(), "insert Doctor");
-            }
+                //String date1 = System.DateTime.Now.ToString("yyyy-MM-dd");
+                //String time1 = System.DateTime.Now.ToString("HH_mm_ss");
+                //String dateStart = date + " " + time;       //gen log
 
+                //List<ValidatePrPo> lVPr = new List<ValidatePrPo>();   // gen log
+                //List<ValidateFileName> lVfile = new List<ValidateFileName>();   // gen log
+                //ValidatePrPo vPP = new ValidatePrPo();   // gen log
+                //vPP = new ValidatePrPo();
+                //vPP.Filename = "Table XCUST_PR_TBL";
+                //vPP.Message = "Error PO002 Structure text file error "+ ex.Message;
+                //vPP.Validate = "";
+                //lVPr.Add(vPP);
+
+                //ValidateFileName vF = new ValidateFileName();   // gen log
+                //vF.recordError = "1";   // gen log
+                //vF.totalError = "1";   // gen log
+                //lVfile.Add(vF);   // gen log
+                //Cm.logProcess("xcustpo002", lVPr, dateStart, lVfile);   // gen log
+            }
+            
             return chk;
         }
     }

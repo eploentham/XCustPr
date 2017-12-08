@@ -121,7 +121,7 @@ namespace XCustPr
                 Cm.moveFile(aa, Cm.initC.AP001PathProcess + aa.Replace(Cm.initC.AP001PathInitial, ""));
             }
             addListView("Clear temp table", "", lv1, form1);
-            xCSIITDB.DeleteTemp();//  clear temp table     
+            xCSIITDB.DeleteTemp(Cm.initC.AP001PathLog);//  clear temp table     
             
             //c.	จากนัน Program ทำการอ่าน File ใน Folder Path Process มาไว้ยัง Table XCUST_MMX_PR_TBL ด้วย Validate Flag = ‘N’ ,PROCES_FLAG = ‘N’
             // insert xcust_mmx_pr_int_tbl
@@ -135,7 +135,7 @@ namespace XCustPr
                 //conn.BulkToMySQL("kfc_po", linfox);       // ย้ายจาก MySQL ไป MSSQL   
                 pB1.Visible = true;
 
-                xCSIITDB.insertBluk(rcv, aa, "kfc_po", pB1);
+                xCSIITDB.insertBluk(rcv, aa, "kfc_po", pB1, Cm.initC.AP001PathLog);
                 
                 pB1.Visible = false;
             }
@@ -211,7 +211,7 @@ namespace XCustPr
                 }
             }
         }
-        public void processInsertTable(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
+        public void processInsertTable(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String pathLog)
         {
             addListView("insert table " + Cm.initC.AP001PathProcess, "Validate", lv1, form1);
             String date = System.DateTime.Now.ToString("yyyy-MM-dd");
@@ -228,7 +228,7 @@ namespace XCustPr
             {
                 pB1.Value++;
                 //XcustPorReqLineIntAll xcprlia = xCPRLIADB.setData(row, xCLFPTDB.xCLFPT);
-                String chk = xCApILITDB.insert(xcprlia);
+                String chk = xCApILITDB.insert(xcprlia, Cm.initC.AP001PathLog);
             }
         }
         /*
@@ -272,7 +272,7 @@ namespace XCustPr
             String chk = "";
             XcustApInvIntTbl xCRHIA = xcprhia;
 
-            chk = xCApIITDB.insert(xCRHIA);
+            chk = xCApIITDB.insert(xCRHIA, Cm.initC.AP001PathLog);
             return chk;
         }
         private void addXcustApILIT(DataRow row)
@@ -736,7 +736,7 @@ namespace XCustPr
             String filenameZip = "", ilename2 = "", ilename3 = "", filename = "";
             if (flag.Equals("AP001"))
             {
-                filenameZip = Cm.initC.PathZip + "\\xcustpr.zip";
+                filenameZip = Cm.initC.PathFileCSV + "\\xcustpr.zip";
                 filename = @Cm.initC.PathArchive;
             }
             else

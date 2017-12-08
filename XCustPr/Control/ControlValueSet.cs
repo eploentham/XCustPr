@@ -44,7 +44,7 @@ namespace XCustPr
             vPrPo = new ValidatePrPo();
 
             xCVSMTDB = new XcustValueSetMstTblDB(conn, Cm.initC);
-
+            Cm.createFolderValueSet();
             fontSize9 = 9.75f;        //standard
             fontSize8 = 8.25f;        //standard
             fV1B = new Font(fontName, fontSize9, FontStyle.Bold);        //standard

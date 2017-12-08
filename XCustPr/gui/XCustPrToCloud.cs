@@ -216,10 +216,11 @@ namespace XCustPr
             //1. ดึงข้อมูลตาม group by filename เพราะ field filename เป็นตัวแบ่งข้อมูลแต่ละfile
             //2. ดึงข้อมูล where ตาม filename เพื่อ validate ถ้า validate ผ่าน ก็ update validate_flag = 'Y'
                     // e.	ทำการหา Blanket Agreement Number 
-            cRDPO.processGetTempTableToValidate(lv1, this, pB1);
+            cRDPO.processGetTempTableToValidate(lv1, this, pB1, requestId);
             
             //cRDPO.processInsertTable(lv1, this, pB1);
-            cRDPO.processInsertTable1(requestId, lv1, this, pB1);
+            //cRDPO.processInsertTable1(requestId, lv1, this, pB1);
+            cRDPO.processInsertTable2(requestId, lv1, this, pB1);
         }
         private void btnPrepare_Click(object sender, EventArgs e)
         {
@@ -248,7 +249,7 @@ namespace XCustPr
         {
             //throw new NotImplementedException();
             // move file
-            cRDPO.processCallWebService(lv1, this, pB1);
+            cRDPO.processCallWebService(lv1, this, pB1, requestId);
             //FtpWebRequest request;
             //cRDPO.validateOrderDateMinCurrDate("");
 
@@ -258,10 +259,10 @@ namespace XCustPr
         }
         private void btnFTP_Click(object sender, EventArgs e)
         {
-            var allFiles = Directory.GetFiles(@Cm.initC.PathZip, "*.zip", SearchOption.AllDirectories);
+            var allFiles = Directory.GetFiles(@Cm.initC.PathFileCSV, "*.zip", SearchOption.AllDirectories);
             foreach (String file in allFiles)
             {
-                FtpWebRequest ftpRequest = (FtpWebRequest)WebRequest.Create("ftp://" + Cm.initC.FTPServer+"/"+ file.Replace(Cm.initC.PathZip,""));
+                FtpWebRequest ftpRequest = (FtpWebRequest)WebRequest.Create("ftp://" + Cm.initC.FTPServer+"/"+ file.Replace(Cm.initC.PathFileCSV,""));
                 ftpRequest.Method = WebRequestMethods.Ftp.UploadFile;
                 ftpRequest.Credentials = new NetworkCredential("pop", "pop");
                 ftpRequest.UseBinary = true;

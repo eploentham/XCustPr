@@ -85,7 +85,7 @@ namespace XCustPr
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
-        public String insert(XcustApInvIntTbl p)
+        public String insert(XcustApInvIntTbl p, String pathLog)
         {
             String sql = "", chk = "";
             try
@@ -135,7 +135,7 @@ namespace XCustPr
                     p.SOURCE_FROM + "','" + p.TERMS_DATE + "','" + p.TERMS_NAME + "','" +
                     p.VENDOR_NAME + "','" + p.VENDOR_NUMBER + "','" + p.VENDOR_SITE_CODE + "'" +                    
                     ") ";
-                chk = conn.ExecuteNonQuery(sql, "kfc_po");
+                chk = conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
                 //chk = p.RowNumber;
                 //chk = p.Code;
             }
