@@ -598,6 +598,7 @@ namespace XCustPr
             initC.PO002PathDestinaion = iniFile.Read("PO002PathDestinaion").Trim();
 
             initC.PO007PathInitial = iniFile.Read("PO007PathInitial").Trim();
+            //initC.PO007PathInitial = 
 
             initC.PO006PathInitial = iniFile.Read("PO006PathInitial").Trim();
             initC.PO006ReRun = iniFile.Read("PO006ReRun").Trim();

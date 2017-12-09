@@ -61,6 +61,8 @@ namespace XCustPr
         List<ValidateFileName> lVfile = new List<ValidateFileName>();   // gen log
         int cntErr = 0, cntFileErr = 0;   // gen log
 
+        String requestId = "";
+
         public ControlPO002(ControlMain cm)
         {
             Cm = cm;
@@ -110,24 +112,39 @@ namespace XCustPr
         }
         public void processMapping(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
         {
+            addListView("เข้า processMapping", "Web Service", lv1, form1);
+            pB1.Show();
+            pB1.Minimum = 0;
+            int i = 0;
+
             ValidatePrPo vPP = new ValidatePrPo();   // gen log
             DataTable dtLinfox = new DataTable();
             //a.	Query ข้อมูลที่ทาง Linfox เคยส่งเข้ามา Interface PO001  ที่ Table XCUST_LINFOX_PR_TBL โดย SEND_PO_FLAG  = 'N' ,Process_flag = 'Y' และ GEN_OUTBOUD_FLAG = 'N'
+            
+            requestId = xCLFPTDB.getPO002RequestID();       //ใช้ ตัวเดียวกันกับ PO001
             dtLinfox = xCLFPTDB.selectPO002();
             if (dtLinfox.Rows.Count > 0)
             {
+                pB1.Maximum = dtLinfox.Rows.Count;
                 foreach(DataRow linfox in dtLinfox.Rows)
                 {
+                    i++;
+                    pB1.Value = i;
                     DataTable dt = new DataTable();
                     //b.Program ทำการ mapping ข้อมูลกับ table XCUST_PR_PO_INFO_TBL แล้ว update ข้อมูล field ERP_PO_NUMBER ,ERP_QTY ที่ table XCUST_LINFOX_PR_TBL
                     dt = xCPRTDB.selectPRPO(linfox[xCLFPTDB.xCLFPT.PO_NUMBER].ToString(), linfox[xCLFPTDB.xCLFPT.LINE_NUMBER].ToString(), "LINFOX");
                     if (dt.Rows.Count > 0)
                     {
                         foreach(DataRow prpo in dt.Rows)
-                        {
+                        {//
                             //xCLPTDB.updateFromPO002(prpo[xCPRTDB.xCPR.REQUISITION_HEADER_ID].ToString(), prpo[xCPRTDB.xCPR.REQUISITION_LINE_ID].ToString(),
                             //    linfox[xCLPTDB.xCLFPT.PO_NUMBER].ToString(), linfox[xCLPTDB.xCLFPT.LINE_NUMBER].ToString());
-                            xCLFPTDB.updateFromPO002(prpo["po_number"].ToString(), prpo["QUANTITY"].ToString(),
+                            String ERP_PO_HEADER_ID = prpo["PO_HEADER_ID"].ToString();
+                            String ERP_PO_LINE_ID = prpo["PO_LINE_ID"].ToString();
+                            String ERP_PO_LINE_NUMBER = prpo["po_line_number"].ToString();
+                            xCLFPTDB.updateFromPO002(prpo["po_number"].ToString(), prpo["QUANTITY"].ToString()
+                                , ERP_PO_HEADER_ID, ERP_PO_LINE_ID
+                                , ERP_PO_LINE_NUMBER, requestId,
                                 linfox[xCLFPTDB.xCLFPT.PO_NUMBER].ToString(), linfox[xCLFPTDB.xCLFPT.LINE_NUMBER].ToString());
                         }
                     }
@@ -153,6 +170,7 @@ namespace XCustPr
                 cntErr++;       // gen log
                 xCLMDB.insertLog("PO002", "", "Error PO002-001: No Data Found", Cm.initC.PO002PathLog);
             }
+            pB1.Hide();
         }
         public void processGenTextLinfox(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
         {
@@ -161,12 +179,18 @@ namespace XCustPr
             String time = System.DateTime.Now.ToString("HH_mm_ss");
             dateStart = date + " " + time;       //gen log
             DataTable dtLinfoxPoNumber = new DataTable();
+            int i = 0;
             dtLinfoxPoNumber = xCLFPTDB.selectPO002GenTextLinfoxGroupByERPPONumber();
+            pB1.Show();
+            pB1.Minimum = 0;
             if (dtLinfoxPoNumber.Rows.Count > 0)
             {
+                pB1.Maximum = dtLinfoxPoNumber.Rows.Count;
                 addListView("processGenTextLinfox พบข้อมูล "+dtLinfoxPoNumber.Rows.Count, "Web Service", lv1, form1);
                 foreach (DataRow linfox in dtLinfoxPoNumber.Rows)
                 {
+                    i++;
+                    pB1.Value = i;
                     String erpPONumber = "";
                     erpPONumber = linfox[xCLFPTDB.xCLFPT.ERP_PO_NUMBER].ToString();
                     DataTable dt = new DataTable();
@@ -183,12 +207,13 @@ namespace XCustPr
                 pB1.Visible = false;
                 addListView("processGenTextLinfox gen log file ", "Web Service", lv1, form1);
                 Cm.logProcess("xcustpo002", lVPr, dateStart, lVfile);   // gen log
-                xCLFPTDB.logProcessPO002("xcustpo002", dateStart);   // gen log
+                xCLFPTDB.logProcessPO002("xcustpo002", dateStart, requestId);   // gen log
             }
             else
             {
                 addListView("processGenTextLinfox  ไม่พบข้อมูล", "Web Service", lv1, form1);
             }
+            pB1.Hide();
         }
         public void writeTextLinfox(String erpPONumber, DataTable dt)
         {

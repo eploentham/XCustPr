@@ -54,7 +54,7 @@ namespace XCustPr
             lvwColumnSorter.SortColumn = 0;
             lv1.Sort();
             //txtFileName.Text = cRDPO.initC.PathInitial + "PR03102017.txt";
-            txtFileName.Text = Cm.initC.PO003PathInitial;
+            txtFileName.Text = Cm.initC.PO007PathInitial;
 
             lv1.Columns.Add("NO", 50);
             lv1.Columns.Add("List File", formwidth - 50 - 40 - 100, HorizontalAlignment.Left);
@@ -63,13 +63,13 @@ namespace XCustPr
             txtFileName.Text = Cm.initC.AutoRunPO003;
 
             int i = 1;
-            if (Cm.initC.PO003PathInitial.Equals(""))
+            if (Cm.initC.PO007PathInitial.Equals(""))
             {
                 MessageBox.Show("Path Config PO007 ไม่ถูกต้อง", "");
                 disableBtn();
                 return;
             }
-            filePO = cPo007.Cm.getFileinFolder(cPo007.Cm.initC.PO007PathInitial);
+            filePO = Cm.getFileinFolder(Cm.initC.PO007PathInitial);
             if (filePO == null)
             {
                 MessageBox.Show("Folder PO007 ไม่ถูกต้อง", "");

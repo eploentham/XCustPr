@@ -74,6 +74,8 @@ namespace XCustPr
             xCLFPT.ERP_QTY = "ERP_QTY";
             xCLFPT.request_id = "request_id";
             xCLFPT.supplier_name = "supplier_name";
+            xCLFPT.ERROR_MSG2 = "error_message_po002";
+            xCLFPT.request_id_po002 = "request_id_po002";
 
             //xCLFPT.table = "xcust_linfox_pr_tbl";
             xCLFPT.table = "xcust_linfox_pr_int_tbl";
@@ -121,6 +123,19 @@ namespace XCustPr
         {
             String chk = "";
             DataTable dt = new DataTable();
+            String sql = "select next value for xcust_request_id ";
+            dt = conn.selectData(sql, "kfc_po");
+            if (dt.Rows.Count > 0)
+            {
+                chk = dt.Rows[0][0].ToString();
+            }
+            return chk;
+        }
+        public String getPO002RequestID()
+        {
+            String chk = "";
+            DataTable dt = new DataTable();
+            //ใช้ ตัวเดียวกันกับ PO001
             String sql = "select next value for xcust_request_id ";
             dt = conn.selectData(sql, "kfc_po");
             if (dt.Rows.Count > 0)
@@ -195,13 +210,22 @@ namespace XCustPr
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
-        public String updateFromPO002(String erp_po_number, String erp_qty, String po_number, String line_number)
+        public String updateFromPO002(String erp_po_number, String erp_qty, String ERP_PO_HEADER_ID, String ERP_PO_LINE_ID, String ERP_PO_LINE_NUMBER, String request_id_po002, String po_number, String line_number)
         {
             String sql = "", chk = "";
+            erp_qty = erp_qty.Equals("") ? "null" : erp_qty;
+            ERP_PO_HEADER_ID = ERP_PO_HEADER_ID.Equals("") ? "null" : ERP_PO_HEADER_ID;
+            ERP_PO_LINE_ID = ERP_PO_LINE_ID.Equals("") ? "null" : ERP_PO_LINE_ID;
+            ERP_PO_LINE_NUMBER = ERP_PO_LINE_NUMBER.Equals("") ? "null" : ERP_PO_LINE_NUMBER;
+            request_id_po002 = request_id_po002.Equals("") ? "null" : request_id_po002;
             sql = "Update "+xCLFPT.table +" "+
                 "Set "+xCLFPT.ERP_PO_NUMBER+"='"+ erp_po_number + "', "+
-                xCLFPT.ERP_QTY +"='"+ erp_qty+"' " +
-                "Where "+xCLFPT.PO_NUMBER+"='"+po_number+"' and "+xCLFPT.LINE_NUMBER+"='"+line_number+"'";
+                xCLFPT.ERP_QTY +"="+ erp_qty+", " +
+                xCLFPT.ERP_PO_HEADER_ID + "=" + ERP_PO_HEADER_ID + ", " +
+                xCLFPT.ERP_PO_LINE_ID + "=" + ERP_PO_LINE_ID + ", " +
+                xCLFPT.ERP_PO_LINE_NUMBER + "=" + ERP_PO_LINE_NUMBER + ", " +
+                xCLFPT.request_id_po002 + "=" + request_id_po002 + " " +
+                "Where " +xCLFPT.PO_NUMBER+"='"+po_number+"' and "+xCLFPT.LINE_NUMBER+"='"+line_number+"'";
             chk = conn.ExecuteNonQuery(sql, "kfc_po", initC.PO002PathLog);
 
             return chk;
@@ -391,7 +415,7 @@ namespace XCustPr
         public String updateErrorMessagePO002(String po_number, String line_number, String msg, String requestId, String host, String pathLog)
         {
             String sql = "", chk = "";
-            sql = "Update " + xCLFPT.table + " Set " + xCLFPT.ERROR_MSG + "=" + xCLFPT.ERROR_MSG + "+'," + msg.Replace("'", "''") + "' " +
+            sql = "Update " + xCLFPT.table + " Set " + xCLFPT.ERROR_MSG2 + "=" + xCLFPT.ERROR_MSG2 + "+'," + msg.Replace("'", "''") + "' " +
                 "Where " + xCLFPT.PO_NUMBER + " = '" + po_number + "' and " + xCLFPT.LINE_NUMBER + "='" + line_number + "' and " + xCLFPT.request_id + "='" + requestId + "'";
             chk = conn.ExecuteNonQuery(sql.ToString(), host, pathLog);
 
@@ -602,7 +626,7 @@ namespace XCustPr
                 stream.WriteLine(txt);
             }
         }
-        public void logProcessPO002(String programname, String startdatetime)
+        public void logProcessPO002(String programname, String startdatetime, String requedtId)
         {
             String line1 = "", parameter = "", programstart = "", filename = "", recordError = "", txt = "", path = "", sql = "";
             int cntErr = 0, cntPass = 0;
@@ -621,7 +645,7 @@ namespace XCustPr
 
             sql = "Select count(1) as cnt, " + xCLFPT.file_name
                 + " From " + xCLFPT.table
-                + " Where " + xCLFPT.request_id + " ='' " +
+                + " Where " + xCLFPT.request_id + " ='"+ requedtId + "' " +
                 "Group By " + xCLFPT.file_name;
 
             DataTable dtFile = conn.selectData(sql, "kfc_po");
@@ -679,7 +703,7 @@ namespace XCustPr
             }
             String filename1 = "", filename1old = "";
             sql = "Select * From " + xCLFPT.table + " " +
-                "Where " + xCLFPT.request_id + " ='' " +
+                "Where " + xCLFPT.request_id + " ='" + requedtId + "' " +
                 "Order By " + xCLFPT.file_name + ", " + xCLFPT.PO_NUMBER;
             DataTable dtErr = new DataTable();
             dtErr = conn.selectData(sql, "kfc_po");

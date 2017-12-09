@@ -163,6 +163,22 @@ namespace XCustPr
                 p.REQUISITION_LINE_ID = p.REQUISITION_LINE_ID.Equals("") ? "null" : p.REQUISITION_LINE_ID;
                 p.QUANTITY = p.QUANTITY.Equals("") ? "null" : p.QUANTITY;
                 p.QUANTITY_RECEIPT = p.QUANTITY_RECEIPT.Equals("") ? "null" : p.QUANTITY_RECEIPT;
+                p.ITEM_ID = p.ITEM_ID.Equals("") ? "null" : p.ITEM_ID;
+                p.VENDOR_ID = p.VENDOR_ID.Equals("") ? "null" : p.VENDOR_ID;
+                p.UNIT_PRICE = p.UNIT_PRICE.Equals("") ? "null" : p.UNIT_PRICE;
+                p.LINE_NUM = p.LINE_NUM.Equals("") ? "null" : p.LINE_NUM;
+                p.LINE_TYPE_ID = p.LINE_TYPE_ID.Equals("") ? "null" : p.LINE_TYPE_ID;
+                p.VENDOR_CONTACT_ID = p.VENDOR_CONTACT_ID.Equals("") ? "null" : p.VENDOR_CONTACT_ID;
+                p.REVISION_NUM = p.REVISION_NUM.Equals("") ? "null" : p.REVISION_NUM;
+                p.BILL_TO_LOCATION_ID = p.BILL_TO_LOCATION_ID.Equals("") ? "null" : p.BILL_TO_LOCATION_ID;
+                p.SHIP_TO_LOCATION_ID = p.SHIP_TO_LOCATION_ID.Equals("") ? "null" : p.SHIP_TO_LOCATION_ID;
+                p.AGENT_ID = p.AGENT_ID.Equals("") ? "null" : p.AGENT_ID;
+                p.BILLTO_BU_ID = p.BILLTO_BU_ID.Equals("") ? "null" : p.BILLTO_BU_ID;
+                p.PO_LINE_ID = p.PO_LINE_ID.Equals("") ? "null" : p.PO_LINE_ID;
+                p.REQ_BU_ID = p.REQ_BU_ID.Equals("") ? "null" : p.REQ_BU_ID;
+                p.PRC_BU_ID = p.PRC_BU_ID.Equals("") ? "null" : p.PRC_BU_ID;
+                p.PO_HEADER_ID = p.PO_HEADER_ID.Equals("") ? "null" : p.PO_HEADER_ID;
+
                 String last_update_by = "0", creation_by = "0";
                 p.TAX_AMOUNT = p.TAX_AMOUNT.Equals("") ? "0" : p.TAX_AMOUNT;
                 sql = "Insert Into " + xCPO.table + "(" + xCPO.AGENT_ID + "," + xCPO.APPROVED_DATE + "," + xCPO.APPROVED_FLAG + "," +
@@ -191,21 +207,21 @@ namespace XCustPr
                     "Values(" + p.AGENT_ID + ",'" + p.APPROVED_DATE + "','" + p.APPROVED_FLAG + "'," +
                     p.ASSESSABLE_VALUE + ",'" + p.ATTRIBUTE1 + "','" + p.ATTRIBUTE2 + "','" +
                     p.ATTRIBUTE3 + "','" + p.ATTRIBUTE4 + "','" + p.ATTRIBUTE_CATEGORY + "','" +
-                    p.BILLTO_BU + "','" + p.BILLTO_BU_ID + "','" + p.BILL_TO_LOCATION_ID + "','" +
+                    p.BILLTO_BU + "'," + p.BILLTO_BU_ID + "," + p.BILL_TO_LOCATION_ID + ",'" +
                     p.BUYER + "','" + p.CATEGORY_NM + "','" + p.CREATION_DATE + "','" +
                     p.CURRENCY_CODE + "','" + p.DELIVER_TO_LOC + "','" + p.DELIVER_TO_LOC_LINFOX + "','" +
                     p.DESTINATION_TYPE + "','" + p.DOCUMENT_STATUS + "','" + p.EMAIL_ADDRESS + "','" +
-                    p.GEN_OUTBOUD_FLAG + "','" + p.ITEM_DESCRIPTION + "','" + p.ITEM_ID + "','" +
-                    p.LAST_UPDATED_BY + "','" + p.LINE_NUM + "','" + p.LINE_STATUS + "','" +
-                    p.LINE_TYPE_ID + "','" + p.PAYMENT_TERM + "','" + p.PO_HEADER_ID + "','" +
-                    p.PO_LINE_ID + "','" + p.PRC_BU + "','" + p.PRC_BU_ID + "','" +
+                    p.GEN_OUTBOUD_FLAG + "','" + p.ITEM_DESCRIPTION + "'," + p.ITEM_ID + ",'" +
+                    p.LAST_UPDATED_BY + "'," + p.LINE_NUM + ",'" + p.LINE_STATUS + "'," +
+                    p.LINE_TYPE_ID + ",'" + p.PAYMENT_TERM + "'," + p.PO_HEADER_ID + "," +
+                    p.PO_LINE_ID + ",'" + p.PRC_BU + "'," + p.PRC_BU_ID + ",'" +
                     p.PRODUCT_TYPE + "'," + p.QUANTITY + "," + p.QUANTITY_RECEIPT + "," +
-                    p.REQUISITION_HEADER_ID + "," + p.REQUISITION_LINE_ID + ",'" + p.REQ_BU + "','" +
-                    p.REQ_BU_ID + "','" + p.REVISED_DATE + "','" + p.REVISION_NUM + "','" +
+                    p.REQUISITION_HEADER_ID + "," + p.REQUISITION_LINE_ID + ",'" + p.REQ_BU + "'," +
+                    p.REQ_BU_ID + ",'" + p.REVISED_DATE + "'," + p.REVISION_NUM + ",'" +
                     p.SEGMENT1 + "'," + p.SHIP_TO_LOCATION_ID + ",'" + p.SOLDTO_LE + "'," +
                     p.SOLDTO_LE_ID + ",'" + p.SUPPLIER_NOTIF_METHOD + "','" + p.SUPP_NAME + "','" +
-                    p.TYPE_LOOKUP_CODE + "','" + p.UNIT_PRICE + "','" + p.UOM_CODE + "','" +
-                    p.VENDOR_CONTACT_ID + "','" + p.VENDOR_ID + "','" + p.VENDOR_SITE + "','" +
+                    p.TYPE_LOOKUP_CODE + "'," + p.UNIT_PRICE + ",'" + p.UOM_CODE + "'," +
+                    p.VENDOR_CONTACT_ID + "," + p.VENDOR_ID + ",'" + p.VENDOR_SITE + "','" +
                     p.TAX_AMOUNT + "','" + p.TAX_CODE + "','" + p.ACC_SEGMENT1 + "','" +
                     p.ACC_SEGMENT2 + "','" + p.ACC_SEGMENT3 + "','" + p.ACC_SEGMENT4 + "','" +
                     p.ACC_SEGMENT5 + "','" + p.ACC_SEGMENT6 + "'" +

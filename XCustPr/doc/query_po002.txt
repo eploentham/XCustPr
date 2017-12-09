@@ -1,0 +1,10 @@
+update xcust_linfox_pr_int_tbl 
+set SEND_PO_FLAG = null, PROCESS_FLAG='Y', GEN_OUTBOUD_FLAG= null,validate_flag='Y'
+where SEND_PO_FLAG is null 
+and PROCESS_FLAG='Y' 
+and GEN_OUTBOUD_FLAG is null 
+and validate_flag = 'Y'
+
+UPDATE xcust_linfox_pr_int_tbl
+SET GEN_OUTBOUD_FLAG = NULL
+WHERE GEN_OUTBOUD_FLAG = 'Y

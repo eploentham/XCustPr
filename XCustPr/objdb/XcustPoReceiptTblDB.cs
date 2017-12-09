@@ -164,7 +164,22 @@ namespace XCustPr
             String sql = "";
             Boolean chk = false;
             DataTable dt = new DataTable();
-            sql = "Select count(1) as cnt From " + xCPoR.table + " Where " + xCPoR.PO_HEADER_ID + "='" + po_header_id + "' and " + xCPoR.PO_LINE_ID + "='" + po_line_id + "'";
+            sql = "Select count(1) as cnt From " + xCPoR.table + 
+                " Where " + xCPoR.PO_HEADER_ID + "='" + po_header_id + "' and " + xCPoR.PO_LINE_ID + "='" + po_line_id + "'";
+            dt = conn.selectData(sql, "kfc_po");
+            if (dt.Rows.Count >= 1)
+            {
+                chk = true;
+            }
+            return chk;
+        }
+        public Boolean selectDupPk(String shipment_line_id)
+        {
+            String sql = "";
+            Boolean chk = false;
+            DataTable dt = new DataTable();
+            sql = "Select count(1) as cnt From " + xCPoR.table +
+                " Where " + xCPoR.SHIPMENT_LINE_ID + "='" + shipment_line_id + "' ";
             dt = conn.selectData(sql, "kfc_po");
             if (dt.Rows.Count >= 1)
             {
@@ -177,12 +192,18 @@ namespace XCustPr
             String sql = "Delete From " + xCPoR.table + " Where " + xCPoR.PO_HEADER_ID + "='" + po_header_id + "' and " + xCPoR.PO_LINE_ID + "='" + po_line_id + "'";
             conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
         }
+        public void deletexCPoR(String SHIPMENT_LINE_ID, String pathLog)
+        {
+            String sql = "Delete From " + xCPoR.table + " Where " + xCPoR.SHIPMENT_LINE_ID + "='" + SHIPMENT_LINE_ID + "' ";
+            conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
+        }
         public String insertxCPoR(XcustPoReceiptTbl p, String pathLog)
         {
             String sql = "", chk = "";
-            if (selectDupPk(p.PO_HEADER_ID, p.PO_LINE_ID))
+            if (selectDupPk(p.SHIPMENT_LINE_ID))
+            //if (selectDupPk(p.PO_HEADER_ID, p.PO_LINE_ID))
             {
-                deletexCPoR(p.PO_HEADER_ID, p.PO_LINE_ID, pathLog);
+                deletexCPoR(p.SHIPMENT_LINE_ID, pathLog);
             }
             chk = insert(p, pathLog);
             return chk;
