@@ -44,6 +44,11 @@ namespace XCustPr
 
         public XcustPrTblDB xCPrTDB;
 
+        private String dateStart = "";      //gen log
+
+        List<ValidatePrPo> lVPr = new List<ValidatePrPo>();   // gen log
+        List<ValidateFileName> lVfile = new List<ValidateFileName>();   // gen log
+
         public ControlPO007(ControlMain cm)
         {
             Cm = cm;
@@ -87,6 +92,9 @@ namespace XCustPr
          */
         public void processGetTempTableToValidate(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
         {
+            String date = System.DateTime.Now.ToString("yyyy-MM-dd");
+            String time = System.DateTime.Now.ToString("HH_mm_ss");
+            dateStart = date + " " + time;       //gen log
             addListView("gen file " + Cm.initC.PO007PathInitial, "Validate", lv1, form1);
             pB1.Visible = true;
             Boolean chk = false;
@@ -140,7 +148,8 @@ namespace XCustPr
                         string col11 = FixLen(row["TAX_CODE"].ToString(), dtFixLen.Rows[10]["X_LENGTH"].ToString());     //PO Tax Code
                         string col12 = FixLen(taxExp, dtFixLen.Rows[11]["X_LENGTH"].ToString());      //PO Tax Exp Code
                         string col13 = FixLen("", dtFixLen.Rows[12]["X_LENGTH"].ToString());     //PO Account Code        ระบุค่าว่าง
-                        string col14 = FixLen(String.Format("{0:#,##0.00}", int.Parse(row["QUANTITY"].ToString())), dtFixLen.Rows[13]["X_LENGTH"].ToString());      //FORMAT : N,NNN,NN0.00
+                        string qty = row["QUANTITY"].ToString().Equals("") ? "0" : row["QUANTITY"].ToString();
+                        string col14 = FixLen(String.Format("{0:#,##0.00}", int.Parse(qty)), dtFixLen.Rows[13]["X_LENGTH"].ToString());      //FORMAT : N,NNN,NN0.00
                         string col15 = FixLen(row["UOM_CODE"].ToString(), dtFixLen.Rows[14]["X_LENGTH"].ToString());
                         string col16 = FixLen(row["UNIT_PRICE"].ToString(), dtFixLen.Rows[15]["X_LENGTH"].ToString());
                         string col17 = FixLen("", dtFixLen.Rows[16]["X_LENGTH"].ToString());      //Sub Ledger        ระบุค่าว่าง
@@ -182,6 +191,8 @@ namespace XCustPr
                     }
                 }
             }
+            Cm.logProcess("xcustpo007", lVPr, dateStart, lVfile);   // gen log
+            pB1.Visible = true;
         }
         private String FixLen(String str, String len)
         {

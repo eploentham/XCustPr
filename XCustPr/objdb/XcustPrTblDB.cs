@@ -218,11 +218,11 @@ namespace XCustPr
             DataTable dt = new DataTable();
             String sql = "select msi.ITEM_CODE "+
                             "from xcust_item_mst_tbl msi " +
-                            ",xcust_organization_mst_tbl org " +
+                            ",xcust_organization_mst_tbl org " +//ORGANIZATION_ID
                             ", XCUST_BU_MST_TBL bu " +
                             " where " +
                             "/*msi.INVENTORY_ITEM_ID   = 300000001619857 "+
-                            "and*/ msi.ORGAINZATION_ID = org.ORGANIZATION_ID "+
+                            "and*/ msi.ORGANIZATION_ID = org.ORGANIZATION_ID " +
                             "and bu.PRIMARY_LEDGER_ID = org.SET_OF_BOOKS_ID " +
                             "and msi.INVENTORY_ITEM_ID = '"+ item_id + "' " +
                             "and bu.BU_ID = '"+ prc_bu_id + "'  ";
