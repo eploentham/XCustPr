@@ -142,13 +142,25 @@ namespace XCustPr
         public DataTable selectPRPO007()
         {
             DataTable dt = new DataTable();
-            String sql = "SELECT po.CREATION_DATE, po.PO_LINE_ID,po.SEGMENT1 as po_number,po.LINE_NUM, po.QUANTITY, po.VENDOR_ID, po.PRC_BU_ID, po.ITEM_ID " +
-                ", po.ITEM_DESCRIPTION, po.QUANTITY_RECEIPT, po.QUANTITY, po.UOM_CODE, po.UNIT_PRICE, po.LINE_TYPE_ID, po.PAYMENT_TERM, po.CURRENCY_CODE, po.REVISION_NUM " +
-                ",po.SEGMENT1, po.ACC_SEGMENT1, po.ACC_SEGMENT2,po.TAX_CODE, po.PO_HEADER_ID " +
-                "From xcust_pr_tbl PR " +
-                "inner Join xcust_po_tbl po On  po.REQUISITION_HEADER_ID = PR.REQUISITION_HEADER_ID and po.REQUISITION_LINE_ID = PR.REQUISITION_LINE_ID  " +
-                "Where  " + "" +
-                " PR.ATTRIBUTE1 <> 'MMX'  ";
+            String sql = "";
+            //sql = "SELECT po.CREATION_DATE, po.PO_LINE_ID,po.SEGMENT1 as po_number,po.LINE_NUM, po.QUANTITY, po.VENDOR_ID, po.PRC_BU_ID, po.ITEM_ID " +
+            //    ", po.ITEM_DESCRIPTION, po.QUANTITY_RECEIPT, po.QUANTITY, po.UOM_CODE, po.UNIT_PRICE, po.LINE_TYPE_ID, po.PAYMENT_TERM, po.CURRENCY_CODE, po.REVISION_NUM " +
+            //    ",po.SEGMENT1, po.ACC_SEGMENT1, po.ACC_SEGMENT2,po.TAX_CODE, po.PO_HEADER_ID " +
+            //    "From xcust_pr_tbl PR " +
+            //    "inner Join xcust_po_tbl po On  po.REQUISITION_HEADER_ID = PR.REQUISITION_HEADER_ID and po.REQUISITION_LINE_ID = PR.REQUISITION_LINE_ID  " +
+            //    "Where  " + "" +
+            //    " PR.ATTRIBUTE1 <> 'MMX'  ";
+            sql = "select PO.* from xcust_PO_TBL po "
+                + " ,XCUST_SUPPLIER_MST_TBL t "
+                + " where not exists (select 'x'   "
+                + " from XCUST_PR_TBL pr "
+                + " where pr.REQUISITION_HEADER_ID = po.REQUISITION_HEADER_ID "
+                + " and pr.REQUISITION_LINE_ID = po.REQUISITION_LINE_ID "
+                + " and pr.attribute1 = 'MMX') "
+                + " and exists (select 'x' from xcust_po_receipt_tbl pocp  "
+                + " where pocp.PO_HEADER_ID = po.PO_HEADER_ID "
+                + "  and pocp.PO_LINE_ID = po.po_line_id)  "
+                + " and po.VENDOR_ID = t.VENDOR_ID and t.ATTRIBUTE1 != 'Y'  and po.GEN_OUTBOUD_FLAG = '' ";
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }

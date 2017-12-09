@@ -47,6 +47,11 @@ namespace XCustPr
 
         public XcustPrTblDB xCPrTDB;
         public XcustPoTblDB xCPoTDB;
+        private String dateStart = "";      //gen log
+
+        List<ValidatePrPo> lVPr = new List<ValidatePrPo>();   // gen log
+        List<ValidateFileName> lVfile = new List<ValidateFileName>();   // gen log
+        int cntErr = 0, cntFileErr = 0;   // gen log
 
         public ControlPO006(ControlMain cm)
         {
@@ -93,7 +98,12 @@ namespace XCustPr
         public void processGetTempTableToValidate(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
         {
             addListView("gen file " + Cm.initC.PO006PathInitial, "Validate", lv1, form1);
-            pB1.Visible = true;
+            String date = System.DateTime.Now.ToString("yyyy-MM-dd");
+            String time = System.DateTime.Now.ToString("HH_mm_ss");
+            dateStart = date + " " + time;       //gen log
+            int i = 0;
+
+            pB1.Show();
             Boolean chk = false;
 
             getListXcSIMT();
@@ -102,19 +112,24 @@ namespace XCustPr
             getListXcVSMT();
             getListXcUMT();
 
+            ValidatePrPo vPP = new ValidatePrPo();   // gen log
             DataTable dt006 = new DataTable();
             DataTable dtFixLen = xCPrTDB.selectPO006FixLen();
             if (dtFixLen.Rows.Count <= 0) return;
             dt006 = xCPrTDB.selectPRPO006GroupByVendorDeliveryDate();
             if (dt006.Rows.Count > 0)
             {
+                pB1.Minimum = 0;
+                pB1.Maximum = dt006.Rows.Count;
                 foreach(DataRow row in dt006.Rows)
                 {
+                    i++;
+                    pB1.Value = i;
                     String deliveryDate = row["deliveryDate"].ToString();
                     DataTable dt = new DataTable();
                     if (Cm.initC.Po006DeliveryDate.Equals("sysdate"))
                     {
-                        String date = System.DateTime.Now.ToString("yyyy-MM-dd");
+                        date = System.DateTime.Now.ToString("yyyy-MM-dd");
                         dt = xCPrTDB.selectPRPO006(row[xCPoTDB.xCPO.VENDOR_ID].ToString(), date, Cm.initC.PO006ReRun);
                     }
                     else
@@ -127,8 +142,24 @@ namespace XCustPr
                     }
                 }
             }
+            else
+            {
+                ValidateFileName vF = new ValidateFileName();   // gen log
+                vF.fileName = Cm.initC.PO006PathLog;   // gen log
+                vF.recordTotal = "1";   // gen log
+
+                vPP = new ValidatePrPo();
+                vPP.Filename = "PO006";
+                vPP.Message = "No Data";
+                vPP.Validate = "Error PO006-001: No Data Found ";
+                lVPr.Add(vPP);
+                cntErr++;       // gen log
+                lVfile.Add(vF);   // gen log
+            }
+            Cm.logProcess("xcustpo006", lVPr, dateStart, lVfile);   // gen log
             Cm.setConfig("Po006DeliveryDate", "sysdate");
             Cm.setConfig("PO006ReRun", "N");
+            pB1.Hide();
         }
         public void writeTextPO006(String vendor_id, String delivery_date, DataTable dt, DataTable dtFixLen)
         {

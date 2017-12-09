@@ -711,11 +711,11 @@ namespace XCustPr
         public void processGenCSV(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
         {
             addListView("processGenCSVxCPRHIA ", "CVS", lv1, form1);
-            processGenCSVxCPHITDB(lv1, form1, pB1, "PO004");
+            processGenCSVxCPHITDB(lv1, form1, pB1, "PO008");
             addListView("processGenCSVxCPRLIA ", "CVS", lv1, form1);
-            processGenCSVxCPLITDB(lv1, form1, pB1, "PO004");
+            processGenCSVxCPLITDB(lv1, form1, pB1, "PO008");
             addListView("processGenCSVxCPRDIA ", "CVS", lv1, form1);
-            processGenCSVxCPLLITDB(lv1, form1, pB1, "PO004");
+            processGenCSVxCPLLITDB(lv1, form1, pB1, "PO008");
             addListView("processGenZIP ", "CVS", lv1, form1);
             processGenZIP(lv1, form1, pB1, "PO008");
         }

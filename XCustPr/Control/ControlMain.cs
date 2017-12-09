@@ -258,6 +258,7 @@ namespace XCustPr
                 return;
             }
             createFolder(initC.PO007PathInitial);
+            createFolder(initC.PO007PathLog);
         }
         public void createFolderPO006()
         {
@@ -926,6 +927,18 @@ namespace XCustPr
             {
 
             }
+            else if (programname.ToLower().Equals("xcustpo007"))
+            {
+                path = initC.PO007PathLog;
+            }
+            else if (programname.ToLower().Equals("xcustpo006"))
+            {
+                path = initC.PO006PathLog;
+            }
+            else if (programname.ToLower().Equals("xcustpo008"))
+            {
+                path = initC.PO008PathLog;
+            }
             return path;
         }
         public void logProcess(String programname, List<ValidatePrPo> lVPr, String startdatetime, List<ValidateFileName> listfile)
@@ -936,15 +949,37 @@ namespace XCustPr
             {
 
             }
-            line1 = "Program : XCUST Interface PR<Linfox>To PO(ERP)" + Environment.NewLine;
-            path = getPathLogProcess(programname);
-            parameter = "Parameter : " + Environment.NewLine;
-            parameter += "           Path Initial :" + initC.PathInitial + Environment.NewLine;
-            parameter += "           Path Process :" + initC.PathProcess + Environment.NewLine;
-            parameter += "           Path Error :" + initC.PathError + Environment.NewLine;
-            parameter += "           Import Source :" + initC.ImportSource + Environment.NewLine;
-            programstart = "Program Start : " + startdatetime + Environment.NewLine;
-            if (listfile.Count > 0)
+            else if (programname.Equals("xcustpo007"))
+            {
+                line1 = "Program : XCUST Text File PO (ERP) to U-info" + Environment.NewLine;
+                path = getPathLogProcess(programname);
+                parameter = "Parameter : " + Environment.NewLine;
+                parameter += "           Path Initial :" + initC.PO007PathInitial + Environment.NewLine;
+                
+                programstart = "Program Start : " + startdatetime + Environment.NewLine;
+            }
+            else if (programname.Equals("xcustpo006"))
+            {
+                line1 = "Program : XCUST Text File PO (ERP) to Supplier" + Environment.NewLine;
+                path = getPathLogProcess(programname);
+                parameter = "Parameter : " + Environment.NewLine;
+                parameter += "           Path Initial :" + initC.PO006PathInitial + Environment.NewLine;
+
+                programstart = "Program Start : " + startdatetime + Environment.NewLine;
+            }
+            else if (programname.Equals("xcustpo008"))
+            {
+                line1 = "Program : Interface PO <CEDAR> to PO (ERP)" + Environment.NewLine;
+                path = getPathLogProcess(programname);
+                parameter = "Parameter : " + Environment.NewLine;
+                parameter += "           Path Initial :" + initC.PO008PathInitial + Environment.NewLine;
+                parameter += "           Path Process :" + initC.PO008PathProcess + Environment.NewLine;
+                parameter += "           Path Error :" + initC.PO008PathError + Environment.NewLine;
+                parameter += "           Path Archive :" + initC.PO008PathArchive + Environment.NewLine;
+                parameter += "           Path Import Soruce :" + initC.PO008ImportSource + Environment.NewLine;
+            }
+
+                if (listfile.Count > 0)
             {
                 foreach (ValidateFileName vF in listfile)
                 {

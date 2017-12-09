@@ -48,7 +48,7 @@ namespace XCustPr
 
         List<ValidatePrPo> lVPr = new List<ValidatePrPo>();   // gen log
         List<ValidateFileName> lVfile = new List<ValidateFileName>();   // gen log
-
+        int cntErr = 0, cntFileErr = 0;   // gen log
         public ControlPO007(ControlMain cm)
         {
             Cm = cm;
@@ -96,7 +96,8 @@ namespace XCustPr
             String time = System.DateTime.Now.ToString("HH_mm_ss");
             dateStart = date + " " + time;       //gen log
             addListView("gen file " + Cm.initC.PO007PathInitial, "Validate", lv1, form1);
-            pB1.Visible = true;
+            pB1.Show();
+            pB1.Minimum = 0;
             Boolean chk = false;
             
             getListXcSIMT();
@@ -105,19 +106,25 @@ namespace XCustPr
             getListXcVSMT();
             getListXcUMT();
 
+            ValidatePrPo vPP = new ValidatePrPo();   // gen log
             DataTable dt007 = new DataTable();
             DataTable dtFixLen = xCPrTDB.selectPO007FixLenLine();
             dt007 = xCPrTDB.selectPRPO007();
             if (dt007.Rows.Count>0)
             {
-                String date = System.DateTime.Now.ToString("yyyy-MM-dd");
-                String time = System.DateTime.Now.ToString("HH");
+                int i = 0;
+                pB1.Maximum = dt007.Rows.Count;
+                date = System.DateTime.Now.ToString("yyyy-MM-dd");
+                time = System.DateTime.Now.ToString("HH:mm:ss");
                 date = date.Replace("-", "");
-                var file = Cm.initC.PO007PathInitial + "ID20_"+ date + time + "24MISS.txt";
+                time = time.Replace(":", "");
+                var file = Cm.initC.PO007PathInitial + "ID20_"+ date + time + ".txt";
                 using (var stream = File.CreateText(file))
                 {
                     foreach (DataRow row in dt007.Rows)
                     {
+                        i++;
+                        pB1.Value = i;
                         String itemcode = xCPrTDB.selectItemCode(row["PRC_BU_ID"].ToString(), row["ITEM_ID"].ToString());
                         String desc1 = "", desc2 = "",taxExp="", taxCal="",receipt_num="",line_num="",lot_number="";
                         desc1 = row["ITEM_DESCRIPTION"].ToString();
@@ -137,7 +144,7 @@ namespace XCustPr
                         string col01 = Cm.FixLen(Cm.dateDBtoShow(row["CREATION_DATE"].ToString()), dtFixLen.Rows[0]["X_LENGTH"].ToString()," ");
                         string col02 = FixLen(Cm.initC.Company, dtFixLen.Rows[1]["X_LENGTH"].ToString());
                         string col03 = FixLen("col3", dtFixLen.Rows[2]["X_LENGTH"].ToString());      //PO DT
-                        string col04 = FixLen(row["SEGMENT1"].ToString(), dtFixLen.Rows[3]["X_LENGTH"].ToString());
+                        string col04 = FixLen(row["SEGMENT1"].ToString(), dtFixLen.Rows[3]["X_LENGTH"].ToString());     //po_number
                         string col05 = FixLen(row["VENDOR_ID"].ToString(), dtFixLen.Rows[4]["X_LENGTH"].ToString());
                         string col06 = FixLen(row["PO_LINE_ID"].ToString(), dtFixLen.Rows[5]["X_LENGTH"].ToString());
                         string col07 = FixLen(itemcode, dtFixLen.Rows[6]["X_LENGTH"].ToString());
@@ -191,8 +198,22 @@ namespace XCustPr
                     }
                 }
             }
+            else
+            {
+                ValidateFileName vF = new ValidateFileName();   // gen log
+                vF.fileName = Cm.initC.PO007PathLog;   // gen log
+                vF.recordTotal = "1";   // gen log
+
+                vPP = new ValidatePrPo();
+                vPP.Filename = "PO007";
+                vPP.Message = "No Data";
+                vPP.Validate = "Error PO007-001: No Data Found   ";
+                lVPr.Add(vPP);
+                cntErr++;       // gen log
+                lVfile.Add(vF);   // gen log
+            }
             Cm.logProcess("xcustpo007", lVPr, dateStart, lVfile);   // gen log
-            pB1.Visible = true;
+            pB1.Hide();
         }
         private String FixLen(String str, String len)
         {

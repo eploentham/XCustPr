@@ -204,10 +204,12 @@ namespace XCustPr
             cPo008.processGetTempTableToValidate(lv1, this, pB1);
 
             cPo008.processInsertTable(lv1, this, pB1);
+
+            cPo008.processGenCSV(lv1, this, pB1);
         }
         private void btnPrepare_Click(object sender, EventArgs e)
         {
-            cPo008.processGenCSV(lv1, this, pB1);
+            //cPo008.processGenCSV(lv1, this, pB1);
         }
         private void btnWebService_Click(object sender, EventArgs e)
         {
