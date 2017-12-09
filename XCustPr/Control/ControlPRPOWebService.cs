@@ -60,7 +60,8 @@ namespace XCustPr
             XmlDocument soapEnvelopeXml = new XmlDocument();
             const Int32 BufferSize = 128;
             String[] filePO;
-            DateTime currDate = System.DateTime.Now.AddDays(-1);
+            //DateTime currDate = System.DateTime.Now.AddDays(-1);
+            DateTime currDate = System.DateTime.Now;
             String date = currDate.Month.ToString("00") + "-" + currDate.Day.ToString("00") + "-" + currDate.Year.ToString();
             addListView("setXcustPRTbl ", "Web Service", lv1, form1);
             //filePO = Cm.getFileinFolder(Cm.initC.PathZip);
@@ -298,7 +299,8 @@ namespace XCustPr
             const Int32 BufferSize = 128;
             String[] filePO;
             addListView("setXcustPOTbl ", "Web Service", lv1, form1);
-            DateTime currDate = System.DateTime.Now.AddDays(-1);
+            //DateTime currDate = System.DateTime.Now.AddDays(-1);
+            DateTime currDate = System.DateTime.Now;
             String date = currDate.Month.ToString("00")+"-"+currDate.Day.ToString("00")+"-"+currDate.Year.ToString();
             //filePO = Cm.getFileinFolder(Cm.initC.PathZip);
             //String text = System.IO.File.ReadAllText(filePO[0]);

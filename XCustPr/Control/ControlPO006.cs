@@ -133,20 +133,20 @@ namespace XCustPr
                 {
                     i++;
                     pB1.Value = i;
-                    String deliveryDate = row["deliveryDate"].ToString();
+                    String deliveryDate = row["delivery_Date"].ToString();
                     DataTable dt = new DataTable();
                     if (Cm.initC.Po006DeliveryDate.Equals("sysdate"))
                     {
                         date = System.DateTime.Now.ToString("yyyy-MM-dd");
-                        dt = xCPrTDB.selectPRPO006(row[xCPoTDB.xCPO.VENDOR_ID].ToString(), date, Cm.initC.PO006ReRun);
+                        dt = xCPrTDB.selectPRPO006(row["SUPPLIER_NUMBER"].ToString(), date, Cm.initC.PO006ReRun);
                     }
                     else
                     {
-                        dt = xCPrTDB.selectPRPO006(row[xCPoTDB.xCPO.VENDOR_ID].ToString(), Cm.initC.Po006DeliveryDate, Cm.initC.PO006ReRun);
+                        dt = xCPrTDB.selectPRPO006(row["SUPPLIER_NUMBER"].ToString(), Cm.initC.Po006DeliveryDate, Cm.initC.PO006ReRun);
                     }
                     if (dt.Rows.Count > 0)
                     {
-                        writeTextPO006(row[xCPoTDB.xCPO.VENDOR_ID].ToString(), deliveryDate, dt, dtFixLen);
+                        writeTextPO006(row["SUPPLIER_NUMBER"].ToString(), deliveryDate, dt, dtFixLen);
                     }
                 }
             }
