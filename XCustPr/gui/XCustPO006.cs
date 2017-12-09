@@ -237,6 +237,9 @@ namespace XCustPr
         private void btnRead_Click(object sender, EventArgs e)
         {
             lv1.Items.Clear();
+            cPo006.processWebService(lv1, this, pB1);
+
+
             filePO = Cm.getFileinFolder(Cm.initC.PO006PathInitial);
             cPo006.processGetTempTableToValidate(lv1, this, pB1);
             chkReRun.Checked = false;

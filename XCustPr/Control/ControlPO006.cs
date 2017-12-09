@@ -28,6 +28,7 @@ namespace XCustPr
         public ConnectDB conn;        //standard
 
         public ValidatePrPo vPrPo;
+        ControlPRPOWebService cPRPOWS;
 
         public XcustBuMstTblDB xCBMTDB;
         public XcustDeriverLocatorMstTblDB xCDLMTDB;
@@ -78,6 +79,8 @@ namespace XCustPr
             xCPoTDB = new XcustPoTblDB(conn, Cm.initC);
 
             Cm.createFolderPO006();
+            cPRPOWS = new ControlPRPOWebService(Cm);
+
             fontSize9 = 9.75f;        //standard
             fontSize8 = 8.25f;        //standard
             fV1B = new Font(fontName, fontSize9, FontStyle.Bold);        //standard
@@ -90,6 +93,11 @@ namespace XCustPr
             listXcSMT = new List<XcustSupplierMstTbl>();
             listXcVSMT = new List<XcustValueSetMstTbl>();
             listXcUMT = new List<XcustUomMstTbl>();
+        }
+        public void processWebService(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
+        {
+            cPRPOWS.setXcustPRTbl(lv1, form1, pB1, Cm.initC.PO006PathLog);
+            cPRPOWS.setXcustPOTbl(lv1, form1, pB1, Cm.initC.PO006PathLog);
         }
         /*
          * a.	Query ข้อมูลที่ Table XCUST_PR_PO_INFO_TBL โดยมี Data Source ที่เป็น “MMX”    และมี Delivery date ตาม Parameter

@@ -306,64 +306,6 @@ namespace XCustPr
             //byte[] toEncodeAsBytestext = System.Text.ASCIIEncoding.ASCII.GetBytes(text);
             //String Arraytext = System.Convert.ToBase64String(toEncodeAsBytestext);
             //< soapenv:Envelope xmlns:soapenv = "http://schemas	xmlsoap	org/soap/envelope/" xmlns: v2 = "http://xmlns	oracle	com/oxp/service/v2" >
-            //uri = @"<soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:v2='http://xmlns.oracle.com/oxp/service/v2'>    " +
-            //"<soapenv:Header/> " +
-            //        "<soapenv:Body> " +
-            //            "<v2:runReport> " +
-            //                "<v2:reportRequest> " +
-            //                    "<v2:attributeLocale>en-US</v2:attributeLocale> " +
-            //                    "<v2:attributeTemplate>XCUST_PURCHASE_REP</v2:attributeTemplate> " +
-            //                    "<v2:reportAbsolutePath>/Custom/XCUST_CUSTOM/XCUST_PURCHASE_REP.xdo</v2:reportAbsolutePath> " +
-            //                    "<pub:parameterNameValues> " +
-            //                    "<pub:item> " +
-            //                        "<pub:multiValuesAllowed>False</pub:multiValuesAllowed> " +
-            //                        "<pub:name>p_po_num_from</pub:name> " +
-            //                        "<pub:values> " +
-            //                            "<pub:item></pub:item> " +
-            //                        "</pub:values>" +
-            //                    "</pub:item> " +
-            //                    "<pub:item> " +
-            //                    "<pub:multiValuesAllowed>False</pub:multiValuesAllowed> " +
-            //                    "<pub:name>p_po_num_to</pub:name> " +
-            //                    "<pub:values>" +
-            //                    "<pub:item></pub:item> " +
-            //                    "</pub:values> " +
-            //                    "</pub:item>  " +
-            //                    "<pub:item> " +
-            //                    "<pub:multiValuesAllowed>False</pub:multiValuesAllowed> " +
-            //                    "<pub:name>p_last_update_date_frm</pub:name> " +
-            //                    "<pub:values> " +
-            //                    "<pub:item></pub:item> " +
-            //                    "</pub:values> " +
-            //                    "</pub:item> " +
-            //                    "<pub:item> " +
-            //                    "<pub:multiValuesAllowed>False</pub:multiValuesAllowed> " +
-            //                    "<pub:name>p_last_update_date_to</pub:name> " +
-            //                    "<pub:values> " +
-            //                    "<pub:item></pub:item> " +
-            //                    "</pub:values> " +
-            //                    "</pub:item>  " +
-            //                    "<pub:item> " +
-            //                    "<pub:multiValuesAllowed>False</pub:multiValuesAllowed> " +
-            //                    "<pub:name>p_creation_dte_frm</pub:name> " +
-            //                    "<pub:values> " +
-            //                    "<pub:item>"+ date + "</pub:item> " +
-            //                    "</pub:values> " +
-            //                    "</pub:item>  " +
-            //                    "<pub:item> " +
-            //                    "<pub:multiValuesAllowed>False</pub:multiValuesAllowed> " +
-            //                    "<pub:name>p_creation_date_to</pub:name> " +
-            //                    "<pub:values> " +
-            //                    "<pub:item>"+ date + "</pub:item> " +
-            //                    "</pub:values> " +
-            //                    "</pub:item> " +
-            //                    "</pub:parameterNameValues>   " +
-            //                    "</v2:reportRequest> " +
-            //                    "<v2:userID>icetech@iceconsulting.co.th</v2:userID> " +
-            //                    "<v2:password>icetech@2017</v2:password> " +
-            //                    "</v2:runReport> " +
-            //                    "</soapenv:Body> " +
-            //                    "</soapenv:Envelope> ";
             uri = @"<soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:v2='http://xmlns.oracle.com/oxp/service/v2'>    " +
             "<soapenv:Header/> " +
                     "<soapenv:Body> " +
@@ -405,14 +347,14 @@ namespace XCustPr
                                 "<pub:multiValuesAllowed>False</pub:multiValuesAllowed> " +
                                 "<pub:name>p_creation_dte_frm</pub:name> " +
                                 "<pub:values> " +
-                                "<pub:item></pub:item> " +
+                                "<pub:item>" + date + "</pub:item> " +
                                 "</pub:values> " +
                                 "</pub:item>  " +
                                 "<pub:item> " +
                                 "<pub:multiValuesAllowed>False</pub:multiValuesAllowed> " +
                                 "<pub:name>p_creation_date_to</pub:name> " +
                                 "<pub:values> " +
-                                "<pub:item></pub:item> " +
+                                "<pub:item>" + date + "</pub:item> " +
                                 "</pub:values> " +
                                 "</pub:item> " +
                                 "</pub:parameterNameValues>   " +
@@ -422,6 +364,64 @@ namespace XCustPr
                                 "</v2:runReport> " +
                                 "</soapenv:Body> " +
                                 "</soapenv:Envelope> ";
+            //uri = @"<soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:v2='http://xmlns.oracle.com/oxp/service/v2'>    " +
+            //"<soapenv:Header/> " +
+            //        "<soapenv:Body> " +
+            //            "<v2:runReport> " +
+            //                "<v2:reportRequest> " +
+            //                    "<v2:attributeLocale>en-US</v2:attributeLocale> " +
+            //                    "<v2:attributeTemplate>XCUST_PURCHASE_REP</v2:attributeTemplate> " +
+            //                    "<v2:reportAbsolutePath>/Custom/XCUST_CUSTOM/XCUST_PURCHASE_REP.xdo</v2:reportAbsolutePath> " +
+            //                    "<pub:parameterNameValues> " +
+            //                    "<pub:item> " +
+            //                        "<pub:multiValuesAllowed>False</pub:multiValuesAllowed> " +
+            //                        "<pub:name>p_po_num_from</pub:name> " +
+            //                        "<pub:values> " +
+            //                            "<pub:item></pub:item> " +
+            //                        "</pub:values>" +
+            //                    "</pub:item> " +
+            //                    "<pub:item> " +
+            //                    "<pub:multiValuesAllowed>False</pub:multiValuesAllowed> " +
+            //                    "<pub:name>p_po_num_to</pub:name> " +
+            //                    "<pub:values>" +
+            //                    "<pub:item></pub:item> " +
+            //                    "</pub:values> " +
+            //                    "</pub:item>  " +
+            //                    "<pub:item> " +
+            //                    "<pub:multiValuesAllowed>False</pub:multiValuesAllowed> " +
+            //                    "<pub:name>p_last_update_date_frm</pub:name> " +
+            //                    "<pub:values> " +
+            //                    "<pub:item></pub:item> " +
+            //                    "</pub:values> " +
+            //                    "</pub:item> " +
+            //                    "<pub:item> " +
+            //                    "<pub:multiValuesAllowed>False</pub:multiValuesAllowed> " +
+            //                    "<pub:name>p_last_update_date_to</pub:name> " +
+            //                    "<pub:values> " +
+            //                    "<pub:item></pub:item> " +
+            //                    "</pub:values> " +
+            //                    "</pub:item>  " +
+            //                    "<pub:item> " +
+            //                    "<pub:multiValuesAllowed>False</pub:multiValuesAllowed> " +
+            //                    "<pub:name>p_creation_dte_frm</pub:name> " +
+            //                    "<pub:values> " +
+            //                    "<pub:item></pub:item> " +
+            //                    "</pub:values> " +
+            //                    "</pub:item>  " +
+            //                    "<pub:item> " +
+            //                    "<pub:multiValuesAllowed>False</pub:multiValuesAllowed> " +
+            //                    "<pub:name>p_creation_date_to</pub:name> " +
+            //                    "<pub:values> " +
+            //                    "<pub:item></pub:item> " +
+            //                    "</pub:values> " +
+            //                    "</pub:item> " +
+            //                    "</pub:parameterNameValues>   " +
+            //                    "</v2:reportRequest> " +
+            //                    "<v2:userID>icetech@iceconsulting.co.th</v2:userID> " +
+            //                    "<v2:password>icetech@2017</v2:password> " +
+            //                    "</v2:runReport> " +
+            //                    "</soapenv:Body> " +
+            //                    "</soapenv:Envelope> ";
 
             //byte[] byteArray = Encoding.UTF8.GetBytes(envelope);
             byte[] byteArray = Encoding.UTF8.GetBytes(uri);
