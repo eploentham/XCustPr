@@ -100,7 +100,7 @@ namespace XCustPr
             listXcApIIT = new List<XcustApInvIntTbl>();
             listXcApILIT = new List<XcustApInvLinesIntTbl>();
         }
-        public void processTextFileSupplier(String[] filePO, MaterialListView lv1, Form form1, MaterialProgressBar pB1)
+        public String processTextFileSupplier(String[] filePO, MaterialListView lv1, Form form1, MaterialProgressBar pB1)
         {
             TimeZoneInfo tz = TimeZoneInfo.FindSystemTimeZoneById("US Eastern Standard Time");
             String date = System.DateTime.Now.ToString("yyyy-MM-dd");
@@ -127,7 +127,8 @@ namespace XCustPr
             // insert xcust_mmx_pr_int_tbl
             filePOProcess = Cm.getFileinFolder(Cm.initC.AP001PathProcess);
             addListView("อ่าน file จาก " + Cm.initC.AP001PathProcess, "", lv1, form1);
-            
+            String requestId = "";
+            requestId = xCSIITDB.getRequestID();
             foreach (string aa in filePOProcess)
             {
                 List<String> rcv = rd.ReadTextFile(aa);
@@ -135,15 +136,16 @@ namespace XCustPr
                 //conn.BulkToMySQL("kfc_po", linfox);       // ย้ายจาก MySQL ไป MSSQL   
                 pB1.Visible = true;
 
-                xCSIITDB.insertBluk(rcv, aa, "kfc_po", pB1, Cm.initC.AP001PathLog);
+                xCSIITDB.insertBluk(rcv, aa, "kfc_po", pB1, Cm.initC.AP001PathLog, requestId, Cm.initC.AP001StorePlus);
                 
                 pB1.Visible = false;
             }
+            return requestId;
         }
-        public void processGetTempTableToValidate(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
+        public void processGetTempTableToValidate(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String requestId)
         {
             addListView("processGetTempTableToValidate ", "Validate", lv1, form1);
-            pB1.Visible = true;
+            pB1.Show();
             Boolean chk = false;
             DataTable dtHeader = new DataTable();
             DataTable dtGroupBy = new DataTable();
@@ -164,18 +166,45 @@ namespace XCustPr
             //getListXcBALT();
             int row1 = 0;
             int cntErr = 0, cntFileErr = 0;   // gen log
-            
+            Org = xCDOMTDB.selectActiveByCode(Cm.initC.ORGANIZATION_code.Trim());
+            if (Org.Equals(""))
+            {
+                chk = false;
+                vPP = new ValidatePrPo();
+                vPP.Filename = "PO001 Parameter ";
+                vPP.Message = " AP001-009 :  Organization ไม่พบ";
+                vPP.Validate = "";
+                lVPr.Add(vPP);
+                cntErr++;       // gen log
+            }
+            else if (Org.Equals("D"))
+            {
+                chk = false;
+                vPP = new ValidatePrPo();
+                vPP.Filename = "PO001 Parameter ";
+                vPP.Message = " AP001-008 : Organization = D";
+                vPP.Validate = "";
+                lVPr.Add(vPP);
+                cntErr++;       // gen log
+            }
+
             dtGroupBy = xCSIITDB.selectGroupByFilename();//   ดึง filename
+            int i = 0;
+            pB1.Minimum = 0;
+            pB1.Maximum = dtGroupBy.Rows.Count;
             foreach (DataRow rowG in dtGroupBy.Rows)
             {
+                i++;
+                pB1.Value = i;
                 dt = xCSIITDB.selectByFilename(rowG[xCSIITDB.xCSIIT.FILE_NAME].ToString());
-                foreach(DataRow row in dt.Rows)
+                pB1.Minimum = 0;
+                pB1.Maximum = dt.Rows.Count;
+                row1 = 0;
+                cntErr = 0;     //gen log
+                foreach (DataRow row in dt.Rows)
                 {
-                    row1 = 0;
-                    cntErr = 0;     //gen log
-                    pB1.Minimum = 0;
-                    pB1.Maximum = dt.Rows.Count;
-
+                    row1++;
+                    pB1.Value = row1;
                     ValidateFileName vF = new ValidateFileName();   // gen log
                     vF.fileName = row[xCSIITDB.xCSIIT.FILE_NAME].ToString().Trim();   // gen log
                     vF.recordTotal = dt.Rows.Count.ToString();   // gen log
@@ -186,13 +215,15 @@ namespace XCustPr
                     {
                         vPP = new ValidatePrPo();
                         vPP.Filename = row[xCSIITDB.xCSIIT.FILE_NAME].ToString().Trim();
-                        vPP.Message = "Error AP004-002 ";
+                        vPP.Message = "Error AP001-002 ";
                         vPP.Validate = "row " + row1 + " INVOICE_DATE=" + row[xCSIITDB.xCSIIT.INVOICE_DATE].ToString();
                         lVPr.Add(vPP);
                         cntErr++;       // gen log
+                        xCSIITDB.updateErrorMessage(row[xCSIITDB.xCSIIT.INVOICE_NUM].ToString(), row[xCSIITDB.xCSIIT.STORE].ToString(), "Error PO001-006 : Invalid data type", row[xCSIITDB.xCSIIT.request_id].ToString(), "kfc_po", Cm.initC.pathLogErr);
                     }
                     //Error AP001-003 : Not found Store Code
-                    subInv_code = Cm.validateSubInventoryCode(Cm.initC.ORGANIZATION_code.Trim(), row[xCSIITDB.xCSIIT.STORE].ToString().Trim(), listXcSIMT);
+                    //subInv_code = Cm.validateSubInventoryCode(Cm.initC.ORGANIZATION_code.Trim(), row[xCSIITDB.xCSIIT.STORE].ToString().Trim(), listXcSIMT);
+                    subInv_code = xCSIMTDB.validateSubInventoryCode1(Org, row[xCSIITDB.xCSIIT.STORE].ToString().Trim());
                     if (subInv_code.Equals(""))
                     {
                         vPP = new ValidatePrPo();
@@ -209,6 +240,32 @@ namespace XCustPr
                     vF.totalError = cntErr.ToString();   // gen log
                     lVfile.Add(vF);   // gen log
                 }
+            }
+            pB1.Hide();
+            updateValidateFlagY(requestId);
+            Cm.logProcess("xcustap001", lVPr, dateStart, lVfile);   // gen log
+        }
+        private void updateValidateFlagY(String requestId)
+        {
+            DataTable dt = new DataTable();
+            dt = xCSIITDB.selectByRequestId(requestId);
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    String invNumber = "", storeCode = "", chk = "";
+                    invNumber = row[xCSIITDB.xCSIIT.INVOICE_NUM].ToString();
+                    storeCode = row[xCSIITDB.xCSIIT.STORE].ToString();
+                    if (invNumber.Equals("12819344"))
+                    {
+                        chk = "";
+                    }
+                    if (row[xCSIITDB.xCSIIT.ERROR_MSG].ToString().Length == 0)
+                    {
+                        xCSIITDB.updateValidateFlagY(row[xCSIITDB.xCSIIT.INVOICE_NUM].ToString(), row[xCSIITDB.xCSIIT.STORE].ToString(), row[xCSIITDB.xCSIIT.request_id].ToString(), "kfc_po", Cm.initC.AP001PathLog);
+                    }
+                }
+
             }
         }
         public void processInsertTable(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String pathLog)
@@ -230,6 +287,62 @@ namespace XCustPr
                 //XcustPorReqLineIntAll xcprlia = xCPRLIADB.setData(row, xCLFPTDB.xCLFPT);
                 String chk = xCApILITDB.insert(xcprlia, Cm.initC.AP001PathLog);
             }
+        }
+        public void processInsertTable2(String requestId, MaterialListView lv1, Form form1, MaterialProgressBar pB1)
+        {
+            addListView("insert table " , "Validate", lv1, form1);
+            String currDate = System.DateTime.Now.ToString("yyyy-MM-dd");
+            int rowH = 0;
+            DataTable dt = new DataTable();
+            dt = xCSIITDB.selectFilenameByRequestId(requestId);     //moveFileToFolderArchiveError
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    String filename = "", rowCnt = "";
+                    filename = row[xCSIITDB.xCSIIT.FILE_NAME].ToString();
+                    rowCnt = row["row_Cnt"].ToString();
+                    String cnt = "";
+                    cnt = xCSIITDB.getCountNoErrorByFilename(requestId, filename);
+                    pB1.Minimum = 0;
+                    
+                    if (cnt.Equals(rowCnt))
+                    {
+                        //ที่ ผ่าน ทั้ง file
+                        DataTable dtFilename = new DataTable();
+                        //dtFilename = xCLFPTDB.selectLinfoxByFilename(filename, requestId);
+                        dtFilename = xCSIITDB.selectLinfoxGroupByPoNumber(filename, requestId);
+                        if (dtFilename.Rows.Count > 0)
+                        {
+                            pB1.Maximum = dtFilename.Rows.Count;
+                            foreach (DataRow rowFilename in dtFilename.Rows)
+                            {
+                                rowH++;
+                                pB1.Value = rowH;
+                                String invNumber = "", invDate="", poNumber="", storeCode="";
+                                invNumber = rowFilename[xCSIITDB.xCSIIT.INVOICE_NUM].ToString();
+                                invDate = rowFilename[xCSIITDB.xCSIIT.INVOICE_DATE].ToString();
+                                poNumber = rowFilename[xCSIITDB.xCSIIT.PO_NUMBER].ToString();
+                                storeCode = rowFilename[xCSIITDB.xCSIIT.STORE].ToString();
+                                DataTable dtApLine = new DataTable();
+                                dtApLine = xCSIITDB.selectApLineByInvNumber(requestId, invNumber, storeCode);
+                                XcustApInvIntTbl xCAIIT = addXcustApInv1(invNumber, invDate, poNumber, rowH);
+                                String seqH = "";
+                                seqH = xCApIITDB.insert(xCAIIT, Cm.initC.AP001PathLog);
+                                foreach (DataRow rowLinfox in dtApLine.Rows)
+                                {
+                                    XcustApInvLinesIntTbl xCApILIT = new XcustApInvLinesIntTbl();
+                                    xCApILIT = addXcustApILIT1(rowLinfox);
+                                    xCApILIT.INVOICE_ID = seqH;
+                                    String seqL = xCApILITDB.insert(xCApILIT, Cm.initC.AP001PathLog);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            xCSIITDB.updatePrcessFlag(requestId, "kfc_po", Cm.initC.pathLogErr);
         }
         /*
          * เตรียมข้อมูล เพื่อที่จะลง table XCUST_AP_INV_INT_TBL
@@ -267,6 +380,29 @@ namespace XCustPr
                 listXcApIIT.Add(xcprhia1);
             }
         }
+        private XcustApInvIntTbl addXcustApInv1(String inv_number, String inv_date, String po_number, int rowH)
+        {
+
+                String seq = rowH.ToString();
+                XcustApInvIntTbl xcprhia1 = new XcustApInvIntTbl();
+                xcprhia1.INVOICE_NUM = inv_number;
+                xcprhia1.INVOICE_ID = seq;
+                xcprhia1.BUSINESS_UNIT = Cm.initC.BU_NAME;
+                xcprhia1.SOURCE = Cm.initC.AP001ImportSource;
+                xcprhia1.INVOICE_DATE = inv_date;
+                //xcprhia1.VENDOR_NAME
+
+                xcprhia1.INVOICE_CUR_CODE = po_number;
+                xcprhia1.PAYMENT_CURR_CODE = po_number;
+                xcprhia1.DESCRIPTION = inv_number;
+                xcprhia1.INVOICE_TYPE_LOOKUP_CODE = Cm.initC.AP001INVOICE_TYPE;
+                xcprhia1.LEGAL_ENTITY = Cm.initC.AP001LEGAL_ENTITY;
+                xcprhia1.TERMS_DATE = inv_date;
+
+                xcprhia1.SOURCE_FROM = "DIRECT_SUP";
+                
+            return xcprhia1;
+        }
         private String insertXcustApInvIntTbl(XcustApInvIntTbl xcprhia, String date, String time)
         {
             String chk = "";
@@ -302,6 +438,34 @@ namespace XCustPr
 
             listXcApILIT.Add(item); 
         }
+        private XcustApInvLinesIntTbl addXcustApILIT1(DataRow row)
+        {
+            XcustApInvLinesIntTbl item = new XcustApInvLinesIntTbl();
+            item.INVOICE_ID = row[xCSIITDB.xCSIIT.INVOICE_NUM].ToString();
+            item.LINE_NUMBER = "0";
+
+            item.INVOICE_TYPE_LOOKUP_CODE = (Double.Parse(row[xCSIITDB.xCSIIT.VAT_AMOUNT].ToString()) > 0) ? "ITEM" : "VAT";     //Line Type
+            item.INVOICE_AMOUNT = (Double.Parse(row[xCSIITDB.xCSIIT.VAT_AMOUNT].ToString()) > 0) ? row[xCSIITDB.xCSIIT.BASE_AMOUNT].ToString() : row[xCSIITDB.xCSIIT.VAT_AMOUNT].ToString();
+            item.QUANTITY = row[xCSIITDB.xCSIIT.QTY].ToString();
+            item.PRICE = row[xCSIITDB.xCSIIT.PRICE].ToString();
+            item.DESCRIPTION = "DIRECT_SUP_" + row[xCSIITDB.xCSIIT.STORE].ToString();
+            item.PO_NUMBER = row[xCSIITDB.xCSIIT.PO_NUMBER].ToString();
+            item.TAX_CLASSIFICATION_CODE = "";
+            item.TAX_RATE = "";
+            item.AWT_GROUP_NAME = "";
+            //item.TAX_REGIME_CODE = row[xCUiIDTDB.xCUiIDT.po_tax_code].ToString();
+            //item.AWT_GROUP_NAME = "";       // Withholding Tax Group
+            //item.ATTRIBUTE1 = row[xCUiIDTDB.xCUiIDT.PO].ToString();
+            //item.CURRENCY_CODE = Cm.initC.CURRENCY_CODE;
+            //item.AGREEMENT_NUMBER = row[xCLFPTDB.xCLFPT.AGREEEMENT_NUMBER].ToString();
+            //item.CURRENCY_UNIT_PRICE = "REQ_HEADER_INTERFACE_ID";//PO_NUMBER
+            //item.Price = row[xCLFPTDB.xCLFPT.PRICE].ToString();
+            //item.PROCESS_FLAG = "Y";
+            //item.UOM_CODE = row[xCLFPTDB.xCLFPT.UOMCODE].ToString();
+
+            return item;
+            //listXcApILIT.Add(item);
+        }
         public void processGenCSV(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
         {
             addListView("processGenCSVxCPRHIA ", "CVS", lv1, form1);
@@ -314,7 +478,7 @@ namespace XCustPr
         }
         public void processGenCSVxCApIIT(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String flag)
         {
-            var file = Cm.initC.AP001PathArchive + "processGenCSVxCApIIT.csv";
+            var file = Cm.initC.AP001PathFileCSV + "processGenCSVxCApIIT.csv";
             DataTable dt;
             if (flag.Equals("AP001"))
             {
@@ -506,7 +670,7 @@ namespace XCustPr
         }
         public void processGenCSVxCApILIT(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String flag)
         {
-            var file = Cm.initC.AP001PathArchive + "processGenCSVxCApILIT.csv";
+            var file = Cm.initC.AP001PathFileCSV + "processGenCSVxCApILIT.csv";
             DataTable dt;
             if (flag.Equals("AP001"))
             {
@@ -736,8 +900,8 @@ namespace XCustPr
             String filenameZip = "", ilename2 = "", ilename3 = "", filename = "";
             if (flag.Equals("AP001"))
             {
-                filenameZip = Cm.initC.PathFileCSV + "\\xcustpr.zip";
-                filename = @Cm.initC.PathArchive;
+                filenameZip = Cm.initC.AP001PathFileZip + "\\xcustpr.zip";
+                filename = @Cm.initC.AP001PathFileCSV;
             }
             else
             {
@@ -773,21 +937,21 @@ namespace XCustPr
         }
         /*
          * check แค่ format ว่า เป็น DD-MM-YYYY เท่านั้น
-         * Error AP004-002  : Date Format not correct 
+         * Error AP001-002  : Date Format not correct 
          */
         public Boolean validateDate(String date)
         {
             Boolean chk = false;
-            if (date.Length == 8)
+            if (date.Length == 10)
             {
                 sYear.Clear();
                 sMonth.Clear();
                 sDay.Clear();
                 try
                 {
-                    sYear.Append(date.Substring(6, 4));
-                    sMonth.Append(date.Substring(3, 2));
-                    sDay.Append(date.Substring(0, 2));
+                    sYear.Append(date.Substring(0, 4));
+                    sMonth.Append(date.Substring(5, 2));
+                    sDay.Append(date.Substring(8, 2));
                     if ((int.Parse(sYear.ToString()) > 2000) && (int.Parse(sYear.ToString()) < 2100))
                     {
                         if ((int.Parse(sMonth.ToString()) >= 1) && (int.Parse(sMonth.ToString()) <= 12))

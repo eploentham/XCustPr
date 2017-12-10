@@ -89,10 +89,10 @@ namespace XCustPr
         public String ExtractZipPathZipExtractRead = "", ExtractZipPathZipExtract="";
 
         public String AP001PathInitial = "", AP001PathProcess = "", AP001PathError = "", AP001PathArchive = "", AP001ImportSource = "", AP001LEGAL_ENTITY="", AP001INVOICE_TYPE="";
-        public String AP001PathLog = "";
+        public String AP001PathLog = "", AP001PathFileCSV = "", AP001StorePlus="", AP001PathFileZip = "";
 
         public String AP004PathInitial = "", AP004PathProcess = "", AP004PathError = "", AP004PathArchive = "", AP004ImportSource="";
-        public String AP004PathLog = "";
+        public String AP004PathLog = "", AP004PathFileCSV = "";
 
         public String ValueSetPathLog = "";
 

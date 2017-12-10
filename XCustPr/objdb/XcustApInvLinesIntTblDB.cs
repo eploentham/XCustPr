@@ -81,6 +81,18 @@ namespace XCustPr
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
+        public String genSeqReqLineNumber()
+        {
+            DataTable dt = new DataTable();
+            String chk = "";
+            String sql = "SELECT next value for xcust_ap_invoice_line_seq ;";
+            dt = conn.selectData(sql, "kfc_po");
+            if (dt.Rows.Count > 0)
+            {
+                chk = dt.Rows[0][0].ToString().Trim();
+            }
+            return chk;
+        }
         public String insert(XcustApInvLinesIntTbl p, String pathLog)
         {
             String sql = "", chk = "";
@@ -92,19 +104,22 @@ namespace XCustPr
                 //}
                 //p.RowNumber = selectMaxRowNumber(p.YearId);
                 //p.Active = "1";
+                String seqL = genSeqReqLineNumber();
+
                 p.INVOICE_ID = p.INVOICE_ID.Equals("") ? "0" : p.INVOICE_ID;
-                p.LINE_NUMBER = p.LINE_NUMBER.Equals("") ? "0" : p.LINE_NUMBER;
-                p.INVOICE_AMOUNT = p.INVOICE_AMOUNT.Equals("") ? "0" : p.INVOICE_AMOUNT;
-                p.QUANTITY = p.QUANTITY.Equals("") ? "0" : p.QUANTITY;
-                p.PRICE = p.PRICE.Equals("") ? "0" : p.PRICE;
-                p.PO_LINE_NUMBER = p.PO_LINE_NUMBER.Equals("") ? "0" : p.PO_LINE_NUMBER;
-                p.RECEIPT_LINE_NUMBER = p.RECEIPT_LINE_NUMBER.Equals("") ? "0" : p.RECEIPT_LINE_NUMBER;
-                p.TAX_RATE = p.TAX_RATE.Equals("") ? "0" : p.TAX_RATE;
+                p.LINE_NUMBER = p.LINE_NUMBER.Equals("") ? "1" : p.LINE_NUMBER;
+                p.INVOICE_AMOUNT = p.INVOICE_AMOUNT.Equals("") ? "null" : p.INVOICE_AMOUNT;
+                p.QUANTITY = p.QUANTITY.Equals("") ? "null" : p.QUANTITY;
+                p.PRICE = p.PRICE.Equals("") ? "null" : p.PRICE;
+                p.PO_LINE_NUMBER = p.PO_LINE_NUMBER.Equals("") ? "null" : p.PO_LINE_NUMBER;
+                p.RECEIPT_LINE_NUMBER = p.RECEIPT_LINE_NUMBER.Equals("") ? "null" : p.RECEIPT_LINE_NUMBER;
+                p.TAX_RATE = p.TAX_RATE.Equals("") ? "null" : p.TAX_RATE;
+                //p.INVOICE_AMOUNT = p.INVOICE_AMOUNT.Equals("") ? "null" : p.INVOICE_AMOUNT;
                 //p.TAX_RATE = p.TAX_RATE.Equals("0") ? "" : p.TAX_RATE;
 
-                p.PRICE = String.Concat(Double.Parse(p.PRICE));
-                p.QUANTITY = String.Concat(Double.Parse(p.QUANTITY));
-                p.INVOICE_AMOUNT = String.Concat(Double.Parse(p.INVOICE_AMOUNT));
+                //p.PRICE = String.Concat(Double.Parse(p.PRICE));
+                //p.QUANTITY = String.Concat(Double.Parse(p.QUANTITY));
+                //p.INVOICE_AMOUNT = String.Concat(Double.Parse(p.INVOICE_AMOUNT));
 
                 String last_update_by = "0", creation_by = "0";
                 sql = "Insert Into " + xCAILIT.table + "(" + xCAILIT.ATTRIBUTE1 + "," + xCAILIT.ATTRIBUTE10 + "," + xCAILIT.ATTRIBUTE11 + "," +
@@ -136,11 +151,11 @@ namespace XCustPr
                     p.GLOBAL_ATTRIBUTE17 + "','" + p.GLOBAL_ATTRIBUTE18 + "','" + p.GLOBAL_ATTRIBUTE19 + "','" +
                     p.GLOBAL_ATTRIBUTE2 + "','" + p.GLOBAL_ATTRIBUTE20 + "','" + p.GLOBAL_ATTRIBUTE3 + "','" +
                     p.GLOBAL_ATTRIBUTE4 + "','" + p.GLOBAL_ATTRIBUTE5 + "','" + p.GLOBAL_ATTRIBUTE6 + "','" +
-                    p.GLOBAL_ATTRIBUTE7 + "','" + p.GLOBAL_ATTRIBUTE8 + "','" + p.GLOBAL_ATTRIBUTE9 + "','" +
-                    p.INVOICE_AMOUNT + "','" + p.INVOICE_ID + "','" + p.INVOICE_TYPE_LOOKUP_CODE + "','" +
-                    p.LINE_NUMBER + "','" + p.PO_LINE_NUMBER + "','" + p.PO_NUMBER + "','" +
-                    p.PRICE + "','" + p.QUANTITY + "','" + p.RECEIPT_LINE_NUMBER + "','" +
-                    p.RECEIPT_NUMBER + "','" + p.TAX_CLASSIFICATION_CODE + "','" + p.TAX_RATE + "','" +
+                    p.GLOBAL_ATTRIBUTE7 + "','" + p.GLOBAL_ATTRIBUTE8 + "','" + p.GLOBAL_ATTRIBUTE9 + "'," +
+                    p.INVOICE_AMOUNT + "," + p.INVOICE_ID + ",'" + p.INVOICE_TYPE_LOOKUP_CODE + "'," +
+                    seqL + "," + p.PO_LINE_NUMBER + ",'" + p.PO_NUMBER + "'," +
+                    p.PRICE + "," + p.QUANTITY + "," + p.RECEIPT_LINE_NUMBER + ",'" +
+                    p.RECEIPT_NUMBER + "','" + p.TAX_CLASSIFICATION_CODE + "'," + p.TAX_RATE + ",'" +
                     p.TAX_REGIME_CODE + "'" +
                     
                     ") ";

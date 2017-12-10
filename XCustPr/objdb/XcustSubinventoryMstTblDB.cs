@@ -71,8 +71,13 @@ namespace XCustPr
         {
             DataTable dt = new DataTable();
             String chk = "";
-            String sql = "select * From " + xCSIMT.table +
-                " Where " + xCSIMT.ORGAINZATION_ID + " = '" + ordId + "' and  (" + xCSIMT.attribute1 + " = '" + StoreCode + "' or "+xCSIMT.attribute2+ " = '" + StoreCode+"') ";
+            String sql = "";
+            //sql = "select * From " + xCSIMT.table +
+            //    " Where " + xCSIMT.ORGAINZATION_ID + " = '" + ordId + "' and  (" + xCSIMT.attribute1 + " = '" + StoreCode + "' or "+xCSIMT.attribute2+ " = '" + StoreCode+"') ";
+            //sql = "select * From " + xCSIMT.table +
+            //    " Where " + xCSIMT.ORGAINZATION_ID + " = '" + ordId + "' and  (" + xCSIMT.attribute1 + " = '" + StoreCode + "' or " + xCSIMT.attribute2 + " = '" + StoreCode + "') ";
+            sql = "select * From " + xCSIMT.table +
+                " Where " + xCSIMT.ORGAINZATION_ID + " = '" + ordId + "' and "+xCSIMT.SECONDARY_INVENTORY_NAME+"='"+StoreCode+"'";
             dt = conn.selectData(sql, "kfc_po");
             if (dt.Rows.Count > 0)
             {

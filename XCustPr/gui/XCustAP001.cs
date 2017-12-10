@@ -79,6 +79,7 @@ namespace XCustPr
                 lv1.Items.Add(AddToList((i++), aa, ""));
                 //lv1.Items.s
             }
+            disableBtn1();
         }
         private void disableBtn()
         {
@@ -87,7 +88,15 @@ namespace XCustPr
             btnFTP.Enabled = false;
             btnWebService.Enabled = false;
             btnEmail.Enabled = false;
-        } 
+        }
+        private void disableBtn1()
+        {
+            //btnRead.Enabled = false;
+            btnPrepare.Enabled = false;
+            btnFTP.Enabled = false;
+            btnWebService.Enabled = false;
+            btnEmail.Enabled = false;
+        }
         private void initCompoment()
         {
             line1 = 35 + gapLine;
@@ -199,19 +208,21 @@ namespace XCustPr
         private void BtnPrepare_Click(object sender, EventArgs e)
         {
             //throw new NotImplementedException();
-            cAp001.processGenCSV(lv1, this, pB1);
+            //cAp001.processGenCSV(lv1, this, pB1);
         }
 
         private void BtnRead_Click(object sender, EventArgs e)
         {
             //throw new NotImplementedException();
             lv1.Items.Clear();
-
+            String requestId = "";
             filePO = Cm.getFileinFolder(Cm.initC.AP001PathInitial);
-            cAp001.processTextFileSupplier(filePO, lv1, this, pB1);
-            cAp001.processGetTempTableToValidate(lv1, this, pB1);
+            requestId = cAp001.processTextFileSupplier(filePO, lv1, this, pB1);
+            cAp001.processGetTempTableToValidate(lv1, this, pB1, requestId);
 
-            cAp001.processInsertTable(lv1, this, pB1, Cm.initC.AP001PathLog);
+            cAp001.processInsertTable2(requestId,lv1, this, pB1);
+
+            cAp001.processGenCSV(lv1, this, pB1);
         }
 
         private void TxtFileName_Leave(object sender, EventArgs e)

@@ -85,6 +85,18 @@ namespace XCustPr
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
+        public String genSeqReqHeaderNumber()
+        {
+            DataTable dt = new DataTable();
+            String chk = "";
+            String sql = "SELECT next value for xcust_ap_invoice_seq ;";
+            dt = conn.selectData(sql, "kfc_po");
+            if (dt.Rows.Count > 0)
+            {
+                chk = dt.Rows[0][0].ToString().Trim();
+            }
+            return chk;
+        }
         public String insert(XcustApInvIntTbl p, String pathLog)
         {
             String sql = "", chk = "";
@@ -96,6 +108,7 @@ namespace XCustPr
                 //}
                 //p.RowNumber = selectMaxRowNumber(p.YearId);
                 //p.Active = "1";
+                String seqH = genSeqReqHeaderNumber();
                 String last_update_by = "0", creation_by = "0";
                 sql = "Insert Into " + xCAIIT.table + "(" + xCAIIT.ACCOUNTING_DATE + "," + xCAIIT.ACCTS_PAY + "," + xCAIIT.ATTRIBUTE1 + "," +
                     xCAIIT.ATTRIBUTE10 + "," + xCAIIT.ATTRIBUTE11 + "," + xCAIIT.ATTRIBUTE12 + "," +
@@ -129,13 +142,14 @@ namespace XCustPr
                     p.GLOBAL_ATTRIBUTE20 + "','" + p.GLOBAL_ATTRIBUTE3 + "','" + p.GLOBAL_ATTRIBUTE4 + "','" +
                     p.GLOBAL_ATTRIBUTE5 + "','" + p.GLOBAL_ATTRIBUTE6 + "','" + p.GLOBAL_ATTRIBUTE7 + "','" +
                     p.GLOBAL_ATTRIBUTE8 + "','" + p.GLOBAL_ATTRIBUTE9 + "','" + p.INVOICE_CUR_CODE + "','" +
-                    p.INVOICE_DATE + "','" + p.INVOICE_ID + "','" + p.INVOICE_NUM + "','" +
+                    p.INVOICE_DATE + "'," + seqH + ",'" + p.INVOICE_NUM + "','" +
                     p.INVOICE_TYPE_LOOKUP_CODE + "','" + p.LEGAL_ENTITY + "','" + p.PAYMENT_CURR_CODE + "','" +
                     p.PAYMENT_METHOD + "','" + p.PAY_GROUP + "','" + p.SOURCE + "','" +
                     p.SOURCE_FROM + "','" + p.TERMS_DATE + "','" + p.TERMS_NAME + "','" +
                     p.VENDOR_NAME + "','" + p.VENDOR_NUMBER + "','" + p.VENDOR_SITE_CODE + "'" +                    
                     ") ";
                 chk = conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
+                chk = seqH;
                 //chk = p.RowNumber;
                 //chk = p.Code;
             }
@@ -146,5 +160,6 @@ namespace XCustPr
 
             return chk;
         }
+        
     }
 }

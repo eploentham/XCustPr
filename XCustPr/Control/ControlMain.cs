@@ -323,11 +323,28 @@ namespace XCustPr
                 MessageBox.Show("Path AP001PathLog empty", "createFolderAP001");
                 return;
             }
+            if (initC.AP001StorePlus.Equals(""))
+            {
+                MessageBox.Show("Path AP001StorePlus empty", "createFolderAP001");
+                return;
+            }
+            if (initC.AP001PathFileCSV.Equals(""))
+            {
+                MessageBox.Show("Path AP001PathFileCSV empty", "createFolderAP001");
+                return;
+            }
+            if (initC.AP001PathFileZip.Equals(""))
+            {
+                MessageBox.Show("Path AP001PathFileZip empty", "createFolderAP001");
+                return;
+            }
             createFolder(initC.AP001PathInitial);
             createFolder(initC.AP001PathProcess);
             createFolder(initC.AP001PathError);
             createFolder(initC.AP001PathArchive);
             createFolder(initC.AP001PathLog);
+            createFolder(initC.AP001PathFileCSV);
+            createFolder(initC.AP001PathFileZip);
         }
         public void createFolderAP004()
         {
@@ -616,12 +633,17 @@ namespace XCustPr
             initC.AP001ImportSource = iniFile.Read("AP001ImportSource").Trim();
             initC.AP001LEGAL_ENTITY = iniFile.Read("AP001LEGAL_ENTITY").Trim();
             initC.AP001INVOICE_TYPE = iniFile.Read("AP001INVOICE_TYPE").Trim();
+            initC.AP001PathLog = iniFile.Read("AP001PathLog").Trim();
+            initC.AP001StorePlus = iniFile.Read("AP001StorePlus").Trim();
+            initC.AP001PathFileCSV = iniFile.Read("AP001PathFileCSV").Trim();
+            initC.AP001PathFileZip = iniFile.Read("AP001PathFileZip").Trim();
 
             initC.AP004PathArchive = iniFile.Read("AP004PathArchive").Trim();
             initC.AP004PathError = iniFile.Read("AP004PathError").Trim();
             initC.AP004PathInitial = iniFile.Read("AP004PathInitial").Trim();
             initC.AP004PathProcess = iniFile.Read("AP004PathProcess").Trim();
             initC.AP004ImportSource = iniFile.Read("AP004ImportSource").Trim();
+            initC.AP004PathLog = iniFile.Read("AP004PathLog").Trim();
 
             //initC.grdQuoColor = iniFile.Read("gridquotationcolor");
 
@@ -939,6 +961,10 @@ namespace XCustPr
             {
                 path = initC.PO008PathLog;
             }
+            else if (programname.ToLower().Equals("xcustap001"))
+            {
+                path = initC.AP001PathLog;
+            }
             return path;
         }
         public void logProcess(String programname, List<ValidatePrPo> lVPr, String startdatetime, List<ValidateFileName> listfile)
@@ -969,16 +995,26 @@ namespace XCustPr
             }
             else if (programname.Equals("xcustpo008"))
             {
-                line1 = "Program : Interface PO <CEDAR> to PO (ERP)" + Environment.NewLine;
+                line1 = "Program : XCUST Interface EDI File from Supplier to AP Invoice" + Environment.NewLine;
                 path = getPathLogProcess(programname);
                 parameter = "Parameter : " + Environment.NewLine;
-                parameter += "           Path Initial :" + initC.PO008PathInitial + Environment.NewLine;
-                parameter += "           Path Process :" + initC.PO008PathProcess + Environment.NewLine;
-                parameter += "           Path Error :" + initC.PO008PathError + Environment.NewLine;
-                parameter += "           Path Archive :" + initC.PO008PathArchive + Environment.NewLine;
-                parameter += "           Path Import Soruce :" + initC.PO008ImportSource + Environment.NewLine;
+                parameter += "           Path Initial :" + initC.AP001PathInitial + Environment.NewLine;
+                parameter += "           Path Process :" + initC.AP001PathProcess + Environment.NewLine;
+                parameter += "           Path Error :" + initC.AP001PathError + Environment.NewLine;
+                
+                parameter += "           Import Soruce :" + initC.AP001ImportSource + Environment.NewLine;
             }
+            else if (programname.Equals("xcustap001"))
+            {
+                line1 = "Program : XCUST Interface EDI File from Supplier to AP Invoice" + Environment.NewLine;
+                path = getPathLogProcess(programname);
+                parameter = "Parameter : " + Environment.NewLine;
+                parameter += "           Path Initial :" + initC.AP001PathInitial + Environment.NewLine;
+                parameter += "           Path Process :" + initC.AP001PathProcess + Environment.NewLine;
+                parameter += "           Path Error :" + initC.AP001PathError + Environment.NewLine;
 
+                parameter += "           Import Soruce :" + initC.AP001ImportSource + Environment.NewLine;
+            }
                 if (listfile.Count > 0)
             {
                 foreach (ValidateFileName vF in listfile)

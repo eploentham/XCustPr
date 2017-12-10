@@ -24,5 +24,8 @@ namespace XCustPr
         public String VALIDATE_FLAG="";
         public String PROCESS_FLAG="";
         public String ERROR_MSG="";
+        public String request_id="";
+        public String row_number = "";
+        public String row_cnt = "";
     }
 }

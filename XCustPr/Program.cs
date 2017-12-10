@@ -106,9 +106,9 @@ namespace XCustPr
                 //Application.Run(new XcustPRWebService(Cm));
                 //Application.Run(new XcustPOWebService(Cm));
                 //Application.Run(new XCustPO007(Cm));
-                Application.Run(new XCustPO006(Cm));
+                //Application.Run(new XCustPO006(Cm));
                 //Application.Run(new XCustPoRWebService(Cm));
-                //Application.Run(new XCustAP001(Cm));
+                Application.Run(new XCustAP001(Cm));
                 //Application.Run(new XCustAP004(Cm));
             }
         }
