@@ -108,7 +108,7 @@ namespace XCustPr
             TimeZoneInfo tz = TimeZoneInfo.FindSystemTimeZoneById("US Eastern Standard Time");
             String date = System.DateTime.Now.ToString("yyyy-MM-dd");
             String time = System.DateTime.Now.ToString("HH:mm:ss");
-
+            pB1.Show();
             ReadText rd = new ReadText();
             String[] filePOProcess;
             DataTable dt = new DataTable();
@@ -132,6 +132,8 @@ namespace XCustPr
             addListView("อ่าน file จาก " + Cm.initC.AP004PathProcess, "", lv1, form1);
             DataTable dtFixLen = xCPrTDB.selectPO007FixLenLine();
             DataTable dtFixLenH = xCPrTDB.selectPO007FixLenHeader();
+            //pB1.Minimum = 0;
+            //pB1.Maximum = dtDetail.Rows.Count;
             foreach (string aa in filePOProcess)
             {
                 List<String> rcv = rd.ReadTextFile(aa);
@@ -146,8 +148,8 @@ namespace XCustPr
                 {
                     xCUiISITDB.insertBluk(rcv, dtFixLenH, aa, "kfc_po", pB1 ,Cm.initC.AP004PathLog);
                 }
-                
-                pB1.Visible = false;
+
+                pB1.Hide();
             }
         }
         public void processGetTempTableToValidate(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
@@ -156,7 +158,7 @@ namespace XCustPr
             pB1.Visible = true;
             Boolean chk = false;
             DataTable dtHeader = new DataTable();
-            DataTable dt = new DataTable();
+            DataTable dtDetail = new DataTable();
             DataTable dt1 = new DataTable();
             String currDate = System.DateTime.Now.ToString("yyyy-MM-dd");
             String buCode = "", locator = "", Org = "", subInv_code = "", currencyCode = "", blanketAgreement = "";
@@ -179,104 +181,112 @@ namespace XCustPr
             foreach (DataRow rowH in dtHeader.Rows)
             {
                 addListView("ดึงข้อมูล  " + rowH[xCUiISITDB.xCUiISIT.FLIE_NAME].ToString().Trim(), "Validate", lv1, form1);
-                dt = xCUiIDTDB.selectAll();    // ข้อมูลใน file
-                row1 = 0;
-                cntErr = 0;     //gen log
-                pB1.Minimum = 0;
-                pB1.Maximum = dt.Rows.Count;
-
-                ValidateFileName vF = new ValidateFileName();   // gen log
-                vF.fileName = rowH[xCUiISITDB.xCUiISIT.FLIE_NAME].ToString().Trim();   // gen log
-                vF.recordTotal = dt.Rows.Count.ToString();   // gen log
-
-                //Error AP004-002 : Date Format not correct 
-                chk = validateDate(rowH[xCUiISITDB.xCUiISIT.INVOICE_DATE].ToString());
-                if (!chk)
+                dtDetail = xCUiIDTDB.selectAll();    // ข้อมูล Detail
+                if (dtDetail.Rows.Count > 0)
                 {
-                    vPP = new ValidatePrPo();
-                    vPP.Filename = rowH[xCUiISITDB.xCUiISIT.FLIE_NAME].ToString().Trim();
-                    vPP.Message = "Error AP004-002 ";
-                    vPP.Validate = "row " + row1 + " INVOICE_DATE=" + rowH[xCUiISITDB.xCUiISIT.INVOICE_DATE].ToString();
-                    lVPr.Add(vPP);
-                    cntErr++;       // gen log
-                }
-                //Error AP004-002 : Date Format not correct 
-                chk = validateDate(rowH[xCUiISITDB.xCUiISIT.GL_DATE].ToString());
-                if (!chk)
-                {
-                    vPP = new ValidatePrPo();
-                    vPP.Filename = rowH[xCUiISITDB.xCUiISIT.FLIE_NAME].ToString().Trim();
-                    vPP.Message = "Error AP004-002 ";
-                    vPP.Validate = "row " + row1 + " GL_DATE=" + rowH[xCUiISITDB.xCUiISIT.GL_DATE].ToString();
-                    lVPr.Add(vPP);
-                    cntErr++;       // gen log
-                }
-                String invId = addXcustApIIT(rowH[xCUiISITDB.xCUiISIT.INVOICE_DATE].ToString().Trim(), rowH[xCUiISITDB.xCUiISIT.INVOICE_NUM].ToString().Trim()
-                        , rowH[xCUiISITDB.xCUiISIT.SUPPLIER_NUM].ToString().Trim());//ทำ รอไว้ เพื่อ process ช้า
-                foreach (DataRow row in dt.Rows)
-                {
-                    row1++;
-                    pB1.Value = row1;
-                    //Error PO003-002 : Date Format not correct
-                    //subInv_code = Cm.validateSubInventoryCode(Cm.initC.ORGANIZATION_code.Trim(), row[xCUiIDTDB.xCUiIDT.s].ToString().Trim(), listXcSIMT);
-                    //if (subInv_code.Equals(""))
-                    //{
-                    //    vPP = new ValidatePrPo();
-                    //    vPP.Filename = rowH[xCLPRITDB.xCLPRIT.file_name].ToString().Trim();
-                    //    vPP.Message = "Error AP004-004 ";
-                    //    vPP.Validate = "row " + row1 + " conf_delivery_date=" + row[xCLPRITDB.xCLPRIT.lot_expire_date].ToString();
-                    //    lVPr.Add(vPP);
-                    //    cntErr++;       // gen log
-                    //}
-                    //Error PO003-0054 : Invalid Supplier Code
-                    //if (Cm.validateSupplierBySupplierCode(row[xCLPRITDB.xCLPRIT.supplier_code].ToString().Trim(), listXcSMT))
-                    //{
-                    //    vPP = new ValidatePrPo();
-                    //    vPP.Filename = rowH[xCLPRITDB.xCLPRIT.file_name].ToString().Trim();
-                    //    vPP.Message = "Error PO004-015 ";
-                    //    vPP.Validate = "row " + row1 + "  supplier_code " + row[xCLPRITDB.xCLPRIT.supplier_code].ToString().Trim();
-                    //    lVPr.Add(vPP);
-                    //    cntErr++;       // gen log
-                    //}
-                    //Error PO003-0065 : Invalid data type
-                    //chk = Cm.validateQTY(row[xCLPRITDB.xCLPRIT.qty_receipt].ToString());
-                    //if (!chk)
-                    //{
-                    //    vPP = new ValidatePrPo();
-                    //    vPP.Filename = rowH[xCLPRITDB.xCLPRIT.file_name].ToString().Trim();
-                    //    vPP.Message = "Error PO004-006 ";
-                    //    vPP.Validate = "row " + row1 + " order_qty=" + row[xCLPRITDB.xCLPRIT.qty_receipt].ToString();
-                    //    lVPr.Add(vPP);
-                    //    cntErr++;       // gen log
-                    //}
-                    //Error PO003-0110 : Item No. not found in PO No.
-                    //if (Cm.validateItemCodeByOrgRef("300000000949654", row[xCLPRITDB.xCLPRIT.item_code].ToString().Trim(), listXcIMT))// ต้องแก้ Fix code อยู่
-                    //{
-                    //    vPP = new ValidatePrPo();
-                    //    vPP.Filename = rowH[xCLPRITDB.xCLPRIT.file_name].ToString().Trim();
-                    //    vPP.Message = "Error PO004-011 ";
-                    //    vPP.Validate = "row " + row1 + "  item_code " + row[xCLPRITDB.xCLPRIT.item_code].ToString().Trim();
-                    //    lVPr.Add(vPP);
-                    //    cntErr++;       // gen log
-                    //}
-                    //if (cntErr > 0)   // gen log
-                    //{
-                    //    cntFileErr++;
-                    //}
+                    row1 = 0;
+                    cntErr = 0;     //gen log
+                    pB1.Minimum = 0;
+                    pB1.Maximum = dtDetail.Rows.Count;
 
-                    //row.BeginEdit();
-                    //row[xCMPITDB.xCMPIT.AGREEEMENT_NUMBER] = blanketAgreement;
-                    //row[xCMPITDB.xCMPIT.PRICE] = price;
-                    //row.EndEdit();
-                    addXcustApILIT(invId,row);
-                    //addXcustListDist(row);
-                    //xCLPRITDB.updateValidateFlag("", "", "Y", "", "kfc_po");
+                    ValidateFileName vF = new ValidateFileName();   // gen log
+                    vF.fileName = rowH[xCUiISITDB.xCUiISIT.FLIE_NAME].ToString().Trim();   // gen log
+                    vF.recordTotal = dtDetail.Rows.Count.ToString();   // gen log
+
+                    //Error AP004-002 : Date Format not correct 
+                    chk = validateDate(rowH[xCUiISITDB.xCUiISIT.INVOICE_DATE].ToString());
+                    if (!chk)
+                    {
+                        vPP = new ValidatePrPo();
+                        vPP.Filename = rowH[xCUiISITDB.xCUiISIT.FLIE_NAME].ToString().Trim();
+                        vPP.Message = "Error AP004-002 ";
+                        vPP.Validate = "row " + row1 + " INVOICE_DATE=" + rowH[xCUiISITDB.xCUiISIT.INVOICE_DATE].ToString();
+                        lVPr.Add(vPP);
+                        cntErr++;       // gen log
+                    }
+                    //Error AP004-002 : Date Format not correct 
+                    chk = validateDate(rowH[xCUiISITDB.xCUiISIT.GL_DATE].ToString());
+                    if (!chk)
+                    {
+                        vPP = new ValidatePrPo();
+                        vPP.Filename = rowH[xCUiISITDB.xCUiISIT.FLIE_NAME].ToString().Trim();
+                        vPP.Message = "Error AP004-002 ";
+                        vPP.Validate = "row " + row1 + " GL_DATE=" + rowH[xCUiISITDB.xCUiISIT.GL_DATE].ToString();
+                        lVPr.Add(vPP);
+                        cntErr++;       // gen log
+                    }
+                    String invId = addXcustApIIT(rowH[xCUiISITDB.xCUiISIT.INVOICE_DATE].ToString().Trim(), rowH[xCUiISITDB.xCUiISIT.INVOICE_NUM].ToString().Trim()
+                            , rowH[xCUiISITDB.xCUiISIT.SUPPLIER_NUM].ToString().Trim());//ทำ รอไว้ เพื่อ process ช้า
+                    foreach (DataRow rowD in dtDetail.Rows)
+                    {
+                        row1++;
+                        pB1.Value = row1;
+                        //Error PO003-002 : Date Format not correct
+                        //subInv_code = Cm.validateSubInventoryCode(Cm.initC.ORGANIZATION_code.Trim(), row[xCUiIDTDB.xCUiIDT.s].ToString().Trim(), listXcSIMT);
+                        //if (subInv_code.Equals(""))
+                        //{
+                        //    vPP = new ValidatePrPo();
+                        //    vPP.Filename = rowH[xCLPRITDB.xCLPRIT.file_name].ToString().Trim();
+                        //    vPP.Message = "Error AP004-004 ";
+                        //    vPP.Validate = "row " + row1 + " conf_delivery_date=" + row[xCLPRITDB.xCLPRIT.lot_expire_date].ToString();
+                        //    lVPr.Add(vPP);
+                        //    cntErr++;       // gen log
+                        //}
+                        //Error PO003-0054 : Invalid Supplier Code
+                        //if (Cm.validateSupplierBySupplierCode(row[xCLPRITDB.xCLPRIT.supplier_code].ToString().Trim(), listXcSMT))
+                        //{
+                        //    vPP = new ValidatePrPo();
+                        //    vPP.Filename = rowH[xCLPRITDB.xCLPRIT.file_name].ToString().Trim();
+                        //    vPP.Message = "Error PO004-015 ";
+                        //    vPP.Validate = "row " + row1 + "  supplier_code " + row[xCLPRITDB.xCLPRIT.supplier_code].ToString().Trim();
+                        //    lVPr.Add(vPP);
+                        //    cntErr++;       // gen log
+                        //}
+                        //Error PO003-0065 : Invalid data type
+                        //chk = Cm.validateQTY(row[xCLPRITDB.xCLPRIT.qty_receipt].ToString());
+                        //if (!chk)
+                        //{
+                        //    vPP = new ValidatePrPo();
+                        //    vPP.Filename = rowH[xCLPRITDB.xCLPRIT.file_name].ToString().Trim();
+                        //    vPP.Message = "Error PO004-006 ";
+                        //    vPP.Validate = "row " + row1 + " order_qty=" + row[xCLPRITDB.xCLPRIT.qty_receipt].ToString();
+                        //    lVPr.Add(vPP);
+                        //    cntErr++;       // gen log
+                        //}
+                        //Error PO003-0110 : Item No. not found in PO No.
+                        //if (Cm.validateItemCodeByOrgRef("300000000949654", row[xCLPRITDB.xCLPRIT.item_code].ToString().Trim(), listXcIMT))// ต้องแก้ Fix code อยู่
+                        //{
+                        //    vPP = new ValidatePrPo();
+                        //    vPP.Filename = rowH[xCLPRITDB.xCLPRIT.file_name].ToString().Trim();
+                        //    vPP.Message = "Error PO004-011 ";
+                        //    vPP.Validate = "row " + row1 + "  item_code " + row[xCLPRITDB.xCLPRIT.item_code].ToString().Trim();
+                        //    lVPr.Add(vPP);
+                        //    cntErr++;       // gen log
+                        //}
+                        //if (cntErr > 0)   // gen log
+                        //{
+                        //    cntFileErr++;
+                        //}
+
+                        //row.BeginEdit();
+                        //row[xCMPITDB.xCMPIT.AGREEEMENT_NUMBER] = blanketAgreement;
+                        //row[xCMPITDB.xCMPIT.PRICE] = price;
+                        //row.EndEdit();
+                        addXcustApILIT(invId, rowD);
+                        //addXcustListDist(row);
+                        //xCLPRITDB.updateValidateFlag("", "", "Y", "", "kfc_po");
+                    }
+                    vF.recordError = cntFileErr.ToString();   // gen log
+                    vF.totalError = cntErr.ToString();   // gen log
+                    lVfile.Add(vF);   // gen log
                 }
-                vF.recordError = cntFileErr.ToString();   // gen log
-                vF.totalError = cntErr.ToString();   // gen log
-                lVfile.Add(vF);   // gen log
+                else
+                {
+                    addListView("ดึงข้อมูล  Detail no data", "Validate", lv1, form1);
+                }
+                
             }
-            pB1.Visible = false;
+            pB1.Hide();
             Cm.logProcess("xcustap004", lVPr, dateStart, lVfile);   // gen log
         }
         public void processInsertTable(MaterialListView lv1, Form form1, MaterialProgressBar pB1)

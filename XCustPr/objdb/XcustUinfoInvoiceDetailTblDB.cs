@@ -89,14 +89,19 @@ namespace XCustPr
         }
         public void insertBluk(List<String> uinfo, DataTable dtFixLen, String filename, String host, MaterialProgressBar pB1, String pathLog)
         {
-            foreach(String aa in uinfo)
+
+            //  po_code
+            //  receipt_type
+            foreach (String aa in uinfo)
             {
                 if (aa.Length <= 400) continue;
                 XcustUinfoInvoiceDetailTbl item = new XcustUinfoInvoiceDetailTbl();
                 item.trans_date = aa.Substring(0, int.Parse(dtFixLen.Rows[0]["X_LENGTH"].ToString())).Trim();
                 item.company = aa.Substring(int.Parse(dtFixLen.Rows[1]["X_START_POSITION"].ToString())-1, int.Parse(dtFixLen.Rows[1]["X_LENGTH"].ToString())).Trim();
                 item.po_document_type = aa.Substring(int.Parse(dtFixLen.Rows[2]["X_START_POSITION"].ToString())-1, int.Parse(dtFixLen.Rows[2]["X_LENGTH"].ToString())).Trim();
+
                 item.po_code = aa.Substring(int.Parse(dtFixLen.Rows[3]["X_START_POSITION"].ToString())-1, int.Parse(dtFixLen.Rows[3]["X_LENGTH"].ToString())).Trim();
+
                 item.supplier_code = aa.Substring(int.Parse(dtFixLen.Rows[4]["X_START_POSITION"].ToString())-1, int.Parse(dtFixLen.Rows[4]["X_LENGTH"].ToString())).Trim();
                 item.po_line_no = aa.Substring(int.Parse(dtFixLen.Rows[5]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[5]["X_LENGTH"].ToString())).Trim();
                 item.item_code = aa.Substring(int.Parse(dtFixLen.Rows[6]["X_START_POSITION"].ToString()) - 1, int.Parse(dtFixLen.Rows[6]["X_LENGTH"].ToString())).Trim();
@@ -128,7 +133,7 @@ namespace XCustPr
                 //xCUiIDT.supplier_code = aa.Substring(int.Parse(dtFixLen.Rows[2]["X_LENGTH"].ToString()), int.Parse(dtFixLen.Rows[3]["X_LENGTH"].ToString()));
 
                 item.trans_date = item.dateShowToDB(item.trans_date);
-                item.qty = item.qty.Equals("") ? "0" : item.qty;
+                item.qty = item.qty.Equals("") ? "null" : item.qty;
                 item.unit_price = item.unit_price.Equals("") ? "0" : item.unit_price;
                 item.VALIDATE_FLAG = "N";
                 item.PROCESS_FLAG = "N";
@@ -148,7 +153,22 @@ namespace XCustPr
                 //p.RowNumber = selectMaxRowNumber(p.YearId);
                 p.WHT_AMOUNT = p.WHT_AMOUNT.Equals("") ? "0":p.WHT_AMOUNT;
                 p.PO_ACT_TAX_AMT = p.PO_ACT_TAX_AMT.Equals("") ? "0" : p.PO_ACT_TAX_AMT;
-                String last_update_by = "0", creation_by = "0";
+                
+                String last_update_by = "0", creation_by = "0",desc1="", desc2="";
+                desc1 = p.description1;
+                desc2 = p.description2;
+                
+                desc2 = desc1.Length >= 30 ? desc1.Substring(30) : "";
+
+                p.po_code = p.po_code.Length >= 3 ? p.po_code.Substring(0,2) : p.po_code;
+                p.receipt_type = p.receipt_type.Length >= 3 ? p.receipt_type.Substring(0, 2) : p.receipt_type;
+
+                p.po_receipt_amt = p.po_receipt_amt.Equals("") ? "null" : p.po_receipt_amt;
+                p.qty = p.qty.Equals("") ? "null" : p.qty;
+                p.unit_price = p.unit_price.Equals("") ? "null" : p.unit_price;
+                p.PO_ACT_TAX_AMT = p.PO_ACT_TAX_AMT.Equals("") ? "null" : p.PO_ACT_TAX_AMT;
+                p.WHT_AMOUNT = p.WHT_AMOUNT.Equals("") ? "null" : p.WHT_AMOUNT;
+
                 sql = "Insert Into " + xCUiIDT.table + "(" + xCUiIDT.bu + "," + xCUiIDT.company + "," + xCUiIDT.CREATE_BY + "," +
                     xCUiIDT.CREATION_DATE + "," + xCUiIDT.currency_code + "," + xCUiIDT.currency_mode + "," +
                     xCUiIDT.description1 + "," + xCUiIDT.description2 + "," + xCUiIDT.ERROR_MSG + "," +
@@ -171,22 +191,22 @@ namespace XCustPr
                     ") " +
                     "Values('" + p.bu + "','" + p.company + "','" + creation_by + "'," +
                     "getdate(),'" + p.currency_code + "','" + p.currency_mode + "','" +
-                    p.description1 + "','" + p.description2 + "','" + p.ERROR_MSG + "','" +
+                    desc1 + "','" + desc2 + "','" + p.ERROR_MSG + "','" +
                     p.FLIE_NAME + "','" + p.IMPORT_SOURCE + "','" + p.invoice_date + "','" +
 
                     p.invoice_line_number + "','" + p.invoice_number + "','" + p.item_code + "','" +
-                    p.lot_number + "','" + p.payment_term + "','" + p.po_account_code + "','" +
-                    p.PO_ACT_TAX_AMT + "','" + p.po_code + "','" + p.po_document_type + "','" +
-                    p.po_line_no + "','" + p.po_line_type + "','" + p.po_receipt_amt + "','" +
+                    p.lot_number + "','" + p.payment_term + "','" + p.po_account_code + "'," +
+                    p.PO_ACT_TAX_AMT + ",'" + p.po_code + "','" + p.po_document_type + "','" +
+                    p.po_line_no + "','" + p.po_line_type + "'," + p.po_receipt_amt + ",'" +
 
-                    p.po_tax_code + "','" + p.po_tax_type + "','" + p.PROCESS_FLAG + "','" +
-                    p.qty + "','" + p.receipt_line_number + "','" + p.receipt_number + "','" +
+                    p.po_tax_code + "','" + p.po_tax_type + "','" + p.PROCESS_FLAG + "'," +
+                    p.qty + ",'" + p.receipt_line_number + "','" + p.receipt_number + "','" +
                     p.receipt_type + "','" + p.reference1 + "','" + p.reference2 + "','" +
                     p.remark + "','" + p.sub_ledger + "','" + p.Sub_ledger_type + "','" +
 
                     p.supplier_code + "','" + p.SUPPLIER_TYPE + "','" + p.tax_cal + "','" +
-                    p.transaction_orginator + "','" + p.trans_date + "','" + p.unit_price + "','" +
-                    p.uom_code + "','" + p.VALIDATE_FLAG + "','" + p.WHT_AMOUNT + "' " +
+                    p.transaction_orginator + "','" + p.trans_date + "'," + p.unit_price + ",'" +
+                    p.uom_code + "','" + p.VALIDATE_FLAG + "'," + p.WHT_AMOUNT + " " +
                     
                     ") ";
                 chk = conn.ExecuteNonQuery(sql, "kfc_po",pathLog);
