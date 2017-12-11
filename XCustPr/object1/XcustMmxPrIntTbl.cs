@@ -14,5 +14,6 @@ namespace XCustPr
         public String file_name = "", request_date = "", diriver_to_organization = "", deriver_to_location = "", erp_subinventory_code = "";
         public String ERP_ITEM_CODE = "", AGREEEMENT_NUMBER = "", AGREEMENT_LINE_NUMBER = "", PRICE = "", ITEM_CATEGORY_NAME = "", SUPPLIER_SITE_CODE = "";
         public String ACC_SEG1 = "", ACC_SEG2 = "", ACC_SEG3 = "", ACC_SEG4 = "", ACC_SEG5 = "", ACC_SEG6 = "", uom_code="", DELIVERY_INSTRUCTION="";
+        public String request_id = "";
     }
 }

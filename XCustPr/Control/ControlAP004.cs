@@ -102,6 +102,7 @@ namespace XCustPr
             listXcSMT = new List<XcustSupplierMstTbl>();
             listXcVSMT = new List<XcustValueSetMstTbl>();
             listXcUMT = new List<XcustUomMstTbl>();
+            
         }
         public void processTextFileUinfo(String[] filePO, MaterialListView lv1, Form form1, MaterialProgressBar pB1)
         {

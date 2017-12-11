@@ -160,7 +160,7 @@ namespace XCustPr
                 
                 desc2 = desc1.Length >= 30 ? desc1.Substring(30) : "";
 
-                p.po_code = p.po_code.Length >= 3 ? p.po_code.Substring(0,2) : p.po_code;
+                //p.po_code = p.po_code.Length >= 3 ? p.po_code.Substring(0,2) : p.po_code;
                 p.receipt_type = p.receipt_type.Length >= 3 ? p.receipt_type.Substring(0, 2) : p.receipt_type;
 
                 p.po_receipt_amt = p.po_receipt_amt.Equals("") ? "null" : p.po_receipt_amt;

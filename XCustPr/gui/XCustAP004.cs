@@ -78,6 +78,7 @@ namespace XCustPr
                 lv1.Items.Add(AddToList((i++), aa, ""));
                 //lv1.Items.s
             }
+            btnPrepare.Enabled = false;
         }
         private void disableBtn()
         {

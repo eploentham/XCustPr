@@ -59,6 +59,7 @@ namespace XCustPr
             xCMPIT.SUPPLIER_SITE_CODE = "SUPPLIER_SITE_CODE";
             xCMPIT.uom_code = "uom_code";
             xCMPIT.Validate_flag = "Validate_flag";
+            xCMPIT.request_id = "request_id";
              
             xCMPIT.table = "xcust_mmx_pr_int_tbl";
             xCMPIT.pkField = "";
@@ -89,6 +90,17 @@ namespace XCustPr
             String sql = "Delete From " + xCMPIT.table;
             conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
         }
+        public DataTable selectByRequestId(String requestId)
+        {
+            DataTable dt = new DataTable();
+            String sql = "";
+            sql = "Select * " +
+                " From " + xCMPIT.table +
+                " Where " + xCMPIT.request_id + "='" + requestId + "' " +
+                " Order By " + xCMPIT.po_number + "," + xCMPIT.item_code;
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
+        }
         public String dateYearShortToDB(String date)
         {
             String chk = "", year = "", month = "", day = "";
@@ -113,7 +125,57 @@ namespace XCustPr
 
             return chk;
         }
-        public void insertBluk(List<String> mmx, String filename, String host, MaterialProgressBar pB1, String pathLog)
+        public String getRequestID()
+        {
+            String chk = "";
+            DataTable dt = new DataTable();
+            String sql = "select next value for xcust_request_id ";
+            dt = conn.selectData(sql, "kfc_po");
+            if (dt.Rows.Count > 0)
+            {
+                chk = dt.Rows[0][0].ToString();
+            }
+            return chk;
+        }
+        public String updateValidateFlagY(String po_number, String item_code, String store_code, String requestId, String host, String pathLog)
+        {
+            String sql = "", chk = "";
+            sql = "Update " + xCMPIT.table + " Set " + xCMPIT.Validate_flag + "='Y' " +
+                "Where " + xCMPIT.po_number + " = '" + po_number + "' and " + xCMPIT.item_code + "='" + item_code + "' " + xCMPIT.store_code + "='" + store_code + "' and " + xCMPIT.request_id + "='" + requestId + "'";
+            chk = conn.ExecuteNonQuery(sql.ToString(), host, pathLog);
+
+            return chk;
+        }
+        public String updateValidateFlag2(String po_number, String store_code, String agreement_number, String agreement_line_number
+            , String supplierSiteCode, String suppName, String subInv_code, String price, String host, String pathLog)
+        {
+            String sql = "", chk = "";
+            Double price1 = 0;
+            Double.TryParse(price, out price1);
+            sql = "Update " + xCMPIT.table + " Set " +
+                " " + xCMPIT.AGREEEMENT_NUMBER + " ='" + agreement_number + "'" +
+                ", " + xCMPIT.AGREEMENT_LINE_NUMBER + "='" + agreement_line_number + "' " +
+                ", " + xCMPIT.SUPPLIER_SITE_CODE + "='" + supplierSiteCode + "' " +
+                //", " + xCMPIT.su + "='" + suppName.Replace("'", "''") + "' " +        // รอแจ้ง
+                ", " + xCMPIT.subinventory_code + "='" + subInv_code + "' " +
+                ", " + xCMPIT.PRICE + "='" + price1.ToString() + "' " +
+                "Where " + xCMPIT.po_number + " = '" + po_number + "' and " + xCMPIT.store_code + "='" + store_code + "'";
+            chk = conn.ExecuteNonQuery(sql.ToString(), host, pathLog);
+
+            return chk;
+        }
+        public String updateErrorMessage(String po_number, String item_code, String store_code, String msg, String requestId, String host, String pathLog)
+        {
+            String sql = "", chk = "";
+            sql = "Update " + xCMPIT.table + " Set " + xCMPIT.error_message + "=" + xCMPIT.error_message + "+'," + msg.Replace("'", "''") + "' " +
+                ", " + xCMPIT.Validate_flag + "='E' " +//VALIDATE_FLAG
+                "Where " + xCMPIT.po_number + " = '" + po_number + "' and " 
+                + xCMPIT.item_code + "='" + item_code + "' and " + xCMPIT.request_id + "='" + requestId + "' and "+xCMPIT.store_code +"='"+store_code+"'";
+            chk = conn.ExecuteNonQuery(sql.ToString(), host, pathLog);
+
+            return chk;
+        }
+        public void insertBluk(List<String> mmx, String filename, String host, MaterialProgressBar pB1, String request_id, String pathLog)
         {
             int i = 0;
             TimeZoneInfo tz = TimeZoneInfo.FindSystemTimeZoneById("US Eastern Standard Time");
@@ -162,7 +224,7 @@ namespace XCustPr
                         .Append(",").Append(xCMPIT.po_status).Append(",").Append(xCMPIT.PRICE).Append(",").Append(xCMPIT.process_flag)
                         .Append(",").Append(xCMPIT.request_date).Append(",").Append(xCMPIT.store_code).Append(",").Append(xCMPIT.subinventory_code)
                         .Append(",").Append(xCMPIT.supplier_code).Append(",").Append(xCMPIT.SUPPLIER_SITE_CODE).Append(",").Append(xCMPIT.uom_code)
-                        .Append(",").Append(xCMPIT.Validate_flag).Append(" ")
+                        .Append(",").Append(xCMPIT.Validate_flag).Append(",").Append(xCMPIT.request_id).Append(", row_number, row_cnt ")
                         .Append(") Values ('")
                         .Append(ACC_SEG1).Append("','").Append(ACC_SEG2).Append("','").Append(ACC_SEG3)
                         .Append("','").Append(ACC_SEG4).Append("','").Append(ACC_SEG5).Append("','").Append(ACC_SEG6)
@@ -176,7 +238,7 @@ namespace XCustPr
                         .Append("','").Append(aaa[9]/*.PO_STATUS*/).Append("',0,'").Append(processFlag)
                         .Append("','").Append(orderDate).Append("','").Append(aaa[0]/*STRORE_NO*/).Append("','").Append(aaa[4]/*Subinventory Code*/)
                         .Append("','").Append(aaa[2]/*SUPPLIER_CODE*/).Append("','','").Append(uom_code)
-                        .Append("','").Append(validateFlag).Append("') ");
+                        .Append("','").Append(validateFlag).Append("','").Append(request_id).Append("','").Append(i).Append("','").Append(mmx.Count).Append("') ");
                     conn.ExecuteNonQuery(sql.ToString(), host, pathLog);
                 }
             }
@@ -189,6 +251,141 @@ namespace XCustPr
             conn.ExecuteNonQuery(sql.ToString(), host, pathLog);
 
             return "";
+        }
+        public void logProcessPO001(String programname, String startdatetime, String requestId)
+        {
+            String line1 = "", parameter = "", programstart = "", filename = "", recordError = "", txt = "", path = "", sql = "";
+            int cntErr = 0, cntPass = 0;
+            line1 = "Program : XCUST Interface PR<Linfox>To PO(ERP)" + Environment.NewLine;
+            ControlMain cm = new ControlMain();
+            path = cm.getPathLogProcess(programname);
+            parameter = "Parameter : " + Environment.NewLine;
+            parameter += "           Path Initial :" + initC.PathInitial + Environment.NewLine;
+            parameter += "           Path Process :" + initC.PathProcess + Environment.NewLine;
+            parameter += "           Path Error :" + initC.PathError + Environment.NewLine;
+            parameter += "           Import Source :" + initC.ImportSource + Environment.NewLine;
+            programstart = "Program Start : " + startdatetime + Environment.NewLine;
+            sql = "Select count(1) as cnt, " + xCLFPT.file_name
+                + " From " + xCLFPT.table
+                + " Where " + xCLFPT.request_id + " ='" + requestId + "' " +
+                "Group By " + xCLFPT.file_name;
+            DataTable dtFile = conn.selectData(sql, "kfc_po");
+
+            if (dtFile.Rows.Count > 0)
+            {
+                foreach (DataRow rowFile in dtFile.Rows)
+                {
+                    String valiPass = "", valiErr = "";
+                    sql = "Select count(1) as cnt_vali " +
+                        " From " + xCLFPT.table + " " +
+                        " Where " + xCLFPT.request_id + " ='" + requestId + "' " +
+                        " and " + xCLFPT.file_name + "='" + rowFile[xCLFPT.file_name].ToString() + "' and " + xCLFPT.VALIDATE_FLAG + "='Y' ";
+
+                    DataTable dtR = conn.selectData(sql, "kfc_po");
+                    if (dtR.Rows.Count > 0)
+                    {
+                        foreach (DataRow rowVali in dtR.Rows)
+                        {
+                            valiPass = rowVali["cnt_vali"].ToString();
+                            //cntPass++;
+                        }
+                    }
+                    dtR.Clear();
+                    sql = "Select count(1) as cnt_vali " +
+                        " From " + xCLFPT.table + " " +
+                        " Where " + xCLFPT.request_id + " ='" + requestId + "' " +
+                        " and " + xCLFPT.file_name + "='" + rowFile[xCLFPT.file_name].ToString() + "' and " + xCLFPT.VALIDATE_FLAG + "='E' ";
+                    dtR = conn.selectData(sql, "kfc_po");
+                    if (dtR.Rows.Count > 0)
+                    {
+                        foreach (DataRow rowVali in dtR.Rows)
+                        {
+                            valiErr = rowVali["cnt_vali"].ToString();
+                            //cntErr++;
+                        }
+                    }
+                    if (valiErr.Equals("0"))
+                    {
+                        cntPass++;
+                    }
+                    else
+                    {
+                        cntErr++;
+                    }
+                    filename += "Filename " + rowFile[xCLFPT.file_name].ToString() + ", Total = " + rowFile["cnt"].ToString() + ", Validate pass = " + valiPass + ", Record Error = " + valiErr + " " + Environment.NewLine;
+                    //if (int.TryParse(rowFile.recordError, out err))
+                    //{
+                    //    if (int.Parse(rowFile.recordError) > 0)
+                    //    {
+                    //        cntErr++;
+                    //    }
+                    //}
+                }
+            }
+            String filename1 = "", filename1old = "";
+            sql = "Select * From " + xCLFPT.table + " " +
+                "Where " + xCLFPT.request_id + " ='" + requestId + "' " +
+                "Order By " + xCLFPT.file_name + ", " + xCLFPT.PO_NUMBER;
+            DataTable dtErr = new DataTable();
+            dtErr = conn.selectData(sql, "kfc_po");
+            if (dtErr.Rows.Count > 0)
+            {
+                foreach (DataRow dtErr1 in dtErr.Rows)
+                {
+                    if (dtErr1[xCLFPT.ERROR_MSG].ToString().Equals(""))
+                    {
+                        continue;
+                    }
+                    filename1 = dtErr1[xCLFPT.file_name].ToString();
+                    if (!filename1.Equals(filename1old))
+                    {
+                        filename1old = filename1;
+                        recordError += Environment.NewLine + "FileName : " + dtErr1[xCLFPT.file_name].ToString() + Environment.NewLine;
+                    }
+                    //recordError += "FileName " + dtErr1[xCLFPT.file_name].ToString() + Environment.NewLine;
+                    recordError += "=>PO_NUMER = " + dtErr1[xCLFPT.PO_NUMBER].ToString() + ",LINE_NUMER = " + dtErr1[xCLFPT.LINE_NUMBER].ToString() + ",ERROR" + Environment.NewLine;
+                    recordError += "     ====>" + dtErr1[xCLFPT.ERROR_MSG].ToString() + Environment.NewLine;
+                }
+                if (recordError.Length > 0)
+                {
+                    recordError = recordError.Replace("     ====>,", "     ====>");
+
+                }
+            }
+            //String comp = "", error = "";
+            //sql = "Select Count(1) as cnt From "+xCLFPT.table+ " Where " + xCLFPT.request_id + " ='" + requestId + "' "+
+            //    " and "+xCLFPT.VALIDATE_FLAG+"='Y' Group By "+xCLFPT.file_name ;
+            //DataTable dt = new DataTable();
+            //dt = conn.selectData(sql, "kfc_po");
+            //if (dt.Rows.Count >0)
+            //{
+            //    comp = dt.Rows[0]["cnt"].ToString();
+            //}
+            //dt.Clear();
+            //sql = "Select Count(1) as cnt From " + xCLFPT.table + " Where " + xCLFPT.request_id + " ='" + requestId + "' " +
+            //    " and " + xCLFPT.VALIDATE_FLAG + "='E' Group By " + xCLFPT.file_name;
+            //dt = conn.selectData(sql, "kfc_po");
+            //if (dt.Rows.Count > 0)
+            //{
+            //    error = dt.Rows[0]["cnt"].ToString();
+            //}
+            //using (var stream = File.CreateText(Environment.CurrentDirectory + "\\" + programname + "_" + startdatetime.Replace("-", "_").Replace(":", "_") + ".log"))
+            using (var stream = File.CreateText(path + programname + "_" + startdatetime.Replace("-", "_").Replace(":", "_") + ".log"))
+            {
+                txt = line1;
+                txt += parameter;
+                txt += programstart + Environment.NewLine;
+                txt += "File " + Environment.NewLine;
+                txt += "--------------------------------------------------------------------------" + Environment.NewLine;
+                txt += filename + Environment.NewLine;
+                txt += "File Error " + Environment.NewLine;
+                txt += "--------------------------------------------------------------------------" + Environment.NewLine;
+                txt += recordError + Environment.NewLine;
+                txt += "Total " + dtFile.Rows.Count + Environment.NewLine;
+                txt += "Complete " + cntPass + Environment.NewLine;
+                txt += "Error " + cntErr + Environment.NewLine;
+                stream.WriteLine(txt);
+            }
         }
     }
 }

@@ -34,6 +34,8 @@ namespace XCustPr
         private ListViewColumnSorter lvwColumnSorter;
         String[] filePO;
 
+        String requestId = "";
+
         public XCustPO005(ControlMain cm)
         {
             this.Size = new Size(formwidth, formheight);
@@ -81,6 +83,7 @@ namespace XCustPr
                 lv1.Items.Add(AddToList((i++), aa, ""));
                 //lv1.Items.s
             }
+            btnPrepare.Enabled = false;
         }
         private void disableBtn()
         {
@@ -186,17 +189,19 @@ namespace XCustPr
         {
             lv1.Items.Clear();
             filePO = Cm.getFileinFolder(Cm.initC.PO005PathInitial);
-            cPo005.processMMXPOtoErpPR(filePO, lv1, this, pB1);
+            requestId = cPo005.processMMXPOtoErpPR(filePO, lv1, this, pB1);
             //1. ดึงข้อมูลตาม group by filename เพราะ field filename เป็นตัวแบ่งข้อมูลแต่ละfile
             //2. ดึงข้อมูล where ตาม filename เพื่อ validate ถ้า validate ผ่าน ก็ update validate_flag = 'Y'
             // e.	ทำการหา Blanket Agreement Number 
-            cPo005.processGetTempTableToValidate(lv1, this, pB1);
+            cPo005.processGetTempTableToValidate(lv1, this, pB1, requestId);
 
-            cPo005.processInsertTable(lv1, this, pB1);
+            cPo005.processInsertTable(requestId,lv1, this, pB1);
+
+            cPo005.processGenCSV(lv1, this, pB1);
         }
         private void btnPrepare_Click(object sender, EventArgs e)
         {
-            cPo005.processGenCSV(lv1, this, pB1);
+            //cPo005.processGenCSV(lv1, this, pB1);
         }
         private void btnWebService_Click(object sender, EventArgs e)
         {

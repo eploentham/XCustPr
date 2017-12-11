@@ -1075,7 +1075,12 @@ namespace XCustPr
                     string col03 = "";     //Percentage
                     string col04 = row[xCPRDIADB.xCPRDIA.REQ_DIST_INTERFACE_ID].ToString();     //Distribution
                     string col05 = row[xCPRDIADB.xCPRDIA.QTY].ToString();         //Quantity
-                    string col06 = String.Concat(Double.Parse(row[xCPRDIADB.xCPRDIA.QTY].ToString())*Double.Parse(row[xCPRDIADB.xCPRDIA.price].ToString()));     //Amount
+                    String qty = "";
+                    String price = "";
+                    qty = row[xCPRDIADB.xCPRDIA.QTY].ToString();
+                    price = row[xCPRDIADB.xCPRDIA.price].ToString();
+                    price = price.Equals("") ? "1" : price;
+                    string col06 = String.Concat(Double.Parse(qty)*Double.Parse(price));     //Amount
                     string col07 = "";     //Project Name
                     string col08 = "";     //Task Name
                     string col09 = "";     //Expenditure Type
