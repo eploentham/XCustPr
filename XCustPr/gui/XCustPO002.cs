@@ -107,6 +107,7 @@ namespace XCustPr
             btnFTP.Enabled = false;
             btnWebService.Enabled = false;
             btnEmail.Enabled = false;
+            btnPrepare.Enabled = false;
         }
         private void initCompoment()
         {
