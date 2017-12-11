@@ -65,8 +65,8 @@ namespace XCustPr
         public String passDBKFCPO = "Ekartc2c5";
         public String portDBKFCPO = "3306";
 
-        public String PO005PathInitial = "", PO005PathProcess = "", PO005PathError = "", PO005PathArchive = "", PO005ImportSource="", PO005pathZip="";
-        public String PO005PathLog = "";
+        public String PO005PathInitial = "", PO005PathProcess = "", PO005PathError = "", PO005PathArchive = "", PO005ImportSource="", PO005PathFileZip="", PO005PathFileCSV="", PO005PathLog="";
+        
 
         public String PO003PathInitial = "", PO003PathProcess = "", PO003PathError = "", PO003PathArchive = "", PO003ImportSource = "", PO003RECEIPT_SOURCE="", PO003TRANSACTION_TYPE="";
         public String PO003PathLog = "";

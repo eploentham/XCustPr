@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -71,17 +72,70 @@ namespace XCustPr
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
-        public DataTable selectMmxGroupByFilename()
+        public DataTable selectMmxGroupByFilename(String request_id)
         {
             DataTable dt = new DataTable();
-            String sql = "select " + xCMPIT.file_name + " From " + xCMPIT.table + " Group By " + xCMPIT.file_name;
+            String sql = "select " + xCMPIT.file_name + " From " + xCMPIT.table + " Where "+xCMPIT.request_id+"='"+request_id+"' Group By " + xCMPIT.file_name;
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
-        public DataTable selectMmxByFilename(String filename)
+        public DataTable selectMmxByFilename(String filename, String request_id)
         {
             DataTable dt = new DataTable();
-            String sql = "select * From " + xCMPIT.table + " Where " + xCMPIT.file_name + "='" + filename + "'";
+            String sql = "select * From " + xCMPIT.table + " Where " + xCMPIT.file_name + "='" + filename + "' and "+xCMPIT.request_id+"='"+request_id+"'";
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
+        }
+        public DataTable selectLinfoxByPoNumber(String requestId, String poNumber)
+        {
+            DataTable dt = new DataTable();
+            String sql = "";
+            sql = "Select * " +
+                " From " + xCMPIT.table +
+                " Where " + xCMPIT.po_number + "='" + poNumber + "' and " + xCMPIT.request_id + "='" + requestId + "' " +
+                " Order By " + xCMPIT.po_number + "," + xCMPIT.item_code;
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
+        }
+        public DataTable selectLinfoxGroupByPoNumber(String filename, String requestId)
+        {
+            DataTable dt = new DataTable();
+            String sql = "";
+
+            sql = "Select " + xCMPIT.po_number + "," + xCMPIT.file_name +
+                " From " + xCMPIT.table +
+                " Where " + xCMPIT.Validate_flag + "='Y' and " + xCMPIT.request_id + "='" + requestId + "' " +
+                " and " + xCMPIT.file_name + "='" + filename + "' " +
+                " Group By " + xCMPIT.po_number + "," + xCMPIT.file_name +
+                " Order By " + xCMPIT.file_name + "," + xCMPIT.po_number +
+                " ";
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
+        }
+        public String getCountNoErrorByFilename(String requestId, String filename)
+        {
+            DataTable dt = new DataTable();
+            String sql = "", chk = "";
+            sql = "Select  count(1) as cnt " +
+                " From " + xCMPIT.table +
+                " Where " + xCMPIT.request_id + "='" + requestId + "' and " + xCMPIT.file_name + "='" + filename + "' " +
+                " and len(" + xCMPIT.error_message + ") <= 0";
+            dt = conn.selectData(sql, "kfc_po");
+            if (dt.Rows.Count > 0)
+            {
+                chk = dt.Rows[0]["cnt"].ToString();
+            }
+            return chk;
+        }
+        public DataTable selectFilenameByRequestId(String requestId)
+        {
+            DataTable dt = new DataTable();
+            String sql = "";
+            sql = "Select  " + xCMPIT.file_name + ", row_cnt " +
+                " From " + xCMPIT.table +
+                " Where " + xCMPIT.request_id + "='" + requestId + "' " +
+                " Group By " + xCMPIT.file_name + ", row_cnt " +
+                " Order By " + xCMPIT.file_name;
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
@@ -136,6 +190,13 @@ namespace XCustPr
                 chk = dt.Rows[0][0].ToString();
             }
             return chk;
+        }
+        public void updatePrcessFlag(String requestId, String host, String pathLog)
+        {
+            String sql = "", chk = "";
+            sql = "Update " + xCMPIT.table + " Set " + xCMPIT.process_flag + "='Y' " +
+                " Where " + xCMPIT.request_id + "='" + requestId + "'";
+            chk = conn.ExecuteNonQuery(sql, host, pathLog);
         }
         public String updateValidateFlagY(String po_number, String item_code, String store_code, String requestId, String host, String pathLog)
         {
@@ -252,7 +313,7 @@ namespace XCustPr
 
             return "";
         }
-        public void logProcessPO001(String programname, String startdatetime, String requestId)
+        public void logProcessPO005(String programname, String startdatetime, String requestId)
         {
             String line1 = "", parameter = "", programstart = "", filename = "", recordError = "", txt = "", path = "", sql = "";
             int cntErr = 0, cntPass = 0;
@@ -265,10 +326,10 @@ namespace XCustPr
             parameter += "           Path Error :" + initC.PathError + Environment.NewLine;
             parameter += "           Import Source :" + initC.ImportSource + Environment.NewLine;
             programstart = "Program Start : " + startdatetime + Environment.NewLine;
-            sql = "Select count(1) as cnt, " + xCLFPT.file_name
-                + " From " + xCLFPT.table
-                + " Where " + xCLFPT.request_id + " ='" + requestId + "' " +
-                "Group By " + xCLFPT.file_name;
+            sql = "Select count(1) as cnt, " + xCMPIT.file_name
+                + " From " + xCMPIT.table
+                + " Where " + xCMPIT.request_id + " ='" + requestId + "' " +
+                "Group By " + xCMPIT.file_name;
             DataTable dtFile = conn.selectData(sql, "kfc_po");
 
             if (dtFile.Rows.Count > 0)
@@ -277,9 +338,9 @@ namespace XCustPr
                 {
                     String valiPass = "", valiErr = "";
                     sql = "Select count(1) as cnt_vali " +
-                        " From " + xCLFPT.table + " " +
-                        " Where " + xCLFPT.request_id + " ='" + requestId + "' " +
-                        " and " + xCLFPT.file_name + "='" + rowFile[xCLFPT.file_name].ToString() + "' and " + xCLFPT.VALIDATE_FLAG + "='Y' ";
+                        " From " + xCMPIT.table + " " +
+                        " Where " + xCMPIT.request_id + " ='" + requestId + "' " +
+                        " and " + xCMPIT.file_name + "='" + rowFile[xCMPIT.file_name].ToString() + "' and " + xCMPIT.Validate_flag + "='Y' ";
 
                     DataTable dtR = conn.selectData(sql, "kfc_po");
                     if (dtR.Rows.Count > 0)
@@ -292,9 +353,9 @@ namespace XCustPr
                     }
                     dtR.Clear();
                     sql = "Select count(1) as cnt_vali " +
-                        " From " + xCLFPT.table + " " +
-                        " Where " + xCLFPT.request_id + " ='" + requestId + "' " +
-                        " and " + xCLFPT.file_name + "='" + rowFile[xCLFPT.file_name].ToString() + "' and " + xCLFPT.VALIDATE_FLAG + "='E' ";
+                        " From " + xCMPIT.table + " " +
+                        " Where " + xCMPIT.request_id + " ='" + requestId + "' " +
+                        " and " + xCMPIT.file_name + "='" + rowFile[xCMPIT.file_name].ToString() + "' and " + xCMPIT.Validate_flag + "='E' ";
                     dtR = conn.selectData(sql, "kfc_po");
                     if (dtR.Rows.Count > 0)
                     {
@@ -312,7 +373,7 @@ namespace XCustPr
                     {
                         cntErr++;
                     }
-                    filename += "Filename " + rowFile[xCLFPT.file_name].ToString() + ", Total = " + rowFile["cnt"].ToString() + ", Validate pass = " + valiPass + ", Record Error = " + valiErr + " " + Environment.NewLine;
+                    filename += "Filename " + rowFile[xCMPIT.file_name].ToString() + ", Total = " + rowFile["cnt"].ToString() + ", Validate pass = " + valiPass + ", Record Error = " + valiErr + " " + Environment.NewLine;
                     //if (int.TryParse(rowFile.recordError, out err))
                     //{
                     //    if (int.Parse(rowFile.recordError) > 0)
@@ -323,28 +384,28 @@ namespace XCustPr
                 }
             }
             String filename1 = "", filename1old = "";
-            sql = "Select * From " + xCLFPT.table + " " +
-                "Where " + xCLFPT.request_id + " ='" + requestId + "' " +
-                "Order By " + xCLFPT.file_name + ", " + xCLFPT.PO_NUMBER;
+            sql = "Select * From " + xCMPIT.table + " " +
+                "Where " + xCMPIT.request_id + " ='" + requestId + "' " +
+                "Order By " + xCMPIT.file_name + ", " + xCMPIT.po_number;
             DataTable dtErr = new DataTable();
             dtErr = conn.selectData(sql, "kfc_po");
             if (dtErr.Rows.Count > 0)
             {
                 foreach (DataRow dtErr1 in dtErr.Rows)
                 {
-                    if (dtErr1[xCLFPT.ERROR_MSG].ToString().Equals(""))
+                    if (dtErr1[xCMPIT.error_message].ToString().Equals(""))
                     {
                         continue;
                     }
-                    filename1 = dtErr1[xCLFPT.file_name].ToString();
+                    filename1 = dtErr1[xCMPIT.file_name].ToString();
                     if (!filename1.Equals(filename1old))
                     {
                         filename1old = filename1;
-                        recordError += Environment.NewLine + "FileName : " + dtErr1[xCLFPT.file_name].ToString() + Environment.NewLine;
+                        recordError += Environment.NewLine + "FileName : " + dtErr1[xCMPIT.file_name].ToString() + Environment.NewLine;
                     }
                     //recordError += "FileName " + dtErr1[xCLFPT.file_name].ToString() + Environment.NewLine;
-                    recordError += "=>PO_NUMER = " + dtErr1[xCLFPT.PO_NUMBER].ToString() + ",LINE_NUMER = " + dtErr1[xCLFPT.LINE_NUMBER].ToString() + ",ERROR" + Environment.NewLine;
-                    recordError += "     ====>" + dtErr1[xCLFPT.ERROR_MSG].ToString() + Environment.NewLine;
+                    recordError += "=>PO_NUMER = " + dtErr1[xCMPIT.po_number].ToString() + ",item_code = " + dtErr1[xCMPIT.item_code].ToString() + ",ERROR" + Environment.NewLine;
+                    recordError += "     ====>" + dtErr1[xCMPIT.error_message].ToString() + Environment.NewLine;
                 }
                 if (recordError.Length > 0)
                 {

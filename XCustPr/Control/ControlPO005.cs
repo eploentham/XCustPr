@@ -240,11 +240,11 @@ namespace XCustPr
             {
                 chk = false;
             }
-            dtGroupBy = xCMPITDB.selectMmxGroupByFilename();//   ดึง filename
+            dtGroupBy = xCMPITDB.selectMmxGroupByFilename(requestId);//   ดึง filename
             foreach (DataRow rowG in dtGroupBy.Rows)
             {
                 addListView("ดึงข้อมูล  " + rowG[xCMPITDB.xCMPIT.file_name].ToString().Trim(), "Validate", lv1, form1);
-                dt = xCMPITDB.selectMmxByFilename(rowG[xCMPITDB.xCMPIT.file_name].ToString().Trim());    // ข้อมูลใน file
+                dt = xCMPITDB.selectMmxByFilename(rowG[xCMPITDB.xCMPIT.file_name].ToString().Trim(), requestId);    // ข้อมูลใน file
 
                 ValidateFileName vF = new ValidateFileName();   // gen log
                 vF.fileName = rowG[xCMPITDB.xCMPIT.file_name].ToString().Trim();   // gen log
@@ -555,6 +555,62 @@ namespace XCustPr
                 }
             }
         }
+        public void processInsertTable2(String requestId, MaterialListView lv1, Form form1, MaterialProgressBar pB1)
+        {
+            addListView("insert table " + Cm.initC.PO005PathProcess, "Validate", lv1, form1);
+            String currDate = System.DateTime.Now.ToString("yyyy-MM-dd");
+            int rowH = 0;
+            DataTable dt = new DataTable();
+            dt = xCMPITDB.selectFilenameByRequestId(requestId);     //moveFileToFolderArchiveError
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    String filename = "", rowCnt = "";
+                    filename = row[xCMPITDB.xCMPIT.file_name].ToString();
+                    rowCnt = row["row_Cnt"].ToString();
+                    String cnt = "";
+                    cnt = xCMPITDB.getCountNoErrorByFilename(requestId, filename);
+
+                    if (cnt.Equals(rowCnt))
+                    {
+                        //ที่ ผ่าน ทั้ง file
+                        DataTable dtFilename = new DataTable();
+                        //dtFilename = xCLFPTDB.selectLinfoxByFilename(filename, requestId);
+                        dtFilename = xCMPITDB.selectLinfoxGroupByPoNumber(filename, requestId);
+                        if (dtFilename.Rows.Count > 0)
+                        {
+                            foreach (DataRow rowFilename in dtFilename.Rows)
+                            {
+                                rowH++;
+                                String poNumber = "";
+                                poNumber = rowFilename[xCMPITDB.xCMPIT.po_number].ToString();
+                                DataTable dtLinfox = new DataTable();
+                                dtLinfox = xCMPITDB.selectLinfoxByPoNumber(requestId, poNumber);
+                                XcustPorReqHeaderIntAll xCPorRHIA = addXcustPRHIA1(poNumber, currDate, row[xCMPITDB.xCMPIT.file_name].ToString(), requestId, rowH);
+                                String seqH = "";
+                                seqH = xCPRHIADB.insert(xCPorRHIA, Cm.initC.PO005PathLog);
+                                foreach (DataRow rowLinfox in dtLinfox.Rows)
+                                {
+                                    XcustPorReqLineIntAll xCPorRLIA = new XcustPorReqLineIntAll();
+                                    xCPorRLIA = addXcustPRLIAFromxCLFPT1(rowLinfox);
+                                    xCPorRLIA.REQ_HEADER_INTERFACE_ID = seqH;
+                                    String seqL = xCPRLIADB.insert(xCPorRLIA, Cm.initC.pathLogErr);
+
+                                    XcustPorReqDistIntAll xCPorRDIA = new XcustPorReqDistIntAll();
+                                    xCPorRDIA = addXcustPRDIAFromxCLFPT1(rowLinfox);
+                                    xCPorRDIA.REQ_HEADER_INTERFACE_ID = seqH;
+                                    xCPorRDIA.REQ_LINE_INTERFACE_ID = seqL;
+                                    String chk = xCPRDIADB.insert(xCPorRDIA, Cm.initC.PO005PathLog);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            xCMPITDB.updatePrcessFlag(requestId, "kfc_po", Cm.initC.pathLogErr);
+        }
         private String insertXcustPorReqHeaderIntAll(XcustPorReqHeaderIntAll xcprhia, String date, String time)
         {//row[dc].ToString().Trim().
             String chk = "";
@@ -809,6 +865,25 @@ namespace XCustPr
             }
             return chk;
         }
+        private XcustPorReqHeaderIntAll addXcustPRHIA1(String po_number, String curr_date, String filename, String requestId, int rowH)
+        {
+            String seq = String.Concat("00" + rowH);
+            //String seq = String.Concat("00" + listXcustPRHIA.Count);
+            XcustPorReqHeaderIntAll xcprhia1 = new XcustPorReqHeaderIntAll();
+            xcprhia1.ATTRIBUTE1 = po_number;
+            xcprhia1.IMPORT_SOURCE = Cm.initC.PO005ImportSource;
+            xcprhia1.REQ_BU_NAME = Cm.initC.BU_NAME;
+            xcprhia1.STATUS_CODE = Cm.initC.PR_STATAUS;
+            xcprhia1.REQ_HEADER_INTERFACE_ID = po_number;
+            xcprhia1.BATCH_ID = curr_date.Replace("-", "") + seq.Substring(seq.Length - 2);
+            xcprhia1.REQUITITION_NUMBER = "PR" + curr_date.Substring(2, 2);
+            xcprhia1.DESCRIPTIONS = "LINFOX_" + po_number + "_" + filename;
+            xcprhia1.ATTRIBUTE_CATEGORY = "LINFOX_PR’";
+            xcprhia1.ATTRIBUTE2 = po_number;
+            xcprhia1.request_id = requestId;
+
+            return xcprhia1;
+        }
         private void addXcustPRHIA(String po_number, String curr_date, String filename)
         {
             Boolean chk = true;
@@ -836,6 +911,31 @@ namespace XCustPr
                 listXcustPRHIA.Add(xcprhia1);
             }
         }
+        private XcustPorReqLineIntAll addXcustPRLIAFromxCLFPT1(DataRow row)
+        {
+            XcustPorReqLineIntAll item = new XcustPorReqLineIntAll();
+            item.REQ_HEADER_INTERFACE_ID = row[xCMPITDB.xCMPIT.po_number].ToString();
+            item.REQ_LINE_INTERFACE_ID = row[xCMPITDB.xCMPIT.AGREEMENT_LINE_NUMBER].ToString();
+            item.DESTINATION_TYPE_CODE = "";
+            item.PRC_BU_NAME = "";
+            item.DELIVER_TO_ORGANIZATION_CODE = Cm.initC.ORGANIZATION_code;
+            item.DELIVER_TO_LOCATION_CODE = row[xCMPITDB.xCMPIT.deriver_to_location].ToString();
+            item.DESTINATION_SUBINVENTORY = row[xCMPITDB.xCMPIT.subinventory_code].ToString();
+            item.CATEGORY_NAME = row[xCMPITDB.xCMPIT.ITEM_CATEGORY_NAME].ToString();
+            item.NEED_BY_DATE = row[xCMPITDB.xCMPIT.delivery_date].ToString();
+            item.ITEM_CODE = row[xCMPITDB.xCMPIT.item_code].ToString();
+            item.LINE_TYPE = "";
+
+            item.QTY = row[xCMPITDB.xCMPIT.confirm_qty].ToString();
+            item.CURRENCY_CODE = Cm.initC.CURRENCY_CODE;
+            item.AGREEMENT_NUMBER = row[xCMPITDB.xCMPIT.AGREEEMENT_NUMBER].ToString();
+            item.CURRENCY_UNIT_PRICE = "REQ_HEADER_INTERFACE_ID";//PO_NUMBER
+            item.Price = row[xCMPITDB.xCMPIT.PRICE].ToString();
+            item.PROCESS_FLAG = "Y";
+            item.UOM_CODE = row[xCMPITDB.xCMPIT.uom_code].ToString();
+
+            return item;
+        }
         private void addXcustPRLIAFromxCLFPT(DataRow row)
         {
             XcustPorReqLineIntAll item = new XcustPorReqLineIntAll();
@@ -861,6 +961,30 @@ namespace XCustPr
 
             listXcustPRLIA.Add(item);
         }
+        private XcustPorReqDistIntAll addXcustPRDIAFromxCLFPT1(DataRow row)
+        {
+            XcustPorReqDistIntAll item = new XcustPorReqDistIntAll();
+            item.REQ_HEADER_INTERFACE_ID = row[xCMPITDB.xCMPIT.po_number].ToString();
+            item.REQ_LINE_INTERFACE_ID = row[xCMPITDB.xCMPIT.AGREEMENT_LINE_NUMBER].ToString();
+            //item.DESTINATION_TYPE_CODE = "";
+            //item.PRC_BU_NAME = "";
+            //item.DELIVER_TO_ORGANIZATION_CODE = initC.ORGANIZATION_code;
+            //item.DELIVER_TO_LOCATION_CODE = row[xCLFPTDB.xCLFPT.deriver_to_location].ToString();
+            //item.DESTINATION_SUBINVENTORY = row[xCLFPTDB.xCLFPT.subinventory_code].ToString();
+            //item.CATEGORY_NAME = row[xCLFPTDB.xCLFPT.ITEM_CATEGORY_NAME].ToString();
+            //item.NEED_BY_DATE = row[xCLFPTDB.xCLFPT.REQUEST_TIME].ToString();
+            //item.ITEM_CODE = row[xCLFPTDB.xCLFPT.ITEM_CODE].ToString();
+            //item.LINE_TYPE = "";
+
+            item.QTY = row[xCMPITDB.xCMPIT.confirm_qty].ToString();
+            //item.CURRENCY_CODE = initC.CURRENCY_CODE;
+            //item.AGREEMENT_NUMBER = row[xCLFPTDB.xCLFPT.AGREEEMENT_NUMBER].ToString();
+            //item.CURRENCY_UNIT_PRICE = "REQ_HEADER_INTERFACE_ID";//PO_NUMBER
+            //item.Price = row[xCLFPTDB.xCLFPT.PRICE].ToString();
+            item.PROCESS_FLAG = "Y";
+
+            return item;
+        }
         private void addXcustPRDIAFromxCLFPT(DataRow row)
         {
             XcustPorReqDistIntAll item = new XcustPorReqDistIntAll();
@@ -885,15 +1009,15 @@ namespace XCustPr
 
             listXcustPRDIA.Add(item);
         }
-        public void processGenCSV(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
+        public void processGenCSV(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String requestId)
         {
             ControlRDPO cRDPO = new ControlRDPO(Cm);
             addListView("processGenCSVxCPRHIA ", "CVS", lv1, form1);
-            cRDPO.processGenCSVxCPRHIA(lv1, form1, pB1,"PO005","");
+            cRDPO.processGenCSVxCPRHIA(lv1, form1, pB1,"PO005", requestId);
             addListView("processGenCSVxCPRLIA ", "CVS", lv1, form1);
-            cRDPO.processGenCSVxCPRLIA(lv1, form1, pB1, "PO005","");
+            cRDPO.processGenCSVxCPRLIA(lv1, form1, pB1, "PO005", requestId);
             addListView("processGenCSVxCPRDIA ", "CVS", lv1, form1);
-            cRDPO.processGenCSVxCPRDIA(lv1, form1, pB1, "PO005","");
+            cRDPO.processGenCSVxCPRDIA(lv1, form1, pB1, "PO005", requestId);
             addListView("processGenZIP ", "CVS", lv1, form1);
             cRDPO.processGenZIP(lv1, form1, pB1, "PO005");
         }

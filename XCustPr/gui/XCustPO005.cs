@@ -195,9 +195,9 @@ namespace XCustPr
             // e.	ทำการหา Blanket Agreement Number 
             cPo005.processGetTempTableToValidate(lv1, this, pB1, requestId);
 
-            cPo005.processInsertTable(requestId,lv1, this, pB1);
+            cPo005.processInsertTable2(requestId,lv1, this, pB1);
 
-            cPo005.processGenCSV(lv1, this, pB1);
+            cPo005.processGenCSV(lv1, this, pB1, requestId);
         }
         private void btnPrepare_Click(object sender, EventArgs e)
         {

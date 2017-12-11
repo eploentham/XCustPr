@@ -162,9 +162,9 @@ namespace XCustPr
                 MessageBox.Show("Path PO005PathArchive empty", "createFolderPO005");
                 return;
             }
-            if (initC.PO005pathZip.Equals(""))
+            if (initC.PO005PathFileZip.Equals(""))
             {
-                MessageBox.Show("Path PO005PathZip empty", "createFolderPO005");
+                MessageBox.Show("Path PO005PathFileZip empty", "createFolderPO005");
                 return;
             }
             if (initC.PO005PathLog.Equals(""))
@@ -172,11 +172,17 @@ namespace XCustPr
                 MessageBox.Show("Path PO005PathLog empty", "createFolderPO005");
                 return;
             }
+            if (initC.PO005PathFileCSV.Equals(""))
+            {
+                MessageBox.Show("Path PO005PathFileCSV empty", "createFolderPO005");
+                return;
+            }
             createFolder(initC.PO005PathArchive);
             createFolder(initC.PO005PathError);
             createFolder(initC.PO005PathInitial);
             createFolder(initC.PO005PathProcess);
-            createFolder(initC.PO005pathZip);
+            createFolder(initC.PO005PathFileZip);
+            createFolder(initC.PO005PathFileCSV);
             createFolder(initC.PO005PathLog);
         }
         public void createFolderPO003()
@@ -580,7 +586,9 @@ namespace XCustPr
             initC.PO005PathInitial = iniFile.Read("PO005PathInitial").Trim();
             initC.PO005PathProcess = iniFile.Read("PO005PathProcess").Trim();
             initC.PO005ImportSource = iniFile.Read("PO005ImportSource").Trim();
-            initC.PO005pathZip = iniFile.Read("PO005pathZip").Trim();
+            initC.PO005PathFileZip = iniFile.Read("PO005PathFileZip").Trim();
+            initC.PO005PathFileCSV = iniFile.Read("PO005PathFileCSV").Trim();
+            
 
             initC.PO003PathArchive = iniFile.Read("PO003PathArchive").Trim();    //bit
             initC.PO003PathError = iniFile.Read("PO003PathError").Trim();

@@ -905,7 +905,7 @@ namespace XCustPr
             }
             else
             {
-                filenameZip = Cm.initC.PO005pathZip + "\\xcustpr.zip";
+                filenameZip = Cm.initC.PO005PathFileZip + "\\xcustpr.zip";
                 filename = @Cm.initC.PO005PathArchive;
             }
             Cm.deleteFile(filenameZip);

@@ -730,16 +730,23 @@ namespace XCustPr
         }
         public void processGenCSVxCPRHIA(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String flag, String requestId)
         {
-            var file = Cm.initC.PathFileCSV+ "PorReqHeadersInterfaceAll.csv";
+            var file = "";
             DataTable dt;
             if (flag.Equals("PO001"))
             {
-                dt = xCPRHIADB.selectGenTextCSV(requestId);
+                file = Cm.initC.PathFileCSV + "PorReqHeadersInterfaceAll.csv";
             }
-            else
+            else if (flag.Equals("PO005"))
             {
-                dt = xCPRHIADB.selectAll();
+                file = Cm.initC.PO005PathFileCSV + "PorReqHeadersInterfaceAll.csv";
             }
+                //{
+            dt = xCPRHIADB.selectGenTextCSV(requestId);
+            //}
+            //else
+            //{
+            //    dt = xCPRHIADB.selectAll();
+            //}
             
             addListView("processGenCSVxCPRHIA จำนวนข้อมูล "+dt.Rows.Count, "CVS", lv1, form1);
             using (var stream = File.CreateText(file))
@@ -850,16 +857,23 @@ namespace XCustPr
         }
         public void processGenCSVxCPRLIA(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String flag, String requestId)
         {
-            var file = Cm.initC.PathFileCSV + "PorReqLinesInterfaceAll.csv";
+            var file = "";
             DataTable dt;
             if (flag.Equals("PO001"))
             {
-                dt = xCPRLIADB.selectGenTextCSV(requestId);
+                file = Cm.initC.PathFileCSV + "PorReqLinesInterfaceAll.csv";
             }
-            else
+            else if (flag.Equals("PO005"))
             {
-                dt = xCPRLIADB.selectAll();
+                file = Cm.initC.PO005PathFileCSV + "PorReqLinesInterfaceAll.csv";
             }
+                //{
+            dt = xCPRLIADB.selectGenTextCSV(requestId);
+            //}
+            //else
+            //{
+            //    dt = xCPRLIADB.selectAll();
+            //}
                 
             addListView("processGenCSVxCPRLIA จำนวนข้อมูล " + dt.Rows.Count, "CVS", lv1, form1);
             using (var stream = File.CreateText(file))
@@ -1059,12 +1073,19 @@ namespace XCustPr
             DataTable dt;
             if (flag.Equals("PO001"))
             {
-                dt = xCPRDIADB.selectGenTextCSV(requestId);
+                file = Cm.initC.PathFileCSV + "PorReqDistsInterfaceAll.csv";
             }
-            else
+            else if (flag.Equals("PO005"))
             {
-                dt = xCPRDIADB.selectAll();
+                file = Cm.initC.PO005PathFileCSV + "PorReqDistsInterfaceAll.csv";
             }
+                //{
+            dt = xCPRDIADB.selectGenTextCSV(requestId);
+            //}
+            //else
+            //{
+            //    dt = xCPRDIADB.selectAll();
+            //}
             addListView("processGenCSVxCPRDIA จำนวนข้อมูล " + dt.Rows.Count, "CVS", lv1, form1);
             using (var stream = File.CreateText(file))
             {
@@ -1251,10 +1272,10 @@ namespace XCustPr
                 filenameZip = Cm.initC.PathFileZip + "\\LINFOX_PR_"+ currDate +currTime+ ".zip";
                 filename = @Cm.initC.PathFileCSV;
             }
-            else
+            else if (flag.Equals("PO005"))
             {
-                filenameZip = Cm.initC.PO005pathZip + "\\xcustpr.zip";
-                filename = @Cm.initC.PO005PathArchive;
+                filenameZip = Cm.initC.PO005PathFileZip + "\\xcustpr.zip";
+                filename = @Cm.initC.PO005PathFileCSV;
             }
             Cm.deleteFile(filenameZip);
             ZipArchive zip = ZipFile.Open(filenameZip, ZipArchiveMode.Create);
