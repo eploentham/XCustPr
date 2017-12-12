@@ -973,6 +973,10 @@ namespace XCustPr
             {
                 path = initC.AP001PathLog;
             }
+            else if (programname.ToLower().Equals("xcustpo005"))
+            {
+                path = initC.PO005PathLog;
+            }
             return path;
         }
         public void logProcess(String programname, List<ValidatePrPo> lVPr, String startdatetime, List<ValidateFileName> listfile)
