@@ -251,8 +251,8 @@ namespace XCustPr
                             string col14 = row[xCLFPTDB.xCLFPT.ORDER_DATE].ToString();
                             string col15 = row[xCLFPTDB.xCLFPT.ERP_QTY].ToString();     //Delivery instruction
 
-                            string csvRow = col01 + "," + col02 + "," + col03 + "," + col04 + "," + col05 + "," + col06 + "," + col07 + "," + col08 + "," + col09 + "," + col10
-                                + "," + col11 + "," + col12 + "," + col13 + "," + col14 + "," + col15;
+                            string csvRow = col01 + "|" + col02 + "|" + col03 + "|" + col04 + "|" + col05 + "|" + col06 + "|" + col07 + "|" + col08 + "|" + col09 + "|" + col10
+                                + "|" + col11 + "|" + col12 + "|" + col13 + "|" + col14 + "|" + col15;
 
                             stream.WriteLine(csvRow);
                         }

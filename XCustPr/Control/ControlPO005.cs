@@ -243,9 +243,9 @@ namespace XCustPr
             dtGroupBy = xCMPITDB.selectMmxGroupByFilename(requestId);//   ดึง filename
             foreach (DataRow rowG in dtGroupBy.Rows)
             {
-                addListView("ดึงข้อมูล  " + rowG[xCMPITDB.xCMPIT.file_name].ToString().Trim(), "Validate", lv1, form1);
+                
                 dt = xCMPITDB.selectMmxByFilename(rowG[xCMPITDB.xCMPIT.file_name].ToString().Trim(), requestId);    // ข้อมูลใน file
-
+                addListView("ดึงข้อมูล  " + rowG[xCMPITDB.xCMPIT.file_name].ToString().Trim()+dt.Rows.Count, "Validate", lv1, form1);
                 ValidateFileName vF = new ValidateFileName();   // gen log
                 vF.fileName = rowG[xCMPITDB.xCMPIT.file_name].ToString().Trim();   // gen log
                 vF.recordTotal = dt.Rows.Count.ToString();   // gen log
