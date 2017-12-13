@@ -631,16 +631,16 @@ namespace XCustPr
             String line1 = "", parameter = "", programstart = "", filename = "", recordError = "", txt = "", path = "", sql = "";
             int cntErr = 0, cntPass = 0;
 
-            String date = System.DateTime.Now.ToString("yyyy_MMM_dd");
-            //String time = System.DateTime.Now.ToString("HH_mm_ss");
+            String date = System.DateTime.Now.ToString("dd MMM yyyy");
+            String time = System.DateTime.Now.ToString("HH.mm");
 
-            line1 = "Program : XCUST Interface PO<ERP>To PO(LINFOX)" + Environment.NewLine;
+            line1 = "Program : XCUST Interface PO(ERP)To PO<LINFOX>" + Environment.NewLine;
             ControlMain cm = new ControlMain();
             path = cm.getPathLogProcess(programname);
             parameter = "Parameter : " + Environment.NewLine;
             parameter += "           Path Initial :" + initC.PO002PathInitial + Environment.NewLine;
             parameter += "           Path Process :" + initC.PO002PathDestinaion + Environment.NewLine;
-            parameter += "           Create Date " + date + Environment.NewLine;
+            parameter += "           Create Date " + date+ time + Environment.NewLine;
             programstart = "Program Start : " + startdatetime + Environment.NewLine;
 
             sql = "Select count(1) as cnt, " + xCLFPT.file_name
@@ -691,7 +691,8 @@ namespace XCustPr
                     {
                         cntErr++;
                     }
-                    filename += "Filename " + rowFile[xCLFPT.file_name].ToString() + ", Total = " + rowFile["cnt"].ToString() + ", Validate pass = " + valiPass + ", Record Error = " + valiErr + " " + Environment.NewLine;
+                    //filename += "Filename " + rowFile[xCLFPT.file_name].ToString() + ", Total = " + rowFile["cnt"].ToString() + ", Validate pass = " + valiPass + ", Record Error = " + valiErr + " " + Environment.NewLine;
+                    filename += "Filename " + rowFile[xCLFPT.file_name].ToString() + Environment.NewLine;
                     //if (int.TryParse(rowFile.recordError, out err))
                     //{
                     //    if (int.Parse(rowFile.recordError) > 0)
