@@ -110,6 +110,19 @@ namespace XCustPr
             }
             return chk;
         }
+        public String selectItemCodeByOrgItemCode(String OrgId, String item_code)
+        {
+            DataTable dt = new DataTable();
+            String chk = "";
+            String sql = "select "+xCIMT.ITEM_CODE+" From " + xCIMT.table + " where " + xCIMT.ITEM_CODE + "  = '" + item_code + "' and " + xCIMT.ORGAINZATION_ID + " ='" + OrgId + "'";
+            dt = conn.selectData(sql, "kfc_po");
+            if (dt.Rows.Count > 0)
+            {
+                chk = dt.Rows[0][xCIMT.ITEM_CODE].ToString().Trim();
+                chk = chk.Length > 0 ? chk.Substring(3, 2) : chk;
+            }
+            return chk;
+        }
         public Boolean validateItemCodeByOrgRef1(String OrgId, String itemCode)
         {
             DataTable dt = new DataTable();

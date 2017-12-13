@@ -1198,7 +1198,7 @@ namespace XCustPr
             }
             return chk;
         }
-        public String FixLen(String str, String len, String chrFix)
+        public String FixLen(String str, String len, String chrFix, String flag)
         {
             String chk = "", aaa = "";
             int len1 = 0;
@@ -1210,7 +1210,15 @@ namespace XCustPr
                     {
                         aaa += chrFix;
                     }
-                    chk = aaa + str;
+                    if (flag.Equals("lpad"))
+                    {
+                        chk = str + aaa;
+                    }
+                    else
+                    {
+                        chk = aaa + str;
+                    }
+                    
                     chk = chk.Substring(str.Length);
                 }
                 else

@@ -39,6 +39,7 @@ namespace XCustPr
         public XcustSupplierMstTblDB xCSMTDB;
         public XcustUomMstTblDB xCUMTDB;
         public XcustValueSetMstTblDB xCVSMTDB;
+        
 
         private List<XcustSubInventoryMstTbl> listXcSIMT;
         private List<XcustItemMstTbl> listXcIMT;
@@ -147,6 +148,7 @@ namespace XCustPr
                     if (dt.Rows.Count > 0)
                     {
                         writeTextPO006(row["SUPPLIER_NUMBER"].ToString(), deliveryDate, dt, dtFixLen);
+
                     }
                 }
             }
@@ -172,22 +174,27 @@ namespace XCustPr
         public void writeTextPO006(String vendor_id, String delivery_date, DataTable dt, DataTable dtFixLen)
         {
             var file = Cm.initC.PO006PathInitial + "S" + vendor_id+"_R" + delivery_date.Replace("-","") + ".KFC";
+            String Org = xCDOMTDB.selectActiveByCode(Cm.initC.ORGANIZATION_code.Trim());
             using (var stream = File.CreateText(file))
             {
-                String hCol01 = Cm.FixLen("S" + vendor_id, dtFixLen.Rows[0]["X_LENGTH"].ToString()," ");
-                String hCol02 = Cm.FixLen(delivery_date.Replace("-", ""), dtFixLen.Rows[1]["X_LENGTH"].ToString(), " ");
-                String hCol3 = Cm.FixLen(dt.Rows.Count.ToString(), dtFixLen.Rows[2]["X_LENGTH"].ToString(), "0");
+                String hCol01 = Cm.FixLen("S" + vendor_id, dtFixLen.Rows[0]["X_LENGTH"].ToString()," ","lpad");
+                String hCol02 = Cm.FixLen(delivery_date.Replace("-", ""), dtFixLen.Rows[1]["X_LENGTH"].ToString(), " ", "lpad");
+                String hCol3 = Cm.FixLen(dt.Rows.Count.ToString(), dtFixLen.Rows[2]["X_LENGTH"].ToString(), "0", "lpad");
                 String head = hCol01 + hCol02 + hCol3;//+System.Environment.NewLine;
                 stream.WriteLine(head);
                 foreach (DataRow row in dt.Rows)
                 {
-                    String col01 = Cm.FixLen(row["po_number"].ToString(), dtFixLen.Rows[3]["X_LENGTH"].ToString()," ");
-                    String col02 = Cm.FixLen(delivery_date.Replace("-", ""), dtFixLen.Rows[4]["X_LENGTH"].ToString(), " ");     //PO date
-                    String col03 = Cm.FixLen(Cm.initC.ORGANIZATION_code, dtFixLen.Rows[5]["X_LENGTH"].ToString(), " ");     //Store Code
-                    String col04 = Cm.FixLen(delivery_date.Replace("-", ""), dtFixLen.Rows[6]["X_LENGTH"].ToString(), " ");          //Delivery Date
-                    String col05 = Cm.FixLen(row["ITEM_ID"].ToString(), dtFixLen.Rows[7]["X_LENGTH"].ToString(), " ");
-                    String col06 = Cm.FixLen(row["QUANTITY"].ToString(), dtFixLen.Rows[8]["X_LENGTH"].ToString(), " ");
-                    String col07 = Cm.FixLen(row["UOM_CODE"].ToString(), dtFixLen.Rows[9]["X_LENGTH"].ToString(), " ");
+                    String col01 = Cm.FixLen(row["po_number"].ToString(), dtFixLen.Rows[3]["X_LENGTH"].ToString()," ", "lpad");
+                    String col02 = Cm.FixLen(delivery_date.Replace("-", ""), dtFixLen.Rows[4]["X_LENGTH"].ToString(), " ", "lpad");     //PO date
+                    String col03 = Cm.FixLen(Org, dtFixLen.Rows[5]["X_LENGTH"].ToString(), "0","lpad");     //Store Code
+                    String col04 = Cm.FixLen(delivery_date.Replace("-", ""), dtFixLen.Rows[6]["X_LENGTH"].ToString(), " ","lpad");          //Delivery Date
+                    String col05 = "";
+                    col05 = xCIMTDB.selectItemCodeByOrgItemCode(Org, row["ITEM_ID"].ToString());
+                    col05 = Cm.FixLen(col05, dtFixLen.Rows[7]["X_LENGTH"].ToString(), " ","");
+                    String col06 = " "+Cm.FixLen(row["QUANTITY"].ToString(), dtFixLen.Rows[8]["X_LENGTH"].ToString(), "0","rpad");
+
+                    String col07 = xCVSMTDB.selectUOM(row["UOM_CODE"].ToString());
+                    col07 = Cm.FixLen(col07, dtFixLen.Rows[9]["X_LENGTH"].ToString(), " ","lpad");
 
                     String csvRow = col01 + col02 + col03 + col04 + col05 + col06 + col07 ;
 

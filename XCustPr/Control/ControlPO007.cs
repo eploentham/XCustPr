@@ -141,7 +141,7 @@ namespace XCustPr
                             line_num = dtLot.Rows[0]["line_num"].ToString();
                             lot_number = dtLot.Rows[0]["lot_number"].ToString();
                         }
-                        string col01 = Cm.FixLen(Cm.dateDBtoShow(row["CREATION_DATE"].ToString()), dtFixLen.Rows[0]["X_LENGTH"].ToString()," ");
+                        string col01 = Cm.FixLen(Cm.dateDBtoShow(row["CREATION_DATE"].ToString()), dtFixLen.Rows[0]["X_LENGTH"].ToString()," ","lpad");
                         string col02 = FixLen(Cm.initC.Company, dtFixLen.Rows[1]["X_LENGTH"].ToString());
                         string col03 = FixLen("col3", dtFixLen.Rows[2]["X_LENGTH"].ToString());      //PO DT
                         string col04 = FixLen(row["SEGMENT1"].ToString(), dtFixLen.Rows[3]["X_LENGTH"].ToString());     //po_number

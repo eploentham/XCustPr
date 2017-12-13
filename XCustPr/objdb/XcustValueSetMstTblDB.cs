@@ -62,6 +62,18 @@ namespace XCustPr
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
+        public String selectUOM(String desc)
+        {
+            String uom = "";
+            DataTable dt = new DataTable();
+            String sql = "select * From " + xCVSMT.table + " Where " + xCVSMT.VALUE_SET_CODE + "='RD_UOM_MMX_MAPPING' and " + xCVSMT.DESCRIPTION + "='" + desc + "'";
+            dt = conn.selectData(sql, "kfc_po");
+            if (dt.Rows.Count > 0)
+            {
+                uom = dt.Rows[0][xCVSMT.VALUE].ToString().Trim();
+            }
+            return uom;
+        }
         public Boolean validateValueBySegment1(String valuesetcode, String enableflag, String value)
         {
             DataTable dt = new DataTable();
