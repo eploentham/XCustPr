@@ -495,19 +495,22 @@ namespace XCustPr
         {
             String line1 = "", parameter = "", programstart = "", filename = "", recordError = "", txt = "", path = "", sql="";
             int cntErr = 0, cntPass = 0;
-            line1 = "Program : XCUST Interface PR<Linfox>To PO(ERP)" + Environment.NewLine;
             ControlMain cm = new ControlMain();
-            path = cm.getPathLogProcess(programname);
-            parameter = "Parameter : " + Environment.NewLine;
-            parameter += "           Path Initial :" + initC.PathInitial + Environment.NewLine;
-            parameter += "           Path Process :" + initC.PathProcess + Environment.NewLine;
-            parameter += "           Path Error :" + initC.PathError + Environment.NewLine;
-            parameter += "           Import Source :" + initC.ImportSource + Environment.NewLine;
-            programstart = "Program Start : " + startdatetime + Environment.NewLine;
+                line1 = "Program : XCUST Interface PR<Linfox>To PO(ERP)" + Environment.NewLine;
+                
+                path = cm.getPathLogProcess(programname);
+                parameter = "Parameter : " + Environment.NewLine;
+                parameter += "           Path Initial :" + initC.PathInitial + Environment.NewLine;
+                parameter += "           Path Process :" + initC.PathProcess + Environment.NewLine;
+                parameter += "           Path Error :" + initC.PathError + Environment.NewLine;
+                parameter += "           Import Source :" + initC.ImportSource + Environment.NewLine;
+                programstart = "Program Start : " + startdatetime + Environment.NewLine;
+
+
             sql = "Select count(1) as cnt, "+xCLFPT.file_name
-                +" From "+xCLFPT.table 
-                +" Where "+xCLFPT.request_id+" ='"+requestId+"' "+
-                "Group By "+xCLFPT.file_name;
+            +" From "+xCLFPT.table 
+            +" Where "+xCLFPT.request_id+" ='"+requestId+"' "+
+            "Group By "+xCLFPT.file_name;
             DataTable dtFile =  conn.selectData(sql, "kfc_po");
             
             if (dtFile.Rows.Count > 0)

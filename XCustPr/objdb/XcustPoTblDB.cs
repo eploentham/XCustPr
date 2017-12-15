@@ -129,6 +129,15 @@ namespace XCustPr
             conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
             return chk;
         }
+        public String updateOutBoundFlagPO006(String deliveryDate, String pathLog)
+        {
+            String sql = "", chk = "";
+            sql = "Update " + xCPO.table + " " +
+                "Set " + xCPO.GEN_OUTBOUD_FLAG + "='Y' " +
+                "Where " + xCPO.APPROVED_DATE + " = '" + deliveryDate + "'";
+            conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
+            return chk;
+        }
         public String insertxCPR(XcustPoTbl p, String pathLog)
         {
             String sql = "", chk = "";

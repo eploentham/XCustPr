@@ -170,6 +170,7 @@ namespace XCustPr
                 cntErr++;       // gen log
                 xCLMDB.insertLog("PO002", "", "Error PO002-001: No Data Found", Cm.initC.PO002PathLog);
             }
+            xCLFPTDB.logProcessPO001("xcustpo002", dateStart, requestId);   // gen log
             pB1.Hide();
         }
         public void processGenTextLinfox(MaterialListView lv1, Form form1, MaterialProgressBar pB1)

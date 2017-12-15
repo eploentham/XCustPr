@@ -123,6 +123,21 @@ namespace XCustPr
             }
             return chk;
         }
+        public String selectItemCodeByItemId(String OrgId, String item_id)
+        {
+            DataTable dt = new DataTable();
+            String chk = "", itemId="";
+            String sql = "";
+            itemId = item_id.Equals("") ? "null" : item_id;
+            sql = "select substring(" + xCIMT.ITEM_CODE + ",3,5) item_direct_sup From " + xCIMT.table + " where " + xCIMT.INVENTORY_ITEM_ID + "  = " + itemId + " and " + xCIMT.ORGAINZATION_ID + " ='" + OrgId + "'";
+            dt = conn.selectData(sql, "kfc_po");
+            if (dt.Rows.Count > 0)
+            {
+                chk = dt.Rows[0][0].ToString().Trim();
+                //chk = chk.Length > 0 ? chk.Substring(2) : chk;
+            }
+            return chk;
+        }
         public Boolean validateItemCodeByOrgRef1(String OrgId, String itemCode)
         {
             DataTable dt = new DataTable();

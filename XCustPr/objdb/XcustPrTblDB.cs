@@ -211,7 +211,7 @@ namespace XCustPr
             }
             else
             {
-                where = "  ";
+                where = " and po.APPROVED_DATE = '"+delivery_date+"' ";
             }
             if (rerun.Equals("Y"))
             {
@@ -228,7 +228,8 @@ namespace XCustPr
                     "From xcust_pr_tbl PR " +
                     "inner Join xcust_po_tbl po On  po.REQUISITION_HEADER_ID = PR.REQUISITION_HEADER_ID and po.REQUISITION_LINE_ID = PR.REQUISITION_LINE_ID  " +
                     "Where  " + "" +
-                    " PR.ATTRIBUTE1 <> 'MMX'  "+ where+ whereRerun+ " Order By po.SEGMENT1 ";
+                    " PR.ATTRIBUTE1 <> 'MMX'  "+ where+ whereRerun+ 
+                    " Order By po.SEGMENT1 ";
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
