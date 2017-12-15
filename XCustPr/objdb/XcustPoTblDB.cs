@@ -151,7 +151,7 @@ namespace XCustPr
             String sql = "", chk = "";
             sql = "Update " + xCPO.table + " " +
                 "Set " + xCPO.GEN_OUTBOUD_FLAG + "='Y' " +
-                "Where " + xCPO.APPROVED_DATE + " = '" + deliveryDate + "'";
+                "Where " + xCPO.DELIVER_DATE + " = '" + deliveryDate + "'";
             conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
             return chk;
         }
