@@ -291,10 +291,11 @@ namespace XCustPr
         }
         public void sendEmailPO006(String vendorName)
         {
-            var fromAddress = new MailAddress(Cm.initC.EmailUsername, "Ekapop Ploentham");
+            var fromAddress = new MailAddress(Cm.initC.EmailUsername, "");
             var toAddress = new MailAddress(Cm.initC.APPROVER_EMAIL, "To Name");
-            var toAddress2 = new MailAddress("amo@iceconsulting.co.th", "To Name");
+            //var toAddress2 = new MailAddress("amo@iceconsulting.co.th", "To Name");
             var toAddress3 = new MailAddress("ekk@ii.co.th", "To Name");
+            var toAddress4 = new MailAddress("vrw@ii.co.th", "To Name");// for test
             String fromPassword = Cm.initC.EmailPassword;
             const string subject = "test";
             DataTable dt006;
@@ -305,7 +306,7 @@ namespace XCustPr
 
             var smtp1 = new SmtpClient
             {
-                Host = "smtp.gmail.com",
+                Host = "smtp.office365.com",
                 Port = 587,
                 EnableSsl = true,
                 DeliveryMethod = SmtpDeliveryMethod.Network,
@@ -317,11 +318,12 @@ namespace XCustPr
             message.From = fromAddress;
             message.Subject = "Test send Email form PO006";
             message.To.Add(toAddress);
-            message.To.Add(toAddress2);
+            //message.To.Add(toAddress2);
             message.To.Add(toAddress3);
+            message.To.Add(toAddress4);// for test
             message.IsBodyHtml = true;
             message.BodyEncoding = System.Text.Encoding.UTF8;
-
+            //MessageBox.Show(""+ @Environment.CurrentDirectory, "");
             LinkedResource LinkedImage = new LinkedResource(@Environment.CurrentDirectory + "\\" + "logo_ice_consulting.png");
             LinkedImage.ContentId = "logo_ice";
             //Added the patch for Thunderbird as suggested by Jorge
@@ -330,7 +332,6 @@ namespace XCustPr
             AlternateView htmlView = AlternateView.CreateAlternateViewFromString(Body, null, "text/html");
             htmlView.LinkedResources.Add(LinkedImage);
             message.AlternateViews.Add(htmlView);
-
             
             if (dt006.Rows.Count > 0)
             {
@@ -342,12 +343,13 @@ namespace XCustPr
                     {
                         foreach (string aa in filePO)
                         {
+                            //MessageBox.Show("Attachment " + aa, "");
                             Attachment attachment;
                             attachment = new System.Net.Mail.Attachment(aa);
                             message.Attachments.Add(attachment);
                         }
                     }
-                }                
+                }
             }
 
             message.Body = Body;

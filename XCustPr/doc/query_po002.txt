@@ -7,4 +7,4 @@ and validate_flag = 'Y'
 
 UPDATE xcust_linfox_pr_int_tbl
 SET GEN_OUTBOUD_FLAG = NULL
-WHERE GEN_OUTBOUD_FLAG = 'Y
+WHERE GEN_OUTBOUD_FLAG = 'Y'

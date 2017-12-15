@@ -291,6 +291,8 @@ namespace XCustPr
             pB1.Visible = false;
             Console.WriteLine(decodedString);
         }
+
+        // ถ้าเจอ gen_out_bound = 'Y' ห้าม delete และ ไม่ต้อง insert เพิ่ม
         public void setXcustPOTbl(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String pathLog)
         {
             String uri = "", dump = "";
@@ -302,6 +304,7 @@ namespace XCustPr
             //DateTime currDate = System.DateTime.Now.AddDays(-1);
             DateTime currDate = System.DateTime.Now;
             String date = currDate.Month.ToString("00")+"-"+currDate.Day.ToString("00")+"-"+currDate.Year.ToString();
+            //date = "";
             //filePO = Cm.getFileinFolder(Cm.initC.PathZip);
             //String text = System.IO.File.ReadAllText(filePO[0]);
             //byte[] byteArraytext = Encoding.UTF8.GetBytes(text);
@@ -576,8 +579,8 @@ namespace XCustPr
                     item.PRODUCT_TYPE = data2[66].Trim();
                     item.ASSESSABLE_VALUE = data2[67].Trim().Replace("|#",",");
                     item.DELIVER_TO_LOC_LINFOX = data2[68].Trim();
-                    //item.ACC_SEGMENT5 = "";
-                    //item.ACC_SEGMENT6 = "";
+                    item.DELIVER_QTY = data2[69].Trim();
+                    item.DELIVER_DATE = xCPODB.xCPO.dateYearToDB(data2[70].Trim());
                     if (item.ASSESSABLE_VALUE.ToLower().Equals("goods"))
                     {
                         dump = "";

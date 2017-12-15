@@ -125,12 +125,16 @@ namespace XCustPr
             dtLinfox = xCLFPTDB.selectPO002();
             if (dtLinfox.Rows.Count > 0)
             {
+                xCLFPTDB.updateRequestIdPo002(requestId);
                 pB1.Maximum = dtLinfox.Rows.Count;
                 foreach(DataRow linfox in dtLinfox.Rows)
                 {
                     i++;
                     pB1.Value = i;
                     DataTable dt = new DataTable();
+                    String poNumber = "", lineNumber="";
+                    poNumber = linfox[xCLFPTDB.xCLFPT.PO_NUMBER].ToString();
+                    lineNumber = linfox[xCLFPTDB.xCLFPT.LINE_NUMBER].ToString();
                     //b.Program ทำการ mapping ข้อมูลกับ table XCUST_PR_PO_INFO_TBL แล้ว update ข้อมูล field ERP_PO_NUMBER ,ERP_QTY ที่ table XCUST_LINFOX_PR_TBL
                     dt = xCPRTDB.selectPRPO(linfox[xCLFPTDB.xCLFPT.PO_NUMBER].ToString(), linfox[xCLFPTDB.xCLFPT.LINE_NUMBER].ToString(), "LINFOX");
                     if (dt.Rows.Count > 0)
@@ -156,7 +160,7 @@ namespace XCustPr
                         vPP.Validate = "Error PO002-001 mapping : No Data Found  ";
                         lVPr.Add(vPP);
                         cntErr++;       // gen log
-                        xCLFPTDB.updateErrorMessagePO002(linfox[xCLFPTDB.xCLFPT.PO_NUMBER].ToString(), linfox[xCLFPTDB.xCLFPT.LINE_NUMBER].ToString(), "Error PO002-001 mapping : No Data Found", linfox[xCLFPTDB.xCLFPT.request_id].ToString(), "kfc_po", Cm.initC.PO002PathLog);
+                        xCLFPTDB.updateErrorMessagePO002(poNumber, lineNumber, "Error PO002-001 mapping : No Data Found", requestId, "kfc_po", Cm.initC.PO002PathLog);
                     }
                 }
             }
@@ -170,7 +174,31 @@ namespace XCustPr
                 cntErr++;       // gen log
                 xCLMDB.insertLog("PO002", "", "Error PO002-001: No Data Found", Cm.initC.PO002PathLog);
             }
+            updateValidateFlagY(requestId);
             pB1.Hide();
+        }
+        private void updateValidateFlagY(String requestId)
+        {
+            DataTable dt = new DataTable();
+            dt = xCLFPTDB.selectPO002LinfoxByRequestId(requestId);
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    String poNumber = "", lineNumber = "", chk = "";
+                    poNumber = row[xCLFPTDB.xCLFPT.PO_NUMBER].ToString();
+                    lineNumber = row[xCLFPTDB.xCLFPT.LINE_NUMBER].ToString();
+                    if (poNumber.Equals("12819344"))
+                    {
+                        chk = "";
+                    }
+                    if (row[xCLFPTDB.xCLFPT.ERROR_MSG2].ToString().Length == 0)
+                    {
+                        //xCLFPTDB.updateValidateFlagY(row[xCLFPTDB.xCLFPT.PO_NUMBER].ToString(), row[xCLFPTDB.xCLFPT.LINE_NUMBER].ToString(), row[xCLFPTDB.xCLFPT.request_id].ToString(), "kfc_po", Cm.initC.pathLogErr);
+                        xCLFPTDB.updateValidateFlagYPO002(row[xCLFPTDB.xCLFPT.PO_NUMBER].ToString(), row[xCLFPTDB.xCLFPT.LINE_NUMBER].ToString(), row[xCLFPTDB.xCLFPT.request_id].ToString(), "kfc_po", Cm.initC.PO002PathLog);
+                    }
+                }
+            }
         }
         public void processGenTextLinfox(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
         {
@@ -235,7 +263,7 @@ namespace XCustPr
                             ponumber = row[xCLFPTDB.xCLFPT.PO_NUMBER].ToString();
                             linenumber = row[xCLFPTDB.xCLFPT.LINE_NUMBER].ToString();
                             string col01 = "A";
-                            string col02 = "";      //Branch/Plant
+                            string col02 = row[xCLFPTDB.xCLFPT.store_code].ToString();      //Branch/Plant
                             string col03 = row[xCLFPTDB.xCLFPT.SUPPLIER_CODE].ToString();
                             string col04 = "WP";
                             string col05 = ponumber;
@@ -244,12 +272,12 @@ namespace XCustPr
                             string col08 = row[xCLFPTDB.xCLFPT.ERP_PO_NUMBER].ToString();
                             string col09 = reqDate;
                             string col10 = row[xCLFPTDB.xCLFPT.REQUEST_TIME].ToString();
-
+                            col10 = col10.Equals("0") ? "000000" : col10;
                             string col11 = row[xCLFPTDB.xCLFPT.ITEM_CODE].ToString();
                             string col12 = row[xCLFPTDB.xCLFPT.ERP_QTY].ToString();
                             string col13 = row[xCLFPTDB.xCLFPT.UOMCODE].ToString();     //Unit Of Mesure
                             string col14 = row[xCLFPTDB.xCLFPT.ORDER_DATE].ToString();
-                            string col15 = row[xCLFPTDB.xCLFPT.ERP_QTY].ToString();     //Delivery instruction
+                            string col15 = row[xCLFPTDB.xCLFPT.DELIVERY_INSTRUCTION].ToString();     //Delivery instruction
 
                             string csvRow = col01 + "|" + col02 + "|" + col03 + "|" + col04 + "|" + col05 + "|" + col06 + "|" + col07 + "|" + col08 + "|" + col09 + "|" + col10
                                 + "|" + col11 + "|" + col12 + "|" + col13 + "|" + col14 + "|" + col15;

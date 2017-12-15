@@ -94,6 +94,8 @@ namespace XCustPr
             xCPO.COUNT_AP_INVOICE = "COUNT_AP_INVOICE";
             xCPO.PRODUCT_TYPE = "PRODUCT_TYPE";
             xCPO.ASSESSABLE_VALUE = "ASSESSABLE_VALUE";
+            xCPO.DELIVER_DATE = "DELIVER_DATE";
+            xCPO.DELIVER_QTY = "DELIVER_QTY";
 
             xCPO.table = "xcust_PO_TBL";
 
@@ -108,6 +110,21 @@ namespace XCustPr
             if (dt.Rows.Count >= 1)
             {
                 chk = true;
+            }
+            return chk;
+        }
+        public String selectOutBoundFlag(String po_header_id, String po_line_id)
+        {
+            String sql = "";
+            String chk = "";
+            DataTable dt = new DataTable();
+            sql = "Select "+xCPO.GEN_OUTBOUD_FLAG +
+                " From " + xCPO.table + 
+                " Where " + xCPO.PO_HEADER_ID + "='" + po_header_id + "' and " + xCPO.PO_LINE_ID + "='" + po_line_id + "'";
+            dt = conn.selectData(sql, "kfc_po");
+            if (dt.Rows.Count >= 1)
+            {
+                chk = dt.Rows[0][xCPO.GEN_OUTBOUD_FLAG].ToString();
             }
             return chk;
         }
@@ -131,12 +148,19 @@ namespace XCustPr
         }
         public String insertxCPR(XcustPoTbl p, String pathLog)
         {
+            // ถ้าเจอ gen_out_bound = 'Y' ห้าม delete และ ไม่ต้อง insert เพิ่ม
             String sql = "", chk = "";
-            if (selectDupPk(p.PO_HEADER_ID, p.PO_LINE_ID))
+            chk = selectOutBoundFlag(p.PO_HEADER_ID, p.PO_LINE_ID);
+            if (!chk.Equals("Y"))
             {
-                deletexCPR(p.PO_HEADER_ID, p.PO_LINE_ID, pathLog);
+                if (selectDupPk(p.PO_HEADER_ID, p.PO_LINE_ID))
+                {
+
+                    deletexCPR(p.PO_HEADER_ID, p.PO_LINE_ID, pathLog);
+                }
+                chk = insert(p, pathLog);
             }
-            chk = insert(p, pathLog);
+            
             return chk;
         }
         public String insert(XcustPoTbl p, String pathLog)
@@ -178,6 +202,7 @@ namespace XCustPr
                 p.REQ_BU_ID = p.REQ_BU_ID.Equals("") ? "null" : p.REQ_BU_ID;
                 p.PRC_BU_ID = p.PRC_BU_ID.Equals("") ? "null" : p.PRC_BU_ID;
                 p.PO_HEADER_ID = p.PO_HEADER_ID.Equals("") ? "null" : p.PO_HEADER_ID;
+                p.DELIVER_QTY = p.DELIVER_QTY.Equals("") ? "null" : p.DELIVER_QTY;
 
                 String last_update_by = "0", creation_by = "0";
                 p.TAX_AMOUNT = p.TAX_AMOUNT.Equals("") ? "0" : p.TAX_AMOUNT;
@@ -201,9 +226,9 @@ namespace XCustPr
                     xCPO.VENDOR_CONTACT_ID + "," + xCPO.VENDOR_ID + "," + xCPO.VENDOR_SITE + "," +
                     xCPO.TAX_AMOUNT + "," + xCPO.TAX_CODE + "," + xCPO.ACC_SEGMENT1 + "," +
                     xCPO.ACC_SEGMENT2 + "," + xCPO.ACC_SEGMENT3 + "," + xCPO.ACC_SEGMENT4 + "," +
-                    xCPO.ACC_SEGMENT5 + "," + xCPO.ACC_SEGMENT6 +
+                    xCPO.ACC_SEGMENT5 + "," + xCPO.ACC_SEGMENT6+ "," + xCPO.DELIVER_DATE+ "," + xCPO.DELIVER_QTY +
 
-                    ") " +
+                  ") " +
                     "Values(" + p.AGENT_ID + ",'" + p.APPROVED_DATE + "','" + p.APPROVED_FLAG + "'," +
                     p.ASSESSABLE_VALUE + ",'" + p.ATTRIBUTE1 + "','" + p.ATTRIBUTE2 + "','" +
                     p.ATTRIBUTE3 + "','" + p.ATTRIBUTE4 + "','" + p.ATTRIBUTE_CATEGORY + "','" +
@@ -224,9 +249,9 @@ namespace XCustPr
                     p.VENDOR_CONTACT_ID + "," + p.VENDOR_ID + ",'" + p.VENDOR_SITE + "','" +
                     p.TAX_AMOUNT + "','" + p.TAX_CODE + "','" + p.ACC_SEGMENT1 + "','" +
                     p.ACC_SEGMENT2 + "','" + p.ACC_SEGMENT3 + "','" + p.ACC_SEGMENT4 + "','" +
-                    p.ACC_SEGMENT5 + "','" + p.ACC_SEGMENT6 + "'" +
+                    p.ACC_SEGMENT5 + "','" + p.ACC_SEGMENT6 + "','" + p.DELIVER_DATE + "'," + p.DELIVER_QTY + " " +
 
-                    ") ";
+                  ") ";
                 chk = conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
                 //chk = p.RowNumber;
                 //chk = p.Code;

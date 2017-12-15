@@ -230,6 +230,17 @@ namespace XCustPr
 
             return chk;
         }
+        public String updateRequestIdPo002(String requestId)
+        {
+            String sql = "", chk = "";
+            sql = "Update " + xCLFPT.table + " " +
+                "Set " + xCLFPT.request_id_po002 + "='"+ requestId + "' " +
+                ","+xCLFPT.ERROR_MSG2+"=''"+
+                " Where " + xCLFPT.SEND_PO_FLAG + " is null and " + xCLFPT.PROCESS_FLAG + "='Y' and " + xCLFPT.GEN_OUTBOUD_FLAG + " is null and validate_flag = 'Y'";
+            chk = conn.ExecuteNonQuery(sql, "kfc_po", initC.PO002PathLog);
+
+            return chk;
+        }
         public String updateOutBoundFlag(String po_number, String line_number)
         {
             String sql = "", chk = "";
@@ -277,6 +288,17 @@ namespace XCustPr
                 " From "+xCLFPT.table +
                 " Where "+xCLFPT.PO_NUMBER+"='"+poNumber+"' and "+xCLFPT.request_id+"='"+requestId+"' " +
                 " Order By "+xCLFPT.PO_NUMBER+","+xCLFPT.LINE_NUMBER;
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
+        }
+        public DataTable selectPO002LinfoxByRequestId(String requestId)
+        {
+            DataTable dt = new DataTable();
+            String sql = "";
+            sql = "Select * " +
+                " From " + xCLFPT.table +
+                " Where " + xCLFPT.request_id_po002 + "='" + requestId + "' " +
+                " Order By " + xCLFPT.PO_NUMBER + "," + xCLFPT.LINE_NUMBER;
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
@@ -416,7 +438,7 @@ namespace XCustPr
         {
             String sql = "", chk = "";
             sql = "Update " + xCLFPT.table + " Set " + xCLFPT.ERROR_MSG2 + "=" + xCLFPT.ERROR_MSG2 + "+'," + msg.Replace("'", "''") + "' " +
-                "Where " + xCLFPT.PO_NUMBER + " = '" + po_number + "' and " + xCLFPT.LINE_NUMBER + "='" + line_number + "' and " + xCLFPT.request_id + "='" + requestId + "'";
+                "Where " + xCLFPT.PO_NUMBER + " = '" + po_number + "' and " + xCLFPT.LINE_NUMBER + "='" + line_number + "' and " + xCLFPT.request_id_po002 + "='" + requestId + "'";
             chk = conn.ExecuteNonQuery(sql.ToString(), host, pathLog);
 
             return chk;
@@ -426,6 +448,15 @@ namespace XCustPr
             String sql = "", chk = "";
             sql = "Update " + xCLFPT.table + " Set " + xCLFPT.VALIDATE_FLAG + "='Y' " +
                 "Where " + xCLFPT.PO_NUMBER + " = '" + po_number + "' and " + xCLFPT.LINE_NUMBER + "='" + line_number + "' and " + xCLFPT.request_id + "='" + requestId + "'";
+            chk = conn.ExecuteNonQuery(sql.ToString(), host, pathLog);
+
+            return chk;
+        }
+        public String updateValidateFlagYPO002(String po_number, String line_number, String requestId, String host, String pathLog)
+        {
+            String sql = "", chk = "";
+            sql = "Update " + xCLFPT.table + " Set " + xCLFPT.VALIDATE_FLAG + "='Y' " +
+                "Where " + xCLFPT.PO_NUMBER + " = '" + po_number + "' and " + xCLFPT.LINE_NUMBER + "='" + line_number + "' and " + xCLFPT.request_id_po002 + "='" + requestId + "'";
             chk = conn.ExecuteNonQuery(sql.ToString(), host, pathLog);
 
             return chk;
@@ -634,18 +665,18 @@ namespace XCustPr
             String date = System.DateTime.Now.ToString("dd MMM yyyy");
             String time = System.DateTime.Now.ToString("HH.mm");
 
-            line1 = "Program : XCUST Interface PO(ERP)To PO<LINFOX>" + Environment.NewLine;
+            line1 = "Program : XCUST Interface PO(ERP)To PO <LINFOX>" + Environment.NewLine;
             ControlMain cm = new ControlMain();
             path = cm.getPathLogProcess(programname);
             parameter = "Parameter : " + Environment.NewLine;
             parameter += "           Path Initial :" + initC.PO002PathInitial + Environment.NewLine;
             parameter += "           Path Process :" + initC.PO002PathDestinaion + Environment.NewLine;
-            parameter += "           Create Date " + date+ time + Environment.NewLine;
-            programstart = "Program Start : " + startdatetime + Environment.NewLine;
+            parameter += "           Create Date " + date + Environment.NewLine;
+            programstart = "Program Start : " + date+" " + time + Environment.NewLine;
 
             sql = "Select count(1) as cnt, " + xCLFPT.file_name
                 + " From " + xCLFPT.table
-                + " Where " + xCLFPT.request_id + " ='"+ requedtId + "' " +
+                + " Where " + xCLFPT.request_id_po002 + " ='"+ requedtId + "' " +
                 "Group By " + xCLFPT.file_name;
 
             DataTable dtFile = conn.selectData(sql, "kfc_po");
@@ -657,7 +688,7 @@ namespace XCustPr
                     String valiPass = "", valiErr = "";
                     sql = "Select count(1) as cnt_vali " +
                         " From " + xCLFPT.table + " " +
-                        " Where " + xCLFPT.request_id + " ='' " +
+                        " Where " + xCLFPT.request_id_po002 + " ='"+ requedtId + "' " +
                         " and " + xCLFPT.file_name + "='" + rowFile[xCLFPT.file_name].ToString() + "' and " + xCLFPT.VALIDATE_FLAG + "='Y' ";
 
                     DataTable dtR = conn.selectData(sql, "kfc_po");
@@ -672,7 +703,7 @@ namespace XCustPr
                     dtR.Clear();
                     sql = "Select count(1) as cnt_vali " +
                         " From " + xCLFPT.table + " " +
-                        " Where " + xCLFPT.request_id + " ='' " +
+                        " Where " + xCLFPT.request_id_po002 + " ='"+ requedtId + "' " +
                         " and " + xCLFPT.file_name + "='" + rowFile[xCLFPT.file_name].ToString() + "' and " + xCLFPT.VALIDATE_FLAG + "='E' ";
                     dtR = conn.selectData(sql, "kfc_po");
                     if (dtR.Rows.Count > 0)
@@ -704,7 +735,7 @@ namespace XCustPr
             }
             String filename1 = "", filename1old = "";
             sql = "Select * From " + xCLFPT.table + " " +
-                "Where " + xCLFPT.request_id + " ='" + requedtId + "' " +
+                "Where " + xCLFPT.request_id_po002 + " ='" + requedtId + "' " +
                 "Order By " + xCLFPT.file_name + ", " + xCLFPT.PO_NUMBER;
             DataTable dtErr = new DataTable();
             dtErr = conn.selectData(sql, "kfc_po");
@@ -712,7 +743,7 @@ namespace XCustPr
             {
                 foreach (DataRow dtErr1 in dtErr.Rows)
                 {
-                    if (dtErr1[xCLFPT.ERROR_MSG].ToString().Equals(""))
+                    if (dtErr1[xCLFPT.ERROR_MSG2].ToString().Equals(""))
                     {
                         continue;
                     }
@@ -724,7 +755,7 @@ namespace XCustPr
                     }
                     //recordError += "FileName " + dtErr1[xCLFPT.file_name].ToString() + Environment.NewLine;
                     recordError += "=>PO_NUMER = " + dtErr1[xCLFPT.PO_NUMBER].ToString() + ",LINE_NUMER = " + dtErr1[xCLFPT.LINE_NUMBER].ToString() + ",ERROR" + Environment.NewLine;
-                    recordError += "     ====>" + dtErr1[xCLFPT.ERROR_MSG].ToString() + Environment.NewLine;
+                    recordError += "     ====>" + dtErr1[xCLFPT.ERROR_MSG2].ToString() + Environment.NewLine;
                 }
                 if (recordError.Length > 0)
                 {
