@@ -148,7 +148,7 @@ namespace XCustPr
                     if (dt.Rows.Count > 0)
                     {
                         writeTextPO006(row["SUPPLIER_NUMBER"].ToString(), deliveryDate, dt, dtFixLen);
-
+                        xCPoTDB.updateOutBoundFlagPO006(deliveryDate, Cm.initC.PO006PathLog);
                     }
                 }
             }
@@ -188,9 +188,10 @@ namespace XCustPr
                     String col02 = Cm.FixLen(delivery_date.Replace("-", ""), dtFixLen.Rows[4]["X_LENGTH"].ToString(), " ", "lpad");     //PO date
                     String col03 = Cm.FixLen(Org, dtFixLen.Rows[5]["X_LENGTH"].ToString(), "0","lpad");     //Store Code
                     String col04 = Cm.FixLen(delivery_date.Replace("-", ""), dtFixLen.Rows[6]["X_LENGTH"].ToString(), " ","lpad");          //Delivery Date
-                    String col05 = "";
-                    col05 = xCIMTDB.selectItemCodeByOrgItemCode(Org, row["ITEM_ID"].ToString());
-                    col05 = Cm.FixLen(col05, dtFixLen.Rows[7]["X_LENGTH"].ToString(), " ","");
+                    String col05 = "", item_code="";
+                    item_code = row["ITEM_ID"].ToString();
+                    col05 = xCIMTDB.selectItemCodeByItemId(Org,row["ITEM_ID"].ToString());
+                    col05 = Cm.FixLen(col05, dtFixLen.Rows[7]["X_LENGTH"].ToString(), " ", "lpad");
                     String col06 = " "+Cm.FixLen(row["QUANTITY"].ToString(), dtFixLen.Rows[8]["X_LENGTH"].ToString(), "0","rpad");
 
                     String col07 = xCVSMTDB.selectUOM(row["UOM_CODE"].ToString());

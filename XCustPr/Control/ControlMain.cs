@@ -1213,13 +1213,13 @@ namespace XCustPr
                     if (flag.Equals("lpad"))
                     {
                         chk = str + aaa;
+                        chk = chk.Substring(0,len1);
                     }
                     else
                     {
                         chk = aaa + str;
+                        chk = chk.Substring(str.Length);
                     }
-                    
-                    chk = chk.Substring(str.Length);
                 }
                 else
                 {

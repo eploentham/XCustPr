@@ -174,7 +174,11 @@ namespace XCustPr
                 cntErr++;       // gen log
                 xCLMDB.insertLog("PO002", "", "Error PO002-001: No Data Found", Cm.initC.PO002PathLog);
             }
+<<<<<<< HEAD
             updateValidateFlagY(requestId);
+=======
+            xCLFPTDB.logProcessPO001("xcustpo002", dateStart, requestId);   // gen log
+>>>>>>> origin/master
             pB1.Hide();
         }
         private void updateValidateFlagY(String requestId)
