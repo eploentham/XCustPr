@@ -140,15 +140,16 @@ namespace XCustPr
             // insert xcust_mmx_pr_int_tbl
             filePOProcess = Cm.getFileinFolder(Cm.initC.PO008PathProcess);
             addListView("อ่าน file จาก " + Cm.initC.PO008PathProcess, "", lv1, form1);
-            foreach (string aa in filePOProcess)
+            foreach (string filename in filePOProcess)
             {
-                List<String> mmx = re.ReadExcelPO008(aa, pB1);
-                addListView("insert temp table " + aa, "", lv1, form1);
+                List<String> cedar = re.ReadExcelPO008(filename, pB1);
+                addListView("insert temp table " + filename, "", lv1, form1);
                 //conn.BulkToMySQL("kfc_po", linfox);       // ย้ายจาก MySQL ไป MSSQL
                 pB1.Visible = true;
-                xCCPITDB.insertBluk(mmx, aa, "kfc_po", pB1, Cm.initC.PO008PathLog);
+                xCCPITDB.insertBluk(cedar, filename, "kfc_po", pB1, Cm.initC.PO008PathLog);
                 pB1.Visible = false;
             }
+            Cm.logProcess("xcustpo008", lVPr, dateStart, lVfile);   // gen log
         }
         private void addListView(String col1, String col2, MaterialListView lv1, Form form1)
         {
@@ -341,7 +342,7 @@ namespace XCustPr
          */
         public void processGetTempTableToValidate(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
         {
-            addListView("อ่าน file จาก " + Cm.initC.PathProcess, "Validate", lv1, form1);
+            addListView("อ่าน file จาก " + Cm.initC.PO008PathProcess, "Validate", lv1, form1);
             pB1.Visible = true;
 
             Boolean chk = false;
@@ -397,7 +398,6 @@ namespace XCustPr
             {
                 chk = false;
             }
-
 
             //StringBuilder filename = new StringBuilder();
             dtGroupBy = xCCPITDB.selectCedarGroupByFilename();//   ดึง filename
@@ -721,7 +721,7 @@ namespace XCustPr
         }
         public void processGenZIP(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String flag)
         {
-            addListView("create zip file " + Cm.initC.PathProcess, "Validate", lv1, form1);
+            addListView("create zip file " + Cm.initC.PO008PathInitial, "Validate", lv1, form1);
             String filenameZip = "", ilename2 = "", ilename3 = "", filename = "";
             if (flag.Equals("PO008"))
             {

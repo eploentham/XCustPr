@@ -116,9 +116,9 @@ namespace XCustPr
                 {
                     String account_segment1 = "", account_segment2 = "", account_segment3 = "", account_segment4 = "", account_segment5 = "", account_segment6 = "", account_segment_no = "", admin = "";
                     String admin_receipt_doc_date = "", amt = "", approve_date = "", asset_code = "", asset_name = "0", branch_plant = "", category_name = "", cedar_close_date = "0";
-                    String data_source = "", error_message = "", invoice_due_date = "", item_description = "", item_e1 = "";
-                    String loctype = "", payment_term = "", period = "", po_no = "", process_flag = "", qt_no = "";
-                    String shippto_location = "", supplier_code = "", supplier_contact = "", supplier_name = "", supplier_site_code = "", sup_agreement_no = "", total = "", validate_flag = "";
+                    String data_source = "", invoice_due_date = "", item_description = "", item_e1 = "";
+                    String loctype = "", payment_term = "", period = "", po_no = "", qt_no = "";
+                    String shippto_location = "", supplier_code = "", supplier_contact = "", supplier_name = "", supplier_site_code = "", sup_agreement_no = "", total = "";
                     String vat = "", week = "", work_type = "", wo_no = "", xno = "";
                     String erp_qty = "0", erp_uom = "", BRANCH_NAME="";
                     i++;
@@ -195,14 +195,14 @@ namespace XCustPr
                         .Append("',").Append(amt).Append(",'").Append(approve_date).Append("','").Append(asset_code)
                         .Append("','").Append(asset_name).Append("','").Append(branch_plant).Append("','").Append(category_name)
                         .Append("','").Append(cedar_close_date).Append("','").Append(createBy).Append("',").Append(createDate)
-                        .Append(",'").Append(data_source).Append("','").Append(error_message).Append("','").Append(filename.Trim().Replace(initC.PO008PathProcess, ""))
+                        .Append(",'").Append(data_source).Append("','").Append(errMsg).Append("','").Append(filename.Trim().Replace(initC.PO008PathProcess, ""))
                         .Append("','").Append(invoice_due_date).Append("','").Append(item_description).Append("','").Append(item_e1)
                         .Append("','").Append(lastUpdateBy).Append("',").Append(lastUpdateTime).Append(",'").Append(loctype)
                         .Append("','").Append(payment_term).Append("','").Append(period).Append("','").Append(po_no)
-                        .Append("','").Append(process_flag).Append("','").Append(qt_no).Append("','").Append(shippto_location)
+                        .Append("','").Append(processFlag).Append("','").Append(qt_no).Append("','").Append(shippto_location)
                         .Append("','").Append(supplier_code).Append("','").Append(supplier_contact).Append("','").Append(supplier_name)
                         .Append("','").Append(supplier_site_code).Append("','").Append(lastUpdateTime).Append("',").Append(total)
-                        .Append(",'").Append(validate_flag).Append("',").Append(vat).Append(",'").Append(week)
+                        .Append(",'").Append(validateFlag).Append("',").Append(vat).Append(",'").Append(week)
                         .Append("','").Append(work_type).Append("','").Append(wo_no).Append("','").Append(xno)                        
                         .Append("') ");
                     conn.ExecuteNonQuery(sql.ToString(), host, pathLog);
