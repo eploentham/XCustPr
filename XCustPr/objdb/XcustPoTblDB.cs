@@ -143,7 +143,7 @@ namespace XCustPr
                 "Left Join xcust_po_tbl po On  po.REQUISITION_HEADER_ID = PR.REQUISITION_HEADER_ID and po.REQUISITION_LINE_ID = PR.REQUISITION_LINE_ID " +
                 "Where PR.ATTRIBUTE1_L = '" + linfox_po_number + "' " +
                 "and PR.ATTRIBUTE2_L = '" + linfox_po_line_number + "') " ;
-            conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
+            chk = conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
             return chk;
         }
         public String updateOutBoundFlagPO006(String deliveryDate, String pathLog)

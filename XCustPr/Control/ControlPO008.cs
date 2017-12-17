@@ -138,7 +138,7 @@ namespace XCustPr
             foreach (string aa in filePO)
             {
                 addListView("ย้าย file " + aa, "", lv1, form1);
-                Cm.moveFile(aa, Cm.initC.PO008PathProcess + aa.Replace(Cm.initC.PO008PathInitial, ""));
+                Cm.moveFile(aa, Cm.initC.PO008PathProcess, aa.Replace(Cm.initC.PO008PathInitial, ""));
             }
             addListView("Clear temp table", "", lv1, form1);
             //xCCPITDB.DeleteCedarTemp(Cm.initC.PO008PathLog);//  clear temp table
@@ -183,7 +183,6 @@ namespace XCustPr
                     lVfile.Add(vF);   // gen log
                     Cm.moveFile(filename, Cm.initC.PO008PathError, filename.Replace(Cm.initC.PO008PathProcess, ""));
                 }
-
             }
             //Cm.logProcess("xcustpo008", lVPr, dateStart, lVfile);   // gen log
             return requestId;
@@ -1030,8 +1029,8 @@ namespace XCustPr
             String filenameZip = "", ilename2 = "", ilename3 = "", filename = "";
             if (flag.Equals("PO008"))
             {
-                filenameZip = Cm.initC.PathFileCSV + "\\xcustpr.zip";
-                filename = @Cm.initC.PathArchive;
+                filenameZip = Cm.initC.PO008PathFileZip + "\\xcustpr.zip";
+                filename = @Cm.initC.PO008PathFileCSV;
             }
             else
             {
@@ -1050,7 +1049,7 @@ namespace XCustPr
         }
         public void processGenCSVxCPHITDB(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String flag, String requestId)
         {
-            var file = Cm.initC.PO008PathArchive + "PorReqHeadersInterfaceAl.csv";
+            var file = Cm.initC.PO008PathFileCSV + "PorReqHeadersInterfaceAl.csv";
             DataTable dt;
             if (flag.Equals("PO008"))
             {
@@ -1204,7 +1203,7 @@ namespace XCustPr
         }
         public void processGenCSVxCPLITDB(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String flag, String requestId)
         {
-            var file = Cm.initC.PO008PathArchive + "PorReqHeadersInterfaceAl.csv";
+            var file = Cm.initC.PO008PathFileCSV + "PorReqLineInterfaceAl.csv";
             DataTable dt;
             if (flag.Equals("PO008"))
             {
@@ -1355,7 +1354,7 @@ namespace XCustPr
         }
         public void processGenCSVxCPLLITDB(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String flag, String requestId)
         {
-            var file = Cm.initC.PO008PathArchive + "PorReqHeadersInterfaceAl.csv";
+            var file = Cm.initC.PO008PathFileCSV + "PorReqLineLInterfaceAl.csv";
             DataTable dt;
             if (flag.Equals("PO008"))
             {
@@ -1506,7 +1505,7 @@ namespace XCustPr
         }
         public void processGenCSVxCPDITDB(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String flag, String requestId)
         {
-            var file = Cm.initC.PO008PathArchive + "PorReqHeadersInterfaceAl.csv";
+            var file = Cm.initC.PO008PathFileCSV + "PorReqHeadersInterfaceAl.csv";
             DataTable dt;
             if (flag.Equals("PO008"))
             {

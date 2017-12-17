@@ -48,11 +48,11 @@ namespace XCustPr
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
-        public String genSeqReqDistNumber()
+        public String genSeqReqLineLocNumber()
         {
             DataTable dt = new DataTable();
             String chk = "";
-            String sql = "SELECT next value for xcust_po_req_line_seq ;";
+            String sql = "SELECT next value for xcust_po_line_loc_seq ;";
             dt = conn.selectData(sql, "kfc_po");
             if (dt.Rows.Count > 0)
             {
@@ -72,7 +72,7 @@ namespace XCustPr
                 //p.RowNumber = selectMaxRowNumber(p.YearId);
                 //p.Active = "1";
                 String last_update_by = "0", creation_by = "0";
-                String seqLL = genSeqReqDistNumber();
+                String seqLL = genSeqReqLineLocNumber();
                 p.interface_line_location_key = seqLL;
                 sql = "Insert Into " + xCPLLIT.table + "(" + xCPLLIT.amt + "," + xCPLLIT.attribute1 + "," + xCPLLIT.attribute2 + "," +
                     xCPLLIT.attribute3 + "," + xCPLLIT.attribute4 + "," + xCPLLIT.cration_date + "," +

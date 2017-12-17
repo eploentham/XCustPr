@@ -40,7 +40,6 @@ namespace XCustPr
         public XcustUomMstTblDB xCUMTDB;
         public XcustValueSetMstTblDB xCVSMTDB;
         
-
         private List<XcustSubInventoryMstTbl> listXcSIMT;
         private List<XcustItemMstTbl> listXcIMT;
         private List<XcustSupplierMstTbl> listXcSMT;

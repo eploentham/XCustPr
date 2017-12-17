@@ -245,11 +245,23 @@ namespace XCustPr
                 MessageBox.Show("Path PO008PathLog empty", "createFolderPO008");
                 return;
             }
+            if (initC.PO008PathFileZip.Equals(""))
+            {
+                MessageBox.Show("Path PO008PathFileZip empty", "createFolderPO008");
+                return;
+            }
+            if (initC.PO008PathFileCSV.Equals(""))
+            {
+                MessageBox.Show("Path PO008PathFileCSV empty", "createFolderPO008");
+                return;
+            }
             createFolder(initC.PO008PathArchive);
             createFolder(initC.PO008PathError);
             createFolder(initC.PO008PathInitial);
             createFolder(initC.PO008PathProcess);
             createFolder(initC.PO008PathLog);
+            createFolder(initC.PO008PathFileZip);
+            createFolder(initC.PO008PathFileCSV);
         }
         public void createFolderPO007()
         {
@@ -619,6 +631,8 @@ namespace XCustPr
             initC.PO008ZipFileSearch = iniFile.Read("PO008ZipFileSearch").Trim();
             initC.PO008LEGAL_ENTITY = iniFile.Read("PO008LEGAL_ENTITY").Trim();
             initC.PO008BUYER = iniFile.Read("PO008BUYER").Trim();
+            initC.PO008PathFileCSV = iniFile.Read("PO008PathFileCSV").Trim();
+            initC.PO008PathFileZip = iniFile.Read("PO008PathFileZip").Trim();
 
             initC.PO002PathInitial = iniFile.Read("PO002PathInitial").Trim();
             initC.PO002PathDestinaion = iniFile.Read("PO002PathDestinaion").Trim();

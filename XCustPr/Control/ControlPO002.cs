@@ -135,6 +135,11 @@ namespace XCustPr
                     String poNumber = "", lineNumber="";
                     poNumber = linfox[xCLFPTDB.xCLFPT.PO_NUMBER].ToString();
                     lineNumber = linfox[xCLFPTDB.xCLFPT.LINE_NUMBER].ToString();
+                    String chk = "";
+                    if (linfox[xCLFPTDB.xCLFPT.PO_NUMBER].ToString().Equals("T_12345765"))
+                    {
+                        chk = "";
+                    }
                     //b.Program ทำการ mapping ข้อมูลกับ table XCUST_PR_PO_INFO_TBL แล้ว update ข้อมูล field ERP_PO_NUMBER ,ERP_QTY ที่ table XCUST_LINFOX_PR_TBL
                     dt = xCPRTDB.selectPRPO(linfox[xCLFPTDB.xCLFPT.PO_NUMBER].ToString(), linfox[xCLFPTDB.xCLFPT.LINE_NUMBER].ToString(), "LINFOX");
                     if (dt.Rows.Count > 0)
@@ -172,10 +177,10 @@ namespace XCustPr
                 vPP.Validate = "Error PO002-001: No Data Found  ";
                 lVPr.Add(vPP);
                 cntErr++;       // gen log
-                xCLMDB.insertLog("PO002", "", "Error PO002-001: No Data Found", Cm.initC.PO002PathLog);
+                //xCLMDB.insertLog("PO002", "", "Error PO002-001: No Data Found", Cm.initC.PO002PathLog);
             }
-            updateValidateFlagY(requestId);
-            xCLFPTDB.logProcessPO001("xcustpo002", dateStart, requestId);   // gen log
+            //updateValidateFlagY(requestId);
+            //xCLFPTDB./*logProcessPO002*/("xcustpo002", dateStart, requestId);   // gen log
 
             pB1.Hide();
         }
@@ -197,7 +202,7 @@ namespace XCustPr
                     if (row[xCLFPTDB.xCLFPT.ERROR_MSG2].ToString().Length == 0)
                     {
                         //xCLFPTDB.updateValidateFlagY(row[xCLFPTDB.xCLFPT.PO_NUMBER].ToString(), row[xCLFPTDB.xCLFPT.LINE_NUMBER].ToString(), row[xCLFPTDB.xCLFPT.request_id].ToString(), "kfc_po", Cm.initC.pathLogErr);
-                        xCLFPTDB.updateValidateFlagYPO002(row[xCLFPTDB.xCLFPT.PO_NUMBER].ToString(), row[xCLFPTDB.xCLFPT.LINE_NUMBER].ToString(), row[xCLFPTDB.xCLFPT.request_id].ToString(), "kfc_po", Cm.initC.PO002PathLog);
+                        xCLFPTDB.updateValidateFlagYPO002(row[xCLFPTDB.xCLFPT.PO_NUMBER].ToString(), row[xCLFPTDB.xCLFPT.LINE_NUMBER].ToString(), requestId, "kfc_po", Cm.initC.PO002PathLog);
                     }
                 }
             }
@@ -232,17 +237,18 @@ namespace XCustPr
                     //d.Program update ข้อมูล XCUST_LINFOX_PR_TBL.GEN_OUTBOUND_FLAG = 'Y'
 
                     //update xcust_linfox_pr_int_tbl set GEN_OUTBOUD_FLAG = null where GEN_OUTBOUD_FLAG = 'Y'
-                    xCLFPTDB.updateOutBoundFlag(dt.Rows[0][xCLFPTDB.xCLFPT.PO_NUMBER].ToString(), dt.Rows[0][xCLFPTDB.xCLFPT.LINE_NUMBER].ToString());     
+                    xCLFPTDB.updateOutBoundFlag(dt.Rows[0][xCLFPTDB.xCLFPT.PO_NUMBER].ToString(), dt.Rows[0][xCLFPTDB.xCLFPT.LINE_NUMBER].ToString());
                 }
                 pB1.Visible = false;
                 addListView("processGenTextLinfox gen log file ", "Web Service", lv1, form1);
-                Cm.logProcess("xcustpo002", lVPr, dateStart, lVfile);   // gen log
-                xCLFPTDB.logProcessPO002("xcustpo002", dateStart, requestId);   // gen log
+                //Cm.logProcess("xcustpo002", lVPr, dateStart, lVfile);   // gen log
+                
             }
             else
             {
                 addListView("processGenTextLinfox  ไม่พบข้อมูล", "Web Service", lv1, form1);
             }
+            xCLFPTDB.logProcessPO002("xcustpo002", dateStart, requestId);   // gen log
             pB1.Hide();
         }
         public void writeTextLinfox(String erpPONumber, DataTable dt)

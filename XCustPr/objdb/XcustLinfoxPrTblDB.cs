@@ -224,6 +224,7 @@ namespace XCustPr
                 xCLFPT.ERP_PO_HEADER_ID + "=" + ERP_PO_HEADER_ID + ", " +
                 xCLFPT.ERP_PO_LINE_ID + "=" + ERP_PO_LINE_ID + ", " +
                 xCLFPT.ERP_PO_LINE_NUMBER + "=" + ERP_PO_LINE_NUMBER + ", " +
+                //xCLFPT.GEN_OUTBOUD_FLAG + "='Y', " +
                 xCLFPT.request_id_po002 + "=" + request_id_po002 + " " +
                 "Where " +xCLFPT.PO_NUMBER+"='"+po_number+"' and "+xCLFPT.LINE_NUMBER+"='"+line_number+"'";
             chk = conn.ExecuteNonQuery(sql, "kfc_po", initC.PO002PathLog);
@@ -673,7 +674,7 @@ namespace XCustPr
             path = cm.getPathLogProcess(programname);
             parameter = "Parameter : " + Environment.NewLine;
             parameter += "           Path Initial :" + initC.PO002PathInitial + Environment.NewLine;
-            parameter += "           Path Process :" + initC.PO002PathDestinaion + Environment.NewLine;
+            parameter += "           Path Destination :" + initC.PO002PathDestinaion + Environment.NewLine;
             parameter += "           Create Date " + date + Environment.NewLine;
             programstart = "Program Start : " + date+" " + time + Environment.NewLine;
 
@@ -692,7 +693,7 @@ namespace XCustPr
                     sql = "Select count(1) as cnt_vali " +
                         " From " + xCLFPT.table + " " +
                         " Where " + xCLFPT.request_id_po002 + " ='"+ requedtId + "' " +
-                        " and " + xCLFPT.file_name + "='" + rowFile[xCLFPT.file_name].ToString() + "' and " + xCLFPT.VALIDATE_FLAG + "='Y' ";
+                        " and " + xCLFPT.file_name + "='" + rowFile[xCLFPT.file_name].ToString() + "' and len(" + xCLFPT.ERROR_MSG2 + ") > 0 ";
 
                     DataTable dtR = conn.selectData(sql, "kfc_po");
                     if (dtR.Rows.Count > 0)
@@ -700,31 +701,43 @@ namespace XCustPr
                         foreach (DataRow rowVali in dtR.Rows)
                         {
                             valiPass = rowVali["cnt_vali"].ToString();
+                            if (valiPass.Equals("0"))
+                            {
+                                cntPass++;
+                            }
+                            else
+                            {
+                                cntErr++;
+                            }
                             //cntPass++;
                         }
                     }
                     dtR.Clear();
-                    sql = "Select count(1) as cnt_vali " +
-                        " From " + xCLFPT.table + " " +
-                        " Where " + xCLFPT.request_id_po002 + " ='"+ requedtId + "' " +
-                        " and " + xCLFPT.file_name + "='" + rowFile[xCLFPT.file_name].ToString() + "' and " + xCLFPT.VALIDATE_FLAG + "='E' ";
-                    dtR = conn.selectData(sql, "kfc_po");
-                    if (dtR.Rows.Count > 0)
-                    {
-                        foreach (DataRow rowVali in dtR.Rows)
-                        {
-                            valiErr = rowVali["cnt_vali"].ToString();
-                            //cntErr++;
-                        }
-                    }
-                    if (valiErr.Equals("0"))
-                    {
-                        cntPass++;
-                    }
-                    else
-                    {
-                        cntErr++;
-                    }
+                    //sql = "Select count(1) as cnt_vali " +
+                    //    " From " + xCLFPT.table + " " +
+                    //    " Where " + xCLFPT.request_id_po002 + " ='"+ requedtId + "' " +
+                    //    " and " + xCLFPT.file_name + "='" + rowFile[xCLFPT.file_name].ToString() + "' and " + xCLFPT.VALIDATE_FLAG + "='E' ";
+                    //dtR = conn.selectData(sql, "kfc_po");
+                    //if (rowFile[xCLFPT.file_name].ToString().Equals("PR17122017_24.txt"))
+                    //{
+                    //    sql = "";
+                    //}
+                    //if (dtR.Rows.Count > 0)
+                    //{
+                    //    foreach (DataRow rowVali in dtR.Rows)
+                    //    {
+                    //        valiErr = rowVali["cnt_vali"].ToString();
+                    //        //cntErr++;
+                    //    }
+                    //}
+                    //if (valiErr.Equals("0"))
+                    //{
+                    //    cntPass++;
+                    //}
+                    //else
+                    //{
+                    //    cntErr++;
+                    //}
                     //filename += "Filename " + rowFile[xCLFPT.file_name].ToString() + ", Total = " + rowFile["cnt"].ToString() + ", Validate pass = " + valiPass + ", Record Error = " + valiErr + " " + Environment.NewLine;
                     filename += "Filename " + rowFile[xCLFPT.file_name].ToString() + Environment.NewLine;
                     //if (int.TryParse(rowFile.recordError, out err))
@@ -754,10 +767,10 @@ namespace XCustPr
                     if (!filename1.Equals(filename1old))
                     {
                         filename1old = filename1;
-                        recordError += Environment.NewLine + "FileName : " + dtErr1[xCLFPT.file_name].ToString() + Environment.NewLine;
+                        recordError += "FileName : " + dtErr1[xCLFPT.file_name].ToString() + Environment.NewLine;
                     }
                     //recordError += "FileName " + dtErr1[xCLFPT.file_name].ToString() + Environment.NewLine;
-                    recordError += "=>PO_NUMER = " + dtErr1[xCLFPT.PO_NUMBER].ToString() + ",LINE_NUMER = " + dtErr1[xCLFPT.LINE_NUMBER].ToString() + ",ERROR" + Environment.NewLine;
+                    //recordError += "=>PO_NUMER = " + dtErr1[xCLFPT.PO_NUMBER].ToString() + ",LINE_NUMER = " + dtErr1[xCLFPT.LINE_NUMBER].ToString() + ",ERROR" + Environment.NewLine;
                     recordError += "     ====>" + dtErr1[xCLFPT.ERROR_MSG2].ToString() + Environment.NewLine;
                 }
                 if (recordError.Length > 0)
@@ -795,9 +808,9 @@ namespace XCustPr
                 txt += "File Error " + Environment.NewLine;
                 txt += "--------------------------------------------------------------------------" + Environment.NewLine;
                 txt += recordError + Environment.NewLine;
-                txt += "Total " + dtFile.Rows.Count + Environment.NewLine;
-                txt += "Complete " + cntPass + Environment.NewLine;
-                txt += "Error " + cntErr + Environment.NewLine;
+                txt += "Total = " + dtFile.Rows.Count+" Files " + Environment.NewLine;
+                txt += "Complete = " + cntPass+" Files " + Environment.NewLine;
+                txt += "Error = " + cntErr+" Files " + Environment.NewLine;
                 stream.WriteLine(txt);
             }
         }

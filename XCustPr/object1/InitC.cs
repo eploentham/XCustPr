@@ -76,7 +76,7 @@ namespace XCustPr
         public String PO004PathLog = "";
 
         public String PO008PathInitial = "", PO008PathProcess = "", PO008PathError = "", PO008PathArchive = "", PO008ImportSource = "", PO008ZipFileSearch = "", PO008LEGAL_ENTITY="", PO008BUYER="";
-        public String PO008PathLog = "";
+        public String PO008PathLog = "", PO008PathFileZip = "", PO008PathFileCSV = "";
 
         public String PO004FileType = "";
         public String PO007PathInitial = "";

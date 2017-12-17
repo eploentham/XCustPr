@@ -55,7 +55,7 @@ namespace XCustPr
         {
             DataTable dt = new DataTable();
             String chk = "";
-            String sql = "SELECT next value for xcust_po_req_line_seq ;";
+            String sql = "SELECT next value for xcust_po_distribution_seq ;";
             dt = conn.selectData(sql, "kfc_po");
             if (dt.Rows.Count > 0)
             {
