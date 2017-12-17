@@ -49,6 +49,8 @@ namespace XCustPr
         public XcustPoLineLocIntTblDB xCPLLITDB;
         public XcustPoDistIntTblDB xCPDITDB;
 
+        public XcustLinfoxPrTblDB xCLFPTDB;          // table temp
+
         private List<XcustPoHeaderIntTbl> listXcustPHIT;        // table จริงๆ
         private List<XcustPoLineIntTbl> listXcustPLIT;        // table จริงๆ
         private List<XcustPoLineLocIntTbl> listXcustPLLIT;        // table จริงๆ
@@ -96,6 +98,8 @@ namespace XCustPr
             xCDOMTDB = new XcustDeriverOrganizationMstTblDB(conn, Cm.initC);
             xCMTDB = new XcustCurrencyMstTblDB(conn, Cm.initC);
 
+            xCLFPTDB = new XcustLinfoxPrTblDB(conn, Cm.initC);
+
             listXcSIMT = new List<XcustSubInventoryMstTbl>();
 
             listXcustPHIT = new List<XcustPoHeaderIntTbl>();        // table จริงๆ
@@ -114,11 +118,13 @@ namespace XCustPr
          * b.	Program ทำการ Move File มาไว้ที่ Path ตาม Parameter Path Process 
          * c.	จากนัน Program ทำการอ่าน File ใน Folder Path Process มาไว้ยัง Table XCUST_CEDAR_PO_TBL ด้วย Validate Flag = ‘N’ ,PROCESS_FLAG = ‘N’
          */
-        public void processCedarPOtoErpPR(String[] filePO, MaterialListView lv1, Form form1, MaterialProgressBar pB1)
+        public String processCedarPOtoErpPR(String[] filePO, MaterialListView lv1, Form form1, MaterialProgressBar pB1)
         {
             TimeZoneInfo tz = TimeZoneInfo.FindSystemTimeZoneById("US Eastern Standard Time");
             String date = System.DateTime.Now.ToString("yyyy-MM-dd");
             String time = System.DateTime.Now.ToString("HH:mm:ss");
+
+            int cntErr = 0, cntFileErr = 0;   // gen log
 
             ReadExcel re = new ReadExcel(Cm.initC);
             String[] filePOProcess;
@@ -135,22 +141,54 @@ namespace XCustPr
                 Cm.moveFile(aa, Cm.initC.PO008PathProcess + aa.Replace(Cm.initC.PO008PathInitial, ""));
             }
             addListView("Clear temp table", "", lv1, form1);
-            xCCPITDB.DeleteCedarTemp(Cm.initC.PO008PathLog);//  clear temp table
+            //xCCPITDB.DeleteCedarTemp(Cm.initC.PO008PathLog);//  clear temp table
             //c.	จากนัน Program ทำการอ่าน File ใน Folder Path Process มาไว้ยัง Table XCUST_MMX_PR_TBL ด้วย Validate Flag = ‘N’ ,PROCES_FLAG = ‘N’
             // insert xcust_mmx_pr_int_tbl
+            String requestId = "";
+            requestId = xCLFPTDB.getRequestID();
             filePOProcess = Cm.getFileinFolder(Cm.initC.PO008PathProcess);
             addListView("อ่าน file จาก " + Cm.initC.PO008PathProcess, "", lv1, form1);
+
+            ValidatePrPo vPP = new ValidatePrPo();   // gen log
+            List<ValidatePrPo> lVPr = new List<ValidatePrPo>();   // gen log
+            List<ValidateFileName> lVfile = new List<ValidateFileName>();   // gen log
+
+            //vPP = new ValidatePrPo();
+            //vPP.Filename = "PO001 Parameter ";
+            //vPP.Message = " PO001-009 : Invalid Deliver-to Organization";
+            //vPP.Validate = "";
+            //lVPr.Add(vPP);
+
             foreach (string filename in filePOProcess)
             {
-                List<String> cedar = re.ReadExcelPO008(filename, pB1);
-                addListView("insert temp table " + filename, "", lv1, form1);
-                //conn.BulkToMySQL("kfc_po", linfox);       // ย้ายจาก MySQL ไป MSSQL
-                pB1.Visible = true;
-                xCCPITDB.insertBluk(cedar, filename, "kfc_po", pB1, Cm.initC.PO008PathLog);
-                pB1.Visible = false;
+                ValidatePrPo vPPexcel = new ValidatePrPo();   // gen log
+                List<String> cedar = re.ReadExcelPO008(filename, pB1, vPPexcel);
+                if (vPPexcel.Message.Equals(""))
+                {
+                    addListView("insert temp table " + filename, "", lv1, form1);
+                    //conn.BulkToMySQL("kfc_po", linfox);       // ย้ายจาก MySQL ไป MSSQL
+                    pB1.Visible = true;
+                    xCCPITDB.insertBluk(cedar, filename, "kfc_po", pB1, requestId, Cm.initC.PO008PathLog);
+                    pB1.Visible = false;
+                }
+                else
+                {
+                    lVPr.Add(vPP);
+                    cntErr++;       // gen log
+                    ValidateFileName vF = new ValidateFileName();   // gen log
+                    vF.fileName = filename.Replace(Cm.initC.PO008PathProcess, "");   // gen log
+                    vF.recordTotal = cntErr.ToString();   // gen log
+                    vF.recordError = cntErr.ToString();   // gen log
+                    vF.totalError = cntErr.ToString();   // gen log
+                    lVfile.Add(vF);   // gen log
+                    Cm.moveFile(filename, Cm.initC.PO008PathError, filename.Replace(Cm.initC.PO008PathProcess, ""));
+                }
+
             }
-            Cm.logProcess("xcustpo008", lVPr, dateStart, lVfile);   // gen log
+            //Cm.logProcess("xcustpo008", lVPr, dateStart, lVfile);   // gen log
+            return requestId;
         }
+        
         private void addListView(String col1, String col2, MaterialListView lv1, Form form1)
         {
             lv1.Items.Add(AddToList((lv1.Items.Count + 1), col1, col2));
@@ -340,7 +378,7 @@ namespace XCustPr
          * d.	จากนั้น Program จะเอาข้อมูลจาก Table XCUST_CEDAR_PO_TBL มาทำการ Validate 
          * e.	กรณีที่ Validat ผ่าน จะเอาข้อมูล Insert ลง table XCUST_PO_HEADER_INT_ALL ,XCUST_PO_LINE_INT_ALL , XCUST_PO_LINE_LOC_INT_ALL ,XCUST_PO_DIST_INT_ALL และ Update Validate_flag = ‘Y’
          */
-        public void processGetTempTableToValidate(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
+        public void processGetTempTableToValidate(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String requestId)
         {
             addListView("อ่าน file จาก " + Cm.initC.PO008PathProcess, "Validate", lv1, form1);
             pB1.Visible = true;
@@ -369,23 +407,49 @@ namespace XCustPr
             int row1 = 0;
             int cntErr = 0, cntFileErr = 0;   // gen log
 
-            buCode = xCBMTDB.selectActive1();
+            //buCode = xCBMTDB.selectActive1();
+            buCode = xCBMTDB.selectActiveBuName();
             //Error PO001-004 : Invalid Requisitioning BU
             if (!buCode.Equals(Cm.initC.BU_NAME.Trim()))
             {
                 chk = false;
             }
             //Error PO001-008 : Invalid Deliver To Location
-            locator = xCDLMTDB.selectLocator1();
+            //locator = xCDLMTDB.selectLocator1();
+            locator = xCDLMTDB.selectLocatorByInvtory(Cm.initC.Locator.Trim(), Org);
             if (!locator.Equals(Cm.initC.Locator.Trim()))
             {
                 chk = false;
+                vPP = new ValidatePrPo();
+                vPP.Filename = "PO008 Parameter ";
+                vPP.Message = " Error PO008-008 : Invalid Deliver To Location";
+                vPP.Validate = "";
+                lVPr.Add(vPP);
+                cntErr++;       // gen log
             }
             //Error PO001-009 : Invalid Deliver-to Organization
-            Org = xCDOMTDB.selectActive1();
-            if (!Org.Equals(Cm.initC.ORGANIZATION_code.Trim()))
+            //Org = xCDOMTDB.selectActive1();
+            Org = xCDOMTDB.selectActiveByCode(Cm.initC.ORGANIZATION_code.Trim());
+            //if (!Org.Equals(Cm.initC.ORGANIZATION_code.Trim()))
+            if (Org.Equals(""))
             {
                 chk = false;
+                vPP = new ValidatePrPo();
+                vPP.Filename = "PO008 Parameter ";
+                vPP.Message = " Error PO008-009 : Invalid Deliver-to Organization";
+                vPP.Validate = "";
+                lVPr.Add(vPP);
+                cntErr++;       // gen log
+            }
+            else if (Org.Equals("D"))
+            {
+                chk = false;
+                vPP = new ValidatePrPo();
+                vPP.Filename = "PO008 Parameter ";
+                vPP.Message = " PO008-009 : Duppicate Deliver-to Organization";
+                vPP.Validate = "";
+                lVPr.Add(vPP);
+                cntErr++;       // gen log
             }
 
             //Error PO001-013 : Invalid Currency Code
@@ -400,14 +464,14 @@ namespace XCustPr
             }
 
             //StringBuilder filename = new StringBuilder();
-            dtGroupBy = xCCPITDB.selectCedarGroupByFilename();//   ดึง filename
+            dtGroupBy = xCCPITDB.selectCedarGroupByFilename(requestId);//   ดึง filename
             foreach (DataRow rowG in dtGroupBy.Rows)
             {
                 addListView("ดึงข้อมูล  " + rowG[xCCPITDB.xCCPIT.file_name].ToString().Trim(), "Validate", lv1, form1);
                 ValidateFileName vF = new ValidateFileName();   // gen log
                 vF.fileName = rowG[xCCPITDB.xCCPIT.file_name].ToString().Trim();   // gen log
                 vF.recordTotal = dt.Rows.Count.ToString();   // gen log
-                dt = xCCPITDB.selectCedarByFilename(rowG[xCCPITDB.xCCPIT.file_name].ToString().Trim());    // ข้อมูลใน file
+                dt = xCCPITDB.selectCedarByFilename(rowG[xCCPITDB.xCCPIT.file_name].ToString().Trim(), requestId);    // ข้อมูลใน file
 
                 row1 = 0;
                 cntErr = 0;     //gen log
@@ -416,79 +480,88 @@ namespace XCustPr
 
                 foreach (DataRow row in dt.Rows)
                 {
+                    String filename = "", rowNumber="";
                     row1++;
                     pB1.Value = row1;
+                    filename = row[xCCPITDB.xCCPIT.file_name].ToString().Trim();
+                    rowNumber = row[xCCPITDB.xCCPIT.row_number].ToString().Trim();
                     //Error PO008-006 : Invalid data type
                     chk = validateAmount(row[xCCPITDB.xCCPIT.amt].ToString());
                     if (!chk)
                     {
                         vPP = new ValidatePrPo();
-                        vPP.Filename = row[xCCPITDB.xCCPIT.file_name].ToString().Trim();
-                        vPP.Message = "Error PO008-006 ";
+                        vPP.Filename = filename;
+                        vPP.Message = "Error PO008-006 : Invalid data type ";
                         vPP.Validate = "row " + row1 + " amt=" + row[xCCPITDB.xCCPIT.amt].ToString();
                         lVPr.Add(vPP);
                         cntErr++;       // gen log
+                        xCCPITDB.updateErrorMessage(filename, rowNumber, "Error PO008-006 : Invalid data type amt", requestId, "kfc_po", Cm.initC.PO008PathLog);
                     }
                     chk = validateAmount(row[xCCPITDB.xCCPIT.total].ToString());
                     if (!chk)
                     {
                         vPP = new ValidatePrPo();
                         vPP.Filename = row[xCCPITDB.xCCPIT.file_name].ToString().Trim();
-                        vPP.Message = "Error PO008-006 ";
+                        vPP.Message = "Error PO008-006 : Invalid data type ";
                         vPP.Validate = "row " + row1 + " total=" + row[xCCPITDB.xCCPIT.total].ToString();
                         lVPr.Add(vPP);
                         cntErr++;       // gen log
+                        xCCPITDB.updateErrorMessage(filename, rowNumber, "Error PO008-006 : Invalid data type total", requestId, "kfc_po", Cm.initC.PO008PathLog);
                     }
                     chk = validateAmount(row[xCCPITDB.xCCPIT.vat].ToString());
                     if (!chk)
                     {
                         vPP = new ValidatePrPo();
                         vPP.Filename = row[xCCPITDB.xCCPIT.file_name].ToString().Trim();
-                        vPP.Message = "Error PO008-006 ";
+                        vPP.Message = "Error PO008-006 : Invalid data type ";
                         vPP.Validate = "row " + row1 + " vat=" + row[xCCPITDB.xCCPIT.vat].ToString();
                         lVPr.Add(vPP);
                         cntErr++;       // gen log
+                        xCCPITDB.updateErrorMessage(filename, rowNumber, "Error PO008-006 : Invalid data type vat", requestId, "kfc_po", Cm.initC.PO008PathLog);
                     }
-                    chk = validateAmount(row[xCCPITDB.xCCPIT.amt].ToString());
-                    if (!chk)
-                    {
-                        vPP = new ValidatePrPo();
-                        vPP.Filename = row[xCCPITDB.xCCPIT.file_name].ToString().Trim();
-                        vPP.Message = "Error PO008-006 ";
-                        vPP.Validate = "row " + row1 + " amt=" + row[xCCPITDB.xCCPIT.amt].ToString();
-                        lVPr.Add(vPP);
-                        cntErr++;       // gen log
-                    }
+                    //chk = validateAmount(row[xCCPITDB.xCCPIT.amt].ToString());
+                    //if (!chk)
+                    //{
+                    //    vPP = new ValidatePrPo();
+                    //    vPP.Filename = row[xCCPITDB.xCCPIT.file_name].ToString().Trim();
+                    //    vPP.Message = "Error PO008-006 : Invalid data type ";
+                    //    vPP.Validate = "row " + row1 + " amt=" + row[xCCPITDB.xCCPIT.amt].ToString();
+                    //    lVPr.Add(vPP);
+                    //    cntErr++;       // gen log
+                    //}
                     //Error PO008-002 : Date Format not correct 
                     chk = validateDate(row[xCCPITDB.xCCPIT.admin_receipt_doc_date].ToString());
                     if (!chk)
                     {
                         vPP = new ValidatePrPo();
                         vPP.Filename = row[xCCPITDB.xCCPIT.file_name].ToString().Trim();
-                        vPP.Message = "Error PO008-002 ";
+                        vPP.Message = "Error PO008-002 : Date Format not correct  ";
                         vPP.Validate = "row " + row1 + " admin_receipt_doc_date=" + row[xCCPITDB.xCCPIT.admin_receipt_doc_date].ToString();
                         lVPr.Add(vPP);
                         cntErr++;       // gen log
+                        xCCPITDB.updateErrorMessage(filename, rowNumber, "Error PO008-002 : Date Format not correct admin_receipt_doc_date", requestId, "kfc_po", Cm.initC.PO008PathLog);
                     }
                     chk = validateDate(row[xCCPITDB.xCCPIT.approve_date].ToString());
                     if (!chk)
                     {
                         vPP = new ValidatePrPo();
                         vPP.Filename = row[xCCPITDB.xCCPIT.file_name].ToString().Trim();
-                        vPP.Message = "Error PO008-002 ";
+                        vPP.Message = "Error PO008-002 : Date Format not correct  ";
                         vPP.Validate = "row " + row1 + " approve_date=" + row[xCCPITDB.xCCPIT.approve_date].ToString();
                         lVPr.Add(vPP);
                         cntErr++;       // gen log
+                        xCCPITDB.updateErrorMessage(filename, rowNumber, "Error PO008-002 : Date Format not correct approve_date", requestId, "kfc_po", Cm.initC.PO008PathLog);
                     }
                     chk = validateDate(row[xCCPITDB.xCCPIT.cedar_close_date].ToString());
                     if (!chk)
                     {
                         vPP = new ValidatePrPo();
                         vPP.Filename = row[xCCPITDB.xCCPIT.file_name].ToString().Trim();
-                        vPP.Message = "Error PO008-002 ";
+                        vPP.Message = "Error PO008-002 : Date Format not correct  ";
                         vPP.Validate = "row " + row1 + " cedar_close_date=" + row[xCCPITDB.xCCPIT.cedar_close_date].ToString();
                         lVPr.Add(vPP);
                         cntErr++;       // gen log
+                        xCCPITDB.updateErrorMessage(filename, rowNumber, "Error PO008-002 : Date Format not correct cedar_close_date", requestId, "kfc_po", Cm.initC.PO008PathLog);
                     }
                     //Error PO001-010 : Invalid Subinventory Code      //ไม่มี store code              
                     //subInv_code = validateSubInventoryCode(Cm.initC.ORGANIZATION_code.Trim(), row[xCCPITDB.xCCPIT.store_code].ToString().Trim());
@@ -514,14 +587,18 @@ namespace XCustPr
                     //}
                     // Error PO001-015 : Invalid Supplier
                     //if (!xCSMTDB.validateSupplierBySupplierCode(row[xCLFPTDB.xCLFPT.SUPPLIER_CODE].ToString().Trim()))
-                    if (validateSupplierBySupplierCode(row[xCCPITDB.xCCPIT.supplier_code].ToString().Trim()))
+                    String vendorId = "";
+                    vendorId = xCSMTDB.validateSupplierBySupplierCode1(row[xCCPITDB.xCCPIT.supplier_code].ToString().Trim());
+                    //if (validateSupplierBySupplierCode(row[xCCPITDB.xCCPIT.supplier_code].ToString().Trim()))
+                    if (vendorId.Equals(""))
                     {
                         vPP = new ValidatePrPo();
                         vPP.Filename = rowG[xCCPITDB.xCCPIT.file_name].ToString().Trim();
-                        vPP.Message = "Error PO008-015 ";
+                        vPP.Message = "Error PO008-015 : Invalid Supplier ";
                         vPP.Validate = "row " + row1 + " supplier_code " + row[xCCPITDB.xCCPIT.supplier_code].ToString().Trim();
                         lVPr.Add(vPP);
                         cntErr++;
+                        xCCPITDB.updateErrorMessage(filename, rowNumber, "Error PO008-015 : Invalid Supplier", requestId, "kfc_po", Cm.initC.PO008PathLog);
                     }
                     String vendorSiteCode = "";
                     vendorSiteCode = xCSSMTDB.getVendorSiteCodeBySupplierCode(row[xCCPITDB.xCCPIT.supplier_code].ToString().Trim());
@@ -535,8 +612,32 @@ namespace XCustPr
                 vF.totalError = cntErr.ToString();   // gen log
                 lVfile.Add(vF);   // gen log
             }
+            updateValidateFlagY(requestId);
             pB1.Visible = false;
-            Cm.logProcess("xcustpo008", lVPr, dateStart, lVfile);   // gen log
+            //Cm.logProcess("xcustpo008", lVPr, dateStart, lVfile);   // gen log
+            xCCPITDB.logProcessPO008("xcustpo008", dateStart, requestId);   // gen log
+        }
+        private void updateValidateFlagY(String requestId)
+        {
+            DataTable dt = new DataTable();
+            dt = xCCPITDB.selectCedarByReqestId(requestId);
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    String rowNumber = "", filename = "", chk = "";
+                    rowNumber = row[xCCPITDB.xCCPIT.row_number].ToString();
+                    filename = row[xCCPITDB.xCCPIT.file_name].ToString();
+                    if (rowNumber.Equals("12819344"))
+                    {
+                        chk = "";
+                    }
+                    if (row[xCCPITDB.xCCPIT.error_message].ToString().Length == 0)
+                    {
+                        xCCPITDB.updateValidateFlagY(filename, rowNumber, requestId, "kfc_po", Cm.initC.PO008PathLog);
+                    }
+                }
+            }
         }
         public void processInsertTable(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
         {
@@ -547,23 +648,92 @@ namespace XCustPr
             {
                 if (insertXcustPorReqHeaderIntAll(xcprhia, date, time).Equals("1"))
                 {
-                    foreach (XcustPoLineIntTbl xcprlia in listXcustPLIT)
+                    
+                }
+            }
+            foreach (XcustPoLineIntTbl xcprlia in listXcustPLIT)
+            {
+                //XcustPorReqLineIntAll xcprlia = xCPRLIADB.setData(row, xCLFPTDB.xCLFPT);
+                String chk = xCPLITDB.insert(xcprlia, Cm.initC.PO008PathLog);
+            }
+            foreach (XcustPoLineLocIntTbl xcprdia in listXcustPLLIT)
+            {
+                //XcustPorReqLineIntAll xcprlia = xCPRLIADB.setData(row, xCLFPTDB.xCLFPT);
+                String chk = xCPLLITDB.insert(xcprdia, Cm.initC.PO008PathLog);
+            }
+            foreach (XcustPoDistIntTbl xcprdia in listXcustPDIT)
+            {
+                //XcustPorReqLineIntAll xcprlia = xCPRLIADB.setData(row, xCLFPTDB.xCLFPT);
+                String chk = xCPDITDB.insert(xcprdia, Cm.initC.PO008PathLog);
+            }
+        }
+        public void processInsertTable2(String requestId, MaterialListView lv1, Form form1, MaterialProgressBar pB1)
+        {
+            addListView("insert table " + Cm.initC.PO008PathProcess, "Validate", lv1, form1);
+            String currDate = System.DateTime.Now.ToString("yyyy-MM-dd");
+            int rowH = 0;
+            DataTable dt = new DataTable();
+            dt = xCCPITDB.selectFilenameByRequestId(requestId);     //moveFileToFolderArchiveError
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    String filename = "", rowCnt = "";
+                    filename = row[xCCPITDB.xCCPIT.file_name].ToString();
+                    rowCnt = row["row_cnt"].ToString();
+                    String cnt = "";
+                    cnt = xCCPITDB.getCountNoErrorByFilename(requestId, filename);
+
+                    if (cnt.Equals(rowCnt))
                     {
-                        //XcustPorReqLineIntAll xcprlia = xCPRLIADB.setData(row, xCLFPTDB.xCLFPT);
-                        String chk = xCPLITDB.insert(xcprlia);
-                    }
-                    foreach (XcustPoLineLocIntTbl xcprdia in listXcustPLLIT)
-                    {
-                        //XcustPorReqLineIntAll xcprlia = xCPRLIADB.setData(row, xCLFPTDB.xCLFPT);
-                        String chk = xCPLLITDB.insert(xcprdia, Cm.initC.PO008PathLog);
-                    }
-                    foreach (XcustPoDistIntTbl xcprdia in listXcustPDIT)
-                    {
-                        //XcustPorReqLineIntAll xcprlia = xCPRLIADB.setData(row, xCLFPTDB.xCLFPT);
-                        String chk = xCPDITDB.insert(xcprdia);
+                        //ที่ ผ่าน ทั้ง file
+                        DataTable dtFilename = new DataTable();
+                        //dtFilename = xCLFPTDB.selectLinfoxByFilename(filename, requestId);
+                        dtFilename = xCCPITDB.selectCedarGroupByPoNo(filename, requestId);
+                        if (dtFilename.Rows.Count > 0)
+                        {
+                            foreach (DataRow rowFilename in dtFilename.Rows)
+                            {
+                                rowH++;
+                                String poNumber = "", wo_no="", branch_plant="", supplier_code="", supplier_site_code= "";
+                                poNumber = rowFilename[xCCPITDB.xCCPIT.po_no].ToString();
+                                wo_no = rowFilename[xCCPITDB.xCCPIT.wo_no].ToString();
+                                branch_plant = rowFilename[xCCPITDB.xCCPIT.branch_plant].ToString();
+                                supplier_code = rowFilename[xCCPITDB.xCCPIT.supplier_code].ToString();
+                                supplier_site_code = rowFilename[xCCPITDB.xCCPIT.supplier_site_code].ToString();
+                                DataTable dtCedar = new DataTable();
+                                dtCedar = xCCPITDB.selectCedarByPoNumber(requestId, poNumber);
+                                XcustPoHeaderIntTbl xCPorRHIA = addXcustListHeader1(wo_no, branch_plant, supplier_code, supplier_site_code);
+                                String seqH = "";
+                                seqH = xCPHITDB.insert(xCPorRHIA, Cm.initC.PO008PathLog);
+                                foreach (DataRow dtCedarR in dtCedar.Rows)
+                                {
+                                    XcustPoLineIntTbl xCPoLIT = new XcustPoLineIntTbl();
+                                    xCPoLIT = addXcustListLine1(dtCedarR);
+                                    xCPoLIT.interface_header_key = seqH;
+                                    String seqL = xCPLITDB.insert(xCPoLIT, Cm.initC.PO008PathLog);
+
+                                    XcustPoLineLocIntTbl xCPoLLIT = new XcustPoLineLocIntTbl();
+                                    xCPoLLIT = addXcustListLoc1(dtCedarR);
+                                    xCPoLLIT.interface_header_key = seqH;
+                                    xCPoLLIT.interface_line_key = seqL;
+                                    String chkll = xCPLLITDB.insert(xCPoLLIT, Cm.initC.PO008PathLog);
+
+                                    XcustPoDistIntTbl xCPoDIT = new XcustPoDistIntTbl();
+                                    xCPoDIT = addXcustListDist1(dtCedarR);
+                                    xCPoDIT.interface_header_key = seqH;
+                                    xCPoDIT.interface_line_key = seqL;
+                                    xCPoDIT.interface_line_location_key = chkll;
+                                    String chk = xCPDITDB.insert(xCPoDIT, Cm.initC.PO008PathLog);
+                                    
+                                }
+                            }
+                        }
                     }
                 }
             }
+
+            xCLFPTDB.updatePrcessFlag(requestId, "kfc_po", Cm.initC.pathLogErr);
         }
         private String insertXcustPorReqHeaderIntAll(XcustPoHeaderIntTbl xcprhia, String date, String time)
         {//row[dc].ToString().Trim().
@@ -625,6 +795,30 @@ namespace XCustPr
                 listXcustPHIT.Add(xcrhia1);
             }
         }
+        private XcustPoHeaderIntTbl addXcustListHeader1(String wo_no, String branch_plant, String supplier_code, String supplier_site_code)
+        {
+
+                String seq = String.Concat("00" + listXcustPHIT.Count);
+                XcustPoHeaderIntTbl xcrhia1 = new XcustPoHeaderIntTbl();
+                xcrhia1.interface_header_key = wo_no;
+                xcrhia1.action = "ORIGINAL";
+                xcrhia1.import_source = Cm.initC.PO008ImportSource;
+                xcrhia1.approval_action = "BYPASS";//ถาม
+                xcrhia1.document_typre_code = "STANDARD";
+                xcrhia1.prc_bu_name = Cm.initC.BU_NAME;//ถาม
+                xcrhia1.req_bu_name = Cm.initC.BU_NAME;//ถาม
+                xcrhia1.soldto_re_name = Cm.initC.PO008LEGAL_ENTITY;//ถาม
+                xcrhia1.billto_bu_name = Cm.initC.BU_NAME;//ถาม
+                xcrhia1.buyyer_name = Cm.initC.PO008BUYER;//ถาม
+                xcrhia1.currency_code = Cm.initC.CURRENCY_CODE;//ถาม
+                xcrhia1.bill_to_location = branch_plant;//ถาม
+                xcrhia1.ship_to_location = branch_plant;
+                xcrhia1.supplier_code = supplier_code;
+                xcrhia1.supplier_site_code = supplier_site_code;
+                xcrhia1.payment_term = "";//ถาม
+                xcrhia1.process_flag = "N";
+            return xcrhia1;
+        }
         private void addXcustListLine(DataRow row)
         {
             String running = "";
@@ -653,6 +847,34 @@ namespace XCustPr
 
             listXcustPLIT.Add(item);
         }
+        private XcustPoLineIntTbl addXcustListLine1(DataRow row)
+        {
+            String running = "";
+            running = "00" + listXcustPLIT.Count + 1;
+            running = running.Substring(0, running.Length - 2);
+            XcustPoLineIntTbl item = new XcustPoLineIntTbl();
+            item.interface_header_key = row[xCCPITDB.xCCPIT.wo_no].ToString();
+            item.interface_line_key = row[xCCPITDB.xCCPIT.wo_no].ToString() + running;
+            item.action = "ADD";
+            item.line_num = "";//ถาม
+            item.line_type = "SERVICE";
+            item.item_description = row[xCCPITDB.xCCPIT.wo_no].ToString() + "_" + row[xCCPITDB.xCCPIT.qt_no].ToString() + "_" + row[xCCPITDB.xCCPIT.item_description].ToString() + "_" + row[xCCPITDB.xCCPIT.branch_plant].ToString();
+            item.category = "";//ถาม
+            item.unit_price = row[xCCPITDB.xCCPIT.amt].ToString();
+            //item.DOCUMENT_NUMBER = "";
+            //item.DOCUMENT_LINE_NUMBER = "";
+            //item.BUSINESS_UNIT = "";
+
+            //item.SUBINVENTORY_CODE = row[xCLPRITDB.xCLPRIT.subinventory_code].ToString();
+            //item.LOCATOR_CODE = row[xCLPRITDB.xCLPRIT.LOCATOR].ToString();
+            //item.QUANTITY = row[xCLPRITDB.xCLPRIT.qty_receipt].ToString();
+            //item.UOM_CODE = row[xCLPRITDB.xCLPRIT.uom_code].ToString();
+            //item.INTERFACE_SOURCE_CODE = "";
+            item.process_flag = "Y";
+            //item.UOM_CODE = row[xCMPITDB.xCMPIT.uom_code].ToString();
+
+            return item;
+        }
         private void addXcustListLoc(DataRow row)
         {
             String running = "";
@@ -679,6 +901,33 @@ namespace XCustPr
             item.process_flag = "Y";
 
             listXcustPLLIT.Add(item);
+        }
+        private XcustPoLineLocIntTbl addXcustListLoc1(DataRow row)
+        {
+            String running = "";
+            running = "00" + listXcustPLLIT.Count + 1;
+            running = running.Substring(0, running.Length - 2);
+            XcustPoLineLocIntTbl item = new XcustPoLineLocIntTbl();
+            item.interface_header_key = row[xCCPITDB.xCCPIT.wo_no].ToString();
+            item.interface_line_key = row[xCCPITDB.xCCPIT.wo_no].ToString() + running + "1";
+            item.interface_line_location_key = row[xCCPITDB.xCCPIT.wo_no].ToString() + running + "11";
+            item.amt = row[xCCPITDB.xCCPIT.amt].ToString();
+            item.need_by_date = row[xCCPITDB.xCCPIT.cedar_close_date].ToString();
+            item.destination_type_code = "EXPENSE";//ถาม
+            item.attribute1 = row[xCCPITDB.xCCPIT.wo_no].ToString();
+            item.attribute2 = row[xCCPITDB.xCCPIT.qt_no].ToString();
+            item.attribute3 = row[xCCPITDB.xCCPIT.asset_code].ToString();
+            item.attribute4 = row[xCCPITDB.xCCPIT.asset_name].ToString();
+            //item.LINE_TYPE = "";
+
+            //item.QTY = row[xCMPITDB.xCMPIT.confirm_qty].ToString();
+            //item.CURRENCY_CODE = initC.CURRENCY_CODE;
+            //item.AGREEMENT_NUMBER = row[xCLFPTDB.xCLFPT.AGREEEMENT_NUMBER].ToString();
+            //item.CURRENCY_UNIT_PRICE = "REQ_HEADER_INTERFACE_ID";//PO_NUMBER
+            //item.Price = row[xCLFPTDB.xCLFPT.PRICE].ToString();
+            item.process_flag = "Y";
+
+            return item;
         }
         private void addXcustListDist(DataRow row)
         {
@@ -708,16 +957,72 @@ namespace XCustPr
 
             listXcustPDIT.Add(item);
         }
-        public void processGenCSV(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
+        private XcustPoDistIntTbl addXcustListDist1(DataRow row)
+        {
+            String running = "";
+            running = "00" + listXcustPDIT.Count + 1;
+            running = running.Substring(0, running.Length - 2);
+            XcustPoDistIntTbl item = new XcustPoDistIntTbl();
+            item.interface_header_key = row[xCCPITDB.xCCPIT.wo_no].ToString();
+            item.interface_line_location_key = row[xCCPITDB.xCCPIT.wo_no].ToString() + running + "11";
+            item.interface_distribution_key = row[xCCPITDB.xCCPIT.wo_no].ToString() + running + "111";
+            item.distribution_num = running;//ถาม ใช้อันเดียวกันได้ไหม
+            item.deliver_to_location = row[xCCPITDB.xCCPIT.branch_plant].ToString();//ถาม
+            item.destion_subinventory = row[xCCPITDB.xCCPIT.branch_plant].ToString();//ถาม
+            item.amt = row[xCCPITDB.xCCPIT.amt].ToString();
+            item.charge_account_segment1 = row[xCCPITDB.xCCPIT.account_segment1].ToString();//ถาม
+            item.charge_account_segment2 = row[xCCPITDB.xCCPIT.account_segment2].ToString();//ถาม
+            item.charge_account_segment3 = row[xCCPITDB.xCCPIT.account_segment3].ToString();//ถาม
+            item.charge_account_segment4 = row[xCCPITDB.xCCPIT.account_segment4].ToString();//ถาม
+            item.charge_account_segment5 = row[xCCPITDB.xCCPIT.account_segment5].ToString();//ถาม
+            item.charge_account_segment6 = row[xCCPITDB.xCCPIT.account_segment6].ToString();//ถาม
+            //item.QTY = row[xCMPITDB.xCMPIT.confirm_qty].ToString();
+            //item.CURRENCY_CODE = initC.CURRENCY_CODE;
+            //item.AGREEMENT_NUMBER = row[xCLFPTDB.xCLFPT.AGREEEMENT_NUMBER].ToString();
+            //item.CURRENCY_UNIT_PRICE = "REQ_HEADER_INTERFACE_ID";//PO_NUMBER
+            //item.Price = row[xCLFPTDB.xCLFPT.PRICE].ToString();
+            item.process_flag = "Y";
+
+            return item;
+        }
+        private void moveFileToFolderArchiveError(String requestId)
+        {
+            String chk = "";
+            DataTable dt = new DataTable();
+            dt = xCCPITDB.selectFilenameByRequestId(requestId);
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    String filename = "", rowCnt = "";
+                    filename = row[xCCPITDB.xCCPIT.file_name].ToString();
+                    rowCnt = row["row_Cnt"].ToString();
+                    String cnt = "";
+                    cnt = xCCPITDB.getCountNoErrorByFilename(requestId, filename);
+                    if (cnt.Equals(rowCnt))
+                    {
+
+                        Cm.moveFile(Cm.initC.PO008PathProcess + filename, Cm.initC.PO008PathArchive, filename);
+                    }
+                    else
+                    {
+                        Cm.moveFile(Cm.initC.PO008PathProcess + filename, Cm.initC.PO008PathArchive, filename);
+                    }
+                }
+            }
+        }
+        public void processGenCSV(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String requestId)
         {
             addListView("processGenCSVxCPRHIA ", "CVS", lv1, form1);
-            processGenCSVxCPHITDB(lv1, form1, pB1, "PO008");
+            processGenCSVxCPHITDB(lv1, form1, pB1, "PO008", requestId);
             addListView("processGenCSVxCPRLIA ", "CVS", lv1, form1);
-            processGenCSVxCPLITDB(lv1, form1, pB1, "PO008");
+            processGenCSVxCPLITDB(lv1, form1, pB1, "PO008", requestId);
             addListView("processGenCSVxCPRDIA ", "CVS", lv1, form1);
-            processGenCSVxCPLLITDB(lv1, form1, pB1, "PO008");
+            processGenCSVxCPLLITDB(lv1, form1, pB1, "PO008", requestId);
             addListView("processGenZIP ", "CVS", lv1, form1);
             processGenZIP(lv1, form1, pB1, "PO008");
+
+            moveFileToFolderArchiveError(requestId);
         }
         public void processGenZIP(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String flag)
         {
@@ -743,7 +1048,7 @@ namespace XCustPr
             }
             zip.Dispose();
         }
-        public void processGenCSVxCPHITDB(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String flag)
+        public void processGenCSVxCPHITDB(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String flag, String requestId)
         {
             var file = Cm.initC.PO008PathArchive + "PorReqHeadersInterfaceAl.csv";
             DataTable dt;
@@ -897,7 +1202,7 @@ namespace XCustPr
                 }
             }
         }
-        public void processGenCSVxCPLITDB(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String flag)
+        public void processGenCSVxCPLITDB(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String flag, String requestId)
         {
             var file = Cm.initC.PO008PathArchive + "PorReqHeadersInterfaceAl.csv";
             DataTable dt;
@@ -1048,7 +1353,7 @@ namespace XCustPr
                 }
             }
         }
-        public void processGenCSVxCPLLITDB(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String flag)
+        public void processGenCSVxCPLLITDB(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String flag, String requestId)
         {
             var file = Cm.initC.PO008PathArchive + "PorReqHeadersInterfaceAl.csv";
             DataTable dt;
@@ -1199,7 +1504,7 @@ namespace XCustPr
                 }
             }
         }
-        public void processGenCSVxCPDITDB(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String flag)
+        public void processGenCSVxCPDITDB(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String flag, String requestId)
         {
             var file = Cm.initC.PO008PathArchive + "PorReqHeadersInterfaceAl.csv";
             DataTable dt;

@@ -51,7 +51,19 @@ namespace XCustPr
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
-        public String insert(XcustPoDistIntTbl p)
+        public String genSeqReqDistNumber()
+        {
+            DataTable dt = new DataTable();
+            String chk = "";
+            String sql = "SELECT next value for xcust_po_req_line_seq ;";
+            dt = conn.selectData(sql, "kfc_po");
+            if (dt.Rows.Count > 0)
+            {
+                chk = dt.Rows[0][0].ToString().Trim();
+            }
+            return chk;
+        }
+        public String insert(XcustPoDistIntTbl p, String pathLog)
         {
             String sql = "", chk = "";
             try
@@ -63,6 +75,8 @@ namespace XCustPr
                 //p.RowNumber = selectMaxRowNumber(p.YearId);
                 //p.Active = "1";
                 String last_update_by = "0", creation_by = "0";
+                String seqD = genSeqReqDistNumber();
+                p.interface_distribution_key = seqD;
                 sql = "Insert Into " + xCPDIT.table + "(" + xCPDIT.amt + "," + xCPDIT.charge_account_segment1 + "," + xCPDIT.charge_account_segment2 + "," +
                     xCPDIT.charge_account_segment3 + "," + xCPDIT.charge_account_segment4 + "," + xCPDIT.charge_account_segment5 + "," +
                     xCPDIT.charge_account_segment6 + "," + xCPDIT.creation_by + "," + xCPDIT.creation_date + "," +
@@ -79,7 +93,7 @@ namespace XCustPr
                     p.interface_line_key + "','" + p.interface_line_location_key + "','" + last_update_by + "'," +
                     "null,'" + p.process_flag +
                     ") ";
-                chk = conn.ExecuteNonQueryAutoIncrement(sql, "kfc_po");
+                chk = conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
                 //chk = p.RowNumber;
                 //chk = p.Code;
             }

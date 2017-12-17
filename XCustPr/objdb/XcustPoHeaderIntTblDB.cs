@@ -58,6 +58,25 @@ namespace XCustPr
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
+        public DataTable selectByRequestId(String request_id)
+        {
+            DataTable dt = new DataTable();
+            String sql = "select * From " + xCPHIT.table;
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
+        }
+        public String genSeqReqHeaderNumber()
+        {
+            DataTable dt = new DataTable();
+            String chk = "";
+            String sql = "SELECT next value for xcust_po_req_header_seq ;";
+            dt = conn.selectData(sql, "kfc_po");
+            if (dt.Rows.Count > 0)
+            {
+                chk = dt.Rows[0][0].ToString().Trim();
+            }
+            return chk;
+        }
         public String insert(XcustPoHeaderIntTbl p, String pathLog)
         {
             String sql = "", chk = "";
@@ -70,6 +89,8 @@ namespace XCustPr
                 //p.RowNumber = selectMaxRowNumber(p.YearId);
                 //p.Active = "1";
                 String last_update_by = "0", creation_by = "0";
+                String seqH = genSeqReqHeaderNumber();
+                p.interface_header_key = seqH;
                 sql = "Insert Into " + xCPHIT.table + "(" + xCPHIT.acceptance_required_flag + "," + xCPHIT.action + "," + xCPHIT.approval_action + "," +
                     xCPHIT.bill_to_location + "," + xCPHIT.buyyer_name + "," + xCPHIT.creation_by + "," +
                     xCPHIT.creation_date + "," + xCPHIT.currency_code + "," + xCPHIT.document_num + "," +
@@ -91,6 +112,10 @@ namespace XCustPr
                     p.vendor_contact + "','" + p.billto_bu_name + "','" + p.DOCUMENT_ID + "'" +
                     ") ";
                 chk = conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
+                if (chk.Equals("1"))
+                {
+                    chk = seqH;
+                }
                 //chk = p.RowNumber;
                 //chk = p.Code;
             }

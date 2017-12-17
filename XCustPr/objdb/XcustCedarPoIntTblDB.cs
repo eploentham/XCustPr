@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -67,6 +68,9 @@ namespace XCustPr
             xCCPIT.work_type = "work_type";
             xCCPIT.wo_no = "wo_no";
             xCCPIT.xno = "xno";
+            xCCPIT.row_cnt = "row_cnt";
+            xCCPIT.row_number = "row_number";
+            xCCPIT.request_id = "request_id";
 
             xCCPIT.table = "XCUST_CEDAR_PO_INT_TBL";
         }
@@ -78,7 +82,19 @@ namespace XCustPr
         public DataTable selectCedarGroupByFilename()
         {
             DataTable dt = new DataTable();
-            String sql = "select " + xCCPIT.file_name + " From " + xCCPIT.table + " Group By " + xCCPIT.file_name;
+            String sql = "select " + xCCPIT.file_name + 
+                " From " + xCCPIT.table + 
+                " Group By " + xCCPIT.file_name;
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
+        }
+        public DataTable selectCedarGroupByFilename(String request_id)
+        {
+            DataTable dt = new DataTable();
+            String sql = "select " + xCCPIT.file_name +
+                " From " + xCCPIT.table +
+                " Where "+xCCPIT.request_id+"='"+request_id+"' "+
+                " Group By " + xCCPIT.file_name;
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
@@ -89,7 +105,96 @@ namespace XCustPr
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
-        public void insertBluk(List<String> cedar, String filename, String host, MaterialProgressBar pB1, String pathLog)
+        public DataTable selectCedarByFilename(String filename, String request_id)
+        {
+            DataTable dt = new DataTable();
+            String sql = "select * From " + xCCPIT.table + 
+                " Where " + xCCPIT.file_name + "='" + filename + "' "+
+                " and "+xCCPIT.request_id+"='"+request_id+"' ";
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
+        }
+        public DataTable selectCedarByReqestId(String request_id)
+        {
+            DataTable dt = new DataTable();
+            String sql = "select * From " + xCCPIT.table +
+                " Where " + xCCPIT.request_id + "='" + request_id + "' ";
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
+        }
+        public DataTable selectFilenameByRequestId(String requestId)
+        {
+            DataTable dt = new DataTable();
+            String sql = "";
+            sql = "Select  " + xCCPIT.file_name + ", row_cnt " +
+                " From " + xCCPIT.table +
+                " Where " + xCCPIT.request_id + "='" + requestId + "' " +
+                " Group By " + xCCPIT.file_name + ", row_cnt " +
+                " Order By " + xCCPIT.file_name;
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
+        }
+        public String getCountNoErrorByFilename(String requestId, String filename)
+        {
+            DataTable dt = new DataTable();
+            String sql = "", chk = "";
+            sql = "Select  count(1) as cnt " +
+                " From " + xCCPIT.table +
+                " Where " + xCCPIT.request_id + "='" + requestId + "' and " + xCCPIT.file_name + "='" + filename + "' " +
+                " and len(" + xCCPIT.error_message + ") <= 0";
+            dt = conn.selectData(sql, "kfc_po");
+            if (dt.Rows.Count > 0)
+            {
+                chk = dt.Rows[0]["cnt"].ToString();
+            }
+            return chk;
+        }
+        public DataTable selectCedarGroupByPoNo(String filename, String requestId)
+        {
+            DataTable dt = new DataTable();
+            String sql = "";
+
+            sql = "Select " + xCCPIT.po_no + "," + xCCPIT.file_name +
+                " From " + xCCPIT.table +
+                " Where " + xCCPIT.validate_flag + "='Y' and " + xCCPIT.request_id + "='" + requestId + "' " +
+                " and " + xCCPIT.file_name + "='" + filename + "' " +
+                " Group By " + xCCPIT.po_no + "," + xCCPIT.file_name +
+                " Order By " + xCCPIT.file_name + "," + xCCPIT.po_no +
+                " ";
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
+        }
+        public DataTable selectCedarByPoNumber(String requestId, String poNumber)
+        {
+            DataTable dt = new DataTable();
+            String sql = "";
+            sql = "Select * " +
+                " From " + xCCPIT.table +
+                " Where " + xCCPIT.po_no + "='" + poNumber + "' and " + xCCPIT.request_id + "='" + requestId + "' " +
+                " Order By " + xCCPIT.po_no + "," + xCCPIT.xno;
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
+        }
+        public String updateValidateFlagY(String filename, String row_number, String requestId, String host, String pathLog)
+        {
+            String sql = "", chk = "";
+            sql = "Update " + xCCPIT.table + " Set " + xCCPIT.validate_flag + "='Y' " +
+                "Where " + xCCPIT.file_name + " = '" + filename + "' and " + xCCPIT.row_number + "='" + row_number + "' and " + xCCPIT.request_id + "='" + requestId + "'";
+            chk = conn.ExecuteNonQuery(sql.ToString(), host, pathLog);
+
+            return chk;
+        }
+        public String updateErrorMessage(String filename, String row_number, String msg, String requestId, String host, String pathLog)
+        {
+            String sql = "", chk = "";
+            sql = "Update " + xCCPIT.table + " Set " + xCCPIT.error_message + "=" + xCCPIT.error_message + "+'," + msg.Replace("'", "''") + "' " +
+                ", " + xCCPIT.validate_flag + "='E' " +//VALIDATE_FLAG
+                "Where " + xCCPIT.file_name + " = '" + filename + "' and " + xCCPIT.row_number + "='" + row_number + "' and " + xCCPIT.request_id + "='" + requestId + "'";
+            chk = conn.ExecuteNonQuery(sql.ToString(), host, pathLog);
+
+            return chk;
+        }
+        public void insertBluk(List<String> cedar, String filename, String host, MaterialProgressBar pB1, String requestId, String pathLog)
         {
             int i = 0;
             TimeZoneInfo tz = TimeZoneInfo.FindSystemTimeZoneById("US Eastern Standard Time");
@@ -97,10 +202,11 @@ namespace XCustPr
             String time = System.DateTime.Now.ToString("HH:mm:ss");
 
             String ConnectionString = "", errMsg = "", processFlag = "", validateFlag = "", createBy = "0", createDate = "GETDATE()", lastUpdateBy = "0", lastUpdateTime = "null";
+            String chk = "";
 
-            int colPO_NO = 2, colQT_NO = 3, colWO_NO = 4, colPERIOD = 5, colWeek = 6, colBRANCH_PLANT = 7, colBRANCH_NAME = 8, colLOCTYPE = 9, colITEM_E1 = 10, colASSET_CODE = 11, colASSET_NAME = 12, colWORK_TYPE = 13, colAMOUNT = 14;
-            int colVAT = 15, colTOTAL = 16, colSUPPLIER_CODE = 17, colSUPPLIER_NAME = 18, colADMIN = 19, colADMIN_RECEIVE_DOC = 20, colAPPROVE_DATE = 21, colCEDAR_CLOSE_DATE = 22, colINVOICE_DUE_DATE = 23;
-            int colSUPP_AGREEMENT_NO = 24, colACCOUNT_SEGMENT = 25, colDATA_SOURCE = 26;        //ต้องเหมือน Method ReadExcel
+            int colPO_NO = 1, colQT_NO = 2, colWO_NO =3, colPERIOD = 4, colWeek = 5, colBRANCH_PLANT = 6, colBRANCH_NAME = 7, colLOCTYPE = 8, colITEM_E1 = 9, colASSET_CODE = 10, colASSET_NAME = 11, colWORK_TYPE = 12, colAMOUNT = 13;
+            int colVAT = 14, colTOTAL = 15, colSUPPLIER_CODE = 16, colSUPPLIER_NAME = 17, colADMIN = 18, colADMIN_RECEIVE_DOC = 19, colAPPROVE_DATE = 20, colCEDAR_CLOSE_DATE = 21, colINVOICE_DUE_DATE = 22;
+            int colSUPP_AGREEMENT_NO = 23, colACCOUNT_SEGMENT = 24, colDATA_SOURCE = 25;        
 
             if (host == "kfc_po")
             {
@@ -125,41 +231,49 @@ namespace XCustPr
                     sql.Clear();
                     pB1.Value = i;
                     String[] aaa = bbb.Split('|');
+                    xno = aaa[0];
+
                     errMsg = "";
                     processFlag = "N";
                     validateFlag = "N";
-                    po_no = aaa[colPO_NO-2];// column ใน excel เลยต้อง -2
-                    qt_no = aaa[colQT_NO - 2];// column ใน excel เลยต้อง -2
-                    wo_no = aaa[colWO_NO - 2];// column ใน excel เลยต้อง -2
-                    period = aaa[colPERIOD - 2];// column ใน excel เลยต้อง -2
-                    week = aaa[colWeek - 2];// column ใน excel เลยต้อง -2
-                    branch_plant = aaa[colBRANCH_PLANT - 2];// column ใน excel เลยต้อง -2
-                    BRANCH_NAME = aaa[colBRANCH_NAME - 2];      // no field// column ใน excel เลยต้อง -2
-                    loctype = aaa[colLOCTYPE - 2];// column ใน excel เลยต้อง -2
-                    item_e1 = aaa[colITEM_E1 - 2];// column ใน excel เลยต้อง -2
-                    asset_code = aaa[colASSET_CODE - 2];// column ใน excel เลยต้อง -2
+                    po_no = aaa[colPO_NO];
+                    qt_no = aaa[colQT_NO];
+                    wo_no = aaa[colWO_NO];
+                    period = aaa[colPERIOD];
+                    week = aaa[colWeek];
+                    branch_plant = aaa[colBRANCH_PLANT];
+                    BRANCH_NAME = aaa[colBRANCH_NAME];      // no field
+                    loctype = aaa[colLOCTYPE];
+                    item_e1 = aaa[colITEM_E1];
+                    asset_code = aaa[colASSET_CODE];
 
-                    asset_name = aaa[colASSET_NAME - 2];// column ใน excel เลยต้อง -2
-                    work_type = aaa[colWORK_TYPE - 2];// column ใน excel เลยต้อง -2
-                    amt = aaa[colAMOUNT - 2];// column ใน excel เลยต้อง -2
-                    vat = aaa[colVAT - 2];// column ใน excel เลยต้อง -2
-                    total = aaa[colTOTAL - 2];// column ใน excel เลยต้อง -2
-                    supplier_code = aaa[colSUPPLIER_CODE - 2];// column ใน excel เลยต้อง -2
-                    supplier_name = aaa[colSUPPLIER_NAME - 2];// column ใน excel เลยต้อง -2
-                    admin = aaa[colADMIN - 2];// column ใน excel เลยต้อง -2
-                    admin_receipt_doc_date = aaa[colADMIN_RECEIVE_DOC - 2];// column ใน excel เลยต้อง -2
-                    approve_date = aaa[colAPPROVE_DATE - 2];
+                    asset_name = aaa[colASSET_NAME];
+                    work_type = aaa[colWORK_TYPE];
+                    amt = aaa[colAMOUNT];
+                    vat = aaa[colVAT];
+                    total = aaa[colTOTAL];
+                    supplier_code = aaa[colSUPPLIER_CODE];
+                    supplier_name = aaa[colSUPPLIER_NAME];
+                    admin = aaa[colADMIN];
+                    admin_receipt_doc_date = aaa[colADMIN_RECEIVE_DOC];
+                    approve_date = aaa[colAPPROVE_DATE];
 
-                    cedar_close_date = aaa[colCEDAR_CLOSE_DATE - 2];// column ใน excel เลยต้อง -2
-                    invoice_due_date = aaa[colINVOICE_DUE_DATE - 2];// column ใน excel เลยต้อง -2
-                    sup_agreement_no = aaa[colSUPP_AGREEMENT_NO - 2];       // no field
-                    account_segment2 = aaa[colACCOUNT_SEGMENT - 2];// column ใน excel เลยต้อง -2
-                    data_source = aaa[colDATA_SOURCE - 2];// column ใน excel เลยต้อง -2
+                    cedar_close_date = aaa[colCEDAR_CLOSE_DATE];
+                    invoice_due_date = aaa[colINVOICE_DUE_DATE];
+                    sup_agreement_no = aaa[colSUPP_AGREEMENT_NO];       // no field
+                    account_segment2 = aaa[colACCOUNT_SEGMENT];
+                    data_source = aaa[colDATA_SOURCE];
 
                     admin_receipt_doc_date = dateYearShortToDB(admin_receipt_doc_date);
                     approve_date = dateYearShortToDB(approve_date);
                     cedar_close_date = dateYearShortToDB(cedar_close_date);
                     invoice_due_date = dateYearShortToDB(invoice_due_date);
+
+                    requestId = requestId.Equals("") ? "0" : requestId;
+                    xno = xno.Equals("") ? "null" : xno;
+                    amt = amt.Equals("") ? "null" : amt;
+                    vat = vat.Equals("") ? "null" : vat;
+                    total = total.Equals("") ? "null" : total;
 
                     //store_cocde = aaa[0];
                     //item_code = aaa[1];
@@ -187,7 +301,7 @@ namespace XCustPr
                         .Append(",").Append(xCCPIT.supplier_code).Append(",").Append(xCCPIT.supplier_contact).Append(",").Append(xCCPIT.supplier_name)
                         .Append(",").Append(xCCPIT.supplier_site_code).Append(",").Append(xCCPIT.sup_agreement_no).Append(",").Append(xCCPIT.total)
                         .Append(",").Append(xCCPIT.validate_flag).Append(",").Append(xCCPIT.vat).Append(",").Append(xCCPIT.week)
-                        .Append(",").Append(xCCPIT.work_type).Append(",").Append(xCCPIT.wo_no).Append(",").Append(xCCPIT.xno)                        
+                        .Append(",").Append(xCCPIT.work_type).Append(",").Append(xCCPIT.wo_no).Append(",").Append(xCCPIT.xno).Append(",").Append(xCCPIT.request_id).Append(",row_number, row_cnt")
                         .Append(") Values ('")
                         .Append(account_segment1).Append("','").Append(account_segment2).Append("','").Append(account_segment3)
                         .Append("','").Append(account_segment4).Append("','").Append(account_segment5).Append("','").Append(account_segment6)
@@ -203,9 +317,9 @@ namespace XCustPr
                         .Append("','").Append(supplier_code).Append("','").Append(supplier_contact).Append("','").Append(supplier_name)
                         .Append("','").Append(supplier_site_code).Append("','").Append(lastUpdateTime).Append("',").Append(total)
                         .Append(",'").Append(validateFlag).Append("',").Append(vat).Append(",'").Append(week)
-                        .Append("','").Append(work_type).Append("','").Append(wo_no).Append("','").Append(xno)                        
-                        .Append("') ");
-                    conn.ExecuteNonQuery(sql.ToString(), host, pathLog);
+                        .Append("','").Append(work_type).Append("','").Append(wo_no).Append("',").Append(xno).Append(",'").Append(requestId).Append("','").Append(i).Append("','").Append(cedar.Count).Append("' ")
+                        .Append(") ");
+                    chk = conn.ExecuteNonQuery(sql.ToString(), host, pathLog);
                 }
             }
         }
@@ -228,6 +342,145 @@ namespace XCustPr
             
 
             return chk;
+        }
+        public void logProcessPO008(String programname, String startdatetime, String requestId)
+        {
+            String line1 = "", parameter = "", programstart = "", filename = "", recordError = "", txt = "", path = "", sql = "";
+            int cntErr = 0, cntPass = 0;
+            ControlMain cm = new ControlMain();
+            line1 = "Program : XCUST Interface PR<Linfox>To PO(ERP)" + Environment.NewLine;
+
+            path = cm.getPathLogProcess(programname);
+            parameter = "Parameter : " + Environment.NewLine;
+            parameter += "           Path Initial :" + initC.PathInitial + Environment.NewLine;
+            parameter += "           Path Process :" + initC.PathProcess + Environment.NewLine;
+            parameter += "           Path Error :" + initC.PathError + Environment.NewLine;
+            parameter += "           Import Source :" + initC.ImportSource + Environment.NewLine;
+            programstart = "Program Start : " + startdatetime + Environment.NewLine;
+
+
+            sql = "Select count(1) as cnt, " + xCCPIT.file_name
+            + " From " + xCCPIT.table
+            + " Where " + xCCPIT.request_id + " ='" + requestId + "' " +
+            "Group By " + xCCPIT.file_name;
+            DataTable dtFile = conn.selectData(sql, "kfc_po");
+
+            if (dtFile.Rows.Count > 0)
+            {
+                foreach (DataRow rowFile in dtFile.Rows)
+                {
+                    String valiPass = "", valiErr = "", filenameR="";
+                    filenameR = rowFile[xCCPIT.file_name].ToString();
+                    sql = "Select count(1) as cnt_vali " +
+                        " From " + xCCPIT.table + " " +
+                        " Where " + xCCPIT.request_id + " ='" + requestId + "' " +
+                        " and " + xCCPIT.file_name + "='" + filenameR + "' and " + xCCPIT.validate_flag + "='Y' ";
+
+                    DataTable dtR = conn.selectData(sql, "kfc_po");
+                    if (dtR.Rows.Count > 0)
+                    {
+                        foreach (DataRow rowVali in dtR.Rows)
+                        {
+                            valiPass = rowVali["cnt_vali"].ToString();
+                            //cntPass++;
+                        }
+                    }
+                    dtR.Clear();
+                    sql = "Select count(1) as cnt_vali " +
+                        " From " + xCCPIT.table + " " +
+                        " Where " + xCCPIT.request_id + " ='" + requestId + "' " +
+                        " and " + xCCPIT.file_name + "='" + filenameR + "' and " + xCCPIT.validate_flag + "='E' ";
+                    dtR = conn.selectData(sql, "kfc_po");
+                    if (dtR.Rows.Count > 0)
+                    {
+                        foreach (DataRow rowVali in dtR.Rows)
+                        {
+                            valiErr = rowVali["cnt_vali"].ToString();
+                            //cntErr++;
+                        }
+                    }
+                    if (valiErr.Equals("0"))
+                    {
+                        cntPass++;
+                    }
+                    else
+                    {
+                        cntErr++;
+                    }
+                    filename += "Filename " + filenameR + ", Total = " + rowFile["cnt"].ToString() + ", Validate pass = " + valiPass + ", Record Error = " + valiErr + " " + Environment.NewLine;
+                    //if (int.TryParse(rowFile.recordError, out err))
+                    //{
+                    //    if (int.Parse(rowFile.recordError) > 0)
+                    //    {
+                    //        cntErr++;
+                    //    }
+                    //}
+                }
+            }
+            String filename1 = "", filename1old = "";
+            sql = "Select * From " + xCCPIT.table + " " +
+                "Where " + xCCPIT.request_id + " ='" + requestId + "' " +
+                "Order By " + xCCPIT.file_name + ", " + xCCPIT.row_number;
+            DataTable dtErr = new DataTable();
+            dtErr = conn.selectData(sql, "kfc_po");
+            if (dtErr.Rows.Count > 0)
+            {
+                foreach (DataRow dtErr1 in dtErr.Rows)
+                {
+                    if (dtErr1[xCCPIT.error_message].ToString().Equals(""))
+                    {
+                        continue;
+                    }
+                    filename1 = dtErr1[xCCPIT.file_name].ToString();
+                    if (!filename1.Equals(filename1old))
+                    {
+                        filename1old = filename1;
+                        recordError += Environment.NewLine + "FileName : " + dtErr1[xCCPIT.file_name].ToString() + Environment.NewLine;
+                    }
+                    //recordError += "FileName " + dtErr1[xCLFPT.file_name].ToString() + Environment.NewLine;
+                    recordError += "=>PO_NUMER = " + dtErr1[xCCPIT.po_no].ToString() + ",QT NO = " + dtErr1[xCCPIT.qt_no].ToString() + ",ERROR" + Environment.NewLine;
+                    recordError += "     ====>" + dtErr1[xCCPIT.error_message].ToString() + Environment.NewLine;
+                }
+                if (recordError.Length > 0)
+                {
+                    recordError = recordError.Replace("     ====>,", "     ====>");
+
+                }
+            }
+            //String comp = "", error = "";
+            //sql = "Select Count(1) as cnt From "+xCLFPT.table+ " Where " + xCLFPT.request_id + " ='" + requestId + "' "+
+            //    " and "+xCLFPT.VALIDATE_FLAG+"='Y' Group By "+xCLFPT.file_name ;
+            //DataTable dt = new DataTable();
+            //dt = conn.selectData(sql, "kfc_po");
+            //if (dt.Rows.Count >0)
+            //{
+            //    comp = dt.Rows[0]["cnt"].ToString();
+            //}
+            //dt.Clear();
+            //sql = "Select Count(1) as cnt From " + xCLFPT.table + " Where " + xCLFPT.request_id + " ='" + requestId + "' " +
+            //    " and " + xCLFPT.VALIDATE_FLAG + "='E' Group By " + xCLFPT.file_name;
+            //dt = conn.selectData(sql, "kfc_po");
+            //if (dt.Rows.Count > 0)
+            //{
+            //    error = dt.Rows[0]["cnt"].ToString();
+            //}
+            //using (var stream = File.CreateText(Environment.CurrentDirectory + "\\" + programname + "_" + startdatetime.Replace("-", "_").Replace(":", "_") + ".log"))
+            using (var stream = File.CreateText(path + programname + "_" + startdatetime.Replace("-", "_").Replace(":", "_") + ".log"))
+            {
+                txt = line1;
+                txt += parameter;
+                txt += programstart + Environment.NewLine;
+                txt += "File " + Environment.NewLine;
+                txt += "--------------------------------------------------------------------------" + Environment.NewLine;
+                txt += filename + Environment.NewLine;
+                txt += "File Error " + Environment.NewLine;
+                txt += "--------------------------------------------------------------------------" + Environment.NewLine;
+                txt += recordError + Environment.NewLine;
+                txt += "Total " + dtFile.Rows.Count + Environment.NewLine;
+                txt += "Complete " + cntPass + Environment.NewLine;
+                txt += "Error " + cntErr + Environment.NewLine;
+                stream.WriteLine(txt);
+            }
         }
     }
 }

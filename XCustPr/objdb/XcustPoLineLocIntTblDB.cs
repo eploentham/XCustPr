@@ -48,6 +48,18 @@ namespace XCustPr
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
+        public String genSeqReqDistNumber()
+        {
+            DataTable dt = new DataTable();
+            String chk = "";
+            String sql = "SELECT next value for xcust_po_req_line_seq ;";
+            dt = conn.selectData(sql, "kfc_po");
+            if (dt.Rows.Count > 0)
+            {
+                chk = dt.Rows[0][0].ToString().Trim();
+            }
+            return chk;
+        }
         public String insert(XcustPoLineLocIntTbl p, String pathLog)
         {
             String sql = "", chk = "";
@@ -60,6 +72,8 @@ namespace XCustPr
                 //p.RowNumber = selectMaxRowNumber(p.YearId);
                 //p.Active = "1";
                 String last_update_by = "0", creation_by = "0";
+                String seqLL = genSeqReqDistNumber();
+                p.interface_line_location_key = seqLL;
                 sql = "Insert Into " + xCPLLIT.table + "(" + xCPLLIT.amt + "," + xCPLLIT.attribute1 + "," + xCPLLIT.attribute2 + "," +
                     xCPLLIT.attribute3 + "," + xCPLLIT.attribute4 + "," + xCPLLIT.cration_date + "," +
                     xCPLLIT.creation_by + "," + xCPLLIT.destination_type_code + "," + xCPLLIT.error_message + "," +
@@ -75,6 +89,10 @@ namespace XCustPr
                     p.need_by_date + "','" + p.process_flag + "','" + p.shipment_number + "'" +
                     ") ";
                 chk = conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
+                if (chk.Equals("1"))
+                {
+                    chk = seqLL;
+                }
                 //chk = p.RowNumber;
                 //chk = p.Code;
             }

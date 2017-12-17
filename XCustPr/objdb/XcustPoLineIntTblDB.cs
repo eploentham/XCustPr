@@ -44,7 +44,19 @@ namespace XCustPr
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
-        public String insert(XcustPoLineIntTbl p)
+        public String genSeqReqLineNumber()
+        {
+            DataTable dt = new DataTable();
+            String chk = "";
+            String sql = "SELECT next value for xcust_po_req_line_seq ;";
+            dt = conn.selectData(sql, "kfc_po");
+            if (dt.Rows.Count > 0)
+            {
+                chk = dt.Rows[0][0].ToString().Trim();
+            }
+            return chk;
+        }
+        public String insert(XcustPoLineIntTbl p, String pathLog)
         {
             String sql = "", chk = "";
             try
@@ -55,6 +67,8 @@ namespace XCustPr
                 //}
                 //p.RowNumber = selectMaxRowNumber(p.YearId);
                 //p.Active = "1";
+                String seqL = genSeqReqLineNumber();
+                p.interface_line_key = seqL;
                 String last_update_by = "0", creation_by="0";
                 sql = "Insert Into " + xCPLIT.table + "(" + xCPLIT.action + "," + xCPLIT.category + "," + xCPLIT.creation_by + "," +
                     xCPLIT.creation_date + "," + xCPLIT.error_message + "," + xCPLIT.interface_header_key + "," +
@@ -68,7 +82,11 @@ namespace XCustPr
                     "null,'" + p.line_num + "','" + p.line_type + "','" +
                     p.process_flag + "'," + p.unit_price + 
                     ") ";
-                chk = conn.ExecuteNonQueryAutoIncrement(sql, "kfc_po");
+                chk = conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
+                if (chk.Equals("1"))
+                {
+                    chk = seqL;
+                }
                 //chk = p.RowNumber;
                 //chk = p.Code;
             }

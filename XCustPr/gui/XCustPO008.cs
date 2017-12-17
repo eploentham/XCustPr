@@ -191,9 +191,10 @@ namespace XCustPr
         //WSDL : https:// eglj-test.fa.us2.oraclecloud.com:443/fndAppCoreServices/FndManageImportExportFilesService?WSDL
         private void btnRead_Click(object sender, EventArgs e)
         {
+            String requestId = "";
             lv1.Items.Clear();
             filePO = Cm.getFileinFolder(Cm.initC.PO008PathInitial);
-            cPo008.processCedarPOtoErpPR(filePO, lv1, this, pB1);
+            requestId = cPo008.processCedarPOtoErpPR(filePO, lv1, this, pB1);
             //1.ดึงข้อมูลตาม group by filename เพราะ field filename เป็นตัวแบ่งข้อมูลแต่ละfile
             //2.ดึงข้อมูล where ตาม filename เพื่อ validate ถ้า validate ผ่าน ก็ update validate_flag = 'Y'
             //d.	จากนั้น Program จะเอาข้อมูลจาก Table XCUST_CEDAR_PO_TBL มาทำการ Validate 
@@ -201,11 +202,11 @@ namespace XCustPr
             //- 
             //-
 
-            cPo008.processGetTempTableToValidate(lv1, this, pB1);
+            cPo008.processGetTempTableToValidate(lv1, this, pB1, requestId);
 
-            cPo008.processInsertTable(lv1, this, pB1);
+            cPo008.processInsertTable2(requestId, lv1, this, pB1);
 
-            cPo008.processGenCSV(lv1, this, pB1);
+            cPo008.processGenCSV(lv1, this, pB1, requestId);
         }
         private void btnPrepare_Click(object sender, EventArgs e)
         {

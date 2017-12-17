@@ -20,7 +20,7 @@ namespace XCustPr
         {
 
         }
-        public List<String> ReadExcelPO008(String filename, MaterialProgressBar pB1)
+        public List<String> ReadExcelPO008(String filename, MaterialProgressBar pB1, ValidatePrPo vPPexcel)
         {
             pB1.Show();
             pB1.Minimum = 0;
@@ -29,7 +29,7 @@ namespace XCustPr
             int colPO_NO = 2, colQT_NO = 3, colWO_NO = 4, colPERIOD = 5, colWeek = 6, colBRANCH_PLANT = 7, colBRANCH_NAME = 8, colLOCTYPE = 9, colITEM_E1 = 10, colASSET_CODE = 11, colASSET_NAME = 12, colWORK_TYPE = 13, colAMOUNT = 14;
             int colVAT = 15, colTOTAL = 16, colSUPPLIER_CODE = 17, colSUPPLIER_NAME = 18, colADMIN = 19, colADMIN_RECEIVE_DOC = 20, colAPPROVE_DATE = 21, colCEDAR_CLOSE_DATE = 22, colINVOICE_DUE_DATE = 23;
             int colSUPP_AGREEMENT_NO = 24, colACCOUNT_SEGMENT = 25, colDATA_SOURCE = 26;
-
+            int col_no = 1;
 
             List<String> result = new List<String>();
             Microsoft.Office.Interop.Excel.Application excelapp = new Microsoft.Office.Interop.Excel.Application();
@@ -51,10 +51,18 @@ namespace XCustPr
                 {
                     pB1.Value = i;
                     if (i == 1) continue;
+                    int no = 0;
                     String txt = "";
                     String PO_NO = "", QT_NO = "", WO_NO = "", PERIOD = "", Week = "", BRANCH_PLANT = "", BRANCH_NAME = "", LOCTYPE = "", ITEM_E1 = "", ASSET_CODE = "", ASSET_NAME = "", WORK_TYPE = "", AMOUNT = "";
                     String VAT = "", TOTAL = "", SUPPLIER_CODE = "", SUPPLIER_NAME = "", ADMIN = "", ADMIN_RECEIVE_DOC = "", APPROVE_DATE = "", CEDAR_CLOSE_DATE = "", INVOICE_DUE_DATE = "";
-                    String SUPP_AGREEMENT_NO = "", ACCOUNT_SEGMENT = "", DATA_SOURCE = "";
+                    String SUPP_AGREEMENT_NO = "", ACCOUNT_SEGMENT = "", DATA_SOURCE = "", xno="";
+
+                    xno = worksheet.Cells[i, col_no].value != null ? String.Concat(worksheet.Cells[i, col_no].value) : "";
+                    if(!int.TryParse(xno, out no))
+                    {
+                        continue;
+                    }
+                    
 
                     PO_NO = worksheet.Cells[i, colPO_NO].value != null ? String.Concat(worksheet.Cells[i, colPO_NO].value) : "";
                     QT_NO = worksheet.Cells[i, colQT_NO].value != null ? String.Concat(worksheet.Cells[i, colQT_NO].value) : "";
@@ -84,7 +92,7 @@ namespace XCustPr
                     ACCOUNT_SEGMENT = worksheet.Cells[i, colACCOUNT_SEGMENT].value != null ? String.Concat(worksheet.Cells[i, colACCOUNT_SEGMENT].value) : "";
                     DATA_SOURCE = worksheet.Cells[i, colDATA_SOURCE].value != null ? String.Concat(worksheet.Cells[i, colDATA_SOURCE].value) : "";
 
-                    txt += PO_NO + "|" + QT_NO + "|" + WO_NO + "|" + PERIOD + "|" + Week + "|" + BRANCH_PLANT + "|" + BRANCH_NAME + "|" + LOCTYPE + "|" + ITEM_E1 + "|" + ASSET_CODE + "|" + ASSET_NAME + "|" +
+                    txt += xno+"|"+PO_NO + "|" + QT_NO + "|" + WO_NO + "|" + PERIOD + "|" + Week + "|" + BRANCH_PLANT + "|" + BRANCH_NAME + "|" + LOCTYPE + "|" + ITEM_E1 + "|" + ASSET_CODE + "|" + ASSET_NAME + "|" +
                         WORK_TYPE + "|" + AMOUNT + "|" + VAT + "|" + TOTAL + "|" + SUPPLIER_CODE + "|" + SUPPLIER_NAME + "|" + ADMIN + "|" + ADMIN_RECEIVE_DOC + "|" + APPROVE_DATE + "|" + CEDAR_CLOSE_DATE + "|" +
                         INVOICE_DUE_DATE + "|" + SUPP_AGREEMENT_NO + "|" + ACCOUNT_SEGMENT + "|" + DATA_SOURCE;
                     result.Add(txt);
@@ -95,8 +103,11 @@ namespace XCustPr
             catch (Exception ex)
             {
                 chk = "";
+                vPPexcel.Filename = filename.Replace(initC.PO008PathProcess,"");
+                vPPexcel.Message = " PO008-0020 : read excel error";
+                vPPexcel.Validate = "";
             }
-            
+
             excelapp.Quit();
             pB1.Visible = false;
 
