@@ -242,13 +242,14 @@ namespace XCustPr
                 pB1.Visible = false;
                 addListView("processGenTextLinfox gen log file ", "Web Service", lv1, form1);
                 //Cm.logProcess("xcustpo002", lVPr, dateStart, lVfile);   // gen log
-                
+                xCLFPTDB.logProcessPO002("xcustpo002", dateStart, requestId,"");   // gen log
             }
             else
             {
+                xCLFPTDB.logProcessPO002("xcustpo002", dateStart, requestId, "nodata");   // gen log
                 addListView("processGenTextLinfox  ไม่พบข้อมูล", "Web Service", lv1, form1);
             }
-            xCLFPTDB.logProcessPO002("xcustpo002", dateStart, requestId);   // gen log
+            
             pB1.Hide();
         }
         public void writeTextLinfox(String erpPONumber, DataTable dt)
