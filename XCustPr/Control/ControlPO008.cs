@@ -280,8 +280,9 @@ namespace XCustPr
         public Boolean validateAmount(String qty)
         {
             Boolean chk = false;
-            int i = 0;
-            chk = int.TryParse(qty, out i);
+            Double i = 0;
+            //chk = int.TryParse(qty, out i);
+            chk = Double.TryParse(qty, out i);
             return chk;
         }
         private String validateSubInventoryCode(String ordId, String StoreCode)
@@ -336,7 +337,7 @@ namespace XCustPr
         public Boolean validateDate(String date)
         {
             Boolean chk = false;
-            if (date.Length == 8)
+            if (date.Length == 10)
             {
                 sYear.Clear();
                 sMonth.Clear();
@@ -344,8 +345,8 @@ namespace XCustPr
                 try
                 {
                     sYear.Append(date.Substring(0, 4));
-                    sMonth.Append(date.Substring(4, 2));
-                    sDay.Append(date.Substring(6, 2));
+                    sMonth.Append(date.Substring(5, 2));
+                    sDay.Append(date.Substring(8, 2));
                     if ((int.Parse(sYear.ToString()) > 2000) && (int.Parse(sYear.ToString()) < 2100))
                     {
                         if ((int.Parse(sMonth.ToString()) >= 1) && (int.Parse(sMonth.ToString()) <= 12))
@@ -1522,7 +1523,7 @@ namespace XCustPr
                 foreach (DataRow row in dt.Rows)
                 {
                     string col01 = row[xCPDITDB.xCPDIT.interface_distribution_key].ToString();
-                    string col02 = "col02";//row[xCPHITDB.xCPHIT.d].ToString(); ;      //Interface Line Location Key        รอถาม  
+                    string col02 = row[xCPDITDB.xCPDIT.interface_line_location_key].ToString();//row[xCPHITDB.xCPHIT.d].ToString(); ;      //Interface Line Location Key        รอถาม  
                     string col03 = "col03";//"col03";      // Distribution      รอถาม  
                     string col04 = "col04";// Deliver-to Location  row[xCPHITDB.xCPHIT.import_source].ToString();
                     string col05 = "col05";//row[xCPHITDB.xCPHIT.approval_action].ToString(); ;//Approval Action       รอถาม  
