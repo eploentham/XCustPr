@@ -111,6 +111,28 @@ namespace XCustPr
             }
             return chk;
         }
+        public String getMinVendorSiteIdByVendorIdPO008()
+        {
+            DataTable dt = new DataTable();
+            String chk = "";
+            String sql = "SELECT T.VENDOR_SITE_CODE " +
+                "FROM XCUST_SUPPLIER_SITE_MST_TBL T " +
+                "WHERE VENDOR_ID = 300000000943255 " +
+                "AND PURCHASING_SITE_FLAG = 'Y' " +
+                "AND T.VENDOR_SITE_ID = (SELECT  " +
+                 "                       MAX(TT.VENDOR_SITE_ID) " +
+                 "                       FROM  " +
+                 "                       XCUST_SUPPLIER_SITE_MST_TBL TT " +
+                 " WHERE TT.VENDOR_ID  " +
+                 " = T.VENDOR_ID and " +
+                 " TT.PURCHASING_SITE_FLAG = T.PURCHASING_SITE_FLAG                          )";
+            dt = conn.selectData(sql, "kfc_po");
+            if (dt.Rows.Count > 0)
+            {
+                chk = dt.Rows[0]["VENDOR_SITE_CODE"].ToString();
+            }
+            return chk;
+        }
         public String getVendorSiteCode(String vendor_spk_id)
         {
             DataTable dt = new DataTable();

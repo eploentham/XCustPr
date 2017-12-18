@@ -414,19 +414,7 @@ namespace XCustPr
             {
                 chk = false;
             }
-            //Error PO001-008 : Invalid Deliver To Location
-            //locator = xCDLMTDB.selectLocator1();
-            locator = xCDLMTDB.selectLocatorByInvtory(Cm.initC.Locator.Trim(), Org);
-            if (!locator.Equals(Cm.initC.Locator.Trim()))
-            {
-                chk = false;
-                vPP = new ValidatePrPo();
-                vPP.Filename = "PO008 Parameter ";
-                vPP.Message = " Error PO008-008 : Invalid Deliver To Location";
-                vPP.Validate = "";
-                lVPr.Add(vPP);
-                cntErr++;       // gen log
-            }
+            
             //Error PO001-009 : Invalid Deliver-to Organization
             //Org = xCDOMTDB.selectActive1();
             Org = xCDOMTDB.selectActiveByCode(Cm.initC.ORGANIZATION_code.Trim());
@@ -461,6 +449,19 @@ namespace XCustPr
             if (!buCode.Equals(Cm.initC.BU_NAME.Trim()))
             {
                 chk = false;
+            }
+            //Error PO001-008 : Invalid Deliver To Location
+            //locator = xCDLMTDB.selectLocator1();
+            locator = xCDLMTDB.selectLocatorByInvtory(Cm.initC.Locator.Trim(), Org);
+            if (!locator.Equals(Cm.initC.Locator.Trim()))
+            {
+                chk = false;
+                vPP = new ValidatePrPo();
+                vPP.Filename = "PO008 Parameter ";
+                vPP.Message = " Error PO008-008 : Invalid Deliver To Location";
+                vPP.Validate = "";
+                lVPr.Add(vPP);
+                cntErr++;       // gen log
             }
 
             //StringBuilder filename = new StringBuilder();
@@ -671,9 +672,11 @@ namespace XCustPr
         {
             addListView("insert table " + Cm.initC.PO008PathProcess, "Validate", lv1, form1);
             String currDate = System.DateTime.Now.ToString("yyyy-MM-dd");
+            String Org = "";
             int rowH = 0;
             DataTable dt = new DataTable();
             dt = xCCPITDB.selectFilenameByRequestId(requestId);     //moveFileToFolderArchiveError
+            Org = xCDOMTDB.selectActiveByCode(Cm.initC.ORGANIZATION_code.Trim());
             if (dt.Rows.Count > 0)
             {
                 foreach (DataRow row in dt.Rows)
@@ -695,16 +698,19 @@ namespace XCustPr
                             foreach (DataRow rowFilename in dtFilename.Rows)
                             {
                                 rowH++;
-                                String poNumber = "", wo_no="", branch_plant="", supplier_code="", supplier_site_code= "";
+                                String poNumber = "", wo_no="", branch_plant="", supplier_code="", supplier_site_code= "", Bill_to_Location="";
                                 poNumber = rowFilename[xCCPITDB.xCCPIT.po_no].ToString();
                                 wo_no = rowFilename[xCCPITDB.xCCPIT.wo_no].ToString();
                                 branch_plant = rowFilename[xCCPITDB.xCCPIT.branch_plant].ToString();
                                 supplier_code = rowFilename[xCCPITDB.xCCPIT.supplier_code].ToString();
-                                supplier_site_code = rowFilename[xCCPITDB.xCCPIT.supplier_site_code].ToString();
+                                supplier_site_code = xCSSMTDB.getMinVendorSiteIdByVendorIdPO008();
                                 DataTable dtCedar = new DataTable();
                                 dtCedar = xCCPITDB.selectCedarByPoNumber(requestId, poNumber);
                                 XcustPoHeaderIntTbl xCPorRHIA = addXcustListHeader1(wo_no, branch_plant, supplier_code, supplier_site_code);
                                 String seqH = "";
+                                Bill_to_Location = xCSIMTDB.selectBilltoLocation(Org, branch_plant);
+                                xCPorRHIA.bill_to_location = Bill_to_Location;
+                                xCPorRHIA.supplier_site_code = supplier_site_code;
                                 seqH = xCPHITDB.insert(xCPorRHIA, Cm.initC.PO008PathLog);
                                 foreach (DataRow dtCedarR in dtCedar.Rows)
                                 {
@@ -791,6 +797,7 @@ namespace XCustPr
                 xcrhia1.supplier_site_code = supplier_site_code;
                 xcrhia1.payment_term = "";//ถาม
                 xcrhia1.process_flag = "N";
+
 
                 listXcustPHIT.Add(xcrhia1);
             }
@@ -1068,12 +1075,12 @@ namespace XCustPr
                 {
                     string col01 = row[xCPHITDB.xCPHIT.interface_header_key].ToString();
                     string col02 = row[xCPHITDB.xCPHIT.action].ToString(); ;      //action        รอถาม  
-                    string col03 = "col03";      //batch_id      รอถาม  
+                    string col03 = "";      //batch_id      รอถาม  
                     string col04 = row[xCPHITDB.xCPHIT.import_source].ToString();
                     string col05 = row[xCPHITDB.xCPHIT.approval_action].ToString(); ;//Approval Action       รอถาม  
-                    string col06 = "col06";      //Order       รอถาม  
+                    string col06 = "";      //Order       รอถาม  
                     string col07 = row[xCPHITDB.xCPHIT.document_typre_code].ToString(); ;//Document Type Code      รอถาม  
-                    string col08 = "col08";//Style       รอถาม 
+                    string col08 = "";//Style       รอถาม 
                     string col09 = row[xCPHITDB.xCPHIT.prc_bu_name].ToString(); ;//Procurement BU       รอถาม 
                     string col10 = row[xCPHITDB.xCPHIT.req_bu_name].ToString(); ;//Requisitioning BU       รอถาม 
 
@@ -1081,99 +1088,99 @@ namespace XCustPr
                     string col12 = row[xCPHITDB.xCPHIT.billto_bu_name].ToString(); ;//Bill-to BU
                     string col13 = row[xCPHITDB.xCPHIT.buyyer_name].ToString(); ;//Buyer
                     string col14 = row[xCPHITDB.xCPHIT.currency_code].ToString(); ;//Currency Code
-                    string col15 = "col15";//Rate
-                    string col16 = "col16";//Rate Type
-                    string col17 = "col17";//Rate Date
-                    string col18 = "col18";//Description
+                    string col15 = "";//Rate
+                    string col16 = "";//Rate Type
+                    string col17 = "";//Rate Date
+                    string col18 = "";//Description
                     string col19 = row[xCPHITDB.xCPHIT.bill_to_location].ToString(); ;//Bill-to Location
                     string col20 = row[xCPHITDB.xCPHIT.ship_to_location].ToString(); ;//Ship-to Location
 
                     string col21 = row[xCPHITDB.xCPHIT.supplier_code].ToString();//Supplier
                     string col22 = row[xCPHITDB.xCPHIT.supplier_code].ToString();//Supplier Number
                     string col23 = row[xCPHITDB.xCPHIT.supplier_site_code].ToString(); ;//Supplier Site
-                    string col24 = "col24";//Supplier Contact
-                    string col25 = "col25";//Supplier Order
-                    string col26 = "col26";//FOB
-                    string col27 = "col27";//Carrier
-                    string col28 = "col28";//Freight Terms
-                    string col29 = "col29";//Pay On Code
-                    string col30 = "col30";//Payment Terms
+                    string col24 = "";//Supplier Contact
+                    string col25 = "";//Supplier Order
+                    string col26 = "";//FOB
+                    string col27 = "";//Carrier
+                    string col28 = "";//Freight Terms
+                    string col29 = "";//Pay On Code
+                    string col30 = "";//Payment Terms
 
-                    string col31 = "col31";//Initiating Party
-                    string col32 = "col32";//Change Order Description
-                    string col33 = "col33";//Required Acknowledgment
-                    string col34 = "col34";//Acknowledge Within (Days)
-                    string col35 = "col35";//Communication Method
-                    string col36 = "col36";//Fax
-                    string col37 = "col37";//E-mail
-                    string col38 = "col38";//Confirming order
-                    string col39 = "col39";//Note to Supplier
-                    string col40 = "col40";//Note to Receiver
+                    string col31 = "";//Initiating Party
+                    string col32 = "";//Change Order Description
+                    string col33 = "";//Required Acknowledgment
+                    string col34 = "";//Acknowledge Within (Days)
+                    string col35 = "";//Communication Method
+                    string col36 = "";//Fax
+                    string col37 = "";//E-mail
+                    string col38 = "";//Confirming order
+                    string col39 = "";//Note to Supplier
+                    string col40 = "";//Note to Receiver
 
-                    string col41 = "col41";//Default Taxation Country Code
-                    string col42 = "col42";//Tax Document Subtype Code
-                    string col43 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_CATEGORY].ToString();
-                    string col44 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE1].ToString();
-                    string col45 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE2].ToString();
-                    string col46 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE3].ToString();
-                    string col47 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE4].ToString();
-                    string col48 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE5].ToString();
-                    string col49 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE6].ToString();
-                    string col50 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE7].ToString();
+                    string col41 = "";//Default Taxation Country Code
+                    string col42 = "";//Tax Document Subtype Code
+                    string col43 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_CATEGORY].ToString();
+                    string col44 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE1].ToString();
+                    string col45 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE2].ToString();
+                    string col46 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE3].ToString();
+                    string col47 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE4].ToString();
+                    string col48 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE5].ToString();
+                    string col49 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE6].ToString();
+                    string col50 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE7].ToString();
 
-                    string col51 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE8].ToString();
-                    string col52 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE9].ToString();
-                    string col53 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE10].ToString();
-                    string col54 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE11].ToString();
-                    string col55 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE12].ToString();
-                    string col56 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE13].ToString();
-                    string col57 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE14].ToString();
-                    string col58 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE15].ToString();
-                    string col59 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE16].ToString();
-                    string col60 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE17].ToString();
+                    string col51 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE8].ToString();
+                    string col52 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE9].ToString();
+                    string col53 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE10].ToString();
+                    string col54 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE11].ToString();
+                    string col55 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE12].ToString();
+                    string col56 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE13].ToString();
+                    string col57 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE14].ToString();
+                    string col58 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE15].ToString();
+                    string col59 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE16].ToString();
+                    string col60 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE17].ToString();
 
-                    string col61 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE18].ToString();
-                    string col62 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE19].ToString();
-                    string col63 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE20].ToString();
-                    string col64 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_DATE1].ToString();
-                    string col65 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_DATE2].ToString();
-                    string col66 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_DATE3].ToString();
-                    string col67 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_DATE4].ToString();
-                    string col68 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_DATE5].ToString();
-                    string col69 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_DATE6].ToString();
-                    string col70 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_DATE7].ToString();
+                    string col61 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE18].ToString();
+                    string col62 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE19].ToString();
+                    string col63 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE20].ToString();
+                    string col64 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_DATE1].ToString();
+                    string col65 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_DATE2].ToString();
+                    string col66 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_DATE3].ToString();
+                    string col67 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_DATE4].ToString();
+                    string col68 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_DATE5].ToString();
+                    string col69 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_DATE6].ToString();
+                    string col70 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_DATE7].ToString();
 
-                    string col71 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_DATE8].ToString();
-                    string col72 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_DATE9].ToString();
-                    string col73 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_DATE10].ToString();
-                    string col74 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_NUMBER1].ToString();
-                    string col75 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_NUMBER2].ToString();
-                    string col76 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_NUMBER3].ToString();
-                    string col77 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_NUMBER4].ToString();
-                    string col78 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_NUMBER5].ToString();
-                    string col79 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_NUMBER6].ToString();
-                    string col80 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_NUMBER7].ToString();
+                    string col71 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_DATE8].ToString();
+                    string col72 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_DATE9].ToString();
+                    string col73 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_DATE10].ToString();
+                    string col74 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_NUMBER1].ToString();
+                    string col75 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_NUMBER2].ToString();
+                    string col76 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_NUMBER3].ToString();
+                    string col77 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_NUMBER4].ToString();
+                    string col78 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_NUMBER5].ToString();
+                    string col79 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_NUMBER6].ToString();
+                    string col80 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_NUMBER7].ToString();
 
-                    string col81 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_NUMBER8].ToString();
-                    string col82 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_NUMBER9].ToString();
-                    string col83 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_NUMBER10].ToString();
-                    string col84 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_TIMESTAMP1].ToString();
-                    string col85 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_TIMESTAMP2].ToString();
-                    string col86 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_TIMESTAMP3].ToString();
-                    string col87 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_TIMESTAMP4].ToString();
-                    string col88 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_TIMESTAMP5].ToString();
-                    string col89 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_TIMESTAMP6].ToString();
-                    string col90 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_TIMESTAMP7].ToString();
+                    string col81 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_NUMBER8].ToString();
+                    string col82 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_NUMBER9].ToString();
+                    string col83 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_NUMBER10].ToString();
+                    string col84 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_TIMESTAMP1].ToString();
+                    string col85 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_TIMESTAMP2].ToString();
+                    string col86 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_TIMESTAMP3].ToString();
+                    string col87 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_TIMESTAMP4].ToString();
+                    string col88 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_TIMESTAMP5].ToString();
+                    string col89 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_TIMESTAMP6].ToString();
+                    string col90 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_TIMESTAMP7].ToString();
 
-                    string col91 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_TIMESTAMP8].ToString();
-                    string col92 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_TIMESTAMP9].ToString();
-                    string col93 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_TIMESTAMP10].ToString();
-                    string col94 = "col94";       //Buyer E-mail
-                    string col95 = "col95";       //Mode of Transport
-                    string col96 = "col96";       //Service Level
-                    string col97 = "col97";       //First Party Tax Registration Number
-                    string col98 = "col98";       //Third Party Tax Registration Number
-                    string col99 = "col99";       //Buyer Managed Transportation
+                    string col91 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_TIMESTAMP8].ToString();
+                    string col92 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_TIMESTAMP9].ToString();
+                    string col93 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_TIMESTAMP10].ToString();
+                    string col94 = "";       //Buyer E-mail
+                    string col95 = "";       //Mode of Transport
+                    string col96 = "";       //Service Level
+                    string col97 = "";       //First Party Tax Registration Number
+                    string col98 = "";       //Third Party Tax Registration Number
+                    string col99 = "";       //Buyer Managed Transportation
 
                     //string col71 = "col71";
 
@@ -1227,103 +1234,103 @@ namespace XCustPr
                     string col05 = row[xCPLITDB.xCPLIT.line_type].ToString();//Line Type       รอถาม  
                     string col06 = row[xCPLITDB.xCPLIT.item_description].ToString();      //Item       รอถาม  
                     string col07 = row[xCPLITDB.xCPLIT.item_description].ToString();//Item Description      รอถาม  
-                    string col08 = "col08";//Item Revision       รอถาม 
+                    string col08 = "";//Item Revision       รอถาม 
                     string col09 = row[xCPLITDB.xCPLIT.category].ToString();//Category Name       รอถาม 
-                    string col10 = "col10";//Amount       รอถาม 
+                    string col10 = "";//Amount       รอถาม 
 
-                    string col11 = "col11";//Quantity รอถาม  
-                    string col12 = "col12";//UOM
-                    string col13 = "col13";//Price
-                    string col14 = "col14";//Secondary Quantity
-                    string col15 = "col15";//Secondary UOM
-                    string col16 = "col16";//Supplier Item
-                    string col17 = "col17";//Negotiated
-                    string col18 = "col18";//Hazard Class
-                    string col19 = "col19";//UN Number
-                    string col20 = "col20";//Note to Supplier 
+                    string col11 = "";//Quantity รอถาม  
+                    string col12 = "";//UOM
+                    string col13 = "";//Price
+                    string col14 = "";//Secondary Quantity
+                    string col15 = "";//Secondary UOM
+                    string col16 = "";//Supplier Item
+                    string col17 = "";//Negotiated
+                    string col18 = "";//Hazard Class
+                    string col19 = "";//UN Number
+                    string col20 = "";//Note to Supplier 
 
-                    string col21 = "col21";//Note to Receiver
-                    string col22 = "col22"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_CATEGORY].ToString();
-                    string col23 = "col23"; //row[xCRHIADB.xCRHIA.ATTRIBUTE1].ToString();
-                    string col24 = "col24"; //row[xCRHIADB.xCRHIA.ATTRIBUTE2].ToString();
-                    string col25 = "col25"; //row[xCRHIADB.xCRHIA.ATTRIBUTE3].ToString();
-                    string col26 = "col26"; //row[xCRHIADB.xCRHIA.ATTRIBUTE4].ToString();
-                    string col27 = "col27"; //row[xCRHIADB.xCRHIA.ATTRIBUTE5].ToString();
-                    string col28 = "col28"; //row[xCRHIADB.xCRHIA.ATTRIBUTE6].ToString();
-                    string col29 = "col29"; //row[xCRHIADB.xCRHIA.ATTRIBUTE7].ToString();
-                    string col30 = "col30"; //row[xCRHIADB.xCRHIA.ATTRIBUTE8].ToString();
+                    string col21 = "";//Note to Receiver
+                    string col22 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_CATEGORY].ToString();
+                    string col23 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE1].ToString();
+                    string col24 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE2].ToString();
+                    string col25 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE3].ToString();
+                    string col26 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE4].ToString();
+                    string col27 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE5].ToString();
+                    string col28 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE6].ToString();
+                    string col29 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE7].ToString();
+                    string col30 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE8].ToString();
 
-                    string col31 = "col31"; //row[xCRHIADB.xCRHIA.ATTRIBUTE9].ToString();
-                    string col32 = "col32"; //row[xCRHIADB.xCRHIA.ATTRIBUTE10].ToString();
-                    string col33 = "col33"; //row[xCRHIADB.xCRHIA.ATTRIBUTE11].ToString();
-                    string col34 = "col34"; //row[xCRHIADB.xCRHIA.ATTRIBUTE12].ToString();
-                    string col35 = "col35"; //row[xCRHIADB.xCRHIA.ATTRIBUTE13].ToString();
-                    string col36 = "col36"; //row[xCRHIADB.xCRHIA.ATTRIBUTE14].ToString();
-                    string col37 = "col37"; //row[xCRHIADB.xCRHIA.ATTRIBUTE15].ToString();
-                    string col38 = "col38"; //row[xCRHIADB.xCRHIA.ATTRIBUTE16].ToString();
-                    string col39 = "col39"; //row[xCRHIADB.xCRHIA.ATTRIBUTE17].ToString();
-                    string col40 = "col40"; //row[xCRHIADB.xCRHIA.ATTRIBUTE18].ToString();
+                    string col31 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE9].ToString();
+                    string col32 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE10].ToString();
+                    string col33 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE11].ToString();
+                    string col34 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE12].ToString();
+                    string col35 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE13].ToString();
+                    string col36 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE14].ToString();
+                    string col37 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE15].ToString();
+                    string col38 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE16].ToString();
+                    string col39 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE17].ToString();
+                    string col40 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE18].ToString();
 
-                    string col41 = "col41"; //row[xCRHIADB.xCRHIA.ATTRIBUTE19].ToString();
-                    string col42 = "col42"; //row[xCRHIADB.xCRHIA.ATTRIBUTE20].ToString();
-                    string col43 = "col43"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE1].ToString();
-                    string col44 = "col44"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE2].ToString();
-                    string col45 = "col45"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE3].ToString();
-                    string col46 = "col46"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE4].ToString();
-                    string col47 = "col47"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE5].ToString();
-                    string col48 = "col48"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE6].ToString();
-                    string col49 = "col49"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE7].ToString();
-                    string col50 = "col50"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE8].ToString();
+                    string col41 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE19].ToString();
+                    string col42 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE20].ToString();
+                    string col43 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE1].ToString();
+                    string col44 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE2].ToString();
+                    string col45 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE3].ToString();
+                    string col46 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE4].ToString();
+                    string col47 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE5].ToString();
+                    string col48 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE6].ToString();
+                    string col49 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE7].ToString();
+                    string col50 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE8].ToString();
 
-                    string col51 = "col51"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE9].ToString();
-                    string col52 = "col52"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE10].ToString();
-                    string col53 = "col53"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER1].ToString();
-                    string col54 = "col54"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER2].ToString();
-                    string col55 = "col55"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER3].ToString();
-                    string col56 = "col56"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER4].ToString();
-                    string col57 = "col57"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER5].ToString();
-                    string col58 = "col58"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER6].ToString();
-                    string col59 = "col59"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER7].ToString();
-                    string col60 = "col60"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER8].ToString();
+                    string col51 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE9].ToString();
+                    string col52 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE10].ToString();
+                    string col53 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER1].ToString();
+                    string col54 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER2].ToString();
+                    string col55 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER3].ToString();
+                    string col56 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER4].ToString();
+                    string col57 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER5].ToString();
+                    string col58 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER6].ToString();
+                    string col59 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER7].ToString();
+                    string col60 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER8].ToString();
 
-                    string col61 = "col61"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER9].ToString();
-                    string col62 = "col62"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER10].ToString();
-                    string col63 = "col63"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP1].ToString();
-                    string col64 = "col64"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP2].ToString();
-                    string col65 = "col65"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP3].ToString();
-                    string col66 = "col66"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP4].ToString();
-                    string col67 = "col67"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP5].ToString();
-                    string col68 = "col68"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP6].ToString();
-                    string col69 = "col69"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP7].ToString();
-                    string col70 = "col70"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP8].ToString();
+                    string col61 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER9].ToString();
+                    string col62 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER10].ToString();
+                    string col63 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP1].ToString();
+                    string col64 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP2].ToString();
+                    string col65 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP3].ToString();
+                    string col66 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP4].ToString();
+                    string col67 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP5].ToString();
+                    string col68 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP6].ToString();
+                    string col69 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP7].ToString();
+                    string col70 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP8].ToString();
 
-                    string col71 = "col71"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP9].ToString();
-                    string col72 = "col72"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP10].ToString();
-                    string col73 = "col73";       //Unit Weight
-                    string col74 = "col74";     //Weight UOM
-                    string col75 = "col75";     //Weight UOM Name
-                    string col76 = "col76";     //Unit Volumn
-                    string col77 = "col77";     //Volume UOM
-                    string col78 = "col78";     //Volume UOM Name
-                    string col79 = "col79";     //Template Name
-                    string col80 = "col80";     //ITEM_ATTRIBUTE_CATEGORY
+                    string col71 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP9].ToString();
+                    string col72 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP10].ToString();
+                    string col73 = "";       //Unit Weight
+                    string col74 = "";     //Weight UOM
+                    string col75 = "";     //Weight UOM Name
+                    string col76 = "";     //Unit Volumn
+                    string col77 = "";     //Volume UOM
+                    string col78 = "";     //Volume UOM Name
+                    string col79 = "";     //Template Name
+                    string col80 = "";     //ITEM_ATTRIBUTE_CATEGORY
 
-                    string col81 = "col81";     //ITEM_ATTRIBUTE1
-                    string col82 = "col82";     //ITEM_ATTRIBUTE2
-                    string col83 = "col83";     //ITEM_ATTRIBUTE3
-                    string col84 = "col84";     //ITEM_ATTRIBUTE4
-                    string col85 = "col85";     //ITEM_ATTRIBUTE5
-                    string col86 = "col86";     //ITEM_ATTRIBUTE6
-                    string col87 = "col87";     //ITEM_ATTRIBUTE7
-                    string col88 = "col88";     //ITEM_ATTRIBUTE8
-                    string col89 = "col89";     //ITEM_ATTRIBUTE9
-                    string col90 = "col90";     //ITEM_ATTRIBUTE10
+                    string col81 = "";     //ITEM_ATTRIBUTE1
+                    string col82 = "";     //ITEM_ATTRIBUTE2
+                    string col83 = "";     //ITEM_ATTRIBUTE3
+                    string col84 = "";     //ITEM_ATTRIBUTE4
+                    string col85 = "";     //ITEM_ATTRIBUTE5
+                    string col86 = "";     //ITEM_ATTRIBUTE6
+                    string col87 = "";     //ITEM_ATTRIBUTE7
+                    string col88 = "";     //ITEM_ATTRIBUTE8
+                    string col89 = "";     //ITEM_ATTRIBUTE9
+                    string col90 = "";     //ITEM_ATTRIBUTE10
 
-                    string col91 = "col91";     //ITEM_ATTRIBUTE11
-                    string col92 = "col92";     //ITEM_ATTRIBUTE12
-                    string col93 = "col93";     //ITEM_ATTRIBUTE13
-                    string col94 = "col94";       //ITEM_ATTRIBUTE14
-                    string col95 = "col95";       //ITEM_ATTRIBUTE15
+                    string col91 = "";     //ITEM_ATTRIBUTE11
+                    string col92 = "";     //ITEM_ATTRIBUTE12
+                    string col93 = "";     //ITEM_ATTRIBUTE13
+                    string col94 = "";       //ITEM_ATTRIBUTE14
+                    string col95 = "";       //ITEM_ATTRIBUTE15
 
 
                     //string col71 = "col71";
@@ -1373,106 +1380,106 @@ namespace XCustPr
                 {
                     string col01 = row[xCPLLITDB.xCPLLIT.interface_line_key].ToString();     // Interface Line Location Key
                     string col02 = row[xCPLLITDB.xCPLLIT.interface_header_key].ToString();      //Interface Line Key        รอถาม  
-                    string col03 = "col03";//row[xCPLLITDB.xCPLLIT.s].ToString();      //Schedule      รอถาม  
-                    string col04 = "col04";//row[xCPLLITDB.xCPLLIT.line_num].ToString();       //Ship-to Location
-                    string col05 = "col04";//row[xCPLLITDB.xCPLLIT.shipment_number].ToString();//Ship-to Organization       รอถาม  
+                    string col03 = "";//row[xCPLLITDB.xCPLLIT.s].ToString();      //Schedule      รอถาม  
+                    string col04 = "";//row[xCPLLITDB.xCPLLIT.line_num].ToString();       //Ship-to Location
+                    string col05 = "";//row[xCPLLITDB.xCPLLIT.shipment_number].ToString();//Ship-to Organization       รอถาม  
                     string col06 = row[xCPLLITDB.xCPLLIT.amt].ToString();      //Amount       รอถาม  
-                    string col07 = "col04";//row[xCPLLITDB.xCPLLIT.q].ToString();//Quantity      รอถาม  
-                    string col08 = "col08";//Need-by Date       รอถาม 
-                    string col09 = "col09";//row[xCPLITDB.xCPLIT.category].ToString();//Promised Date       รอถาม 
-                    string col10 = "col10";//Secondary Quantity       รอถาม 
+                    string col07 = "";//row[xCPLLITDB.xCPLLIT.q].ToString();//Quantity      รอถาม  
+                    string col08 = "";//Need-by Date       รอถาม 
+                    string col09 = "";//row[xCPLITDB.xCPLIT.category].ToString();//Promised Date       รอถาม 
+                    string col10 = "";//Secondary Quantity       รอถาม 
 
-                    string col11 = "col11";//Secondary UOM รอถาม  
-                    string col12 = "col12";//Destination Type Code
-                    string col13 = "col13";//Accrue at receipt
-                    string col14 = "col14";//Secondary Quantity
-                    string col15 = "col15";//Secondary UOM
-                    string col16 = "col16";//Supplier Item
-                    string col17 = "col17";//Negotiated
-                    string col18 = "col18";//Hazard Class
-                    string col19 = "col19";//UN Number
-                    string col20 = "col20";//Note to Supplier 
+                    string col11 = "";//Secondary UOM รอถาม  
+                    string col12 = "";//Destination Type Code
+                    string col13 = "";//Accrue at receipt
+                    string col14 = "";//Secondary Quantity
+                    string col15 = "";//Secondary UOM
+                    string col16 = "";//Supplier Item
+                    string col17 = "";//Negotiated
+                    string col18 = "";//Hazard Class
+                    string col19 = "";//UN Number
+                    string col20 = "";//Note to Supplier 
 
-                    string col21 = "col21";//Note to Receiver
-                    string col22 = "col22"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_CATEGORY].ToString();
-                    string col23 = "col23"; //row[xCRHIADB.xCRHIA.ATTRIBUTE1].ToString();
-                    string col24 = "col24"; //row[xCRHIADB.xCRHIA.ATTRIBUTE2].ToString();
-                    string col25 = "col25"; //row[xCRHIADB.xCRHIA.ATTRIBUTE3].ToString();
-                    string col26 = "col26"; //row[xCRHIADB.xCRHIA.ATTRIBUTE4].ToString();
-                    string col27 = "col27"; //row[xCRHIADB.xCRHIA.ATTRIBUTE5].ToString();
-                    string col28 = "col28"; //row[xCRHIADB.xCRHIA.ATTRIBUTE6].ToString();
-                    string col29 = "col29"; //row[xCRHIADB.xCRHIA.ATTRIBUTE7].ToString();
-                    string col30 = "col30"; //row[xCRHIADB.xCRHIA.ATTRIBUTE8].ToString();
+                    string col21 = "";//Note to Receiver
+                    string col22 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_CATEGORY].ToString();
+                    string col23 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE1].ToString();
+                    string col24 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE2].ToString();
+                    string col25 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE3].ToString();
+                    string col26 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE4].ToString();
+                    string col27 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE5].ToString();
+                    string col28 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE6].ToString();
+                    string col29 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE7].ToString();
+                    string col30 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE8].ToString();
 
-                    string col31 = "col31"; //row[xCRHIADB.xCRHIA.ATTRIBUTE9].ToString();
-                    string col32 = "col32"; //row[xCRHIADB.xCRHIA.ATTRIBUTE10].ToString();
-                    string col33 = "col33"; //row[xCRHIADB.xCRHIA.ATTRIBUTE11].ToString();
-                    string col34 = "col34"; //row[xCRHIADB.xCRHIA.ATTRIBUTE12].ToString();
-                    string col35 = "col35"; //row[xCRHIADB.xCRHIA.ATTRIBUTE13].ToString();
+                    string col31 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE9].ToString();
+                    string col32 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE10].ToString();
+                    string col33 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE11].ToString();
+                    string col34 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE12].ToString();
+                    string col35 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE13].ToString();
                     string col36 = row[xCPLLITDB.xCPLLIT.attribute1].ToString();
                     string col37 = row[xCPLLITDB.xCPLLIT.attribute2].ToString();
                     string col38 = row[xCPLLITDB.xCPLLIT.attribute3].ToString();
                     string col39 = row[xCPLLITDB.xCPLLIT.attribute4].ToString();
-                    string col40 = "col40"; //row[xCRHIADB.xCRHIA.ATTRIBUTE18].ToString();
+                    string col40 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE18].ToString();
 
-                    string col41 = "col41"; //row[xCRHIADB.xCRHIA.ATTRIBUTE19].ToString();
-                    string col42 = "col42"; //row[xCRHIADB.xCRHIA.ATTRIBUTE20].ToString();
-                    string col43 = "col43"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE1].ToString();
-                    string col44 = "col44"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE2].ToString();
-                    string col45 = "col45"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE3].ToString();
-                    string col46 = "col46"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE4].ToString();
-                    string col47 = "col47"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE5].ToString();
-                    string col48 = "col48"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE6].ToString();
-                    string col49 = "col49"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE7].ToString();
-                    string col50 = "col50"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE8].ToString();
+                    string col41 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE19].ToString();
+                    string col42 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE20].ToString();
+                    string col43 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE1].ToString();
+                    string col44 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE2].ToString();
+                    string col45 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE3].ToString();
+                    string col46 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE4].ToString();
+                    string col47 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE5].ToString();
+                    string col48 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE6].ToString();
+                    string col49 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE7].ToString();
+                    string col50 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE8].ToString();
 
-                    string col51 = "col51"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE9].ToString();
-                    string col52 = "col52"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE10].ToString();
-                    string col53 = "col53"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER1].ToString();
-                    string col54 = "col54"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER2].ToString();
-                    string col55 = "col55"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER3].ToString();
-                    string col56 = "col56"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER4].ToString();
-                    string col57 = "col57"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER5].ToString();
-                    string col58 = "col58"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER6].ToString();
-                    string col59 = "col59"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER7].ToString();
-                    string col60 = "col60"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER8].ToString();
+                    string col51 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE9].ToString();
+                    string col52 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_DATE10].ToString();
+                    string col53 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER1].ToString();
+                    string col54 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER2].ToString();
+                    string col55 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER3].ToString();
+                    string col56 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER4].ToString();
+                    string col57 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER5].ToString();
+                    string col58 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER6].ToString();
+                    string col59 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER7].ToString();
+                    string col60 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER8].ToString();
 
-                    string col61 = "col61"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER9].ToString();
-                    string col62 = "col62"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER10].ToString();
-                    string col63 = "col63"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP1].ToString();
-                    string col64 = "col64"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP2].ToString();
-                    string col65 = "col65"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP3].ToString();
-                    string col66 = "col66"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP4].ToString();
-                    string col67 = "col67"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP5].ToString();
-                    string col68 = "col68"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP6].ToString();
-                    string col69 = "col69"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP7].ToString();
-                    string col70 = "col70"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP8].ToString();
+                    string col61 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER9].ToString();
+                    string col62 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_NUMBER10].ToString();
+                    string col63 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP1].ToString();
+                    string col64 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP2].ToString();
+                    string col65 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP3].ToString();
+                    string col66 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP4].ToString();
+                    string col67 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP5].ToString();
+                    string col68 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP6].ToString();
+                    string col69 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP7].ToString();
+                    string col70 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP8].ToString();
 
-                    string col71 = "col71"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP9].ToString();
-                    string col72 = "col72"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP10].ToString();
-                    string col73 = "col73";       //Unit Weight
-                    string col74 = "col74";     //Weight UOM
-                    string col75 = "col75";     //Weight UOM Name
-                    string col76 = "col76";     //Unit Volumn
-                    string col77 = "col77";     //Volume UOM
-                    string col78 = "col78";     //Volume UOM Name
-                    string col79 = "col79";     //Template Name
-                    string col80 = "col80";     //ITEM_ATTRIBUTE_CATEGORY
+                    string col71 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP9].ToString();
+                    string col72 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_TIMESTAMP10].ToString();
+                    string col73 = "";       //Unit Weight
+                    string col74 = "";     //Weight UOM
+                    string col75 = "";     //Weight UOM Name
+                    string col76 = "";     //Unit Volumn
+                    string col77 = "";     //Volume UOM
+                    string col78 = "";     //Volume UOM Name
+                    string col79 = "";     //Template Name
+                    string col80 = "";     //ITEM_ATTRIBUTE_CATEGORY
 
-                    string col81 = "col81";     //ITEM_ATTRIBUTE1
-                    string col82 = "col82";     //ITEM_ATTRIBUTE2
-                    string col83 = "col83";     //ITEM_ATTRIBUTE3
-                    string col84 = "col84";     //ITEM_ATTRIBUTE4
-                    string col85 = "col85";     //ITEM_ATTRIBUTE5
-                    string col86 = "col86";     //ITEM_ATTRIBUTE6
-                    string col87 = "col87";     //ITEM_ATTRIBUTE7
-                    string col88 = "col88";     //ITEM_ATTRIBUTE8
-                    string col89 = "col89";     //ITEM_ATTRIBUTE9
-                    string col90 = "col90";     //ITEM_ATTRIBUTE10
+                    string col81 = "";     //ITEM_ATTRIBUTE1
+                    string col82 = "";     //ITEM_ATTRIBUTE2
+                    string col83 = "";     //ITEM_ATTRIBUTE3
+                    string col84 = "";     //ITEM_ATTRIBUTE4
+                    string col85 = "";     //ITEM_ATTRIBUTE5
+                    string col86 = "";     //ITEM_ATTRIBUTE6
+                    string col87 = "";     //ITEM_ATTRIBUTE7
+                    string col88 = "";     //ITEM_ATTRIBUTE8
+                    string col89 = "";     //ITEM_ATTRIBUTE9
+                    string col90 = "";     //ITEM_ATTRIBUTE10
 
-                    string col91 = "col91";     //ITEM_ATTRIBUTE11
-                    string col92 = "col92";     //ITEM_ATTRIBUTE12
-                    string col93 = "col93";     //ITEM_ATTRIBUTE13
+                    string col91 = "";     //ITEM_ATTRIBUTE11
+                    string col92 = "";     //ITEM_ATTRIBUTE12
+                    string col93 = "";     //ITEM_ATTRIBUTE13
                     //string col94 = "col94";       //ITEM_ATTRIBUTE14
                     //string col95 = "col95";       //ITEM_ATTRIBUTE15
 
@@ -1524,140 +1531,140 @@ namespace XCustPr
                 {
                     string col01 = row[xCPDITDB.xCPDIT.interface_distribution_key].ToString();
                     string col02 = row[xCPDITDB.xCPDIT.interface_line_location_key].ToString();//row[xCPHITDB.xCPHIT.d].ToString(); ;      //Interface Line Location Key        รอถาม  
-                    string col03 = "col03";//"col03";      // Distribution      รอถาม  
-                    string col04 = "col04";// Deliver-to Location  row[xCPHITDB.xCPHIT.import_source].ToString();
-                    string col05 = "col05";//row[xCPHITDB.xCPHIT.approval_action].ToString(); ;//Approval Action       รอถาม  
-                    string col06 = "col06";      //Order       รอถาม  
-                    string col07 = "col07";//row[xCPHITDB.xCPHIT.document_typre_code].ToString(); ;//Document Type Code      รอถาม  
-                    string col08 = "col08";//Style       รอถาม 
-                    string col09 = "col09";//row[xCPHITDB.xCPHIT.prc_bu_name].ToString(); ;//Procurement BU       รอถาม 
-                    string col10 = "col10";//row[xCPHITDB.xCPHIT.req_bu_name].ToString(); ;//Requisitioning BU       รอถาม 
+                    string col03 = row[xCPDITDB.xCPDIT.distribution_num].ToString();//"col03";      // Distribution      รอถาม  
+                    string col04 = row[xCPDITDB.xCPDIT.deliver_to_location].ToString();// Deliver-to Location  row[xCPHITDB.xCPHIT.import_source].ToString();
+                    string col05 = "";//row[xCPHITDB.xCPHIT.approval_action].ToString(); ;//Approval Action       รอถาม  
+                    string col06 = "";      //Order       รอถาม  
+                    string col07 = "";//row[xCPHITDB.xCPHIT.document_typre_code].ToString(); ;//Document Type Code      รอถาม  
+                    string col08 = "";//Style       รอถาม 
+                    string col09 = "";//row[xCPHITDB.xCPHIT.prc_bu_name].ToString(); ;//Procurement BU       รอถาม 
+                    string col10 = "";//row[xCPHITDB.xCPHIT.req_bu_name].ToString(); ;//Requisitioning BU       รอถาม 
 
-                    string col11 = "col11";//row[xCPHITDB.xCPHIT.soldto_re_name].ToString(); ;//Sold-to Legal Entity รอถาม  
-                    string col12 = "col12";//row[xCPHITDB.xCPHIT.billto_bu_name].ToString(); ;//Bill-to BU
-                    string col13 = "col13";//row[xCPHITDB.xCPHIT.buyyer_name].ToString(); ;//Buyer
-                    string col14 = "col14";//row[xCPHITDB.xCPHIT.currency_code].ToString(); ;//Currency Code
-                    string col15 = "col15";//Rate
-                    string col16 = "col16";//Rate Type
-                    string col17 = "col17";//Rate Date
-                    string col18 = "col18";//Description
-                    string col19 = "col19";//row[xCPHITDB.xCPHIT.bill_to_location].ToString(); ;//Bill-to Location
-                    string col20 = "col20";//row[xCPHITDB.xCPHIT.ship_to_location].ToString(); ;//Ship-to Location
+                    string col11 = "";//row[xCPHITDB.xCPHIT.soldto_re_name].ToString(); ;//Sold-to Legal Entity รอถาม  
+                    string col12 = "";//row[xCPHITDB.xCPHIT.billto_bu_name].ToString(); ;//Bill-to BU
+                    string col13 = "";//row[xCPHITDB.xCPHIT.buyyer_name].ToString(); ;//Buyer
+                    string col14 = "";//row[xCPHITDB.xCPHIT.currency_code].ToString(); ;//Currency Code
+                    string col15 = "";//Rate
+                    string col16 = "";//Rate Type
+                    string col17 = "";//Rate Date
+                    string col18 = "";//Description
+                    string col19 = "";//row[xCPHITDB.xCPHIT.bill_to_location].ToString(); ;//Bill-to Location
+                    string col20 = "";//row[xCPHITDB.xCPHIT.ship_to_location].ToString(); ;//Ship-to Location
 
-                    string col21 = "col21";//row[xCPHITDB.xCPHIT.supplier_code].ToString();//Supplier
-                    string col22 = "col22";//row[xCPHITDB.xCPHIT.supplier_code].ToString();//Supplier Number
-                    string col23 = "col23";//row[xCPHITDB.xCPHIT.supplier_site_code].ToString(); ;//Supplier Site
-                    string col24 = "col24";//Supplier Contact
-                    string col25 = "col25";//Supplier Order
-                    string col26 = "col26";//FOB
-                    string col27 = "col27";//Carrier
-                    string col28 = "col28";//Freight Terms
-                    string col29 = "col29";//Pay On Code
-                    string col30 = "col30";//Payment Terms
+                    string col21 = "";//row[xCPHITDB.xCPHIT.supplier_code].ToString();//Supplier
+                    string col22 = "";//row[xCPHITDB.xCPHIT.supplier_code].ToString();//Supplier Number
+                    string col23 = "";//row[xCPHITDB.xCPHIT.supplier_site_code].ToString(); ;//Supplier Site
+                    string col24 = "";//Supplier Contact
+                    string col25 = "";//Supplier Order
+                    string col26 = "";//FOB
+                    string col27 = "";//Carrier
+                    string col28 = "";//Freight Terms
+                    string col29 = "";//Pay On Code
+                    string col30 = "";//Payment Terms
 
-                    string col31 = "col31";//Initiating Party
-                    string col32 = "col32";//Change Order Description
-                    string col33 = "col33";//Required Acknowledgment
-                    string col34 = "col34";//Acknowledge Within (Days)
-                    string col35 = "col35";//Communication Method
-                    string col36 = "col36";//Fax
-                    string col37 = "col37";//E-mail
-                    string col38 = "col38";//Confirming order
-                    string col39 = "col39";//Note to Supplier
-                    string col40 = "col40";//Note to Receiver
+                    string col31 = "";//Initiating Party
+                    string col32 = "";//Change Order Description
+                    string col33 = "";//Required Acknowledgment
+                    string col34 = "";//Acknowledge Within (Days)
+                    string col35 = "";//Communication Method
+                    string col36 = "";//Fax
+                    string col37 = "";//E-mail
+                    string col38 = "";//Confirming order
+                    string col39 = "";//Note to Supplier
+                    string col40 = "";//Note to Receiver
 
-                    string col41 = "col41";//Default Taxation Country Code
-                    string col42 = "col42";//Tax Document Subtype Code
-                    string col43 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_CATEGORY].ToString();
-                    string col44 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE1].ToString();
-                    string col45 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE2].ToString();
-                    string col46 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE3].ToString();
-                    string col47 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE4].ToString();
-                    string col48 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE5].ToString();
-                    string col49 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE6].ToString();
-                    string col50 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE7].ToString();
+                    string col41 = "";//Default Taxation Country Code
+                    string col42 = "";//Tax Document Subtype Code
+                    string col43 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_CATEGORY].ToString();
+                    string col44 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE1].ToString();
+                    string col45 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE2].ToString();
+                    string col46 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE3].ToString();
+                    string col47 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE4].ToString();
+                    string col48 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE5].ToString();
+                    string col49 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE6].ToString();
+                    string col50 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE7].ToString();
 
-                    string col51 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE8].ToString();
-                    string col52 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE9].ToString();
-                    string col53 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE10].ToString();
-                    string col54 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE11].ToString();
-                    string col55 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE12].ToString();
-                    string col56 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE13].ToString();
-                    string col57 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE14].ToString();
-                    string col58 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE15].ToString();
-                    string col59 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE16].ToString();
-                    string col60 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE17].ToString();
+                    string col51 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE8].ToString();
+                    string col52 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE9].ToString();
+                    string col53 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE10].ToString();
+                    string col54 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE11].ToString();
+                    string col55 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE12].ToString();
+                    string col56 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE13].ToString();
+                    string col57 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE14].ToString();
+                    string col58 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE15].ToString();
+                    string col59 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE16].ToString();
+                    string col60 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE17].ToString();
 
-                    string col61 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE18].ToString();
-                    string col62 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE19].ToString();
-                    string col63 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE20].ToString();
-                    string col64 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_DATE1].ToString();
-                    string col65 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_DATE2].ToString();
-                    string col66 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_DATE3].ToString();
-                    string col67 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_DATE4].ToString();
-                    string col68 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_DATE5].ToString();
-                    string col69 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_DATE6].ToString();
-                    string col70 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_DATE7].ToString();
+                    string col61 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE18].ToString();
+                    string col62 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE19].ToString();
+                    string col63 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE20].ToString();
+                    string col64 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_DATE1].ToString();
+                    string col65 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_DATE2].ToString();
+                    string col66 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_DATE3].ToString();
+                    string col67 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_DATE4].ToString();
+                    string col68 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_DATE5].ToString();
+                    string col69 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_DATE6].ToString();
+                    string col70 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_DATE7].ToString();
 
-                    string col71 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_DATE8].ToString();
-                    string col72 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_DATE9].ToString();
-                    string col73 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_DATE10].ToString();
-                    string col74 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_NUMBER1].ToString();
-                    string col75 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_NUMBER2].ToString();
-                    string col76 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_NUMBER3].ToString();
-                    string col77 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_NUMBER4].ToString();
-                    string col78 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_NUMBER5].ToString();
-                    string col79 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_NUMBER6].ToString();
-                    string col80 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_NUMBER7].ToString();
+                    string col71 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_DATE8].ToString();
+                    string col72 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_DATE9].ToString();
+                    string col73 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_DATE10].ToString();
+                    string col74 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_NUMBER1].ToString();
+                    string col75 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_NUMBER2].ToString();
+                    string col76 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_NUMBER3].ToString();
+                    string col77 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_NUMBER4].ToString();
+                    string col78 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_NUMBER5].ToString();
+                    string col79 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_NUMBER6].ToString();
+                    string col80 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_NUMBER7].ToString();
 
-                    string col81 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_NUMBER8].ToString();
-                    string col82 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_NUMBER9].ToString();
-                    string col83 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_NUMBER10].ToString();
-                    string col84 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_TIMESTAMP1].ToString();
-                    string col85 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_TIMESTAMP2].ToString();
-                    string col86 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_TIMESTAMP3].ToString();
-                    string col87 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_TIMESTAMP4].ToString();
-                    string col88 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_TIMESTAMP5].ToString();
-                    string col89 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_TIMESTAMP6].ToString();
-                    string col90 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_TIMESTAMP7].ToString();
+                    string col81 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_NUMBER8].ToString();
+                    string col82 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_NUMBER9].ToString();
+                    string col83 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_NUMBER10].ToString();
+                    string col84 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_TIMESTAMP1].ToString();
+                    string col85 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_TIMESTAMP2].ToString();
+                    string col86 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_TIMESTAMP3].ToString();
+                    string col87 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_TIMESTAMP4].ToString();
+                    string col88 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_TIMESTAMP5].ToString();
+                    string col89 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_TIMESTAMP6].ToString();
+                    string col90 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_TIMESTAMP7].ToString();
 
-                    string col91 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_TIMESTAMP8].ToString();
-                    string col92 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_TIMESTAMP9].ToString();
-                    string col93 = "col42";//row[xCPHITDB.xCPHIT.ATTRIBUTE_TIMESTAMP10].ToString();
-                    string col94 = "col94";       //Buyer E-mail
-                    string col95 = "col95";       //Mode of Transport
-                    string col96 = "col96";       //Service Level
-                    string col97 = "col97";       //First Party Tax Registration Number
-                    string col98 = "col98";       //Third Party Tax Registration Number
-                    string col99 = "col99";       //Buyer Managed Transportation
-                    string col100 = "col100";
+                    string col91 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_TIMESTAMP8].ToString();
+                    string col92 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_TIMESTAMP9].ToString();
+                    string col93 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_TIMESTAMP10].ToString();
+                    string col94 = "";       //Buyer E-mail
+                    string col95 = "";       //Mode of Transport
+                    string col96 = "";       //Service Level
+                    string col97 = "";       //First Party Tax Registration Number
+                    string col98 = "";       //Third Party Tax Registration Number
+                    string col99 = "";       //Buyer Managed Transportation
+                    string col100 = "";
 
-                    string col101 = "col101";
-                    string col102 = "col102";
-                    string col103 = "col103";
-                    string col104 = "col104";
-                    string col105 = "col105";
-                    string col106 = "col106";
-                    string col107 = "col107";
-                    string col108 = "col108";
-                    string col109 = "col109";
-                    string col110 = "col110";
+                    string col101 = "";
+                    string col102 = "";
+                    string col103 = "";
+                    string col104 = "";
+                    string col105 = "";
+                    string col106 = "";
+                    string col107 = "";
+                    string col108 = "";
+                    string col109 = "";
+                    string col110 = "";
 
-                    string col111 = "col111";
-                    string col112 = "col112";
-                    string col113 = "col113";
-                    string col114 = "col114";
-                    string col115 = "col115";
-                    string col116 = "col116";
-                    string col117 = "col117";
-                    string col118 = "col118";
-                    string col119 = "col119";
-                    string col120 = "col120";
+                    string col111 = "";
+                    string col112 = "";
+                    string col113 = "";
+                    string col114 = "";
+                    string col115 = "";
+                    string col116 = "";
+                    string col117 = "";
+                    string col118 = "";
+                    string col119 = "";
+                    string col120 = "";
 
-                    string col121 = "col121";
-                    string col122 = "col122";
-                    string col123 = "col123";
-                    string col124 = "col124";
+                    string col121 = "";
+                    string col122 = "";
+                    string col123 = "";
+                    string col124 = "";
 
                     //string col71 = "col71";
 

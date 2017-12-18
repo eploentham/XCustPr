@@ -85,5 +85,18 @@ namespace XCustPr
             }
             return chk;
         }
+        public String selectBilltoLocation(String org, String cedarSub)
+        {
+            String sql = "", chk="";
+            //Boolean chk = false;
+            DataTable dt = new DataTable();
+            sql = "Select * From " + xCSIMT.table + " Where " + xCSIMT.ORGAINZATION_ID + "='" + org + "' and " + xCSIMT.attribute1 + "='" + cedarSub + "'";
+            dt = conn.selectData(sql, "kfc_po");
+            if (dt.Rows.Count >= 1)
+            {
+                chk = dt.Rows[0][xCSIMT.DESCRIPTION].ToString().Trim();
+            }
+            return chk;
+        }
     }
 }

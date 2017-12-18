@@ -113,6 +113,7 @@ namespace XCustPr
             }
             return chk;
         }
+        
         public String selectOutBoundFlag(String po_header_id, String po_line_id)
         {
             String sql = "";
