@@ -277,7 +277,7 @@ namespace XCustPr
                             string col03 = row[xCLFPTDB.xCLFPT.SUPPLIER_CODE].ToString();
                             string col04 = "WP";
                             string col05 = ponumber;
-                            string col06 = Cm.initC.Company;     //Company
+                            string col06 = row[xCLFPTDB.xCLFPT.COMPANYCODE].ToString();     //Company
                             string col07 = linenumber;
                             string col08 = row[xCLFPTDB.xCLFPT.ERP_PO_NUMBER].ToString();
                             string col09 = reqDate;
