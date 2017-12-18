@@ -1530,7 +1530,7 @@ namespace XCustPr
                 foreach (DataRow row in dt.Rows)
                 {
                     string col01 = row[xCPDITDB.xCPDIT.interface_distribution_key].ToString();
-                    string col02 = row[xCPDITDB.xCPDIT.interface_line_location_key].ToString();//row[xCPHITDB.xCPHIT.d].ToString(); ;      //Interface Line Location Key        รอถาม  
+                    string col02 = row[xCPDITDB.xCPDIT.interface_line_location_key].ToString();//row[xCPHITDB.xCPHIT.d].ToString();      //Interface Line Location Key        รอถาม  
                     string col03 = row[xCPDITDB.xCPDIT.distribution_num].ToString();//"col03";      // Distribution      รอถาม  
                     string col04 = row[xCPDITDB.xCPDIT.deliver_to_location].ToString();// Deliver-to Location  row[xCPHITDB.xCPHIT.import_source].ToString();
                     string col05 = "";//row[xCPHITDB.xCPHIT.approval_action].ToString(); ;//Approval Action       รอถาม  

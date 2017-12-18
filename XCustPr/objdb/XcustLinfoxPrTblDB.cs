@@ -76,6 +76,7 @@ namespace XCustPr
             xCLFPT.supplier_name = "supplier_name";
             xCLFPT.ERROR_MSG2 = "error_message_po002";
             xCLFPT.request_id_po002 = "request_id_po002";
+            xCLFPT.file_name_po002 = "file_name_po002";
 
             //xCLFPT.table = "xcust_linfox_pr_tbl";
             xCLFPT.table = "xcust_linfox_pr_int_tbl";
@@ -480,6 +481,15 @@ namespace XCustPr
 
             return chk;
         }
+        public String updateFilenamePo002(String erp_po_number, String filename_po002, String requestId, String host, String pathLog)
+        {
+            String sql = "", chk = "";
+            sql = "Update " + xCLFPT.table + " Set "+xCLFPT.file_name_po002+" = '"+filename_po002+"' " +
+                "Where  " + xCLFPT.ERP_PO_NUMBER + " ='" + erp_po_number + "' ";
+            chk = conn.ExecuteNonQuery(sql.ToString(), host, pathLog);
+
+            return chk;
+        }
         public String updateValidateFlag1(String po_number, String line_number, String flag, String agreement_number, String agreement_line_number
             ,String supplierSiteCode, String suppName, String subInv_code, String price, String host, String pathLog)
         {
@@ -670,24 +680,28 @@ namespace XCustPr
             String time = System.DateTime.Now.ToString("HH.mm");
             DataTable dtFile = new DataTable();
 
-            line1 = "Program : XCUST Interface PO(ERP)To PO <LINFOX>" + Environment.NewLine;
+            line1 = "Program : XCUST Interface PO (ERP) To PO <LINFOX>" + Environment.NewLine;
             ControlMain cm = new ControlMain();
             path = cm.getPathLogProcess(programname);
             parameter = "Parameter : " + Environment.NewLine;
-            parameter += "           Path Initial :" + initC.PO002PathInitial + Environment.NewLine;
-            parameter += "           Path Destination :" + initC.PO002PathDestinaion + Environment.NewLine;
-            parameter += "           Create Date " + date + Environment.NewLine;
+            parameter += "           Path Initial = " + initC.PO002PathInitial + Environment.NewLine;
+            parameter += "           Path Destination = " + initC.PO002PathDestinaion + Environment.NewLine;
+            parameter += "           Create Date = " + date + Environment.NewLine;
             programstart = "Program Start : " + date+" " + time + Environment.NewLine;
             if (flag.Equals("nodata"))
             {
-                recordError = "Error PO002-001: No Data Found ";
+                recordError = "==> Error PO002-001: No Data Found ";
             }
             else
             {
-                sql = "Select count(1) as cnt, " + xCLFPT.file_name
+                //sql = "Select count(1) as cnt, " + xCLFPT.file_name
+                //+ " From " + xCLFPT.table
+                //+ " Where " + xCLFPT.request_id_po002 + " ='" + requedtId + "' " +
+                //"Group By " + xCLFPT.file_name;
+                sql = "Select count(1) as cnt, " + xCLFPT.file_name_po002
                 + " From " + xCLFPT.table
-                + " Where " + xCLFPT.request_id_po002 + " ='" + requedtId + "' " +
-                "Group By " + xCLFPT.file_name;
+                + " Where " + xCLFPT.request_id_po002 + " ='" + requedtId + "' and len("+xCLFPT.file_name_po002+") > 0 " +
+                "Group By " + xCLFPT.file_name_po002;
 
                 dtFile = conn.selectData(sql, "kfc_po");
 
@@ -696,11 +710,15 @@ namespace XCustPr
                     cntTotal = dtFile.Rows.Count;
                     foreach (DataRow rowFile in dtFile.Rows)
                     {
+                        if (rowFile[xCLFPT.file_name_po002].ToString().Equals(""))
+                        {
+                            continue;
+                        }
                         String valiPass = "", valiErr = "";
                         sql = "Select count(1) as cnt_vali " +
                             " From " + xCLFPT.table + " " +
                             " Where " + xCLFPT.request_id_po002 + " ='" + requedtId + "' " +
-                            " and " + xCLFPT.file_name + "='" + rowFile[xCLFPT.file_name].ToString() + "' and len(" + xCLFPT.ERROR_MSG2 + ") > 0 ";
+                            " and " + xCLFPT.file_name_po002 + "='" + rowFile[xCLFPT.file_name_po002].ToString() + "' and len(" + xCLFPT.ERROR_MSG2 + ") > 0 ";
 
                         DataTable dtR = conn.selectData(sql, "kfc_po");
                         if (dtR.Rows.Count > 0)
@@ -746,7 +764,7 @@ namespace XCustPr
                         //    cntErr++;
                         //}
                         //filename += "Filename " + rowFile[xCLFPT.file_name].ToString() + ", Total = " + rowFile["cnt"].ToString() + ", Validate pass = " + valiPass + ", Record Error = " + valiErr + " " + Environment.NewLine;
-                        filename += "Filename " + rowFile[xCLFPT.file_name].ToString() + Environment.NewLine;
+                        filename += "File Name : " + rowFile[xCLFPT.file_name_po002].ToString() + Environment.NewLine;
                         //if (int.TryParse(rowFile.recordError, out err))
                         //{
                         //    if (int.Parse(rowFile.recordError) > 0)
@@ -758,23 +776,27 @@ namespace XCustPr
                 }
                 String filename1 = "", filename1old = "";
                 sql = "Select * From " + xCLFPT.table + " " +
-                    "Where " + xCLFPT.request_id_po002 + " ='" + requedtId + "' " +
-                    "Order By " + xCLFPT.file_name + ", " + xCLFPT.PO_NUMBER;
+                    "Where " + xCLFPT.request_id_po002 + " ='" + requedtId + "'  and len(" + xCLFPT.file_name_po002 + ") > 0 " +
+                    "Order By " + xCLFPT.file_name_po002 + ", " + xCLFPT.PO_NUMBER;
                 DataTable dtErr = new DataTable();
                 dtErr = conn.selectData(sql, "kfc_po");
                 if (dtErr.Rows.Count > 0)
                 {
                     foreach (DataRow dtErr1 in dtErr.Rows)
                     {
+                        if (dtErr1[xCLFPT.file_name_po002].ToString().Equals(""))
+                        {
+                            continue;
+                        }
                         if (dtErr1[xCLFPT.ERROR_MSG2].ToString().Equals(""))
                         {
                             continue;
                         }
-                        filename1 = dtErr1[xCLFPT.file_name].ToString();
+                        filename1 = dtErr1[xCLFPT.file_name_po002].ToString();
                         if (!filename1.Equals(filename1old))
                         {
                             filename1old = filename1;
-                            recordError += "FileName : " + dtErr1[xCLFPT.file_name].ToString() + Environment.NewLine;
+                            recordError += "File Name : " + dtErr1[xCLFPT.file_name_po002].ToString() + Environment.NewLine;
                         }
                         //recordError += "FileName " + dtErr1[xCLFPT.file_name].ToString() + Environment.NewLine;
                         //recordError += "=>PO_NUMER = " + dtErr1[xCLFPT.PO_NUMBER].ToString() + ",LINE_NUMER = " + dtErr1[xCLFPT.LINE_NUMBER].ToString() + ",ERROR" + Environment.NewLine;

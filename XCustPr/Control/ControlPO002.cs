@@ -230,6 +230,7 @@ namespace XCustPr
                     erpPONumber = linfox[xCLFPTDB.xCLFPT.ERP_PO_NUMBER].ToString();
                     DataTable dt = new DataTable();
                     dt = xCLFPTDB.selectPO002GenTextLinfox(erpPONumber);
+
                     writeTextLinfox(erpPONumber,dt);
 
                     // f.	Update po_trb ว่า gen_outbound_flag เรียบร้อย 
@@ -289,9 +290,10 @@ namespace XCustPr
                             string col15 = row[xCLFPTDB.xCLFPT.DELIVERY_INSTRUCTION].ToString();     //Delivery instruction
 
                             string csvRow = col01 + "|" + col02 + "|" + col03 + "|" + col04 + "|" + col05 + "|" + col06 + "|" + col07 + "|" + col08 + "|" + col09 + "|" + col10
-                                + "|" + col11 + "|" + col12 + "|" + col13 + "|" + col14 + "|" + col15;
+                                + "|" + col11 + "|" + col12 + "|" + col13 + "|" + col14 + "|" + col15 + "|";
 
                             stream.WriteLine(csvRow);
+                            xCLFPTDB.updateFilenamePo002(erpPONumber, file.Replace(Cm.initC.PO002PathInitial, ""),"", "kfc_po", Cm.initC.PO002PathLog);
                         }
                         catch (Exception ex)
                         {
@@ -301,7 +303,7 @@ namespace XCustPr
                             vPP.Validate = "Error PO002-003 : : Cannot write file ";
                             lVPr.Add(vPP);
                             cntErr++;       // gen log
-                            xCLFPTDB.updateErrorMessagePO002(ponumber, linenumber, "Error PO002-003 : Cannot write file", "", "kfc_po", Cm.initC.PO002PathLog);
+                            //xCLFPTDB.updateErrorMessagePO002(ponumber, linenumber, "Error PO002-003 : Cannot write file", "", "kfc_po", Cm.initC.PO002PathLog);
                         }
                     }
                 }

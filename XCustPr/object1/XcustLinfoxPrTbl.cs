@@ -16,6 +16,6 @@ namespace XCustPr
         public String ACC_SEG3 = "", ACC_SEG4 = "", ACC_SEG5 = "", ACC_SEG6 = "", supplier_name = "";
 
         public String SEND_PO_FLAG = "", GEN_OUTBOUD_FLAG = "", ERP_PO_HEADER_ID = "", ERP_PO_LINE_ID = "", ERP_PO_NUMBER = "", ERP_PO_LINE_NUMBER = "", ERP_QTY = "", request_id="";
-        public String ERROR_MSG2 = "", request_id_po002="";
+        public String ERROR_MSG2 = "", request_id_po002="", file_name_po002="";
     }
 }
