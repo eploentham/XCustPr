@@ -108,6 +108,7 @@ namespace XCustPr
             addListView("gen file " + Cm.initC.PO006PathInitial, "Validate", lv1, form1);
             String date = System.DateTime.Now.ToString("yyyy-MM-dd");
             String time = System.DateTime.Now.ToString("HH_mm_ss");
+            String deliveryDateLog1 = "";
             dateStart = date + " " + time;       //gen log
             int i = 0;
 
@@ -123,6 +124,7 @@ namespace XCustPr
             ValidatePrPo vPP = new ValidatePrPo();   // gen log
             DataTable dt006 = new DataTable();
             DataTable dtFixLen = xCPrTDB.selectPO006FixLen();
+            DateTime deliveryDateLog = System.DateTime.Now;
             if (dtFixLen.Rows.Count <= 0) return;
             dt006 = xCPrTDB.selectPRPO006GroupByVendorDeliveryDate();
             if (dt006.Rows.Count > 0)
@@ -135,36 +137,50 @@ namespace XCustPr
                     pB1.Value = i;
                     String deliveryDate = row["delivery_Date"].ToString();
                     DataTable dt = new DataTable();
-                    if (Cm.initC.Po006DeliveryDate.Equals("sysdate"))
+                    try
                     {
-                        date = System.DateTime.Now.ToString("yyyy-MM-dd");
-                        dt = xCPrTDB.selectPRPO006(row["SUPPLIER_NUMBER"].ToString(), date, Cm.initC.PO006ReRun);
-                    }
-                    else
-                    {
-                        dt = xCPrTDB.selectPRPO006(row["SUPPLIER_NUMBER"].ToString(), Cm.initC.Po006DeliveryDate, Cm.initC.PO006ReRun);
-                    }
-                    if (dt.Rows.Count > 0)
-                    {
-                        writeTextPO006(row["SUPPLIER_NUMBER"].ToString(), deliveryDate, dt, dtFixLen);
-                        xCPoTDB.updateOutBoundFlagPO006(deliveryDate, Cm.initC.PO006PathLog);
-                    }
-                    else
-                    {
-                        ValidateFileName vF = new ValidateFileName();   // gen log
-                        vF.fileName = "PO006 before write file ";   // gen log
-                        vF.recordTotal = "1";   // gen log
+                        String vendorId = "";
+                        vendorId = xCSMTDB.validateSupplierBySupplierCode1(row["SUPPLIER_NUMBER"].ToString().Trim());
+                        if (Cm.initC.Po006DeliveryDate.Equals("sysdate"))
+                        {
+                            date = System.DateTime.Now.ToString("yyyy-MM-dd");
+                            dt = xCPrTDB.selectPRPO006(vendorId, date, Cm.initC.PO006ReRun);
+                            deliveryDateLog = DateTime.Parse(date);
+                        }
+                        else
+                        {
+                            dt = xCPrTDB.selectPRPO006(vendorId, Cm.initC.Po006DeliveryDate, Cm.initC.PO006ReRun);
+                            deliveryDateLog = DateTime.Parse(Cm.initC.Po006DeliveryDate);
+                        }
+                        if (dt.Rows.Count > 0)
+                        {
+                            writeTextPO006(row["SUPPLIER_NUMBER"].ToString(), deliveryDate, dt, dtFixLen);
+                            xCPoTDB.updateOutBoundFlagPO006(deliveryDate, Cm.initC.PO006PathLog);
+                        }
+                        else
+                        {
+                            ValidateFileName vF = new ValidateFileName();   // gen log
+                            vF.fileName = "PO006 before write file ";   // gen log
+                            vF.recordTotal = "1";   // gen log
 
-                        vPP = new ValidatePrPo();
-                        vPP.Filename = "PO006";
-                        vPP.Message = "(No Data DeliveryDate = " + Cm.initC.Po006DeliveryDate + " SUPPLIER_NUMBER = " + row["SUPPLIER_NUMBER"].ToString()+" re run = "+ Cm.initC.PO006ReRun+")";
-                        vPP.Validate = "Error PO006-004: No Data Found ";
-                        lVPr.Add(vPP);
-                        cntErr++;       // gen log
-                        lVfile.Add(vF);   // gen log
+                            vPP = new ValidatePrPo();
+                            vPP.Filename = "PO006";
+                            vPP.Message = "(No Data DeliveryDate = " + Cm.initC.Po006DeliveryDate + " SUPPLIER_NUMBER = " + row["SUPPLIER_NUMBER"].ToString() + " re run = " + Cm.initC.PO006ReRun + ")";
+                            vPP.Validate = "Error PO006-004: No Data Found ";
+                            lVPr.Add(vPP);
+                            cntErr++;       // gen log
+                            lVfile.Add(vF);   // gen log
+                        }
                     }
+                    catch(Exception ex)
+                    {
+
+                    }
+                    
+                    
                 }
-                logProcessPO006("xcustpo006", lVPr, dateStart, lVfile,"");   // gen log
+                deliveryDateLog1 = deliveryDateLog.ToString("dd MMM") + " " + deliveryDateLog.Year.ToString();
+                logProcessPO006("xcustpo006", lVPr, deliveryDateLog1, lVfile,"");   // gen log
             }
             else
             {
@@ -179,24 +195,29 @@ namespace XCustPr
                 lVPr.Add(vPP);
                 cntErr++;       // gen log
                 lVfile.Add(vF);   // gen log
-                logProcessPO006("xcustpo006", lVPr, dateStart, lVfile,"no data");   // gen log
+                deliveryDateLog1 = deliveryDateLog.ToString("dd MMM") + " " + deliveryDateLog.Year.ToString();
+                logProcessPO006("xcustpo006", lVPr, deliveryDateLog1, lVfile,"no data");   // gen log
             }
             
             Cm.setConfig("Po006DeliveryDate", "sysdate");
             Cm.setConfig("PO006ReRun", "N");
             pB1.Hide();
         }
-        public void logProcessPO006(String programname, List<ValidatePrPo> lVPr, String startdatetime, List<ValidateFileName> listfile, String flag)
+        public void logProcessPO006(String programname, List<ValidatePrPo> lVPr, String deliveryDate, List<ValidateFileName> listfile, String flag)
         {
             String line1 = "", parameter = "", programstart = "", filename = "", recordError = "", txt = "", path = "";
             int cntErr = 0, err = 0;
+
+            String date = System.DateTime.Now.ToString("dd MMM yyyy");
+            String time = System.DateTime.Now.ToString("HH.mm");
 
             line1 = "Program : XCUST Text File PO (ERP) to Supplier" + Environment.NewLine;
             path = Cm.getPathLogProcess(programname);
             parameter = "Parameter : " + Environment.NewLine;
             parameter += "           Path Initial :" + Cm.initC.PO006PathInitial + Environment.NewLine;
+            parameter += "           Delivery Date :" + Cm.initC.PO006PathInitial + Environment.NewLine;
 
-            programstart = "Program Start : " + startdatetime + Environment.NewLine;
+            programstart = "Program Start : " + deliveryDate + Environment.NewLine;
 
             if (listfile.Count > 0)
             {
@@ -233,7 +254,7 @@ namespace XCustPr
                 }
             }
             //using (var stream = File.CreateText(Environment.CurrentDirectory + "\\" + programname + "_" + startdatetime.Replace("-", "_").Replace(":", "_") + ".log"))
-            using (var stream = File.CreateText(path + programname + "_" + startdatetime.Replace("-", "_").Replace(":", "_") + ".log"))
+            using (var stream = File.CreateText(path + programname + "_" + deliveryDate.Replace("-", "_").Replace(":", "_") + ".log"))
             {
                 txt = line1;
                 txt += parameter;
@@ -257,19 +278,21 @@ namespace XCustPr
         {
             var file = Cm.initC.PO006PathInitial + "S" + vendor_id+"_R" + delivery_date.Replace("-","") + ".KFC";
             String Org = xCDOMTDB.selectActiveByCode(Cm.initC.ORGANIZATION_code.Trim());
+            String deliveryDate1 = "";
             using (var stream = File.CreateText(file))
             {
                 String hCol01 = Cm.FixLen("S" + vendor_id, dtFixLen.Rows[0]["X_LENGTH"].ToString()," ","lpad");
                 String hCol02 = Cm.FixLen(delivery_date.Replace("-", ""), dtFixLen.Rows[1]["X_LENGTH"].ToString(), " ", "lpad");
-                String hCol3 = Cm.FixLen(dt.Rows.Count.ToString(), dtFixLen.Rows[2]["X_LENGTH"].ToString(), "0", "lpad");
+                String hCol3 = Cm.FixLen(dt.Rows.Count.ToString(), dtFixLen.Rows[2]["X_LENGTH"].ToString(), "0", "rpad");
                 String head = hCol01 + hCol02 + hCol3;//+System.Environment.NewLine;
                 stream.WriteLine(head);
                 foreach (DataRow row in dt.Rows)
                 {
+                    deliveryDate1 = row[xCPoTDB.xCPO.DELIVER_DATE].ToString();
                     String col01 = Cm.FixLen(row["po_number"].ToString(), dtFixLen.Rows[3]["X_LENGTH"].ToString()," ", "lpad");
                     String col02 = Cm.FixLen(delivery_date.Replace("-", ""), dtFixLen.Rows[4]["X_LENGTH"].ToString(), " ", "lpad");     //PO date
                     String col03 = Cm.FixLen(Org, dtFixLen.Rows[5]["X_LENGTH"].ToString(), "0","lpad");     //Store Code
-                    String col04 = Cm.FixLen(delivery_date.Replace("-", ""), dtFixLen.Rows[6]["X_LENGTH"].ToString(), " ","lpad");          //Delivery Date
+                    String col04 = Cm.FixLen(deliveryDate1.Replace("-", ""), dtFixLen.Rows[6]["X_LENGTH"].ToString(), " ","lpad");          //Delivery Date
                     String col05 = "", item_code="";
                     item_code = row["ITEM_ID"].ToString();
                     col05 = xCIMTDB.selectItemCodeByItemId(Org,row["ITEM_ID"].ToString());
