@@ -280,6 +280,7 @@ namespace XCustPr
                             string col06 = row[xCLFPTDB.xCLFPT.COMPANYCODE].ToString();     //Company
                             string col07 = linenumber;
                             string col08 = row[xCLFPTDB.xCLFPT.ERP_PO_NUMBER].ToString();
+                            col08 = col08.Length > 0 ? col08.Substring(1) : col08;
                             string col09 = reqDate;
                             string col10 = row[xCLFPTDB.xCLFPT.REQUEST_TIME].ToString();
                             col10 = col10.Equals("0") ? "000000" : col10;

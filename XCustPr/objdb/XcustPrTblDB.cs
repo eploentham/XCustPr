@@ -185,7 +185,7 @@ namespace XCustPr
                 ",XCUST_SUPPLIER_MST_TBL t  " +
                 "where  po.VENDOR_ID = t.VENDOR_ID  " + "" +
                 " and t.ATTRIBUTE1 = 'Y' " +
-                " and po.GEN_OUTBOUD_FLAG = '' " +
+                " and po.GEN_OUTBOUD_FLAG = ''   and po.DELIVER_DATE is not null " +
                 " GROUP BY t.SUPPLIER_NUMBER,po.DELIVER_DATE ";
             dt = conn.selectData(sql, "kfc_po");
             return dt;
