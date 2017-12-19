@@ -30,7 +30,7 @@ namespace XCustPr
         }
         private void initConfig()
         {
-
+            Cm.createFolderExtractZip();
         }
         public void readZIPFile(String[] filePO, MaterialListView lv1, Form form1, MaterialProgressBar pB1)
         {
@@ -41,9 +41,9 @@ namespace XCustPr
             ValidatePrPo vPP = new ValidatePrPo();
             String date = System.DateTime.Now.ToString("yyyy-MMM-dd");
             String time = System.DateTime.Now.ToString("HH:mm:ss");
-            //filename = Cm.initC.PathZip + "\\xcustpr.zip";
+            filename = Cm.initC.ExtractZipPathZipExtractRead + "\\xcustpr.zip";
             //Cm.deleteFile(filename);
-            ZipArchive zip = ZipFile.Open(filename, ZipArchiveMode.Read);
+            //ZipArchive zip = ZipFile.Open(filename, ZipArchiveMode.Read);
             //var allFiles = Directory.GetFiles(@Cm.initC.ExtractZipPathZipExtractRead, "*.*", SearchOption.AllDirectories);
             foreach (String file in filePO)
             {
@@ -59,6 +59,7 @@ namespace XCustPr
                         lVfile.Add(vF);
                         try
                         {
+                            Cm.moveFile(@Cm.initC.ExtractZipPathZipExtract+entry.FullName, @Cm.initC.ExtractZipPathZipExtract, entry.FullName);
                             entry.ExtractToFile(Path.Combine(@Cm.initC.ExtractZipPathZipExtract, entry.FullName));
                         }
                         catch (IOException ioe)
@@ -85,7 +86,7 @@ namespace XCustPr
                     archive.Dispose();
                 }
                 //zip.CreateEntryFromFile(file, Path.GetFileName(file), CompressionLevel.Optimal);
-                zip.CreateEntryFromFile(file, Path.GetFileName(file));
+                //zip.CreateEntryFromFile(file, Path.GetFileName(file));
             }
             //zip.Dispose();
             Cm.logProcess("xcustextractzip", lVPr, date +" "+ time, lVfile);

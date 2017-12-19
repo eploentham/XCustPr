@@ -739,7 +739,7 @@ namespace XCustPr
                 }
             }
 
-            xCLFPTDB.updatePrcessFlag(requestId, "kfc_po", Cm.initC.pathLogErr);
+            xCLFPTDB.updatePrcessFlag(requestId, "kfc_po", Cm.initC.PO008PathLog);
         }
         private String insertXcustPorReqHeaderIntAll(XcustPoHeaderIntTbl xcprhia, String date, String time)
         {//row[dc].ToString().Trim().

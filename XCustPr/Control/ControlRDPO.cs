@@ -2200,7 +2200,7 @@ namespace XCustPr
             
             addListView("callWebService อ่าน file ZIP", "web service", lv1, form1);
             filePO = Cm.getFileinFolder(Cm.initC.PathFileCSV);
-            //String text = System.IO.File.ReadAllText(filePO[0]);
+            /*String text = System.IO.File.ReadAllText(filePO[0])*/;
             filename = filePO[0].Replace(Cm.initC.PathFileCSV, "");
             //byte[] byteArraytext = Encoding.UTF8.GetBytes(text);
             //byte[] toEncodeAsBytestext = System.Text.ASCIIEncoding.ASCII.GetBytes(text);

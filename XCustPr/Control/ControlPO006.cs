@@ -328,11 +328,9 @@ namespace XCustPr
             LinkedImage.ContentId = "logo_ice";
             //Added the patch for Thunderbird as suggested by Jorge
             LinkedImage.ContentType = new ContentType(MediaTypeNames.Image.Jpeg);
-
             AlternateView htmlView = AlternateView.CreateAlternateViewFromString(Body, null, "text/html");
             htmlView.LinkedResources.Add(LinkedImage);
-            message.AlternateViews.Add(htmlView);
-            
+            message.AlternateViews.Add(htmlView);            
             if (dt006.Rows.Count > 0)
             {
                 foreach(DataRow row in dt006.Rows)
@@ -351,11 +349,8 @@ namespace XCustPr
                     }
                 }
             }
-
             message.Body = Body;
-
             smtp1.Send(message);
-
         }
     }
 }
