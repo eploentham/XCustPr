@@ -149,12 +149,27 @@ namespace XCustPr
                         writeTextPO006(row["SUPPLIER_NUMBER"].ToString(), deliveryDate, dt, dtFixLen);
                         xCPoTDB.updateOutBoundFlagPO006(deliveryDate, Cm.initC.PO006PathLog);
                     }
+                    else
+                    {
+                        ValidateFileName vF = new ValidateFileName();   // gen log
+                        vF.fileName = "PO006 before write file ";   // gen log
+                        vF.recordTotal = "1";   // gen log
+
+                        vPP = new ValidatePrPo();
+                        vPP.Filename = "PO006";
+                        vPP.Message = "(No Data DeliveryDate = " + Cm.initC.Po006DeliveryDate + " SUPPLIER_NUMBER = " + row["SUPPLIER_NUMBER"].ToString()+" re run = "+ Cm.initC.PO006ReRun+")";
+                        vPP.Validate = "Error PO006-004: No Data Found ";
+                        lVPr.Add(vPP);
+                        cntErr++;       // gen log
+                        lVfile.Add(vF);   // gen log
+                    }
                 }
+                logProcessPO006("xcustpo006", lVPr, dateStart, lVfile,"");   // gen log
             }
             else
             {
                 ValidateFileName vF = new ValidateFileName();   // gen log
-                vF.fileName = Cm.initC.PO006PathLog;   // gen log
+                vF.fileName = "PO006 before write file ";   // gen log
                 vF.recordTotal = "1";   // gen log
 
                 vPP = new ValidatePrPo();
@@ -164,11 +179,79 @@ namespace XCustPr
                 lVPr.Add(vPP);
                 cntErr++;       // gen log
                 lVfile.Add(vF);   // gen log
+                logProcessPO006("xcustpo006", lVPr, dateStart, lVfile,"no data");   // gen log
             }
-            Cm.logProcess("xcustpo006", lVPr, dateStart, lVfile);   // gen log
+            
             Cm.setConfig("Po006DeliveryDate", "sysdate");
             Cm.setConfig("PO006ReRun", "N");
             pB1.Hide();
+        }
+        public void logProcessPO006(String programname, List<ValidatePrPo> lVPr, String startdatetime, List<ValidateFileName> listfile, String flag)
+        {
+            String line1 = "", parameter = "", programstart = "", filename = "", recordError = "", txt = "", path = "";
+            int cntErr = 0, err = 0;
+
+            line1 = "Program : XCUST Text File PO (ERP) to Supplier" + Environment.NewLine;
+            path = Cm.getPathLogProcess(programname);
+            parameter = "Parameter : " + Environment.NewLine;
+            parameter += "           Path Initial :" + Cm.initC.PO006PathInitial + Environment.NewLine;
+
+            programstart = "Program Start : " + startdatetime + Environment.NewLine;
+
+            if (listfile.Count > 0)
+            {
+                foreach (ValidateFileName vF in listfile)
+                {
+                    if (flag.Equals("no data"))
+                    {
+                        filename += "Filename " + vF.fileName + ", Total = " + vF.recordTotal + ", Validate pass = 0, Record Error = 1, Total Error = 1" + Environment.NewLine;
+                        
+                        cntErr++;
+                            
+                    }
+                    else
+                    {
+                        filename += "Filename " + vF.fileName + ", Total = " + vF.recordTotal + ", Validate pass = " + vF.validatePass + ", Record Error = " + vF.recordError + ", Total Error = " + vF.totalError + Environment.NewLine;
+                        if (int.TryParse(vF.recordError, out err))
+                        {
+                            if (int.Parse(vF.recordError) > 0)
+                            {
+                                cntErr++;
+                            }
+                        }
+                    }
+                    
+                }
+            }
+            if (lVPr.Count > 0)
+            {
+                foreach (ValidatePrPo vPr in lVPr)
+                {
+                    recordError += "FileName " + vPr.Filename + Environment.NewLine;
+                    recordError += "==>" + vPr.Validate + Environment.NewLine;
+                    //recordError += "     ====>Error" + vPr.Message + Environment.NewLine;
+                }
+            }
+            //using (var stream = File.CreateText(Environment.CurrentDirectory + "\\" + programname + "_" + startdatetime.Replace("-", "_").Replace(":", "_") + ".log"))
+            using (var stream = File.CreateText(path + programname + "_" + startdatetime.Replace("-", "_").Replace(":", "_") + ".log"))
+            {
+                txt = line1;
+                txt += parameter;
+                txt += programstart + Environment.NewLine;
+                txt += "File " + Environment.NewLine;
+                txt += "--------------------------------------------------------------------------" + Environment.NewLine;
+                txt += filename + Environment.NewLine;
+                txt += "File Error " + Environment.NewLine;
+                txt += "--------------------------------------------------------------------------" + Environment.NewLine;
+                txt += recordError + Environment.NewLine;
+                txt += "Total " + listfile.Count + Environment.NewLine;
+                txt += "Complete " + (listfile.Count - cntErr) + Environment.NewLine;
+                txt += "Error " + cntErr + Environment.NewLine;
+                stream.WriteLine(txt);
+            }
+            lVPr.Clear();
+            listfile.Clear();
+
         }
         public void writeTextPO006(String vendor_id, String delivery_date, DataTable dt, DataTable dtFixLen)
         {

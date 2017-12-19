@@ -346,17 +346,21 @@ namespace XCustPr
         public void logProcessPO008(String programname, String startdatetime, String requestId)
         {
             String line1 = "", parameter = "", programstart = "", filename = "", recordError = "", txt = "", path = "", sql = "";
+            String date = System.DateTime.Now.ToString("dd MMM yyyy");
+            String time = System.DateTime.Now.ToString("HH.mm");
+
             int cntErr = 0, cntPass = 0;
             ControlMain cm = new ControlMain();
             line1 = "Program : XCUST Interface PR<Linfox>To PO(ERP)" + Environment.NewLine;
 
             path = cm.getPathLogProcess(programname);
             parameter = "Parameter : " + Environment.NewLine;
-            parameter += "           Path Initial :" + initC.PathInitial + Environment.NewLine;
-            parameter += "           Path Process :" + initC.PathProcess + Environment.NewLine;
-            parameter += "           Path Error :" + initC.PathError + Environment.NewLine;
-            parameter += "           Import Source :" + initC.ImportSource + Environment.NewLine;
-            programstart = "Program Start : " + startdatetime + Environment.NewLine;
+            parameter += "           Path Initial = " + initC.PO008PathInitial + Environment.NewLine;
+            parameter += "           Path Process = " + initC.PO008PathProcess + Environment.NewLine;
+            parameter += "           Path Error = " + initC.PO008PathError + Environment.NewLine;
+            parameter += "           Path Archive = " + initC.PO008PathArchive + Environment.NewLine;
+            parameter += "           Import Source = " + initC.PO008ImportSource + Environment.NewLine;
+            programstart = "Program Start : " + date+time  + Environment.NewLine;
 
 
             sql = "Select count(1) as cnt, " + xCCPIT.file_name
@@ -476,9 +480,9 @@ namespace XCustPr
                 txt += "File Error " + Environment.NewLine;
                 txt += "--------------------------------------------------------------------------" + Environment.NewLine;
                 txt += recordError + Environment.NewLine;
-                txt += "Total " + dtFile.Rows.Count + Environment.NewLine;
-                txt += "Complete " + cntPass + Environment.NewLine;
-                txt += "Error " + cntErr + Environment.NewLine;
+                txt += "Total = " + dtFile.Rows.Count + Environment.NewLine;
+                txt += "Complete = " + cntPass + Environment.NewLine;
+                txt += "Error = " + cntErr + Environment.NewLine;
                 stream.WriteLine(txt);
             }
         }

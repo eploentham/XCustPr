@@ -138,7 +138,7 @@ namespace XCustPr
             foreach (string aa in filePO)
             {
                 addListView("ย้าย file " + aa, "", lv1, form1);
-                Cm.moveFile(aa, Cm.initC.PO008PathProcess, aa.Replace(Cm.initC.PO008PathInitial, ""));
+                Cm.moveFile(aa, Cm.initC.PO008PathProcess, aa.Replace(Cm.initC.PO008PathInitial, ""), Cm.initC.PO008PathError);
             }
             addListView("Clear temp table", "", lv1, form1);
             //xCCPITDB.DeleteCedarTemp(Cm.initC.PO008PathLog);//  clear temp table
@@ -1013,7 +1013,7 @@ namespace XCustPr
                     }
                     else
                     {
-                        Cm.moveFile(Cm.initC.PO008PathProcess + filename, Cm.initC.PO008PathArchive, filename);
+                        Cm.moveFile(Cm.initC.PO008PathProcess + filename, Cm.initC.PO008PathError, filename, Cm.initC.PO008PathError);
                     }
                 }
             }

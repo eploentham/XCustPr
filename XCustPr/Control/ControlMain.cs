@@ -526,7 +526,8 @@ namespace XCustPr
                 String[] filename11 = destinationFile.Split('.');
                 if (filename11.Length >= 2)
                 {
-                    filename1 = filename11[0] + "_new_" + date + "_" + time + "." + filename11[1];
+                    filename1 = filename11[0] + "_new_" + date + "_" + time + "." + filename11[filename11.Length-1];
+                    System.IO.File.Move(path + destinationFile, path + filename1);
                 }
                 else
                 {
@@ -534,6 +535,27 @@ namespace XCustPr
                 }
             }
             System.IO.File.Move(@sourceFile, path+ filename1);
+        }
+        public void moveFile(String sourceFile, String path, String destinationFile, String errorPath)
+        {
+            String date = System.DateTime.Now.ToString("yyyy_MM_dd");
+            String time = System.DateTime.Now.ToString("HH_mm_ss");
+            String filename1 = destinationFile;
+
+            if (File.Exists(path + destinationFile))
+            {
+                String[] filename11 = destinationFile.Split('.');
+                if (filename11.Length >= 2)
+                {
+                    filename1 = filename11[0] + "_new_" + date + "_" + time + "." + filename11[filename11.Length - 1];
+                    System.IO.File.Move(path + destinationFile, errorPath + filename1);
+                }
+                else
+                {
+                    filename1 += "_new";
+                }
+            }
+            System.IO.File.Move(@sourceFile, path + destinationFile);
         }
         public void deleteFile(String sourceFile)
         {
@@ -1063,7 +1085,7 @@ namespace XCustPr
 
                 parameter += "           Import Soruce :" + initC.AP001ImportSource + Environment.NewLine;
             }
-                if (listfile.Count > 0)
+            if (listfile.Count > 0)
             {
                 foreach (ValidateFileName vF in listfile)
                 {
@@ -1104,7 +1126,60 @@ namespace XCustPr
                 stream.WriteLine(txt);
             }
         }
-        
+        public void logProcessPO006(String programname, List<ValidatePrPo> lVPr, String startdatetime, List<ValidateFileName> listfile)
+        {
+            String line1 = "", parameter = "", programstart = "", filename = "", recordError = "", txt = "", path = "";
+            int cntErr = 0, err = 0;
+
+                line1 = "Program : XCUST Text File PO (ERP) to Supplier" + Environment.NewLine;
+                path = getPathLogProcess(programname);
+                parameter = "Parameter : " + Environment.NewLine;
+                parameter += "           Path Initial :" + initC.PO006PathInitial + Environment.NewLine;
+
+                programstart = "Program Start : " + startdatetime + Environment.NewLine;
+            
+            if (listfile.Count > 0)
+            {
+                foreach (ValidateFileName vF in listfile)
+                {
+                    filename += "Filename " + vF.fileName + ", Total = " + vF.recordTotal + ", Validate pass = " + vF.validatePass + ", Record Error = " + vF.recordError + ", Total Error = " + vF.totalError + Environment.NewLine;
+                    if (int.TryParse(vF.recordError, out err))
+                    {
+                        if (int.Parse(vF.recordError) > 0)
+                        {
+                            cntErr++;
+                        }
+                    }
+                }
+            }
+            if (lVPr.Count > 0)
+            {
+                foreach (ValidatePrPo vPr in lVPr)
+                {
+                    recordError += "FileName " + vPr.Filename + Environment.NewLine;
+                    recordError += "==>" + vPr.Validate + Environment.NewLine;
+                    recordError += "     ====>Error" + vPr.Message + Environment.NewLine;
+                }
+            }
+            //using (var stream = File.CreateText(Environment.CurrentDirectory + "\\" + programname + "_" + startdatetime.Replace("-", "_").Replace(":", "_") + ".log"))
+            using (var stream = File.CreateText(path + programname + "_" + startdatetime.Replace("-", "_").Replace(":", "_") + ".log"))
+            {
+                txt = line1;
+                txt += parameter;
+                txt += programstart + Environment.NewLine;
+                txt += "File " + Environment.NewLine;
+                txt += "--------------------------------------------------------------------------" + Environment.NewLine;
+                txt += filename + Environment.NewLine;
+                txt += "File Error " + Environment.NewLine;
+                txt += "--------------------------------------------------------------------------" + Environment.NewLine;
+                txt += recordError + Environment.NewLine;
+                txt += "Total " + listfile.Count + Environment.NewLine;
+                txt += "Complete " + (listfile.Count - cntErr) + Environment.NewLine;
+                txt += "Error " + cntErr + Environment.NewLine;
+                stream.WriteLine(txt);
+            }
+        }
+
         public void callWebService(String flag)
         {
             String uri = "", dump = "";
