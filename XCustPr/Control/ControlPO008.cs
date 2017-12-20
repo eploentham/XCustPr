@@ -672,8 +672,8 @@ namespace XCustPr
         {
             addListView("insert table " + Cm.initC.PO008PathProcess, "Validate", lv1, form1);
             String currDate = System.DateTime.Now.ToString("yyyy-MM-dd");
-            String Org = "";
-            int rowH = 0;
+            String Org = "", running="";
+            int rowH = 0, rowL=0;
             DataTable dt = new DataTable();
             dt = xCCPITDB.selectFilenameByRequestId(requestId);     //moveFileToFolderArchiveError
             Org = xCDOMTDB.selectActiveByCode(Cm.initC.ORGANIZATION_code.Trim());
@@ -698,31 +698,40 @@ namespace XCustPr
                             foreach (DataRow rowFilename in dtFilename.Rows)
                             {
                                 rowH++;
-                                String poNumber = "", wo_no="", branch_plant="", supplier_code="", supplier_site_code= "", Bill_to_Location="";
+                                String poNumber = "", wo_no="", branch_plant="", supplier_code="", supplier_site_code= "", Bill_to_Location="", qt_no="";
                                 poNumber = rowFilename[xCCPITDB.xCCPIT.po_no].ToString();
                                 wo_no = rowFilename[xCCPITDB.xCCPIT.wo_no].ToString();
                                 branch_plant = rowFilename[xCCPITDB.xCCPIT.branch_plant].ToString();
                                 supplier_code = rowFilename[xCCPITDB.xCCPIT.supplier_code].ToString();
                                 supplier_site_code = xCSSMTDB.getMinVendorSiteIdByVendorIdPO008();
+                                qt_no = rowFilename[xCCPITDB.xCCPIT.qt_no].ToString();
                                 DataTable dtCedar = new DataTable();
                                 dtCedar = xCCPITDB.selectCedarByPoNumber(requestId, poNumber);
-                                XcustPoHeaderIntTbl xCPorRHIA = addXcustListHeader1(wo_no, branch_plant, supplier_code, supplier_site_code);
+                                XcustPoHeaderIntTbl xCPorRHIA = addXcustListHeader1(wo_no, branch_plant, supplier_code, supplier_site_code, qt_no);
                                 String seqH = "";
                                 Bill_to_Location = xCSIMTDB.selectBilltoLocation(Org, branch_plant);
                                 xCPorRHIA.bill_to_location = Bill_to_Location;
                                 xCPorRHIA.supplier_site_code = supplier_site_code;
                                 seqH = xCPHITDB.insert(xCPorRHIA, Cm.initC.PO008PathLog);
+                                rowL = 0;
                                 foreach (DataRow dtCedarR in dtCedar.Rows)
                                 {
+                                    running = "";
+                                    rowL++;
+                                    running = "00" + rowL;
+                                    running = running.Substring(0, running.Length - 2);
                                     XcustPoLineIntTbl xCPoLIT = new XcustPoLineIntTbl();
                                     xCPoLIT = addXcustListLine1(dtCedarR);
                                     xCPoLIT.interface_header_key = seqH;
+                                    xCPoLIT.running = running;
+                                    xCPoLIT.line_num = running;
                                     String seqL = xCPLITDB.insert(xCPoLIT, Cm.initC.PO008PathLog);
 
                                     XcustPoLineLocIntTbl xCPoLLIT = new XcustPoLineLocIntTbl();
                                     xCPoLLIT = addXcustListLoc1(dtCedarR);
                                     xCPoLLIT.interface_header_key = seqH;
                                     xCPoLLIT.interface_line_key = seqL;
+                                    xCPoLLIT.running = running;
                                     String chkll = xCPLLITDB.insert(xCPoLLIT, Cm.initC.PO008PathLog);
 
                                     XcustPoDistIntTbl xCPoDIT = new XcustPoDistIntTbl();
@@ -730,6 +739,8 @@ namespace XCustPr
                                     xCPoDIT.interface_header_key = seqH;
                                     xCPoDIT.interface_line_key = seqL;
                                     xCPoDIT.interface_line_location_key = chkll;
+                                    xCPoDIT.running = running;
+
                                     String chk = xCPDITDB.insert(xCPoDIT, Cm.initC.PO008PathLog);
                                     
                                 }
@@ -802,28 +813,33 @@ namespace XCustPr
                 listXcustPHIT.Add(xcrhia1);
             }
         }
-        private XcustPoHeaderIntTbl addXcustListHeader1(String wo_no, String branch_plant, String supplier_code, String supplier_site_code)
+        private XcustPoHeaderIntTbl addXcustListHeader1(String wo_no, String branch_plant, String supplier_code, String supplier_site_code, String qt_no)
         {
 
-                String seq = String.Concat("00" + listXcustPHIT.Count);
-                XcustPoHeaderIntTbl xcrhia1 = new XcustPoHeaderIntTbl();
-                xcrhia1.interface_header_key = wo_no;
-                xcrhia1.action = "ORIGINAL";
-                xcrhia1.import_source = Cm.initC.PO008ImportSource;
-                xcrhia1.approval_action = "BYPASS";//ถาม
-                xcrhia1.document_typre_code = "STANDARD";
-                xcrhia1.prc_bu_name = Cm.initC.BU_NAME;//ถาม
-                xcrhia1.req_bu_name = Cm.initC.BU_NAME;//ถาม
-                xcrhia1.soldto_re_name = Cm.initC.PO008LEGAL_ENTITY;//ถาม
-                xcrhia1.billto_bu_name = Cm.initC.BU_NAME;//ถาม
-                xcrhia1.buyyer_name = Cm.initC.PO008BUYER;//ถาม
-                xcrhia1.currency_code = Cm.initC.CURRENCY_CODE;//ถาม
-                xcrhia1.bill_to_location = branch_plant;//ถาม
-                xcrhia1.ship_to_location = branch_plant;
-                xcrhia1.supplier_code = supplier_code;
-                xcrhia1.supplier_site_code = supplier_site_code;
-                xcrhia1.payment_term = "";//ถาม
-                xcrhia1.process_flag = "N";
+            String seq = String.Concat("00" + listXcustPHIT.Count);
+            XcustPoHeaderIntTbl xcrhia1 = new XcustPoHeaderIntTbl();
+            xcrhia1.interface_header_key = wo_no;
+            xcrhia1.action = "ORIGINAL";
+            xcrhia1.import_source = Cm.initC.PO008ImportSource;
+            xcrhia1.approval_action = "BYPASS";//
+            xcrhia1.document_typre_code = "STANDARD";
+            xcrhia1.prc_bu_name = Cm.initC.BU_NAME;//
+            xcrhia1.req_bu_name = Cm.initC.BU_NAME;//
+            xcrhia1.soldto_re_name = Cm.initC.PO008LEGAL_ENTITY;//
+            xcrhia1.billto_bu_name = Cm.initC.BU_NAME;//
+            xcrhia1.buyyer_name = Cm.initC.PO008BUYER;//ถาม
+            xcrhia1.currency_code = Cm.initC.CURRENCY_CODE;//ถาม
+            xcrhia1.bill_to_location = branch_plant;//ถาม
+            xcrhia1.ship_to_location = branch_plant;
+            xcrhia1.supplier_code = supplier_code;
+            xcrhia1.supplier_site_code = supplier_site_code;
+            xcrhia1.payment_term = "";//ถาม
+            xcrhia1.process_flag = "N";
+            xcrhia1.wo_no = wo_no;
+            xcrhia1.qt_no = qt_no;
+
+            //xcrhia1.at
+            //xcrhia1.in
             return xcrhia1;
         }
         private void addXcustListLine(DataRow row)
@@ -868,8 +884,10 @@ namespace XCustPr
             item.item_description = row[xCCPITDB.xCCPIT.wo_no].ToString() + "_" + row[xCCPITDB.xCCPIT.qt_no].ToString() + "_" + row[xCCPITDB.xCCPIT.item_description].ToString() + "_" + row[xCCPITDB.xCCPIT.branch_plant].ToString();
             item.category = "";//ถาม
             item.unit_price = row[xCCPITDB.xCCPIT.amt].ToString();
-            //item.DOCUMENT_NUMBER = "";
-            //item.DOCUMENT_LINE_NUMBER = "";
+            item.wo_no = row[xCCPITDB.xCCPIT.wo_no].ToString();
+            item.qt_no = row[xCCPITDB.xCCPIT.qt_no].ToString();
+            item.attribute1 = row[xCCPITDB.xCCPIT.asset_code].ToString();
+            item.attribute2 = row[xCCPITDB.xCCPIT.asset_name].ToString();
             //item.BUSINESS_UNIT = "";
 
             //item.SUBINVENTORY_CODE = row[xCLPRITDB.xCLPRIT.subinventory_code].ToString();
@@ -925,6 +943,8 @@ namespace XCustPr
             item.attribute2 = row[xCCPITDB.xCCPIT.qt_no].ToString();
             item.attribute3 = row[xCCPITDB.xCCPIT.asset_code].ToString();
             item.attribute4 = row[xCCPITDB.xCCPIT.asset_name].ToString();
+            item.wo_no = row[xCCPITDB.xCCPIT.wo_no].ToString();
+            
             //item.LINE_TYPE = "";
 
             //item.QTY = row[xCMPITDB.xCMPIT.confirm_qty].ToString();
@@ -983,6 +1003,7 @@ namespace XCustPr
             item.charge_account_segment4 = row[xCCPITDB.xCCPIT.account_segment4].ToString();//ถาม
             item.charge_account_segment5 = row[xCCPITDB.xCCPIT.account_segment5].ToString();//ถาม
             item.charge_account_segment6 = row[xCCPITDB.xCCPIT.account_segment6].ToString();//ถาม
+            item.wo_no = row[xCCPITDB.xCCPIT.wo_no].ToString();
             //item.QTY = row[xCMPITDB.xCMPIT.confirm_qty].ToString();
             //item.CURRENCY_CODE = initC.CURRENCY_CODE;
             //item.AGREEMENT_NUMBER = row[xCLFPTDB.xCLFPT.AGREEEMENT_NUMBER].ToString();
@@ -1073,18 +1094,19 @@ namespace XCustPr
             {
                 foreach (DataRow row in dt.Rows)
                 {
+                    //string col01 = row[xCPHITDB.xCPHIT.interface_header_key].ToString();
                     string col01 = row[xCPHITDB.xCPHIT.interface_header_key].ToString();
-                    string col02 = row[xCPHITDB.xCPHIT.action].ToString(); ;      //action        รอถาม  
+                    string col02 = row[xCPHITDB.xCPHIT.action].ToString(); ;      //action        
                     string col03 = "";      //batch_id      รอถาม  
                     string col04 = row[xCPHITDB.xCPHIT.import_source].ToString();
-                    string col05 = row[xCPHITDB.xCPHIT.approval_action].ToString(); ;//Approval Action       รอถาม  
-                    string col06 = "";      //Order       รอถาม  
-                    string col07 = row[xCPHITDB.xCPHIT.document_typre_code].ToString(); ;//Document Type Code      รอถาม  
+                    string col05 = row[xCPHITDB.xCPHIT.approval_action].ToString();//Approval Action      
+                    string col06 = row[xCPHITDB.xCPHIT.wo_no].ToString();      //Order       
+                    string col07 = row[xCPHITDB.xCPHIT.document_typre_code].ToString(); ;//Document Type Code      
                     string col08 = "";//Style       รอถาม 
                     string col09 = row[xCPHITDB.xCPHIT.prc_bu_name].ToString(); ;//Procurement BU       รอถาม 
                     string col10 = row[xCPHITDB.xCPHIT.req_bu_name].ToString(); ;//Requisitioning BU       รอถาม 
 
-                    string col11 = row[xCPHITDB.xCPHIT.soldto_re_name].ToString(); ;//Sold-to Legal Entity รอถาม  
+                    string col11 = row[xCPHITDB.xCPHIT.soldto_re_name].ToString(); ;//Sold-to Legal Entity   
                     string col12 = row[xCPHITDB.xCPHIT.billto_bu_name].ToString(); ;//Bill-to BU
                     string col13 = row[xCPHITDB.xCPHIT.buyyer_name].ToString(); ;//Buyer
                     string col14 = row[xCPHITDB.xCPHIT.currency_code].ToString(); ;//Currency Code
@@ -1106,7 +1128,7 @@ namespace XCustPr
                     string col29 = "";//Pay On Code
                     string col30 = "";//Payment Terms
 
-                    string col31 = "";//Initiating Party
+                    string col31 = Cm.initC.PO008ORGINATOR_RULE;//Initiating Party
                     string col32 = "";//Change Order Description
                     string col33 = "";//Required Acknowledgment
                     string col34 = "";//Acknowledge Within (Days)
@@ -1120,8 +1142,8 @@ namespace XCustPr
                     string col41 = "";//Default Taxation Country Code
                     string col42 = "";//Tax Document Subtype Code
                     string col43 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_CATEGORY].ToString();
-                    string col44 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE1].ToString();
-                    string col45 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE2].ToString();
+                    string col44 = row[xCPHITDB.xCPHIT.wo_no].ToString();//row[xCPHITDB.xCPHIT.ATTRIBUTE1].ToString();
+                    string col45 = row[xCPHITDB.xCPHIT.qt_no].ToString();//row[xCPHITDB.xCPHIT.ATTRIBUTE2].ToString();
                     string col46 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE3].ToString();
                     string col47 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE4].ToString();
                     string col48 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE5].ToString();
@@ -1227,12 +1249,14 @@ namespace XCustPr
             {
                 foreach (DataRow row in dt.Rows)
                 {
-                    string col01 = row[xCPLITDB.xCPLIT.interface_line_key].ToString();     //Interface Line Key
-                    string col02 = row[xCPLITDB.xCPLIT.interface_header_key].ToString();      //Interface Header Key        รอถาม  
-                    string col03 = row[xCPLITDB.xCPLIT.action].ToString();      //Action      รอถาม  
+                    //string col01 = row[xCPLITDB.xCPLIT.interface_line_key].ToString();     //Interface Line Key
+                    string col01 = row[xCPLITDB.xCPLIT.wo_no].ToString() + row[xCPLITDB.xCPLIT.running].ToString();     //Interface Line Key
+                    //string col02 = row[xCPLITDB.xCPLIT.interface_header_key].ToString();      //Interface Header Key        
+                    string col02 = row[xCPLITDB.xCPLIT.wo_no].ToString();      //Interface Header Key        
+                    string col03 = row[xCPLITDB.xCPLIT.action].ToString();      //Action      
                     string col04 = row[xCPLITDB.xCPLIT.line_num].ToString();       //Line
-                    string col05 = row[xCPLITDB.xCPLIT.line_type].ToString();//Line Type       รอถาม  
-                    string col06 = row[xCPLITDB.xCPLIT.item_description].ToString();      //Item       รอถาม  
+                    string col05 = row[xCPLITDB.xCPLIT.line_type].ToString();//Line Type      
+                    string col06 = "";      //Item         
                     string col07 = row[xCPLITDB.xCPLIT.item_description].ToString();//Item Description      รอถาม  
                     string col08 = "";//Item Revision       รอถาม 
                     string col09 = row[xCPLITDB.xCPLIT.category].ToString();//Category Name       รอถาม 
@@ -1240,7 +1264,7 @@ namespace XCustPr
 
                     string col11 = "";//Quantity รอถาม  
                     string col12 = "";//UOM
-                    string col13 = "";//Price
+                    string col13 = row[xCPLITDB.xCPLIT.unit_price].ToString();//Price
                     string col14 = "";//Secondary Quantity
                     string col15 = "";//Secondary UOM
                     string col16 = "";//Supplier Item
@@ -1251,8 +1275,8 @@ namespace XCustPr
 
                     string col21 = "";//Note to Receiver
                     string col22 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_CATEGORY].ToString();
-                    string col23 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE1].ToString();
-                    string col24 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE2].ToString();
+                    string col23 = row[xCPLITDB.xCPLIT.attribute1].ToString(); //row[xCRHIADB.xCRHIA.ATTRIBUTE1].ToString();
+                    string col24 = row[xCPLITDB.xCPLIT.attribute2].ToString(); //row[xCRHIADB.xCRHIA.ATTRIBUTE2].ToString();
                     string col25 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE3].ToString();
                     string col26 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE4].ToString();
                     string col27 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE5].ToString();
@@ -1378,19 +1402,21 @@ namespace XCustPr
             {
                 foreach (DataRow row in dt.Rows)
                 {
-                    string col01 = row[xCPLLITDB.xCPLLIT.interface_line_key].ToString();     // Interface Line Location Key
-                    string col02 = row[xCPLLITDB.xCPLLIT.interface_header_key].ToString();      //Interface Line Key        รอถาม  
-                    string col03 = "";//row[xCPLLITDB.xCPLLIT.s].ToString();      //Schedule      รอถาม  
+                    //string col01 = row[xCPLLITDB.xCPLLIT.interface_line_key].ToString();     // Interface Line Location Key
+                    String col01 = row[xCPLLITDB.xCPLLIT.wo_no].ToString() + row[xCPLLITDB.xCPLLIT.running].ToString()+"11";
+                    //string col02 = row[xCPLLITDB.xCPLLIT.interface_header_key].ToString();      //Interface Line Key         
+                    String col02 = row[xCPLLITDB.xCPLLIT.wo_no].ToString() + row[xCPLLITDB.xCPLLIT.running].ToString() + "1";
+                    string col03 = "";//row[xCPLLITDB.xCPLLIT.s].ToString();      //Schedule      
                     string col04 = "";//row[xCPLLITDB.xCPLLIT.line_num].ToString();       //Ship-to Location
-                    string col05 = "";//row[xCPLLITDB.xCPLLIT.shipment_number].ToString();//Ship-to Organization       รอถาม  
-                    string col06 = row[xCPLLITDB.xCPLLIT.amt].ToString();      //Amount       รอถาม  
-                    string col07 = "";//row[xCPLLITDB.xCPLLIT.q].ToString();//Quantity      รอถาม  
-                    string col08 = "";//Need-by Date       รอถาม 
+                    string col05 = "";//row[xCPLLITDB.xCPLLIT.shipment_number].ToString();//Ship-to Organization       
+                    string col06 = row[xCPLLITDB.xCPLLIT.amt].ToString();      //Amount      
+                    string col07 = "";//row[xCPLLITDB.xCPLLIT.q].ToString();//Quantity      
+                    string col08 = row[xCPLLITDB.xCPLLIT.need_by_date].ToString();//Need-by Date       
                     string col09 = "";//row[xCPLITDB.xCPLIT.category].ToString();//Promised Date       รอถาม 
                     string col10 = "";//Secondary Quantity       รอถาม 
 
                     string col11 = "";//Secondary UOM รอถาม  
-                    string col12 = "";//Destination Type Code
+                    string col12 = row[xCPLLITDB.xCPLLIT.destination_type_code].ToString();//Destination Type Code
                     string col13 = "";//Accrue at receipt
                     string col14 = "";//Secondary Quantity
                     string col15 = "";//Secondary UOM
@@ -1407,7 +1433,7 @@ namespace XCustPr
                     string col25 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE3].ToString();
                     string col26 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE4].ToString();
                     string col27 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE5].ToString();
-                    string col28 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE6].ToString();
+                    string col28 = Cm.initC.PO008tax_code; //row[xCRHIADB.xCRHIA.ATTRIBUTE6].ToString();
                     string col29 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE7].ToString();
                     string col30 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE8].ToString();
 
@@ -1529,13 +1555,16 @@ namespace XCustPr
             {
                 foreach (DataRow row in dt.Rows)
                 {
-                    string col01 = row[xCPDITDB.xCPDIT.interface_distribution_key].ToString();
-                    string col02 = row[xCPDITDB.xCPDIT.interface_line_location_key].ToString();//row[xCPHITDB.xCPHIT.d].ToString();      //Interface Line Location Key        รอถาม  
-                    string col03 = row[xCPDITDB.xCPDIT.distribution_num].ToString();//"col03";      // Distribution      รอถาม  
+                    //string col01 = row[xCPDITDB.xCPDIT.interface_distribution_key].ToString();
+                    String col01 = row[xCPDITDB.xCPDIT.wo_no].ToString() + row[xCPDITDB.xCPDIT.running].ToString() + "111";
+                    //string col02 = row[xCPDITDB.xCPDIT.interface_line_location_key].ToString();//row[xCPHITDB.xCPHIT.d].ToString();      //Interface Line Location Key      
+                    String col02 = row[xCPDITDB.xCPDIT.wo_no].ToString() + row[xCPDITDB.xCPDIT.running].ToString() + "11";
+                    //string col03 = row[xCPDITDB.xCPDIT.distribution_num].ToString();//"col03";      // Distribution     
+                    String col03 = "1";
                     string col04 = row[xCPDITDB.xCPDIT.deliver_to_location].ToString();// Deliver-to Location  row[xCPHITDB.xCPHIT.import_source].ToString();
-                    string col05 = "";//row[xCPHITDB.xCPHIT.approval_action].ToString(); ;//Approval Action       รอถาม  
+                    string col05 = "";//Requester      รอถาม  
                     string col06 = "";      //Order       รอถาม  
-                    string col07 = "";//row[xCPHITDB.xCPHIT.document_typre_code].ToString(); ;//Document Type Code      รอถาม  
+                    string col07 = row[xCPDITDB.xCPDIT.amt].ToString();//
                     string col08 = "";//Style       รอถาม 
                     string col09 = "";//row[xCPHITDB.xCPHIT.prc_bu_name].ToString(); ;//Procurement BU       รอถาม 
                     string col10 = "";//row[xCPHITDB.xCPHIT.req_bu_name].ToString(); ;//Requisitioning BU       รอถาม 

@@ -162,11 +162,13 @@ namespace XCustPr
                             ValidateFileName vF = new ValidateFileName();   // gen log
                             vF.fileName = "PO006 before write file ";   // gen log
                             vF.recordTotal = "1";   // gen log
+                            vF.Message = "(No Data DeliveryDate = " + Cm.initC.Po006DeliveryDate + " SUPPLIER_NUMBER = " + row["SUPPLIER_NUMBER"].ToString() + " re run = " + Cm.initC.PO006ReRun + ")";
+                            vF.recordError = "1";
 
                             vPP = new ValidatePrPo();
                             vPP.Filename = "PO006";
                             vPP.Message = "(No Data DeliveryDate = " + Cm.initC.Po006DeliveryDate + " SUPPLIER_NUMBER = " + row["SUPPLIER_NUMBER"].ToString() + " re run = " + Cm.initC.PO006ReRun + ")";
-                            vPP.Validate = "Error PO006-004: No Data Found ";
+                            vPP.Validate = "Error PO006-004: No Data Found "+ vPP.Message;
                             lVPr.Add(vPP);
                             cntErr++;       // gen log
                             lVfile.Add(vF);   // gen log
@@ -176,8 +178,6 @@ namespace XCustPr
                     {
 
                     }
-                    
-                    
                 }
                 deliveryDateLog1 = deliveryDateLog.ToString("dd MMM") + " " + deliveryDateLog.Year.ToString();
                 logProcessPO006("xcustpo006", lVPr, deliveryDateLog1, lVfile,"");   // gen log
@@ -208,14 +208,14 @@ namespace XCustPr
             String line1 = "", parameter = "", programstart = "", filename = "", recordError = "", txt = "", path = "";
             int cntErr = 0, err = 0;
 
-            String date = System.DateTime.Now.ToString("dd MMM yyyy");
-            String time = System.DateTime.Now.ToString("HH.mm");
+            String date = System.DateTime.Now.ToString("yyyy_MM_dd");
+            String time = System.DateTime.Now.ToString("HH_mm_ss");
 
             line1 = "Program : XCUST Text File PO (ERP) to Supplier" + Environment.NewLine;
             path = Cm.getPathLogProcess(programname);
             parameter = "Parameter : " + Environment.NewLine;
             parameter += "           Path Initial :" + Cm.initC.PO006PathInitial + Environment.NewLine;
-            parameter += "           Delivery Date :" + Cm.initC.PO006PathInitial + Environment.NewLine;
+            parameter += "           Delivery Date :" + deliveryDate + Environment.NewLine;
 
             programstart = "Program Start : " + deliveryDate + Environment.NewLine;
 
@@ -225,14 +225,14 @@ namespace XCustPr
                 {
                     if (flag.Equals("no data"))
                     {
-                        filename += "Filename " + vF.fileName + ", Total = " + vF.recordTotal + ", Validate pass = 0, Record Error = 1, Total Error = 1" + Environment.NewLine;
+                        filename += "Filename : " + vF.fileName + ", Total = " + vF.recordTotal + ", Validate pass = 0, Record Error = 1, Total Error = 1" + Environment.NewLine;
                         
                         cntErr++;
                             
                     }
                     else
                     {
-                        filename += "Filename " + vF.fileName + ", Total = " + vF.recordTotal + ", Validate pass = " + vF.validatePass + ", Record Error = " + vF.recordError + ", Total Error = " + vF.totalError + Environment.NewLine;
+                        filename += "Filename : " + vF.fileName + ", Total = " + vF.recordTotal + ", Validate pass = " + vF.validatePass + ", Record Error = " + vF.recordError + " " + Environment.NewLine;
                         if (int.TryParse(vF.recordError, out err))
                         {
                             if (int.Parse(vF.recordError) > 0)
@@ -248,13 +248,13 @@ namespace XCustPr
             {
                 foreach (ValidatePrPo vPr in lVPr)
                 {
-                    recordError += "FileName " + vPr.Filename + Environment.NewLine;
+                    recordError += "FileName =>" + vPr.Filename + Environment.NewLine;
                     recordError += "==>" + vPr.Validate + Environment.NewLine;
                     //recordError += "     ====>Error" + vPr.Message + Environment.NewLine;
                 }
             }
             //using (var stream = File.CreateText(Environment.CurrentDirectory + "\\" + programname + "_" + startdatetime.Replace("-", "_").Replace(":", "_") + ".log"))
-            using (var stream = File.CreateText(path + programname + "_" + deliveryDate.Replace("-", "_").Replace(":", "_") + ".log"))
+            using (var stream = File.CreateText(path + programname + "_" + date+"_"+time + ".log"))
             {
                 txt = line1;
                 txt += parameter;
@@ -265,9 +265,10 @@ namespace XCustPr
                 txt += "File Error " + Environment.NewLine;
                 txt += "--------------------------------------------------------------------------" + Environment.NewLine;
                 txt += recordError + Environment.NewLine;
-                txt += "Total " + listfile.Count + Environment.NewLine;
-                txt += "Complete " + (listfile.Count - cntErr) + Environment.NewLine;
-                txt += "Error " + cntErr + Environment.NewLine;
+                txt += Environment.NewLine + "==========================================================================" + Environment.NewLine;
+                txt += "Total " + listfile.Count + " Files " + Environment.NewLine;
+                txt += "Complete " + (listfile.Count - cntErr) + " Files " + Environment.NewLine;
+                txt += "Error " + cntErr + " Files " + Environment.NewLine;
                 stream.WriteLine(txt);
             }
             lVPr.Clear();
@@ -290,9 +291,9 @@ namespace XCustPr
                 {
                     deliveryDate1 = row[xCPoTDB.xCPO.DELIVER_DATE].ToString();
                     String col01 = Cm.FixLen(row["po_number"].ToString(), dtFixLen.Rows[3]["X_LENGTH"].ToString()," ", "lpad");
-                    String col02 = Cm.FixLen(delivery_date.Replace("-", ""), dtFixLen.Rows[4]["X_LENGTH"].ToString(), " ", "lpad");     //PO date
+                    String col02 = Cm.FixLen(row["CREATION_DATE"].ToString().Replace("-", ""), dtFixLen.Rows[4]["X_LENGTH"].ToString(), " ", "lpad");     //PO date
                     String col03 = Cm.FixLen(Org, dtFixLen.Rows[5]["X_LENGTH"].ToString(), "0","lpad");     //Store Code
-                    String col04 = Cm.FixLen(deliveryDate1.Replace("-", ""), dtFixLen.Rows[6]["X_LENGTH"].ToString(), " ","lpad");          //Delivery Date
+                    String col04 = Cm.FixLen(row["DELIVER_DATE"].ToString().Replace("-", ""), dtFixLen.Rows[6]["X_LENGTH"].ToString(), " ","lpad");          //Delivery Date DELIVER_DATE
                     String col05 = "", item_code="";
                     item_code = row["ITEM_ID"].ToString();
                     col05 = xCIMTDB.selectItemCodeByItemId(Org,row["ITEM_ID"].ToString());
