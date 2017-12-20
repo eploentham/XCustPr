@@ -700,7 +700,7 @@ namespace XCustPr
                                 rowH++;
                                 String poNumber = "", wo_no="", branch_plant="", supplier_code="", supplier_site_code= "", Bill_to_Location="", qt_no="";
                                 poNumber = rowFilename[xCCPITDB.xCCPIT.po_no].ToString();
-<<<<<<< HEAD
+
                                 DataTable dtTemp = new DataTable();
                                 dtTemp = xCCPITDB.selectCedarByPoNumber(requestId, poNumber);
                                 wo_no = dtTemp.Rows[0][xCCPITDB.xCCPIT.wo_no].ToString();
@@ -709,14 +709,8 @@ namespace XCustPr
                                 String vendorId = "";
                                 vendorId = xCSMTDB.validateSupplierBySupplierCode1(supplier_code);
                                 supplier_site_code = xCSSMTDB.getMinVendorSiteIdByVendorIdPO008(vendorId);
+                                qt_no = dtTemp.Rows[0][xCCPITDB.xCCPIT.qt_no].ToString();
 
-=======
-                                wo_no = rowFilename[xCCPITDB.xCCPIT.wo_no].ToString();
-                                branch_plant = rowFilename[xCCPITDB.xCCPIT.branch_plant].ToString();
-                                supplier_code = rowFilename[xCCPITDB.xCCPIT.supplier_code].ToString();
-                                supplier_site_code = xCSSMTDB.getMinVendorSiteIdByVendorIdPO008();
-                                qt_no = rowFilename[xCCPITDB.xCCPIT.qt_no].ToString();
->>>>>>> origin/master
                                 DataTable dtCedar = new DataTable();
                                 dtCedar = xCCPITDB.selectCedarByPoNumber(requestId, poNumber);
                                 XcustPoHeaderIntTbl xCPorRHIA = addXcustListHeader1(wo_no, branch_plant, supplier_code, supplier_site_code, qt_no);
@@ -724,6 +718,7 @@ namespace XCustPr
                                 Bill_to_Location = xCSIMTDB.selectBilltoLocation(Org, branch_plant);
                                 xCPorRHIA.bill_to_location = Bill_to_Location;
                                 xCPorRHIA.supplier_site_code = supplier_site_code;
+                                xCPorRHIA.request_id = requestId;
                                 seqH = xCPHITDB.insert(xCPorRHIA, Cm.initC.PO008PathLog);
                                 rowL = 0;
                                 foreach (DataRow dtCedarR in dtCedar.Rows)
@@ -731,12 +726,13 @@ namespace XCustPr
                                     running = "";
                                     rowL++;
                                     running = "00" + rowL;
-                                    running = running.Substring(0, running.Length - 2);
+                                    running = running.Substring(running.Length - 2);
                                     XcustPoLineIntTbl xCPoLIT = new XcustPoLineIntTbl();
                                     xCPoLIT = addXcustListLine1(dtCedarR);
                                     xCPoLIT.interface_header_key = seqH;
                                     xCPoLIT.running = running;
                                     xCPoLIT.line_num = running;
+                                    xCPoLIT.request_id = requestId;
                                     String seqL = xCPLITDB.insert(xCPoLIT, Cm.initC.PO008PathLog);
 
                                     XcustPoLineLocIntTbl xCPoLLIT = new XcustPoLineLocIntTbl();
@@ -744,6 +740,7 @@ namespace XCustPr
                                     xCPoLLIT.interface_header_key = seqH;
                                     xCPoLLIT.interface_line_key = seqL;
                                     xCPoLLIT.running = running;
+                                    xCPoLLIT.request_id = requestId;
                                     String chkll = xCPLLITDB.insert(xCPoLLIT, Cm.initC.PO008PathLog);
 
                                     XcustPoDistIntTbl xCPoDIT = new XcustPoDistIntTbl();
@@ -752,7 +749,7 @@ namespace XCustPr
                                     xCPoDIT.interface_line_key = seqL;
                                     xCPoDIT.interface_line_location_key = chkll;
                                     xCPoDIT.running = running;
-
+                                    xCPoDIT.request_id = requestId;
                                     String chk = xCPDITDB.insert(xCPoDIT, Cm.initC.PO008PathLog);
                                     
                                 }
@@ -1057,8 +1054,10 @@ namespace XCustPr
             processGenCSVxCPHITDB(lv1, form1, pB1, "PO008", requestId);
             addListView("processGenCSVxCPRLIA ", "CVS", lv1, form1);
             processGenCSVxCPLITDB(lv1, form1, pB1, "PO008", requestId);
-            addListView("processGenCSVxCPRDIA ", "CVS", lv1, form1);
+            addListView("processGenCSVxCPRLLIA ", "CVS", lv1, form1);
             processGenCSVxCPLLITDB(lv1, form1, pB1, "PO008", requestId);
+            addListView("processGenCSVxCPRDIA ", "CVS", lv1, form1);
+            processGenCSVxCPDITDB(lv1, form1, pB1, "PO008", requestId);
             addListView("processGenZIP ", "CVS", lv1, form1);
             processGenZIP(lv1, form1, pB1, "PO008");
 
@@ -1094,7 +1093,7 @@ namespace XCustPr
             DataTable dt;
             if (flag.Equals("PO008"))
             {
-                dt = xCPHITDB.selectAll();
+                dt = xCPHITDB.selectByRequestId(requestId);
             }
             else
             {
@@ -1107,7 +1106,7 @@ namespace XCustPr
                 foreach (DataRow row in dt.Rows)
                 {
                     //string col01 = row[xCPHITDB.xCPHIT.interface_header_key].ToString();
-                    string col01 = row[xCPHITDB.xCPHIT.interface_header_key].ToString();
+                    string col01 = row[xCPHITDB.xCPHIT.wo_no].ToString();
                     string col02 = row[xCPHITDB.xCPHIT.action].ToString(); ;      //action        
                     string col03 = "";      //batch_id      รอถาม  
                     string col04 = row[xCPHITDB.xCPHIT.import_source].ToString();
@@ -1249,7 +1248,7 @@ namespace XCustPr
             DataTable dt;
             if (flag.Equals("PO008"))
             {
-                dt = xCPLITDB.selectAll();
+                dt = xCPLITDB.selectByRequestId(requestId);
             }
             else
             {
@@ -1402,7 +1401,7 @@ namespace XCustPr
             DataTable dt;
             if (flag.Equals("PO008"))
             {
-                dt = xCPLLITDB.selectAll();
+                dt = xCPLLITDB.selectByRequestId(requestId);
             }
             else
             {
@@ -1551,11 +1550,11 @@ namespace XCustPr
         }
         public void processGenCSVxCPDITDB(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String flag, String requestId)
         {
-            var file = Cm.initC.PO008PathFileCSV + "PorReqHeadersInterfaceAl.csv";
+            var file = Cm.initC.PO008PathFileCSV + "PorReqDistInterfaceAl.csv";
             DataTable dt;
             if (flag.Equals("PO008"))
             {
-                dt = xCPDITDB.selectAll();
+                dt = xCPDITDB.selectByRequestId(requestId);
             }
             else
             {

@@ -42,6 +42,7 @@ namespace XCustPr
             xCPDIT.process_flag = "process_flag";
             xCPDIT.wo_no = "wo_no";
             xCPDIT.running = "running";
+            xCPDIT.request_id = "request_id";
 
             xCPDIT.table = "XCUST_PO_DIST_INT_TBL";
         }
@@ -49,6 +50,13 @@ namespace XCustPr
         {
             DataTable dt = new DataTable();
             String sql = "select * From " + xCPDIT.table;
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
+        }
+        public DataTable selectByRequestId(String requestId)
+        {
+            DataTable dt = new DataTable();
+            String sql = "select * From " + xCPDIT.table+" Where "+xCPDIT.request_id+"='"+requestId+"'";
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
@@ -84,7 +92,7 @@ namespace XCustPr
                     xCPDIT.deliver_to_location + "," + xCPDIT.destion_subinventory + "," + xCPDIT.distribution_num + "," +
                     xCPDIT.error_message + "," + xCPDIT.interface_distribution_key + "," + xCPDIT.interface_header_key + "," +
                     xCPDIT.interface_line_key + "," + xCPDIT.interface_line_location_key + "," + xCPDIT.last_update_by + "," +
-                    xCPDIT.last_update_date + "," + xCPDIT.process_flag + "," + xCPDIT.wo_no + "," + xCPDIT.running +
+                    xCPDIT.last_update_date + "," + xCPDIT.process_flag + "," + xCPDIT.wo_no + "," + xCPDIT.running + "," + xCPDIT.request_id +
                     ") " +
                     "Values('" + p.amt + "','" + p.charge_account_segment1 + "','" + p.charge_account_segment2 + "','" +
                     p.charge_account_segment3 + "','" + p.charge_account_segment4 + "','" + p.charge_account_segment5 + "','" +
@@ -92,11 +100,7 @@ namespace XCustPr
                     p.deliver_to_location + "','" + p.destion_subinventory + "','" + p.distribution_num + "','" +
                     p.error_message + "','" + p.interface_distribution_key + "','" + p.interface_header_key + "','" +
                     p.interface_line_key + "','" + p.interface_line_location_key + "','" + last_update_by + "'," +
-<<<<<<< HEAD
-                    "null,'" + p.process_flag +"'"+
-=======
-                    "null,'" + p.process_flag + "','" + p.wo_no + "','" + p.running + "',"+
->>>>>>> origin/master
+                    "null,'" + p.process_flag + "','" + p.wo_no + "','" + p.running + "','"+ p.request_id + "'" +
                     ") ";
                 chk = conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
                 //chk = p.RowNumber;

@@ -39,6 +39,7 @@ namespace XCustPr
             xCPLIT.running = "running";
             xCPLIT.attribute1 = "attribute1";
             xCPLIT.attribute2 = "attribute2";
+            xCPLIT.request_id = "request_id";
 
             xCPLIT.table = "XCUST_PO_LINE_INT_TBL";
         }
@@ -46,6 +47,13 @@ namespace XCustPr
         {
             DataTable dt = new DataTable();
             String sql = "select * From " + xCPLIT.table;
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
+        }
+        public DataTable selectByRequestId(String requestId)
+        {
+            DataTable dt = new DataTable();
+            String sql = "select * From " + xCPLIT.table +" Where " + xCPLIT.request_id + "='" + requestId + "'";
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
@@ -79,13 +87,13 @@ namespace XCustPr
                     xCPLIT.creation_date + "," + xCPLIT.error_message + "," + xCPLIT.interface_header_key + "," +
                     xCPLIT.interface_line_key + "," + xCPLIT.item_description + "," + xCPLIT.last_update_by + "," +
                     xCPLIT.last_update_date + "," + xCPLIT.line_num + "," + xCPLIT.line_type + "," +
-                    xCPLIT.process_flag + "," + xCPLIT.unit_price + "," + xCPLIT.wo_no + "," + xCPLIT.qt_no + "," + xCPLIT.running + "," + xCPLIT.attribute1 + "," + xCPLIT.attribute2 +
+                    xCPLIT.process_flag + "," + xCPLIT.unit_price + "," + xCPLIT.wo_no + "," + xCPLIT.qt_no + "," + xCPLIT.running + "," + xCPLIT.attribute1 + "," + xCPLIT.attribute2 + "," + xCPLIT.request_id +
                     ") " +
                     "Values('" + p.action + "','" + p.category + "','" + creation_by + "'," +
                     "getdate(),'" + p.error_message + "','" + p.interface_header_key + "','" +
                     p.interface_line_key + "','" + p.item_description + "','" + last_update_by + "'," +
                     "null,'" + p.line_num + "','" + p.line_type + "','" +
-                    p.process_flag + "'," + p.unit_price + ",'" + p.wo_no + "','" + p.qt_no + "','" + p.running + "','" + p.attribute1 + "','" + p.attribute2 +
+                    p.process_flag + "'," + p.unit_price + ",'" + p.wo_no + "','" + p.qt_no + "','" + p.running + "','" + p.attribute1 + "','" + p.attribute2 + "','" + p.request_id +
                     "') ";
                 chk = conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
                 if (chk.Equals("1"))
