@@ -24,13 +24,13 @@ namespace XCustPr
             xCPDIT.charge_account_segment1 = "charge_account_segment1";
             xCPDIT.charge_account_segment2 = "charge_account_segment2";
             xCPDIT.charge_account_segment3 = "charge_account_segment3";
-            xCPDIT.charge_account_segment4 = "charg_accounte_segment4";
+            xCPDIT.charge_account_segment4 = "charge_account_segment4";
             xCPDIT.charge_account_segment5 = "charge_account_segment5";
             xCPDIT.charge_account_segment6 = "charge_account_segment6";
             xCPDIT.creation_by = "creation_by";
             xCPDIT.creation_date = "creation_date";
             xCPDIT.deliver_to_location = "deliver_to_location";
-            xCPDIT.destion_subinventory = "destion_subinventory";
+            xCPDIT.destion_subinventory = "destination_subinventory";
             xCPDIT.distribution_num = "distribution_num";
             xCPDIT.error_message = "error_message";
             xCPDIT.interface_distribution_key = "interface_distribution_key";
@@ -91,7 +91,7 @@ namespace XCustPr
                     p.deliver_to_location + "','" + p.destion_subinventory + "','" + p.distribution_num + "','" +
                     p.error_message + "','" + p.interface_distribution_key + "','" + p.interface_header_key + "','" +
                     p.interface_line_key + "','" + p.interface_line_location_key + "','" + last_update_by + "'," +
-                    "null,'" + p.process_flag +
+                    "null,'" + p.process_flag +"'"+
                     ") ";
                 chk = conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
                 //chk = p.RowNumber;

@@ -700,10 +700,15 @@ namespace XCustPr
                                 rowH++;
                                 String poNumber = "", wo_no="", branch_plant="", supplier_code="", supplier_site_code= "", Bill_to_Location="";
                                 poNumber = rowFilename[xCCPITDB.xCCPIT.po_no].ToString();
-                                wo_no = rowFilename[xCCPITDB.xCCPIT.wo_no].ToString();
-                                branch_plant = rowFilename[xCCPITDB.xCCPIT.branch_plant].ToString();
-                                supplier_code = rowFilename[xCCPITDB.xCCPIT.supplier_code].ToString();
-                                supplier_site_code = xCSSMTDB.getMinVendorSiteIdByVendorIdPO008();
+                                DataTable dtTemp = new DataTable();
+                                dtTemp = xCCPITDB.selectCedarByPoNumber(requestId, poNumber);
+                                wo_no = dtTemp.Rows[0][xCCPITDB.xCCPIT.wo_no].ToString();
+                                branch_plant = dtTemp.Rows[0][xCCPITDB.xCCPIT.branch_plant].ToString();
+                                supplier_code = dtTemp.Rows[0][xCCPITDB.xCCPIT.supplier_code].ToString();
+                                String vendorId = "";
+                                vendorId = xCSMTDB.validateSupplierBySupplierCode1(supplier_code);
+                                supplier_site_code = xCSSMTDB.getMinVendorSiteIdByVendorIdPO008(vendorId);
+
                                 DataTable dtCedar = new DataTable();
                                 dtCedar = xCCPITDB.selectCedarByPoNumber(requestId, poNumber);
                                 XcustPoHeaderIntTbl xCPorRHIA = addXcustListHeader1(wo_no, branch_plant, supplier_code, supplier_site_code);

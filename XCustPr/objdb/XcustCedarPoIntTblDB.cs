@@ -164,6 +164,21 @@ namespace XCustPr
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
+        public DataTable selectByPoNo(String filename, String requestId)
+        {
+            DataTable dt = new DataTable();
+            String sql = "";
+
+            sql = "Select * "  +
+                " From " + xCCPIT.table +
+                " Where " + xCCPIT.validate_flag + "='Y' and " + xCCPIT.request_id + "='" + requestId + "' " +
+                " and " + xCCPIT.file_name + "='" + filename + "' " +
+                //" Group By " + xCCPIT.po_no + "," + xCCPIT.file_name +
+                " Order By " + xCCPIT.file_name + "," + xCCPIT.po_no +
+                " ";
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
+        }
         public DataTable selectCedarByPoNumber(String requestId, String poNumber)
         {
             DataTable dt = new DataTable();
