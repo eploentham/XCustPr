@@ -38,6 +38,9 @@ namespace XCustPr
             xCPLLIT.need_by_date = "need_by_date";
             xCPLLIT.process_flag = "process_flag";
             xCPLLIT.shipment_number = "shipment_number";
+            xCPLLIT.wo_no = "wo_no";
+            xCPLLIT.running = "running";
+            xCPLLIT.ship_to_location = "ship_to_location";
 
             xCPLLIT.table = "XCUST_PO_LINE_LOC_INT_TBL";
         }
@@ -79,15 +82,15 @@ namespace XCustPr
                     xCPLLIT.creation_by + "," + xCPLLIT.destination_type_code + "," + xCPLLIT.error_message + "," +
                     xCPLLIT.input_tax_classsification_code + "," + xCPLLIT.interface_header_key + "," + xCPLLIT.interface_line_key + "," +
                     xCPLLIT.interface_line_location_key + "," + xCPLLIT.last_date_by + "," + xCPLLIT.last_update_date + "," +
-                    xCPLLIT.need_by_date + "," + xCPLLIT.process_flag + "," + xCPLLIT.shipment_number+
+                    xCPLLIT.need_by_date + "," + xCPLLIT.process_flag + "," + xCPLLIT.shipment_number+ "," + xCPLLIT.wo_no + "," + xCPLLIT.running +
                     ") " +
                     "Values(" + p.amt + ",'" + p.attribute1 + "','" + p.attribute2 + "','" +
                     p.attribute3 + "','" + p.attribute4 + "',getdate(),'" +
                     creation_by + "','" + p.destination_type_code + "','" + p.error_message + "','" +
                     p.input_tax_classsification_code + "','" + p.interface_header_key + "','" + p.interface_line_key + "','" +
                     p.interface_line_location_key + "','" + last_update_by + "',null,'" +
-                    p.need_by_date + "','" + p.process_flag + "','" + p.shipment_number + "'" +
-                    ") ";
+                    p.need_by_date + "','" + p.process_flag + "','" + p.shipment_number + "','"+ p.wo_no + "'" + "','" + p.running + "'" +
+                   ") ";
                 chk = conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
                 if (chk.Equals("1"))
                 {

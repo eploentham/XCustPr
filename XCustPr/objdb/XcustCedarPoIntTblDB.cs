@@ -366,7 +366,7 @@ namespace XCustPr
 
             int cntErr = 0, cntPass = 0;
             ControlMain cm = new ControlMain();
-            line1 = "Program : XCUST Interface PR<Linfox>To PO(ERP)" + Environment.NewLine;
+            line1 = "Program : XCUST Interface PO <CEDAR> to PO (ERP)" + Environment.NewLine;
 
             path = cm.getPathLogProcess(programname);
             parameter = "Parameter : " + Environment.NewLine;
@@ -495,9 +495,10 @@ namespace XCustPr
                 txt += "File Error " + Environment.NewLine;
                 txt += "--------------------------------------------------------------------------" + Environment.NewLine;
                 txt += recordError + Environment.NewLine;
-                txt += "Total = " + dtFile.Rows.Count + Environment.NewLine;
-                txt += "Complete = " + cntPass + Environment.NewLine;
-                txt += "Error = " + cntErr + Environment.NewLine;
+                txt += Environment.NewLine + "==========================================================================" + Environment.NewLine;
+                txt += "Total = " + dtFile.Rows.Count+" File" + Environment.NewLine;
+                txt += "Complete = " + cntPass + " File" + Environment.NewLine;
+                txt += "Error = " + cntErr + " File" + Environment.NewLine;
                 stream.WriteLine(txt);
             }
         }

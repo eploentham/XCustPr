@@ -8,6 +8,6 @@ namespace XCustPr
 {
     public class ValidateFileName
     {
-        public String fileName = "", recordTotal = "", recordError = "", validatePass = "", totalError="";
+        public String fileName = "", recordTotal = "", recordError = "", validatePass = "", totalError="", Message = "";
     }
 }
