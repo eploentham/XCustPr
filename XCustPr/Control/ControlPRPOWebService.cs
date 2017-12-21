@@ -301,8 +301,8 @@ namespace XCustPr
             const Int32 BufferSize = 128;
             String[] filePO;
             addListView("setXcustPOTbl ", "Web Service", lv1, form1);
-            DateTime currDate = System.DateTime.Now.AddDays(-1);
-            //DateTime currDate = System.DateTime.Now;
+            //DateTime currDate = System.DateTime.Now.AddDays(-1);
+            DateTime currDate = System.DateTime.Now;
             String date = currDate.Month.ToString("00")+"-"+currDate.Day.ToString("00")+"-"+currDate.Year.ToString();
             //date = "";
             //filePO = Cm.getFileinFolder(Cm.initC.PathZip);
