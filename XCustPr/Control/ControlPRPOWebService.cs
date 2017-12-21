@@ -301,8 +301,8 @@ namespace XCustPr
             const Int32 BufferSize = 128;
             String[] filePO;
             addListView("setXcustPOTbl ", "Web Service", lv1, form1);
-            //DateTime currDate = System.DateTime.Now.AddDays(-1);
-            DateTime currDate = System.DateTime.Now;
+            DateTime currDate = System.DateTime.Now.AddDays(-1);
+            //DateTime currDate = System.DateTime.Now;
             String date = currDate.Month.ToString("00")+"-"+currDate.Day.ToString("00")+"-"+currDate.Year.ToString();
             //date = "";
             //filePO = Cm.getFileinFolder(Cm.initC.PathZip);
@@ -590,7 +590,10 @@ namespace XCustPr
                         dump = "";
                     }
                     //int VALUE_SET_ID = 0, VALUE_SET_CODE = 1, VALUE_ID = 2, VALUE = 3, DESCRIPTION = 4, ENABLED_FLAG = 5, LAST_UPDATE_DATE = 6, CREATION_DATE = 7;
-
+                    if (item.PO_HEADER_ID.Equals("12988051"))
+                    {
+                        dump = "";
+                    }
                     xCPODB.insertxCPR(item, pathLog);
                 }
                 catch (Exception ex)

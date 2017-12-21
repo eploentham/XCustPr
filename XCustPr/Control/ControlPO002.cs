@@ -276,21 +276,26 @@ namespace XCustPr
                             string col02 = row[xCLFPTDB.xCLFPT.store_code].ToString();      //Branch/Plant
                             string col03 = row[xCLFPTDB.xCLFPT.SUPPLIER_CODE].ToString();
                             string col04 = "WP";
-                            string col05 = ponumber;
+                            string col05 = ponumber;        // fix change 60-12-21
+
                             string col06 = row[xCLFPTDB.xCLFPT.COMPANYCODE].ToString();     //Company
                             string col07 = linenumber;
                             string col08 = row[xCLFPTDB.xCLFPT.ERP_PO_NUMBER].ToString();
-                            col08 = col08.Length > 0 ? col08.Substring(1) : col08;
+                            col08 = col08.Length > 0 ? col08.Substring(1) : col08;      // fix bug 60-12-21
+
                             string col09 = reqDate;
                             string col10 = row[xCLFPTDB.xCLFPT.REQUEST_TIME].ToString();
                             col10 = col10.Equals("0") ? "000000" : col10;
                             string col11 = row[xCLFPTDB.xCLFPT.ITEM_CODE].ToString();
                             string col12 = row[xCLFPTDB.xCLFPT.ERP_QTY].ToString();
                             string col13 = row[xCLFPTDB.xCLFPT.UOMCODE].ToString();     //Unit Of Mesure
+                            col13 = xCVSMTDB.selectUOMLFM(col13);       // fix bug 60-12-21
                             string col14 = row[xCLFPTDB.xCLFPT.ORDER_DATE].ToString();
                             string col15 = row[xCLFPTDB.xCLFPT.DELIVERY_INSTRUCTION].ToString();     //Delivery instruction
 
-                            string csvRow = col01 + "|" + col02 + "|" + col03 + "|" + col04 + "|" + col05 + "|" + col06 + "|" + col07 + "|" + col08 + "|" + col09 + "|" + col10
+                            //string csvRow = col01 + "|" + col02 + "|" + col03 + "|" + col04 + "|" + col05 + "|" + col06 + "|" + col07 + "|" + col08 + "|" + col09 + "|" + col10
+                            //    + "|" + col11 + "|" + col12 + "|" + col13 + "|" + col14 + "|" + col15 + "|";      // fix bug 60-12-21
+                            string csvRow = col01 + "|" + col02 + "|" + col03 + "|" + col04 + "|" + col08 + "|" + col06 + "|" + col07 + "|" + col05 + "|" + col09 + "|" + col10
                                 + "|" + col11 + "|" + col12 + "|" + col13 + "|" + col14 + "|" + col15 + "|";
 
                             stream.WriteLine(csvRow);

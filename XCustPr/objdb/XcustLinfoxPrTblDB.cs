@@ -195,8 +195,8 @@ namespace XCustPr
                 " From " + xCLFPT.table +
                 //" Where " + xCLFPT.SEND_PO_FLAG + "='N' and " + xCLFPT.PROCESS_FLAG + "='Y' and " + xCLFPT.GEN_OUTBOUD_FLAG + "='N' and " + xCLFPT.ERP_PO_NUMBER + " is not null "+
                 //" Where " + xCLFPT.SEND_PO_FLAG + "='N' and " + xCLFPT.PROCESS_FLAG + "='Y' and " + xCLFPT.GEN_OUTBOUD_FLAG + "='N' and " + xCLFPT.ERP_PO_NUMBER + " ='' " +
-                //" Where " + xCLFPT.SEND_PO_FLAG + " is null and " + xCLFPT.PROCESS_FLAG + "='Y' and " + xCLFPT.GEN_OUTBOUD_FLAG + " is null and " + xCLFPT.ERP_PO_NUMBER + " ='' " +
-                " Where " + xCLFPT.SEND_PO_FLAG + " is null and " + xCLFPT.PROCESS_FLAG + "='Y' and " + xCLFPT.GEN_OUTBOUD_FLAG + " is null and " + xCLFPT.ERP_PO_NUMBER + " !='' " +    // for test
+                " Where " + xCLFPT.SEND_PO_FLAG + " is null and " + xCLFPT.PROCESS_FLAG + "='Y' and " + xCLFPT.GEN_OUTBOUD_FLAG + " is null and " + xCLFPT.ERP_PO_NUMBER + " ='' " +
+                //" Where " + xCLFPT.SEND_PO_FLAG + " is null and " + xCLFPT.PROCESS_FLAG + "='Y' and " + xCLFPT.GEN_OUTBOUD_FLAG + " is null and " + xCLFPT.ERP_PO_NUMBER + " !='' " +    // for test
                 "Group By " +xCLFPT.ERP_PO_NUMBER;
             dt = conn.selectData(sql, "kfc_po");
             return dt;
