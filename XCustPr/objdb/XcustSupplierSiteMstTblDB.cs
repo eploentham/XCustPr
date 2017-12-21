@@ -111,13 +111,18 @@ namespace XCustPr
             }
             return chk;
         }
-        public String getMinVendorSiteIdByVendorIdPO008()
+        public String getMinVendorSiteIdByVendorIdPO008(String vendor_id)
         {
             DataTable dt = new DataTable();
             String chk = "";
-            String sql = "SELECT T.VENDOR_SITE_CODE " +
+            String sql = "";
+            if (vendor_id.Equals(""))
+            {
+                return "";
+            }
+            sql = "SELECT T.VENDOR_SITE_CODE " +
                 "FROM XCUST_SUPPLIER_SITE_MST_TBL T " +
-                "WHERE VENDOR_ID = 300000000943255 " +
+                "WHERE VENDOR_ID = "+ vendor_id + " " +
                 "AND PURCHASING_SITE_FLAG = 'Y' " +
                 "AND T.VENDOR_SITE_ID = (SELECT  " +
                  "                       MAX(TT.VENDOR_SITE_ID) " +

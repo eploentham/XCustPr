@@ -100,7 +100,7 @@ namespace XCustPr
             else
             {
                 Cm.initC.pathLogErr = Cm.initC.PathLog;
-                //Application.Run(new XCustPO008(Cm));
+                Application.Run(new XCustPO008(Cm));
                 //Application.Run(new XCustPO004(Cm));
                 //Application.Run(new XCustPO005(Cm));
                 //Application.Run(new XCustPO003(Cm));

@@ -41,6 +41,7 @@ namespace XCustPr
             xCPLLIT.wo_no = "wo_no";
             xCPLLIT.running = "running";
             xCPLLIT.ship_to_location = "ship_to_location";
+            xCPLLIT.request_id = "request_id";
 
             xCPLLIT.table = "XCUST_PO_LINE_LOC_INT_TBL";
         }
@@ -48,6 +49,13 @@ namespace XCustPr
         {
             DataTable dt = new DataTable();
             String sql = "select * From " + xCPLLIT.table;
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
+        }
+        public DataTable selectByRequestId(String requestId)
+        {
+            DataTable dt = new DataTable();
+            String sql = "select * From " + xCPLLIT.table + " Where "+xCPLLIT.request_id+"='"+requestId+"'";
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
@@ -82,14 +90,14 @@ namespace XCustPr
                     xCPLLIT.creation_by + "," + xCPLLIT.destination_type_code + "," + xCPLLIT.error_message + "," +
                     xCPLLIT.input_tax_classsification_code + "," + xCPLLIT.interface_header_key + "," + xCPLLIT.interface_line_key + "," +
                     xCPLLIT.interface_line_location_key + "," + xCPLLIT.last_date_by + "," + xCPLLIT.last_update_date + "," +
-                    xCPLLIT.need_by_date + "," + xCPLLIT.process_flag + "," + xCPLLIT.shipment_number+ "," + xCPLLIT.wo_no + "," + xCPLLIT.running +
+                    xCPLLIT.need_by_date + "," + xCPLLIT.process_flag + "," + xCPLLIT.shipment_number+ "," + xCPLLIT.wo_no + "," + xCPLLIT.running + "," + xCPLLIT.request_id +
                     ") " +
                     "Values(" + p.amt + ",'" + p.attribute1 + "','" + p.attribute2 + "','" +
                     p.attribute3 + "','" + p.attribute4 + "',getdate(),'" +
                     creation_by + "','" + p.destination_type_code + "','" + p.error_message + "','" +
                     p.input_tax_classsification_code + "','" + p.interface_header_key + "','" + p.interface_line_key + "','" +
                     p.interface_line_location_key + "','" + last_update_by + "',null,'" +
-                    p.need_by_date + "','" + p.process_flag + "','" + p.shipment_number + "','"+ p.wo_no + "'" + "','" + p.running + "'" +
+                    p.need_by_date + "','" + p.process_flag + "','" + p.shipment_number + "','"+ p.wo_no + "','" + p.running + "','" + p.request_id + "'" +
                    ") ";
                 chk = conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
                 if (chk.Equals("1"))
