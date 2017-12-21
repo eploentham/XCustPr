@@ -59,7 +59,7 @@ namespace XCustPr
             lb2.Text = lb2.Text + " " + Cm.xcustpowebservice_run;
             if (Cm.xcustprwebservice_run.ToLower().Equals("on"))
             {
-                cPoRWS.setXcustPRTbl(lv1, this, pB1);
+                cPoRWS.setXcustPoRTbl(lv1, this, pB1);
             }
             //int i = 1;
         }
@@ -135,7 +135,7 @@ namespace XCustPr
         }
         private void btnRead_Click(object sender, EventArgs e)
         {
-            cPoRWS.setXcustPRTbl(lv1, this, pB1);
+            cPoRWS.setXcustPoRTbl(lv1, this, pB1);
         }
         private void txtFileName_Leave(object sender, EventArgs e)
         {

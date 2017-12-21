@@ -25,6 +25,7 @@ namespace XCustPr
         public ConnectDB conn;        //standard
 
         ControlPRPOWebService cPRPOWS;
+        ControlPoRWebService cPorWS;
 
         public ValidatePrPo vPrPo;      //gen log
 
@@ -42,6 +43,7 @@ namespace XCustPr
 
         public XcustPrTblDB xCPRTDB;
         public XcustPoTblDB xCPOTDB;
+        
         public XcustLinfoxPrTblDB xCLFPTDB;      //po001
         public XcustLogModuleDB xCLMDB;
 
@@ -86,11 +88,14 @@ namespace XCustPr
 
             xCPRTDB = new XcustPrTblDB(conn, Cm.initC);
             xCPOTDB = new XcustPoTblDB(conn, Cm.initC);
+            
+
             xCLFPTDB = new XcustLinfoxPrTblDB(conn, Cm.initC);
             xCLMDB = new XcustLogModuleDB(conn, Cm.initC);
 
             Cm.createFolderPO002();
             cPRPOWS = new ControlPRPOWebService(Cm);
+            cPorWS = new ControlPoRWebService(Cm);
 
             fontSize9 = 9.75f;        //standard
             fontSize8 = 8.25f;        //standard
@@ -109,6 +114,7 @@ namespace XCustPr
         {
             cPRPOWS.setXcustPRTbl(lv1, form1, pB1, Cm.initC.PO002PathLog);
             cPRPOWS.setXcustPOTbl(lv1, form1, pB1, Cm.initC.PO002PathLog);
+            cPorWS.setXcustPoRTbl(lv1, form1, pB1);
         }
         public void processMapping(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
         {
@@ -151,7 +157,7 @@ namespace XCustPr
                             String ERP_PO_HEADER_ID = prpo["PO_HEADER_ID"].ToString();
                             String ERP_PO_LINE_ID = prpo["PO_LINE_ID"].ToString();
                             String ERP_PO_LINE_NUMBER = prpo["po_line_number"].ToString();
-                            xCLFPTDB.updateFromPO002(prpo["po_number"].ToString(), prpo["QUANTITY"].ToString()
+                            chk = xCLFPTDB.updateFromPO002(prpo["po_number"].ToString(), prpo["QUANTITY"].ToString()
                                 , ERP_PO_HEADER_ID, ERP_PO_LINE_ID
                                 , ERP_PO_LINE_NUMBER, requestId,
                                 linfox[xCLFPTDB.xCLFPT.PO_NUMBER].ToString(), linfox[xCLFPTDB.xCLFPT.LINE_NUMBER].ToString());

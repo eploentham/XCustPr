@@ -49,14 +49,14 @@ namespace XCustPr
             fV1B = new Font(fontName, fontSize9, FontStyle.Bold);        //standard
             fV1 = new Font(fontName, fontSize8, FontStyle.Regular);        //standard
         }
-        public void setXcustPRTbl(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
+        public void setXcustPoRTbl(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
         {
             String uri = "", dump = "";
             //HttpWebRequest request = CreateWebRequest();
             XmlDocument soapEnvelopeXml = new XmlDocument();
             const Int32 BufferSize = 128;
             String[] filePO;
-            addListView("setXcustPRTbl ", "Web Service", lv1, form1);
+            addListView("setXcustPoRTbl ", "Web Service", lv1, form1);
             //filePO = Cm.getFileinFolder(Cm.initC.PathZip);
             //String text = System.IO.File.ReadAllText(filePO[0]);
             //byte[] byteArraytext = Encoding.UTF8.GetBytes(text);
@@ -124,7 +124,7 @@ namespace XCustPr
 
             //byte[] byteArray = Encoding.UTF8.GetBytes(envelope);
             byte[] byteArray = Encoding.UTF8.GetBytes(uri);
-            addListView("setXcustPRTbl Start", "Web Service", lv1, form1);
+            addListView("setXcustPoRTbl Start", "Web Service", lv1, form1);
             // Construct the base 64 encoded string used as credentials for the service call
             byte[] toEncodeAsBytes = System.Text.ASCIIEncoding.ASCII.GetBytes("icetech@iceconsulting.co.th" + ":" + "icetech@2017");
             string credentials = System.Convert.ToBase64String(toEncodeAsBytes);
@@ -147,7 +147,7 @@ namespace XCustPr
             Stream dataStream = request1.GetRequestStream();
             dataStream.Write(byteArray, 0, byteArray.Length);
             dataStream.Close();
-            addListView("setXcustPRTbl Request", "Web Service", lv1, form1);
+            addListView("setXcustPoRTbl Request", "Web Service", lv1, form1);
             // Get the response and process it; In this example, we simply print out the response XDocument doc;
             string actNumber = "";
             XDocument doc;
@@ -175,7 +175,7 @@ namespace XCustPr
             }
             actNumber = actNumber.Trim();
             actNumber = actNumber.IndexOf("<reportContentType>") >= 0 ? actNumber.Substring(0, actNumber.IndexOf("<reportContentType>")) : actNumber;
-            addListView("setXcustPRTbl Extract html", "Web Service", lv1, form1);
+            addListView("setXcustPoRTbl Extract html", "Web Service", lv1, form1);
             byte[] data = Convert.FromBase64String(actNumber);
             string decodedString = Encoding.UTF8.GetString(data);
             //XElement html = XElement.Parse(decodedString);

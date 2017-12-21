@@ -6,3 +6,8 @@ update xcust_linfox_pr_int_tbl
   ERP_PO_LINE_NUMBER = '',
   ERP_QTY = 0
   where   request_id = xxx
+
+
+
+  update xcust_linfox_pr_int_tbl
+  set GEN_OUTBOUD_FLAG = NULL,SEND_PO_FLAG = null 

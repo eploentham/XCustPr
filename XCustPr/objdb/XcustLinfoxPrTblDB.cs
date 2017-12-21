@@ -185,6 +185,7 @@ namespace XCustPr
             
             String sql = "Select * From " + xCLFPT.table + 
                 " Where " + xCLFPT.SEND_PO_FLAG + " is null and "+xCLFPT.PROCESS_FLAG+"='Y' and "+xCLFPT.GEN_OUTBOUD_FLAG+ " is null and validate_flag = 'Y'";
+                //" Where " + xCLFPT.SEND_PO_FLAG + " is null and " + xCLFPT.PROCESS_FLAG + "='Y' and " + xCLFPT.GEN_OUTBOUD_FLAG + " = '' and validate_flag = 'Y'";
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
@@ -195,8 +196,8 @@ namespace XCustPr
                 " From " + xCLFPT.table +
                 //" Where " + xCLFPT.SEND_PO_FLAG + "='N' and " + xCLFPT.PROCESS_FLAG + "='Y' and " + xCLFPT.GEN_OUTBOUD_FLAG + "='N' and " + xCLFPT.ERP_PO_NUMBER + " is not null "+
                 //" Where " + xCLFPT.SEND_PO_FLAG + "='N' and " + xCLFPT.PROCESS_FLAG + "='Y' and " + xCLFPT.GEN_OUTBOUD_FLAG + "='N' and " + xCLFPT.ERP_PO_NUMBER + " ='' " +
-                " Where " + xCLFPT.SEND_PO_FLAG + " is null and " + xCLFPT.PROCESS_FLAG + "='Y' and " + xCLFPT.GEN_OUTBOUD_FLAG + " is null and " + xCLFPT.ERP_PO_NUMBER + " ='' " +
-                //" Where " + xCLFPT.SEND_PO_FLAG + " is null and " + xCLFPT.PROCESS_FLAG + "='Y' and " + xCLFPT.GEN_OUTBOUD_FLAG + " is null and " + xCLFPT.ERP_PO_NUMBER + " !='' " +    // for test
+                //" Where " + xCLFPT.SEND_PO_FLAG + " is null and " + xCLFPT.PROCESS_FLAG + "='Y' and " + xCLFPT.GEN_OUTBOUD_FLAG + " is null and " + xCLFPT.ERP_PO_NUMBER + " ='' " +
+                " Where " + xCLFPT.SEND_PO_FLAG + " is null and " + xCLFPT.PROCESS_FLAG + "='Y' and " + xCLFPT.GEN_OUTBOUD_FLAG + " is null and " + xCLFPT.ERP_PO_NUMBER + " !='' " +    // for test
                 "Group By " +xCLFPT.ERP_PO_NUMBER;
             dt = conn.selectData(sql, "kfc_po");
             return dt;
@@ -225,7 +226,7 @@ namespace XCustPr
                 xCLFPT.ERP_PO_HEADER_ID + "=" + ERP_PO_HEADER_ID + ", " +
                 xCLFPT.ERP_PO_LINE_ID + "=" + ERP_PO_LINE_ID + ", " +
                 xCLFPT.ERP_PO_LINE_NUMBER + "=" + ERP_PO_LINE_NUMBER + ", " +
-                //xCLFPT.GEN_OUTBOUD_FLAG + "='Y', " +
+                //xCLFPT.GEN_OUTBOUD_FLAG + "='Y', " +      // ไปupdate ตอน gen text
                 xCLFPT.request_id_po002 + "=" + request_id_po002 + " " +
                 "Where " +xCLFPT.PO_NUMBER+"='"+po_number+"' and "+xCLFPT.LINE_NUMBER+"='"+line_number+"'";
             chk = conn.ExecuteNonQuery(sql, "kfc_po", initC.PO002PathLog);

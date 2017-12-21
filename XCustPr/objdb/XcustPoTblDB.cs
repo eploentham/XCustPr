@@ -245,8 +245,8 @@ namespace XCustPr
                     p.BILLTO_BU + "'," + p.BILLTO_BU_ID + "," + p.BILL_TO_LOCATION_ID + ",'" +
                     p.BUYER + "','" + p.CATEGORY_NM + "','" + p.CREATION_DATE + "','" +
                     p.CURRENCY_CODE + "','" + p.DELIVER_TO_LOC + "','" + p.DELIVER_TO_LOC_LINFOX + "','" +
-                    p.DESTINATION_TYPE + "','" + p.DOCUMENT_STATUS + "','" + p.EMAIL_ADDRESS + "','" +
-                    p.GEN_OUTBOUD_FLAG + "','" + p.ITEM_DESCRIPTION + "'," + p.ITEM_ID + ",'" +
+                    p.DESTINATION_TYPE + "','" + p.DOCUMENT_STATUS + "','" + p.EMAIL_ADDRESS + "'," +
+                    "null,'" + p.ITEM_DESCRIPTION + "'," + p.ITEM_ID + ",'" +
                     p.LAST_UPDATED_BY + "'," + p.LINE_NUM + ",'" + p.LINE_STATUS + "'," +
                     p.LINE_TYPE_ID + ",'" + p.PAYMENT_TERM + "'," + p.PO_HEADER_ID + "," +
                     p.PO_LINE_ID + ",'" + p.PRC_BU + "'," + p.PRC_BU_ID + ",'" +
