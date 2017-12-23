@@ -153,7 +153,16 @@ namespace XCustPr
             sql = "Update " + xCPO.table + " " +
                 "Set " + xCPO.GEN_OUTBOUD_FLAG + "='Y' " +
                 "Where " + xCPO.DELIVER_DATE + " = '" + deliveryDate + "'";
-            conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
+            chk = conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
+            return chk;
+        }
+        public String updateOutBoundFlagPO006_1(String vendorId,String deliveryDate, String pathLog)
+        {
+            String sql = "", chk = "";
+            sql = "Update " + xCPO.table + " " +
+                "Set " + xCPO.GEN_OUTBOUD_FLAG + "='Y' " +
+                "Where " + xCPO.DELIVER_DATE + " = '" + deliveryDate + "' and "+xCPO.VENDOR_ID + "='"+vendorId+"'";
+            chk = conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
             return chk;
         }
         public String insertxCPR(XcustPoTbl p, String pathLog)

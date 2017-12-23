@@ -1065,7 +1065,7 @@ namespace XCustPr
         }
         public void processGenZIP(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String flag)
         {
-            addListView("create zip file " + Cm.initC.PO008PathInitial, "Validate", lv1, form1);
+            addListView("create zip file " + Cm.initC.AP001PathFileZip, "Zip", lv1, form1);
             String filenameZip = "", ilename2 = "", ilename3 = "", filename = "";
             if (flag.Equals("PO008"))
             {

@@ -187,8 +187,55 @@ namespace XCustPr
                 ",XCUST_SUPPLIER_MST_TBL t  " +
                 "where  po.VENDOR_ID = t.VENDOR_ID  " + "" +
                 " and t.ATTRIBUTE1 = 'Y' " +
-                " and po.GEN_OUTBOUD_FLAG = ''   and po.DELIVER_DATE is not null " +
+                //" and po.GEN_OUTBOUD_FLAG = ''   and po.DELIVER_DATE is not null " +
+                " and po.GEN_OUTBOUD_FLAG is null   and po.DELIVER_DATE is not null " +
                 " GROUP BY po.VENDOR_ID, t.SUPPLIER_NUMBER, po.DELIVER_DATE ";
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
+        }
+        public DataTable selectPRPO006GroupByVendorDeliveryDate1(String delivery_date, String rerun)
+        {
+            DataTable dt = new DataTable();
+            String sql = "", where="", date="", whereRerun="";
+            if (delivery_date.Equals("sysdate"))
+            {
+                date = System.DateTime.Now.ToString("yyyy-MM-dd");
+            }
+            else
+            {
+                date = delivery_date;
+            }
+            if (delivery_date.Equals(""))
+            {
+                where = " ";
+            }
+            else
+            {
+                //where = " and po.DELIVER_DATE = '"+delivery_date+"' ";        //for test
+                where = "  ";
+            }
+            if (rerun.Equals("Y"))
+            {
+                whereRerun = " and po.GEN_OUTBOUD_FLAG = 'Y' ";
+            }
+            else
+            {
+                //whereRerun = " and po.GEN_OUTBOUD_FLAG = 'N' ";
+                whereRerun = " and po.GEN_OUTBOUD_FLAG is null ";
+            }
+            //sql = "SELECT po.VENDOR_ID, po.acc_segment1 as deliveryDate " +
+            //    "From xcust_pr_tbl PR " +
+            //    "inner Join xcust_po_tbl po On  po.REQUISITION_HEADER_ID = PR.REQUISITION_HEADER_ID and po.REQUISITION_LINE_ID = PR.REQUISITION_LINE_ID  " +
+            //    "Where  " + "" +
+            //    " PR.ATTRIBUTE1 <> 'MMX' group by po.VENDOR_ID, po.acc_segment1 ";[DELIVER_DATE]
+            sql = "select  t.SUPPLIER_NUMBER, po.DELIVER_DATE as DELIVERY_DATE ,po.VENDOR_ID " +
+            "from xcust_PO_TBL po " +
+            ",XCUST_SUPPLIER_MST_TBL t  " +
+            "where  po.VENDOR_ID = t.VENDOR_ID  " + "" +
+            " and t.ATTRIBUTE1 = 'Y' " +
+            //" and po.GEN_OUTBOUD_FLAG = ''   and po.DELIVER_DATE is not null " +
+            "   and po.DELIVER_DATE is not null " + whereRerun+ where+
+            " GROUP BY po.VENDOR_ID, t.SUPPLIER_NUMBER, po.DELIVER_DATE ";
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
@@ -213,7 +260,7 @@ namespace XCustPr
             }
             else
             {
-                //where = " and po.DELIVER_DATE = '"+delivery_date+"' ";
+                //where = " and po.DELIVER_DATE = '"+delivery_date+"' ";        //for test
                 where = "  ";
             }
             if (rerun.Equals("Y"))
@@ -238,6 +285,57 @@ namespace XCustPr
                     ",po.SEGMENT1, po.ACC_SEGMENT1, po.ACC_SEGMENT2,po.TAX_CODE, po.PO_HEADER_ID, po.DELIVER_DATE " +
                     "From xcust_pr_tbl PR " +
                     "inner Join xcust_po_tbl po On  po.REQUISITION_HEADER_ID = PR.REQUISITION_HEADER_ID and po.REQUISITION_LINE_ID = PR.REQUISITION_LINE_ID  " +
+                    "Where po.VENDOR_ID =" + VENDOR_ID +
+                    "  " + where + whereRerun +
+                    " Order By po.SEGMENT1 ";
+
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
+        }
+        public DataTable selectPRPO0061(String VENDOR_ID, String delivery_date)
+        {
+            DataTable dt = new DataTable();
+            String sql = "", where = "", whereRerun = "";
+            if (delivery_date.Equals(""))
+            {
+                where = " ";
+            }
+            else
+            {
+                where = " and po.DELIVER_DATE = '" + delivery_date + "' ";
+                //where = "  ";
+            }
+            //if (rerun.Equals("Y"))
+            //{
+            //    whereRerun = " and po.GEN_OUTBOUD_FLAG = 'Y' ";
+            //}
+            //else
+            //{
+            //    whereRerun = " and po.GEN_OUTBOUD_FLAG = 'N' ";
+            //}
+            whereRerun = " ";
+            //sql = "SELECT po.CREATION_DATE, po.PO_LINE_ID,po.SEGMENT1 as po_number,po.LINE_NUM, po.QUANTITY, po.VENDOR_ID, po.PRC_BU_ID, po.ITEM_ID " +
+            //        ", po.ITEM_DESCRIPTION, po.QUANTITY_RECEIPT, po.QUANTITY, po.UOM_CODE, po.UNIT_PRICE, po.LINE_TYPE_ID, po.PAYMENT_TERM, po.CURRENCY_CODE, po.REVISION_NUM " +
+            //        ",po.SEGMENT1, po.ACC_SEGMENT1, po.ACC_SEGMENT2,po.TAX_CODE, po.PO_HEADER_ID, po.DELIVER_DATE " +
+            //        "From xcust_pr_tbl PR " +
+            //        "inner Join xcust_po_tbl po On  po.REQUISITION_HEADER_ID = PR.REQUISITION_HEADER_ID and po.REQUISITION_LINE_ID = PR.REQUISITION_LINE_ID  " +
+            //        "Where po.VENDOR_ID =" + VENDOR_ID +
+            //        " and PR.ATTRIBUTE1 <> 'MMX'  "+ where+ whereRerun+ 
+            //        " Order By po.SEGMENT1 ";
+            //sql = "SELECT po.CREATION_DATE, po.PO_LINE_ID,po.SEGMENT1 as po_number,po.LINE_NUM, po.QUANTITY, po.VENDOR_ID, po.PRC_BU_ID, po.ITEM_ID " +
+            //        ", po.ITEM_DESCRIPTION, po.QUANTITY_RECEIPT, po.QUANTITY, po.UOM_CODE, po.UNIT_PRICE, po.LINE_TYPE_ID, po.PAYMENT_TERM, po.CURRENCY_CODE, po.REVISION_NUM " +
+            //        ",po.SEGMENT1, po.ACC_SEGMENT1, po.ACC_SEGMENT2,po.TAX_CODE, po.PO_HEADER_ID, po.DELIVER_DATE " +
+            //        "From xcust_pr_tbl PR " +
+            //        "inner Join xcust_po_tbl po On  po.REQUISITION_HEADER_ID = PR.REQUISITION_HEADER_ID and po.REQUISITION_LINE_ID = PR.REQUISITION_LINE_ID  " +
+            //        "Where po.VENDOR_ID =" + VENDOR_ID +
+            //        "  " + where + whereRerun +
+            //        " Order By po.SEGMENT1 ";
+
+            sql = "SELECT po.CREATION_DATE, po.PO_LINE_ID,po.SEGMENT1 as po_number,po.LINE_NUM, po.QUANTITY, po.VENDOR_ID, po.PRC_BU_ID, po.ITEM_ID " +
+                    ", po.ITEM_DESCRIPTION, po.QUANTITY_RECEIPT, po.QUANTITY, po.UOM_CODE, po.UNIT_PRICE, po.LINE_TYPE_ID, po.PAYMENT_TERM, po.CURRENCY_CODE, po.REVISION_NUM " +
+                    ",po.SEGMENT1, po.ACC_SEGMENT1, po.ACC_SEGMENT2,po.TAX_CODE, po.PO_HEADER_ID, po.DELIVER_DATE " +
+                    "From xcust_po_tbl po " +
+                    //"inner Join xcust_po_tbl po On  po.REQUISITION_HEADER_ID = PR.REQUISITION_HEADER_ID and po.REQUISITION_LINE_ID = PR.REQUISITION_LINE_ID  " +
                     "Where po.VENDOR_ID =" + VENDOR_ID +
                     "  " + where + whereRerun +
                     " Order By po.SEGMENT1 ";

@@ -126,7 +126,9 @@ namespace XCustPr
             DataTable dtFixLen = xCPrTDB.selectPO006FixLen();
             DateTime deliveryDateLog = System.DateTime.Now;
             if (dtFixLen.Rows.Count <= 0) return;
-            dt006 = xCPrTDB.selectPRPO006GroupByVendorDeliveryDate();
+            
+            //dt006 = xCPrTDB.selectPRPO006GroupByVendorDeliveryDate();
+            dt006 = xCPrTDB.selectPRPO006GroupByVendorDeliveryDate1(Cm.initC.Po006DeliveryDate, Cm.initC.PO006ReRun);
             if (dt006.Rows.Count > 0)
             {
                 pB1.Minimum = 0;
@@ -140,22 +142,24 @@ namespace XCustPr
                     try
                     {
                         String vendorId = "";
-                        vendorId = xCSMTDB.validateSupplierBySupplierCode1(row["SUPPLIER_NUMBER"].ToString().Trim());
-                        if (Cm.initC.Po006DeliveryDate.Equals("sysdate"))
-                        {
-                            date = System.DateTime.Now.ToString("yyyy-MM-dd");
-                            dt = xCPrTDB.selectPRPO006(vendorId, date, Cm.initC.PO006ReRun);
-                            deliveryDateLog = DateTime.Parse(date);
-                        }
-                        else
-                        {
-                            dt = xCPrTDB.selectPRPO006(vendorId, Cm.initC.Po006DeliveryDate, Cm.initC.PO006ReRun);
-                            deliveryDateLog = DateTime.Parse(Cm.initC.Po006DeliveryDate);
-                        }
+                        //vendorId = xCSMTDB.validateSupplierBySupplierCode1(row["SUPPLIER_NUMBER"].ToString().Trim());
+                        vendorId = row[xCPoTDB.xCPO.VENDOR_ID].ToString().Trim();
+                        //if (Cm.initC.Po006DeliveryDate.Equals("sysdate"))
+                        //{
+                        //    date = System.DateTime.Now.ToString("yyyy-MM-dd");
+                        //    dt = xCPrTDB.selectPRPO006(vendorId, date, Cm.initC.PO006ReRun);
+                        //    deliveryDateLog = DateTime.Parse(date);
+                        //}
+                        //else
+                        //{
+                        //    dt = xCPrTDB.selectPRPO006(vendorId, Cm.initC.Po006DeliveryDate, Cm.initC.PO006ReRun);
+                        //    deliveryDateLog = DateTime.Parse(Cm.initC.Po006DeliveryDate);
+                        //}
+                        dt = xCPrTDB.selectPRPO0061(vendorId, deliveryDate);
                         if (dt.Rows.Count > 0)
                         {
                             writeTextPO006(row["SUPPLIER_NUMBER"].ToString(), deliveryDate, dt, dtFixLen);
-                            xCPoTDB.updateOutBoundFlagPO006(deliveryDate, Cm.initC.PO006PathLog);
+                            xCPoTDB.updateOutBoundFlagPO006_1(vendorId, deliveryDate, Cm.initC.PO006PathLog);
                         }
                         else
                         {
