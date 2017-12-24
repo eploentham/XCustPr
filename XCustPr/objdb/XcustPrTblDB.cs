@@ -211,8 +211,9 @@ namespace XCustPr
             }
             else
             {
-                //where = " and po.DELIVER_DATE = '"+delivery_date+"' ";        //for test
-                where = "  ";
+                where = " and po.DELIVER_DATE = '" + date + "' ";
+                where = "  "; //for test
+                where = " and po.DELIVER_DATE = '2017-12-25' "; //for test
             }
             if (rerun.Equals("Y"))
             {
@@ -234,7 +235,7 @@ namespace XCustPr
             "where  po.VENDOR_ID = t.VENDOR_ID  " + "" +
             " and t.ATTRIBUTE1 = 'Y' " +
             //" and po.GEN_OUTBOUD_FLAG = ''   and po.DELIVER_DATE is not null " +
-            "   and po.DELIVER_DATE is not null " + whereRerun+ where+
+            "   " + whereRerun+ where+
             " GROUP BY po.VENDOR_ID, t.SUPPLIER_NUMBER, po.DELIVER_DATE ";
             dt = conn.selectData(sql, "kfc_po");
             return dt;

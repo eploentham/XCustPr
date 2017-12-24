@@ -1,14 +1,10 @@
 
 start loop
 
-select PO.deliver_date,t.supplier_number,count(*)
-from xcust_PO_TBL po
-,XCUST_SUPPLIER_MST_TBL t
-where po.VENDOR_ID = t.VENDOR_ID 
-and t.ATTRIBUTE1 = 'Y'
-and (po.gen_outboud_flag = '' or po.gen_outboud_flag  is null)
-group by  PO.deliver_date,t.supplier_number
-
+select  t.SUPPLIER_NUMBER, po.DELIVER_DATE as DELIVERY_DATE ,po.VENDOR_ID 
+from xcust_PO_TBL po ,XCUST_SUPPLIER_MST_TBL t  
+where  po.VENDOR_ID = t.VENDOR_ID   and t.ATTRIBUTE1 = 'Y'     and po.GEN_OUTBOUD_FLAG is null  and po.DELIVER_DATE = '2017-12-25'  
+GROUP BY po.VENDOR_ID, t.SUPPLIER_NUMBER, po.DELIVER_DATE 
 
 
 

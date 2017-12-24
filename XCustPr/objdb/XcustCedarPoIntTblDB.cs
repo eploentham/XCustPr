@@ -199,6 +199,15 @@ namespace XCustPr
 
             return chk;
         }
+        public String updateProcessFlagY(String requestId, String host, String pathLog)
+        {
+            String sql = "", chk = "";
+            sql = "Update " + xCCPIT.table + " Set " + xCCPIT.process_flag + "='Y' " +
+                "Where  " + xCCPIT.request_id + "='" + requestId + "'";
+            chk = conn.ExecuteNonQuery(sql.ToString(), host, pathLog);
+
+            return chk;
+        }
         public String updateErrorMessage(String filename, String row_number, String msg, String requestId, String host, String pathLog)
         {
             String sql = "", chk = "";
@@ -426,7 +435,7 @@ namespace XCustPr
                     {
                         cntErr++;
                     }
-                    filename += "Filename " + filenameR + ", Total = " + rowFile["cnt"].ToString() + ", Validate pass = " + valiPass + ", Record Error = " + valiErr + " " + Environment.NewLine;
+                    filename += "Filename " + filenameR + ", Total = " + rowFile["cnt"].ToString() + " record, Pass = " + valiPass + " record, Record Error = " + valiErr + " record" + Environment.NewLine;
                     //if (int.TryParse(rowFile.recordError, out err))
                     //{
                     //    if (int.Parse(rowFile.recordError) > 0)

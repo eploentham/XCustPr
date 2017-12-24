@@ -759,7 +759,7 @@ namespace XCustPr
                 }
             }
 
-            xCLFPTDB.updatePrcessFlag(requestId, "kfc_po", Cm.initC.PO008PathLog);
+            xCCPITDB.updateProcessFlagY(requestId, "kfc_po", Cm.initC.PO008PathLog);
         }
         private String insertXcustPorReqHeaderIntAll(XcustPoHeaderIntTbl xcprhia, String date, String time)
         {//row[dc].ToString().Trim().
@@ -1039,7 +1039,7 @@ namespace XCustPr
                     if (cnt.Equals(rowCnt))
                     {
 
-                        Cm.moveFile(Cm.initC.PO008PathProcess + filename, Cm.initC.PO008PathArchive, filename);
+                        Cm.moveFile(Cm.initC.PO008PathProcess + filename, Cm.initC.PO008PathArchive, filename, Cm.initC.PO008PathError);
                     }
                     else
                     {

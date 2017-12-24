@@ -158,8 +158,14 @@ namespace XCustPr
                         dt = xCPrTDB.selectPRPO0061(vendorId, deliveryDate);
                         if (dt.Rows.Count > 0)
                         {
-                            writeTextPO006(row["SUPPLIER_NUMBER"].ToString(), deliveryDate, dt, dtFixLen);
+                            String filename = writeTextPO006(row["SUPPLIER_NUMBER"].ToString(), deliveryDate, dt, dtFixLen);
                             xCPoTDB.updateOutBoundFlagPO006_1(vendorId, deliveryDate, Cm.initC.PO006PathLog);
+                            ValidateFileName vF = new ValidateFileName();   // gen log
+                            vF.fileName = filename;   // gen log
+                            vF.recordTotal = "1";   // gen log
+                            vF.Message = "";
+                            vF.recordError = "0";
+                            lVfile.Add(vF);   // gen log
                         }
                         else
                         {
@@ -217,7 +223,7 @@ namespace XCustPr
 
             line1 = "Program : XCUST Text File PO (ERP) to Supplier" + Environment.NewLine;
             path = Cm.getPathLogProcess(programname);
-            parameter = "Parameter : " + Environment.NewLine;
+            parameter = "Parameter  " + Environment.NewLine;
             parameter += "           Path Initial :" + Cm.initC.PO006PathInitial + Environment.NewLine;
             parameter += "           Delivery Date :" + deliveryDate + Environment.NewLine;
 
@@ -236,7 +242,7 @@ namespace XCustPr
                     }
                     else
                     {
-                        filename += "Filename : " + vF.fileName + ", Total = " + vF.recordTotal + ", Validate pass = " + vF.validatePass + ", Record Error = " + vF.recordError + " " + Environment.NewLine;
+                        filename += "Filename : " + vF.fileName + " " + Environment.NewLine;
                         if (int.TryParse(vF.recordError, out err))
                         {
                             if (int.Parse(vF.recordError) > 0)
@@ -245,7 +251,6 @@ namespace XCustPr
                             }
                         }
                     }
-                    
                 }
             }
             if (lVPr.Count > 0)
@@ -279,7 +284,7 @@ namespace XCustPr
             listfile.Clear();
 
         }
-        public void writeTextPO006(String vendor_id, String delivery_date, DataTable dt, DataTable dtFixLen)
+        public String writeTextPO006(String vendor_id, String delivery_date, DataTable dt, DataTable dtFixLen)
         {
             var file = Cm.initC.PO006PathInitial + "S" + vendor_id+"_R" + delivery_date.Replace("-","") + ".KFC";
             String Org = xCDOMTDB.selectActiveByCode(Cm.initC.ORGANIZATION_code.Trim());
@@ -304,7 +309,8 @@ namespace XCustPr
                     col05 = Cm.FixLen(col05, dtFixLen.Rows[7]["X_LENGTH"].ToString(), " ", "lpad");
                     String col06 = " "+Cm.FixLen(row["QUANTITY"].ToString(), dtFixLen.Rows[8]["X_LENGTH"].ToString(), "0","rpad");
 
-                    String col07 = xCVSMTDB.selectUOM(row["UOM_CODE"].ToString());
+                    //String col07 = xCVSMTDB.selectUOM(row["UOM_CODE"].ToString());        // comment 
+                    String col07 =row["UOM_CODE"].ToString();
                     col07 = Cm.FixLen(col07, dtFixLen.Rows[9]["X_LENGTH"].ToString(), " ","lpad");
 
                     String csvRow = col01 + col02 + col03 + col04 + col05 + col06 + col07 ;
@@ -312,6 +318,7 @@ namespace XCustPr
                     stream.WriteLine(csvRow);
                 }
             }
+            return file.Replace(Cm.initC.PO006PathInitial,"");
         }
         private void addListView(String col1, String col2, MaterialListView lv1, Form form1)
         {
