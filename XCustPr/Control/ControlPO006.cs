@@ -96,8 +96,8 @@ namespace XCustPr
         }
         public void processWebService(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
         {
-            cPRPOWS.setXcustPRTbl(lv1, form1, pB1, Cm.initC.PO006PathLog);
-            cPRPOWS.setXcustPOTbl(lv1, form1, pB1, Cm.initC.PO006PathLog);
+            cPRPOWS.setXcustPRTbl(lv1, form1, pB1, Cm.initC.PO006PathLog, "");
+            cPRPOWS.setXcustPOTbl(lv1, form1, pB1, Cm.initC.PO006PathLog, "");
         }
         /*
          * a.	Query ข้อมูลที่ Table XCUST_PR_PO_INFO_TBL โดยมี Data Source ที่เป็น “MMX”    และมี Delivery date ตาม Parameter
@@ -158,7 +158,8 @@ namespace XCustPr
                         dt = xCPrTDB.selectPRPO0061(vendorId, deliveryDate);
                         if (dt.Rows.Count > 0)
                         {
-                            String filename = writeTextPO006(row["SUPPLIER_NUMBER"].ToString(), deliveryDate, dt, dtFixLen);
+                            //String filename = writeTextPO006(row["SUPPLIER_NUMBER"].ToString(), deliveryDate, dt, dtFixLen);      //60-12-25
+                            String filename = writeTextPO006(row["SUPPLIER_NUMBER"].ToString(),row["attribute2"].ToString(), deliveryDate, dt, dtFixLen);
                             xCPoTDB.updateOutBoundFlagPO006_1(vendorId, deliveryDate, Cm.initC.PO006PathLog);
                             ValidateFileName vF = new ValidateFileName();   // gen log
                             vF.fileName = filename;   // gen log
@@ -284,14 +285,16 @@ namespace XCustPr
             listfile.Clear();
 
         }
-        public String writeTextPO006(String vendor_id, String delivery_date, DataTable dt, DataTable dtFixLen)
+        public String writeTextPO006(String vendor_id, String attribute2, String delivery_date, DataTable dt, DataTable dtFixLen)
         {
-            var file = Cm.initC.PO006PathInitial + "S" + vendor_id+"_R" + delivery_date.Replace("-","") + ".KFC";
+            //var file = Cm.initC.PO006PathInitial + "S" + vendor_id+"_R" + delivery_date.Replace("-","") + ".KFC";     //60-12-25
+            var file = Cm.initC.PO006PathInitial + vendor_id + "_R" + delivery_date.Replace("-", "") + ".KFC";
             String Org = xCDOMTDB.selectActiveByCode(Cm.initC.ORGANIZATION_code.Trim());
             String deliveryDate1 = "";
             using (var stream = File.CreateText(file))
             {
-                String hCol01 = Cm.FixLen("S" + vendor_id, dtFixLen.Rows[0]["X_LENGTH"].ToString()," ","lpad");
+                //String hCol01 = Cm.FixLen("S" + vendor_id, dtFixLen.Rows[0]["X_LENGTH"].ToString()," ","lpad");
+                String hCol01 = Cm.FixLen(attribute2, dtFixLen.Rows[0]["X_LENGTH"].ToString(), " ", "lpad");
                 String hCol02 = Cm.FixLen(delivery_date.Replace("-", ""), dtFixLen.Rows[1]["X_LENGTH"].ToString(), " ", "lpad");
                 String hCol3 = Cm.FixLen(dt.Rows.Count.ToString(), dtFixLen.Rows[2]["X_LENGTH"].ToString(), "0", "rpad");
                 String head = hCol01 + hCol02 + hCol3;//+System.Environment.NewLine;

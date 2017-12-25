@@ -22,10 +22,14 @@ namespace XCustPr
         MaterialListView lv1;
         MaterialProgressBar pB1;
 
+        CheckBox chkDeliveryDate, chkPo, chkPr, chkPoR;
+        DateTimePicker dtpDeliveryDate;
+
         Color cTxtL, cTxtE, cForm;
 
         ControlMain Cm;
         ControlPRPOWebService cPrWS;
+        ControlPoRWebService cPorWS;
         private ListViewColumnSorter lvwColumnSorter;
 
         public XcustPOWebService(ControlMain cm)
@@ -36,14 +40,16 @@ namespace XCustPr
             initConfig();
             cTxtL = txtFileName.BackColor;
             cTxtE = Color.Yellow;
-            this.Text = "Last Update 2017-11-08 ";
+            this.Text = "Last Update 2017-12-25 17.55 ";
         }
         private void initConfig()
         {
             cPrWS = new ControlPRPOWebService(Cm);
+            cPorWS = new ControlPoRWebService(Cm);
 
             initCompoment();
             pB1.Visible = false;
+            dtpDeliveryDate.Enabled = false;
             lvwColumnSorter = new ListViewColumnSorter();
             lvwColumnSorter.Order = SortOrder.Descending;
             lvwColumnSorter.SortColumn = 0;
@@ -59,7 +65,7 @@ namespace XCustPr
             lb2.Text = lb2.Text + " " + Cm.xcustprwebservice_run;
             if (Cm.xcustpowebservice_run.ToLower().Equals("on"))
             {
-                cPrWS.setXcustPOTbl(lv1, this, pB1, Cm.initC.POWebServicePathLog);
+                cPrWS.setXcustPOTbl(lv1, this, pB1, Cm.initC.POWebServicePathLog, "");
             }
         }
         private void disableBtn()
@@ -104,6 +110,45 @@ namespace XCustPr
             txtFileName.Enter += txtFileName_Enter;
             txtFileName.Leave += txtFileName_Leave;
 
+            chkDeliveryDate = new CheckBox();
+            chkDeliveryDate.Font = cPrWS.fV1B;
+            chkDeliveryDate.Text = "ระบุวันที่ ";
+            chkDeliveryDate.Size = new System.Drawing.Size(80, ControlHeight);
+            Controls.Add(chkDeliveryDate);
+            chkDeliveryDate.Location = new System.Drawing.Point(grd4, line1 + 10);
+            chkDeliveryDate.Click += ChkDeliveryDate_Click;
+
+            chkPo = new CheckBox();
+            chkPo.Font = cPrWS.fV1B;
+            chkPo.Text = "sign PO ";
+            chkPo.Size = new System.Drawing.Size(120, ControlHeight);
+            Controls.Add(chkPo);
+            chkPo.Location = new System.Drawing.Point(grd4, line2 + 20);
+
+            chkPr = new CheckBox();
+            chkPr.Font = cPrWS.fV1B;
+            chkPr.Text = "sign PR ";
+            chkPr.Size = new System.Drawing.Size(120, ControlHeight);
+            Controls.Add(chkPr);
+            chkPr.Location = new System.Drawing.Point(grd5, line2 + 20);
+
+            chkPoR = new CheckBox();
+            chkPoR.Font = cPrWS.fV1B;
+            chkPoR.Text = "sign PO Receipt ";
+            chkPoR.Size = new System.Drawing.Size(150, ControlHeight);
+            Controls.Add(chkPoR);
+            chkPoR.Location = new System.Drawing.Point(grd3+100, line2 + 20);
+
+            dtpDeliveryDate = new DateTimePicker();
+            //dtpDeliveryDate = new MaterialFlatButton();
+            dtpDeliveryDate.Font = cPrWS.fV1;
+            //btnWebService.Text = "3. Web Service";
+            dtpDeliveryDate.Size = new System.Drawing.Size(120, ControlHeight);
+            Controls.Add(dtpDeliveryDate);
+            dtpDeliveryDate.Location = new System.Drawing.Point(grd4 + chkDeliveryDate.Width + 5, line1 + 10);
+            dtpDeliveryDate.Format = DateTimePickerFormat.Short;
+            dtpDeliveryDate.ValueChanged += DtpDeliveryDate_ValueChanged; ;
+
 
             btnRead = new MaterialFlatButton();
             btnRead.Font = cPrWS.fV1;
@@ -132,9 +177,51 @@ namespace XCustPr
 
             Controls.Add(lv1);
         }
+
+        private void DtpDeliveryDate_ValueChanged(object sender, EventArgs e)
+        {
+            //throw new NotImplementedException();
+            setDtpDelivery();
+        }
+
+        private void setDtpDelivery()
+        {
+            String year = "", month = "", day = "";
+            year = dtpDeliveryDate.Value.Year.ToString();
+            month = dtpDeliveryDate.Value.Month.ToString("00");
+            day = dtpDeliveryDate.Value.Day.ToString("00");
+            Cm.setConfig("Po006DeliveryDate", year + "-" + month + "-" + day);
+        }
+
+        private void ChkDeliveryDate_Click(object sender, EventArgs e)
+        {
+            //throw new NotImplementedException();
+            if (chkDeliveryDate.Checked)
+            {
+                dtpDeliveryDate.Enabled = true;
+                setDtpDelivery();
+            }
+            else
+            {
+                dtpDeliveryDate.Enabled = false;
+            }
+        }
+
         private void btnRead_Click(object sender, EventArgs e)
         {
-            cPrWS.setXcustPOTbl(lv1, this, pB1, Cm.initC.POWebServicePathLog);
+            String date = dtpDeliveryDate.Value.Month.ToString("00") + "-" + dtpDeliveryDate.Value.Day.ToString("00") + "-" + dtpDeliveryDate.Value.Year.ToString();
+            if (chkPo.Checked)
+            {
+                cPrWS.setXcustPOTbl(lv1, this, pB1, Cm.initC.POWebServicePathLog, date);
+            }
+            if (chkPr.Checked)
+            {
+                cPrWS.setXcustPRTbl(lv1, this, pB1, Cm.initC.POWebServicePathLog, date);
+            }
+            if (chkPoR.Checked)
+            {
+                cPorWS.setXcustPoRTbl(lv1, this, pB1);
+            }
         }
         private void txtFileName_Leave(object sender, EventArgs e)
         {

@@ -129,7 +129,8 @@ namespace XCustPr
             String chk = "", itemId="";
             String sql = "";
             itemId = item_id.Equals("") ? "null" : item_id;
-            sql = "select substring(" + xCIMT.ITEM_CODE + ",3,5) item_direct_sup From " + xCIMT.table + " where " + xCIMT.INVENTORY_ITEM_ID + "  = " + itemId + " and " + xCIMT.ORGAINZATION_ID + " ='" + OrgId + "'";
+            sql = "select substring(" + xCIMT.ITEM_CODE + ",3,5) item_direct_sup From " + xCIMT.table + 
+                " where " + xCIMT.INVENTORY_ITEM_ID + "  = " + itemId + " and " + xCIMT.ORGAINZATION_ID + " ='" + OrgId + "'";
             dt = conn.selectData(sql, "kfc_po");
             if (dt.Rows.Count > 0)
             {

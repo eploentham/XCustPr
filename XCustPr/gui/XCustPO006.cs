@@ -146,7 +146,7 @@ namespace XCustPr
             chkDeliveryDate.Size = new System.Drawing.Size(80, ControlHeight);
             Controls.Add(chkDeliveryDate);
             chkDeliveryDate.Location = new System.Drawing.Point(grd4, line1+10);
-            chkDeliveryDate.Click += ChkDeliveryDate_Click; ;
+            chkDeliveryDate.Click += ChkDeliveryDate_Click;
 
             dtpDeliveryDate = new DateTimePicker();
             //dtpDeliveryDate = new MaterialFlatButton();

@@ -229,14 +229,14 @@ namespace XCustPr
             //    "inner Join xcust_po_tbl po On  po.REQUISITION_HEADER_ID = PR.REQUISITION_HEADER_ID and po.REQUISITION_LINE_ID = PR.REQUISITION_LINE_ID  " +
             //    "Where  " + "" +
             //    " PR.ATTRIBUTE1 <> 'MMX' group by po.VENDOR_ID, po.acc_segment1 ";[DELIVER_DATE]
-            sql = "select  t.SUPPLIER_NUMBER, po.DELIVER_DATE as DELIVERY_DATE ,po.VENDOR_ID " +
+            sql = "select  t.SUPPLIER_NUMBER, po.DELIVER_DATE as DELIVERY_DATE ,po.VENDOR_ID,po.attribute2 " +
             "from xcust_PO_TBL po " +
             ",XCUST_SUPPLIER_MST_TBL t  " +
             "where  po.VENDOR_ID = t.VENDOR_ID  " + "" +
             " and t.ATTRIBUTE1 = 'Y' " +
             //" and po.GEN_OUTBOUD_FLAG = ''   and po.DELIVER_DATE is not null " +
             "   " + whereRerun+ where+
-            " GROUP BY po.VENDOR_ID, t.SUPPLIER_NUMBER, po.DELIVER_DATE ";
+            " GROUP BY po.VENDOR_ID, t.SUPPLIER_NUMBER,po.attribute2, po.DELIVER_DATE ";
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }

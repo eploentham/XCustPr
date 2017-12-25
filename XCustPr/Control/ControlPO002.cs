@@ -112,8 +112,8 @@ namespace XCustPr
         }
         public void processWebService(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
         {
-            cPRPOWS.setXcustPRTbl(lv1, form1, pB1, Cm.initC.PO002PathLog);
-            cPRPOWS.setXcustPOTbl(lv1, form1, pB1, Cm.initC.PO002PathLog);
+            cPRPOWS.setXcustPRTbl(lv1, form1, pB1, Cm.initC.PO002PathLog, "");
+            cPRPOWS.setXcustPOTbl(lv1, form1, pB1, Cm.initC.PO002PathLog, "");
             cPorWS.setXcustPoRTbl(lv1, form1, pB1);
         }
         public void processMapping(MaterialListView lv1, Form form1, MaterialProgressBar pB1)

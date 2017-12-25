@@ -53,7 +53,7 @@ namespace XCustPr
             fV1B = new Font(fontName, fontSize9, FontStyle.Bold);        //standard
             fV1 = new Font(fontName, fontSize8, FontStyle.Regular);        //standard
         }
-        public void setXcustPRTbl(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String pathLog)
+        public void setXcustPRTbl(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String pathLog, String flag)
         {
             String uri = "", dump = "";
             //HttpWebRequest request = CreateWebRequest();
@@ -63,6 +63,15 @@ namespace XCustPr
             //DateTime currDate = System.DateTime.Now.AddDays(-1);
             DateTime currDate = System.DateTime.Now;
             String date = currDate.Month.ToString("00") + "-" + currDate.Day.ToString("00") + "-" + currDate.Year.ToString();
+            String date1 = "";
+            if (flag.Equals(""))
+            {
+                date1 = date;
+            }
+            else
+            {
+                date1 = flag;
+            }
             addListView("setXcustPRTbl ", "Web Service", lv1, form1);
             //filePO = Cm.getFileinFolder(Cm.initC.PathZip);
             //String text = System.IO.File.ReadAllText(filePO[0]);
@@ -83,14 +92,14 @@ namespace XCustPr
                                     "<pub:multiValuesAllowed>False</pub:multiValuesAllowed> " +
                                     "<pub:name>p_creation_dte_frm</pub:name> " +
                                     "<pub:values> " +
-                                        "<pub:item>" + date + "</pub:item> " +
+                                        "<pub:item>" + date1 + "</pub:item> " +
                                     "</pub:values>" +
                                 "</pub:item>" +
                                 "<pub:item>" +
                                 "<pub:multiValuesAllowed>False</pub:multiValuesAllowed>" +
                                 "<pub:name>p_creation_dte_to</pub:name>" +
                                 "<pub:values>" +
-                                "<pub:item>" + date + "</pub:item>" +
+                                "<pub:item>" + date1 + "</pub:item>" +
                                 "</pub:values>" +
                                 "</pub:item> " +
                                 "<pub:item>" +
@@ -293,7 +302,7 @@ namespace XCustPr
         }
 
         // ถ้าเจอ gen_out_bound = 'Y' ห้าม delete และ ไม่ต้อง insert เพิ่ม
-        public void setXcustPOTbl(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String pathLog)
+        public void setXcustPOTbl(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String pathLog, String flag)
         {
             String uri = "", dump = "";
             //HttpWebRequest request = CreateWebRequest();
@@ -304,6 +313,15 @@ namespace XCustPr
             //DateTime currDate = System.DateTime.Now.AddDays(-1);
             DateTime currDate = System.DateTime.Now;
             String date = currDate.Month.ToString("00")+"-"+currDate.Day.ToString("00")+"-"+currDate.Year.ToString();
+            String date1 = "";
+            if (flag.Equals(""))
+            {
+                date1 = date;
+            }
+            else
+            {
+                date1 = flag;
+            }
             //date = "";
             //filePO = Cm.getFileinFolder(Cm.initC.PathZip);
             //String text = System.IO.File.ReadAllText(filePO[0]);
@@ -352,14 +370,14 @@ namespace XCustPr
                                 "<pub:multiValuesAllowed>False</pub:multiValuesAllowed> " +
                                 "<pub:name>p_creation_dte_frm</pub:name> " +
                                 "<pub:values> " +
-                                "<pub:item>" + date + "</pub:item> " +
+                                "<pub:item>" + date1 + "</pub:item> " +
                                 "</pub:values> " +
                                 "</pub:item>  " +
                                 "<pub:item> " +
                                 "<pub:multiValuesAllowed>False</pub:multiValuesAllowed> " +
                                 "<pub:name>p_creation_date_to</pub:name> " +
                                 "<pub:values> " +
-                                "<pub:item>" + date + "</pub:item> " +
+                                "<pub:item>" + date1 + "</pub:item> " +
                                 "</pub:values> " +
                                 "</pub:item> " +
                                 "</pub:parameterNameValues>   " +
