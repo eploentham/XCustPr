@@ -304,7 +304,7 @@ namespace XCustPr
                     deliveryDate1 = row[xCPoTDB.xCPO.DELIVER_DATE].ToString();
                     String col01 = Cm.FixLen(row["po_number"].ToString(), dtFixLen.Rows[3]["X_LENGTH"].ToString()," ", "lpad");
                     String col02 = Cm.FixLen(row["CREATION_DATE"].ToString().Replace("-", ""), dtFixLen.Rows[4]["X_LENGTH"].ToString(), " ", "lpad");     //PO date
-                    String col03 = Cm.FixLen(Org, dtFixLen.Rows[5]["X_LENGTH"].ToString(), "0","lpad");     //Store Code
+                    String col03 = Cm.FixLen(row["ATTRIBUTE3_L"].ToString(), dtFixLen.Rows[5]["X_LENGTH"].ToString(), "0","lpad");     //Store Code
                     String col04 = Cm.FixLen(row["DELIVER_DATE"].ToString().Replace("-", ""), dtFixLen.Rows[6]["X_LENGTH"].ToString(), " ","lpad");          //Delivery Date DELIVER_DATE
                     String col05 = "", item_code="";
                     item_code = row["ITEM_ID"].ToString();
