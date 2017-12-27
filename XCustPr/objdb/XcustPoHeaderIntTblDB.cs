@@ -50,6 +50,7 @@ namespace XCustPr
             xCPHIT.wo_no = "wo_no";
             xCPHIT.qt_no = "qt_no";
             xCPHIT.request_id = "request_id";
+            xCPHIT.description = "description";
 
             xCPHIT.table = "XCUST_PO_HEADER_INT_TBL";
 
@@ -102,7 +103,8 @@ namespace XCustPr
                     xCPHIT.originator_rule + "," + xCPHIT.payment_term + "," + xCPHIT.prc_bu_name + "," +
                     xCPHIT.process_flag + "," + xCPHIT.req_bu_name + "," + xCPHIT.ship_to_location + "," +
                     xCPHIT.soldto_re_name + "," + xCPHIT.supplier_code + "," + xCPHIT.supplier_site_code + "," +
-                    xCPHIT.vendor_contact + "," + xCPHIT.billto_bu_name + "," + xCPHIT.DOCUMENT_ID + "," + xCPHIT.wo_no + "," + xCPHIT.qt_no + "," + xCPHIT.request_id +
+                    xCPHIT.vendor_contact + "," + xCPHIT.billto_bu_name + "," + xCPHIT.DOCUMENT_ID + "," + 
+                    xCPHIT.wo_no + "," + xCPHIT.qt_no + "," + xCPHIT.request_id + "," + xCPHIT.description +
                     ") " +
                     "Values('" + p.acceptance_required_flag + "','" + p.action + "','" + p.approval_action + "','" +
                     p.bill_to_location + "','" + p.buyyer_name + "','" + creation_by + "'," +
@@ -112,7 +114,8 @@ namespace XCustPr
                     p.originator_rule + "','" + p.payment_term + "','" + p.prc_bu_name + "','" +
                     p.process_flag + "','" + p.req_bu_name + "','" + p.ship_to_location + "','" +
                     p.soldto_re_name + "','" + p.supplier_code + "','" + p.supplier_site_code + "','" +
-                    p.vendor_contact + "','" + p.billto_bu_name + "','" + p.DOCUMENT_ID + "','" + p.wo_no + "','" + p.qt_no + "','" + p.request_id + "'" +
+                    p.vendor_contact + "','" + p.billto_bu_name + "','" + p.DOCUMENT_ID + "','" + 
+                    p.wo_no + "','" + p.qt_no + "','" + p.request_id + "','" + p.description + "'" +
                     ") ";
                 chk = conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
                 if (chk.Equals("1"))

@@ -76,5 +76,19 @@ namespace XCustPr
             }
             return chk;
         }
+        public String selectLocator(String branchPlant)
+        {
+            DataTable dt = new DataTable();
+            String chk = "";
+            String sql = "select   location_name " +
+                 "FROM XCUST_LOCATIONS_MST_TBL " +
+                "WHERE LOCATION_CODE = '"+ branchPlant + "' ";
+            dt = conn.selectData(sql, "kfc_po");
+            if (dt.Rows.Count > 0)
+            {
+                chk = dt.Rows[0]["location_name"].ToString().Trim();
+            }
+            return chk;
+        }
     }
 }

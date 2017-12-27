@@ -43,6 +43,7 @@ namespace XCustPr
             xCPDIT.wo_no = "wo_no";
             xCPDIT.running = "running";
             xCPDIT.request_id = "request_id";
+            xCPDIT.requester = "requester";
 
             xCPDIT.table = "XCUST_PO_DIST_INT_TBL";
         }
@@ -133,7 +134,7 @@ namespace XCustPr
                     xCPDIT.error_message + "," + xCPDIT.interface_distribution_key + "," + xCPDIT.interface_header_key + "," +
                     xCPDIT.interface_line_key + "," + xCPDIT.interface_line_location_key + "," + xCPDIT.last_update_by + "," +
                     xCPDIT.last_update_date + "," + xCPDIT.process_flag + "," + xCPDIT.wo_no + "," + 
-                    xCPDIT.running + "," + xCPDIT.request_id +
+                    xCPDIT.running + "," + xCPDIT.request_id + "," + xCPDIT.requester +
                     ") " +
                     "Values('" + p.amt + "','" + p.charge_account_segment1 + "','" + p.charge_account_segment2 + "','" +
                     p.charge_account_segment3 + "','" + p.charge_account_segment4 + "','" + p.charge_account_segment5 + "','" +
@@ -142,7 +143,7 @@ namespace XCustPr
                     p.error_message + "','" + p.interface_distribution_key + "','" + p.interface_header_key + "','" +
                     p.interface_line_key + "','" + p.interface_line_location_key + "','" + last_update_by + "'," +
                     "null,'" + p.process_flag + "','" + p.wo_no + "','" + 
-                    p.running + "','"+ p.request_id + "'" +
+                    p.running + "','"+ p.request_id + "','" + p.requester + "'" +
                     ") ";
                 chk = conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
                 //chk = p.RowNumber;

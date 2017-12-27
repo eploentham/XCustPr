@@ -150,17 +150,17 @@ namespace XCustPr
             }
             return chk;
         }
-        public DataTable selectCedarGroupByPoNo(String filename, String requestId)
+        public DataTable selectCedarGroupBySupplier(String filename, String requestId)
         {
             DataTable dt = new DataTable();
             String sql = "";
 
-            sql = "Select " + xCCPIT.po_no + "," + xCCPIT.file_name +
+            sql = "Select " + xCCPIT.supplier_code + "," + xCCPIT.file_name +
                 " From " + xCCPIT.table +
                 " Where " + xCCPIT.validate_flag + "='Y' and " + xCCPIT.request_id + "='" + requestId + "' " +
                 " and " + xCCPIT.file_name + "='" + filename + "' " +
-                " Group By " + xCCPIT.po_no + "," + xCCPIT.file_name +
-                " Order By " + xCCPIT.file_name + "," + xCCPIT.po_no +
+                " Group By " + xCCPIT.supplier_code + "," + xCCPIT.file_name +
+                " Order By " + xCCPIT.file_name + "," + xCCPIT.supplier_code +
                 " ";
             dt = conn.selectData(sql, "kfc_po");
             return dt;
@@ -180,13 +180,13 @@ namespace XCustPr
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
-        public DataTable selectCedarByPoNumber(String requestId, String poNumber)
+        public DataTable selectCedarBySupplier(String requestId, String suppier)
         {
             DataTable dt = new DataTable();
             String sql = "";
             sql = "Select * " +
                 " From " + xCCPIT.table +
-                " Where " + xCCPIT.po_no + "='" + poNumber + "' and " + xCCPIT.request_id + "='" + requestId + "' " +
+                " Where " + xCCPIT.supplier_code + "='" + suppier + "' and " + xCCPIT.request_id + "='" + requestId + "' " +
                 " Order By " + xCCPIT.po_no + "," + xCCPIT.xno;
             dt = conn.selectData(sql, "kfc_po");
             return dt;
@@ -366,6 +366,12 @@ namespace XCustPr
             }
             return chk;
         }
+        public void updateErpId(String erpId, String requestId, String host, String pathLog)
+        {
+            String chk = "", sql="";
+            sql = "Update "+xCCPIT.table + " Set erp_process_id = '"+ erpId + "' Where "+xCCPIT.request_id+"='"+requestId+"'";
+            chk = conn.ExecuteNonQuery(sql.ToString(), host, pathLog);
+        }
         public String dateYearShortToDB(String date)
         {
             String chk = "", year = "", month = "", day = "";
@@ -386,7 +392,7 @@ namespace XCustPr
 
             return chk;
         }
-        public void logProcessPO008(String programname, String startdatetime, String requestId)
+        public void logProcessPO008(String programname, String startdatetime, String requestId, String erpId)
         {
             String line1 = "", parameter = "", programstart = "", filename = "", recordError = "", txt = "", path = "", sql = "";
             String date = System.DateTime.Now.ToString("dd MMM yyyy");
@@ -517,6 +523,8 @@ namespace XCustPr
                 txt = line1;
                 txt += parameter;
                 txt += programstart + Environment.NewLine;
+                txt += "Request Id : " + requestId;
+                txt += "Erp Process Id : " + erpId;
                 txt += "File " + Environment.NewLine;
                 txt += "--------------------------------------------------------------------------" + Environment.NewLine;
                 txt += filename + Environment.NewLine;

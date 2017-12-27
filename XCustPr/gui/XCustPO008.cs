@@ -218,7 +218,9 @@ namespace XCustPr
         private void btnWebService_Click(object sender, EventArgs e)
         {
 
-            cPo008.processCallWebService(lv1, this, pB1, requestId);
+            //cPo008.processCallWebService(lv1, this, pB1, requestId);
+
+            cPo008.processCallWebService1(lv1, this, pB1, requestId);
 //            String uri = "";
 //            HttpWebRequest request = CreateWebRequest();
 //            XmlDocument soapEnvelopeXml = new XmlDocument();

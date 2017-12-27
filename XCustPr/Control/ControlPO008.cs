@@ -633,7 +633,7 @@ namespace XCustPr
             updateValidateFlagY(requestId);
             pB1.Visible = false;
             //Cm.logProcess("xcustpo008", lVPr, dateStart, lVfile);   // gen log
-            xCCPITDB.logProcessPO008("xcustpo008", dateStart, requestId);   // gen log
+            //xCCPITDB.logProcessPO008("xcustpo008", dateStart, requestId);   // gen log
         }
         private void updateValidateFlagY(String requestId)
         {
@@ -709,28 +709,32 @@ namespace XCustPr
                         //ที่ ผ่าน ทั้ง file
                         DataTable dtFilename = new DataTable();
                         //dtFilename = xCLFPTDB.selectLinfoxByFilename(filename, requestId);
-                        dtFilename = xCCPITDB.selectCedarGroupByPoNo(filename, requestId);
+                        dtFilename = xCCPITDB.selectCedarGroupBySupplier(filename, requestId);
                         if (dtFilename.Rows.Count > 0)
                         {
                             foreach (DataRow rowFilename in dtFilename.Rows)
                             {
                                 rowH++;
                                 String poNumber = "", wo_no="", branch_plant="", supplier_code="", supplier_site_code= "", Bill_to_Location="", qt_no="";
-                                poNumber = rowFilename[xCCPITDB.xCCPIT.po_no].ToString();
+                                String admin = "", term_name="";
+                                //poNumber = rowFilename[xCCPITDB.xCCPIT.po_no].ToString();
+                                supplier_code = rowFilename[xCCPITDB.xCCPIT.supplier_code].ToString();
 
                                 DataTable dtTemp = new DataTable();
-                                dtTemp = xCCPITDB.selectCedarByPoNumber(requestId, poNumber);
+                                dtTemp = xCCPITDB.selectCedarBySupplier(requestId, supplier_code);
                                 wo_no = dtTemp.Rows[0][xCCPITDB.xCCPIT.wo_no].ToString();
                                 branch_plant = dtTemp.Rows[0][xCCPITDB.xCCPIT.branch_plant].ToString();
                                 supplier_code = dtTemp.Rows[0][xCCPITDB.xCCPIT.supplier_code].ToString();
+                                admin = dtTemp.Rows[0][xCCPITDB.xCCPIT.admin].ToString();
                                 String vendorId = "";
                                 vendorId = xCSMTDB.validateSupplierBySupplierCode1(supplier_code);
                                 supplier_site_code = xCSSMTDB.getMinVendorSiteIdByVendorIdPO008(vendorId);
+                                term_name = xCSSMTDB.getMinPaymentTermByVendorIdPO008(vendorId);
                                 qt_no = dtTemp.Rows[0][xCCPITDB.xCCPIT.qt_no].ToString();
 
                                 DataTable dtCedar = new DataTable();
-                                dtCedar = xCCPITDB.selectCedarByPoNumber(requestId, poNumber);
-                                XcustPoHeaderIntTbl xCPorRHIA = addXcustListHeader1(wo_no, branch_plant, supplier_code, supplier_site_code, qt_no);
+                                dtCedar = xCCPITDB.selectCedarBySupplier(requestId, supplier_code);
+                                XcustPoHeaderIntTbl xCPorRHIA = addXcustListHeader1(wo_no, branch_plant, supplier_code, supplier_site_code, qt_no, admin, term_name);
                                 String seqH = "";
                                 Bill_to_Location = xCSIMTDB.selectBilltoLocation(Org, branch_plant);
                                 xCPorRHIA.bill_to_location = Bill_to_Location;
@@ -842,9 +846,10 @@ namespace XCustPr
                 listXcustPHIT.Add(xcrhia1);
             }
         }
-        private XcustPoHeaderIntTbl addXcustListHeader1(String wo_no, String branch_plant, String supplier_code, String supplier_site_code, String qt_no)
+        private XcustPoHeaderIntTbl addXcustListHeader1(String wo_no, String branch_plant, String supplier_code, String supplier_site_code, String qt_no, String admin, String term_name)
         {
-
+            String year = System.DateTime.Now.Year.ToString();
+            String currDate = System.DateTime.Now.ToString("MMdd");
             String seq = String.Concat("00" + listXcustPHIT.Count);
             XcustPoHeaderIntTbl xcrhia1 = new XcustPoHeaderIntTbl();
             xcrhia1.interface_header_key = wo_no;
@@ -859,13 +864,20 @@ namespace XCustPr
             xcrhia1.buyyer_name = Cm.initC.PO008BUYER;//ถาม
             xcrhia1.currency_code = Cm.initC.CURRENCY_CODE;//ถาม
             xcrhia1.bill_to_location = branch_plant;//ถาม
-            xcrhia1.ship_to_location = branch_plant;
+
+
+            String ship = "";
+            ship = xCDLMTDB.selectLocator(branch_plant);
+            xcrhia1.ship_to_location = ship;
             xcrhia1.supplier_code = supplier_code;
             xcrhia1.supplier_site_code = supplier_site_code;
             xcrhia1.payment_term = "";//ถาม
             xcrhia1.process_flag = "N";
             xcrhia1.wo_no = wo_no;
             xcrhia1.qt_no = qt_no;
+            xcrhia1.buyyer_name = admin;
+            xcrhia1.description = "CEDAR PO OF VENDOR " + supplier_code + " " + year+ currDate;
+            xcrhia1.payment_term = term_name;
 
             //xcrhia1.at
             //xcrhia1.in
@@ -1077,6 +1089,9 @@ namespace XCustPr
             item.deliver_to_location = row[xCCPITDB.xCCPIT.branch_plant].ToString();//ถาม
             item.destion_subinventory = row[xCCPITDB.xCCPIT.branch_plant].ToString();//ถาม
             item.amt = row[xCCPITDB.xCCPIT.amt].ToString();
+
+            item.requester = row[xCCPITDB.xCCPIT.admin].ToString();
+
             DataTable dt = new DataTable();
             dt = xCPDITDB.selectChargeAcc(Cm.initC.ORGANIZATION_code);
             if (dt.Rows.Count > 0)
@@ -1161,7 +1176,15 @@ namespace XCustPr
         }
         public void processGenCSV(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String requestId)
         {
+            String[] filePOProcess;
+            filePOProcess = Cm.getFileinFolder(Cm.initC.PO008PathFileCSV);
+            foreach (string filename in filePOProcess)
+            {
+                Cm.deleteFile(filename);
+            }
+
             addListView("processGenCSVxCPRHIA ", "CVS", lv1, form1);
+
             processGenCSVxCPHITDB(lv1, form1, pB1, "PO008", requestId);
             addListView("processGenCSVxCPRLIA ", "CVS", lv1, form1);
             processGenCSVxCPLITDB(lv1, form1, pB1, "PO008", requestId);
@@ -1176,11 +1199,23 @@ namespace XCustPr
         }
         public void processGenZIP(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String flag)
         {
+            //PO008_YYYYMMDDHH24MISS.zi
+            String[] filePOProcess;
+            filePOProcess = Cm.getFileinFolder(Cm.initC.PO008PathFileZip);
+            foreach (string filename1 in filePOProcess)
+            {
+                Cm.deleteFile(filename1);
+            }
+
+            String currDate = System.DateTime.Now.ToString("MMdd");
+            String year = System.DateTime.Now.Year.ToString();
+            String time = System.DateTime.Now.ToString("HHmmss");
+
             addListView("create zip file " + Cm.initC.AP001PathFileZip, "Zip", lv1, form1);
             String filenameZip = "", ilename2 = "", ilename3 = "", filename = "";
             if (flag.Equals("PO008"))
             {
-                filenameZip = Cm.initC.PO008PathFileZip + "\\xcustpr.zip";
+                filenameZip = Cm.initC.PO008PathFileZip + "\\PO008_"+ year+ currDate+ time+".zip";
                 filename = @Cm.initC.PO008PathFileCSV;
             }
             else
@@ -1205,7 +1240,7 @@ namespace XCustPr
         }
         public void processGenCSVxCPHITDB(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String flag, String requestId)
         {
-            var file = Cm.initC.PO008PathFileCSV + "PorReqHeadersInterfaceAl.csv";
+            var file = Cm.initC.PO008PathFileCSV + "PoHeadersInterfaceOrder.csv";
             DataTable dt;
             if (flag.Equals("PO008"))
             {
@@ -1239,24 +1274,26 @@ namespace XCustPr
                     string col11 = row[xCPHITDB.xCPHIT.soldto_re_name].ToString(); ;//Sold-to Legal Entity   
                     string col12 = row[xCPHITDB.xCPHIT.billto_bu_name].ToString(); ;//Bill-to BU
                     string col13 = row[xCPHITDB.xCPHIT.buyyer_name].ToString(); ;//Buyer
+                    //string col13 = "";//Buyer
                     string col14 = row[xCPHITDB.xCPHIT.currency_code].ToString(); ;//Currency Code
                     string col15 = "";//Rate
                     string col16 = "";//Rate Type
                     string col17 = "";//Rate Date
                     string col18 = "";//Description
-                    string col19 = row[xCPHITDB.xCPHIT.bill_to_location].ToString(); ;//Bill-to Location
+                    //string col19 = row[xCPHITDB.xCPHIT.bill_to_location].ToString(); ;//Bill-to Location
+                    string col19 = "Headoffice";//Bill-to Location
                     string col20 = row[xCPHITDB.xCPHIT.ship_to_location].ToString(); ;//Ship-to Location
 
                     string col21 = row[xCPHITDB.xCPHIT.supplier_code].ToString();//Supplier
                     string col22 = row[xCPHITDB.xCPHIT.supplier_code].ToString();//Supplier Number
-                    string col23 = row[xCPHITDB.xCPHIT.supplier_site_code].ToString(); ;//Supplier Site
+                    string col23 = row[xCPHITDB.xCPHIT.supplier_site_code].ToString();//Supplier Site
                     string col24 = "";//Supplier Contact
                     string col25 = "";//Supplier Order
                     string col26 = "";//FOB
                     string col27 = "";//Carrier
                     string col28 = "";//Freight Terms
                     string col29 = "";//Pay On Code
-                    string col30 = "";//Payment Terms
+                    string col30 = row[xCPHITDB.xCPHIT.payment_term].ToString();//Payment Terms
 
                     string col31 = Cm.initC.PO008ORGINATOR_RULE;//Initiating Party
                     string col32 = "";//Change Order Description
@@ -1363,7 +1400,7 @@ namespace XCustPr
         }
         public void processGenCSVxCPLITDB(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String flag, String requestId)
         {
-            var file = Cm.initC.PO008PathFileCSV + "PorReqLineInterfaceAl.csv";
+            var file = Cm.initC.PO008PathFileCSV + "PoLinesInterfaceOrder.csv";
             DataTable dt;
             if (flag.Equals("PO008"))
             {
@@ -1520,7 +1557,7 @@ namespace XCustPr
         }
         public void processGenCSVxCPLLITDB(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String flag, String requestId)
         {
-            var file = Cm.initC.PO008PathFileCSV + "PorReqLineLInterfaceAl.csv";
+            var file = Cm.initC.PO008PathFileCSV + "PoLineLocationsInterfaceOrder.csv";
             DataTable dt;
             if (flag.Equals("PO008"))
             {
@@ -1676,7 +1713,7 @@ namespace XCustPr
         }
         public void processGenCSVxCPDITDB(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String flag, String requestId)
         {
-            var file = Cm.initC.PO008PathFileCSV + "PorReqDistInterfaceAl.csv";
+            var file = Cm.initC.PO008PathFileCSV + "PoDistributionsInterfaceOrder.csv";
             DataTable dt;
             if (flag.Equals("PO008"))
             {
@@ -1702,7 +1739,7 @@ namespace XCustPr
                     //string col03 = row[xCPDITDB.xCPDIT.distribution_num].ToString();//"col03";      // Distribution     
                     String col03 = "1";
                     string col04 = row[xCPDITDB.xCPDIT.deliver_to_location].ToString();// Deliver-to Location  row[xCPHITDB.xCPHIT.import_source].ToString();
-                    string col05 = "";//Requester      รอถาม  
+                    string col05 = row[xCPDITDB.xCPDIT.requester].ToString();//Requester      รอถาม  
                     string col06 = "";      //Order       รอถาม  
                     string col07 = row[xCPDITDB.xCPDIT.amt].ToString();//
                     string col08 = "";//Style       รอถาม 
@@ -1862,6 +1899,20 @@ namespace XCustPr
                 }
             }
         }
+        public void processCallWebService1(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String requestId)
+        {
+            ImportExportService ieS = new ImportExportService();
+            String[] filePO;
+            String filename = "", chk="", buId="";
+            buId = xCBMTDB.selectIdActiveBuName(Cm.initC.BU_NAME);
+            filePO = Cm.getFileinFolder(Cm.initC.PO008PathFileZip);
+            filename = filePO[0].Replace(Cm.initC.PO008PathFileZip, "");
+            byte[] toEncodeAsBytestext = System.IO.File.ReadAllBytes(filePO[0]);
+
+            chk = ieS.uploadFiletoUCM(toEncodeAsBytestext, filename, "/oracle/apps/ess/prc/po/pdoi,ImportSPOJob", buId+",300000001043097,SUBMIT,"+ buId + ",,N,,true ");
+            xCCPITDB.logProcessPO008("xcustpo008", dateStart, requestId,chk);   // gen log
+            xCCPITDB.updateErpId(chk, requestId, "kfc_po", Cm.initC.PO008PathLog);
+        }
         public void processCallWebService(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String requestId)
         {
             addListView("callWebService ", "web service", lv1, form1);
@@ -1875,43 +1926,52 @@ namespace XCustPr
             addListView("callWebService อ่าน file ZIP", "web service", lv1, form1);
             filePO = Cm.getFileinFolder(Cm.initC.PO008PathFileZip);
             /*String text = System.IO.File.ReadAllText(filePO[0])*/
-            ;
+            
             filename = filePO[0].Replace(Cm.initC.PO008PathFileZip, "");
             //byte[] byteArraytext = Encoding.UTF8.GetBytes(text);
             //byte[] toEncodeAsBytestext = System.Text.ASCIIEncoding.ASCII.GetBytes(text);
             byte[] toEncodeAsBytestext = System.IO.File.ReadAllBytes(filePO[0]);
             String Arraytext = System.Convert.ToBase64String(toEncodeAsBytestext);
 
-            uri = @" <soapenv:Envelope xmlns:soapenv ='http://schemas.xmlsoap.org/soap/envelope/' xmlns:typ='http://xmlns.oracle.com/oracle/apps/fnd/applcore/webservices/types/' xmlns:web='http://xmlns.oracle.com/oracle/apps/fnd/applcore/webservices/'> " +
-                    "<soapenv:Header/> " +
-                        "<soapenv:Body> " +
-                         "<typ:uploadFiletoUCM> " +
-                   "<typ:document> " +
+            uri = @" <soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:typ='http://xmlns.oracle.com/apps/financials/commonModules/shared/model/erpIntegrationService/types/' xmlns:erp='http://xmlns.oracle.com/apps/financials/commonModules/shared/model/erpIntegrationService/'> " +
+            "<soapenv:Header/> " +
+                        "   <soapenv:Body> " +
+                         "<typ:importBulkData> " +
+                   "         <!--Optional:--> <typ:document> " +
                        "<!--Optional:--> " +
-                        "<web:fileName>" + filename + "</web:fileName> " +
+                       "<erp:Content>" + Arraytext +
+                                        "</erp:Content> <!--Optional:-->" +
+                        "<erp:FileName>" + filename + "</erp:FileName> " +
                              "<!--Optional:--> " +
-                              "<web:contentType>application/zip</web:contentType> " +
-                                     "<!--Optional:--> " +
-                                        "<web:content>" + Arraytext +
-                                        "</web:content> " +
+                              "<erp:ContentType></erp:ContentType> <!--Optional:-->" +
+                                     "<erp:DocumentTitle></erp:DocumentTitle> <!--Optional:-->" +
+                                     "<erp:DocumentAuthor></erp:DocumentAuthor> " +
+                                        
              "<!--Optional:--> " +
-              "<web:documentAccount>prc$/requisition$/import$</web:documentAccount> " +
+              "<erp:DocumentSecurityGroup></erp:DocumentSecurityGroup> " +
                     "<!--Optional:--> " +
-                     "<web:documentTitle> amo_test_load </web:documentTitle> " +
-                       "</typ:document> " +
-                     "</typ:uploadFiletoUCM> " +
-                   "</soapenv:Body> " +
-                 "</soapenv:Envelope>";
+                     "<erp:DocumentAccount></erp:DocumentAccount> <!--Optional:-->" +
+                       "<erp:DocumentName></erp:DocumentName> <!--Optional:-->" +
+                     "<erp:DocumentId></erp:DocumentId> " +
+                   "</typ:document> <!--Zero or more repetitions:-->" +
+                 "<typ:jobDetails><!--Optional:--> "+
+           " <erp:JobName>/oracle/apps/ess/prc/po/pdoi,ImportSPOJob</erp:JobName> "+
+               
+                          " < !--Optional:--> "+
+                          "<erp:ParameterList> 300000000944230,300000001043097,SUBMIT,300000000944230,,N,CEDAR,true </erp:ParameterList><!--Optional:-->" +
+                          "<erp:JobRequestId></erp:JobRequestId></typ:jobDetails>         <!--Optional:-->"+
+                          "<typ:notificationCode></typ:notificationCode><!--Optional:-->  <typ:callbackURL></typ:callbackURL><!--Optional:--><typ:jobOptions></typ:jobOptions></typ:importBulkData></soapenv:Body></soapenv:Envelope>"
+                ;
 
             //byte[] byteArray = Encoding.UTF8.GetBytes(envelope);
             byte[] byteArray = Encoding.UTF8.GetBytes(uri);
             addListView("callWebService prepare web service", "web service", lv1, form1);
             // Construct the base 64 encoded string used as credentials for the service call
-            byte[] toEncodeAsBytes = System.Text.ASCIIEncoding.ASCII.GetBytes("icetech@iceconsulting.co.th" + ":" + "icetech@2017");
+            byte[] toEncodeAsBytes = System.Text.ASCIIEncoding.ASCII.GetBytes("wwp-procurement" + ":" + "superice1");
             string credentials = System.Convert.ToBase64String(toEncodeAsBytes);
 
             // Create HttpWebRequest connection to the service
-            HttpWebRequest request1 = (HttpWebRequest)WebRequest.Create("https://eglj-test.fa.us2.oraclecloud.com:443/fndAppCoreServices/FndManageImportExportFilesService?WSDL");
+            HttpWebRequest request1 = (HttpWebRequest)WebRequest.Create("https://eglj-test.fa.us2.oraclecloud.com/publicFinancialCommonErpIntegration/ErpIntegrationService?WSDL");
 
             // Configure the request content type to be xml, HTTP method to be POST, and set the content length
             request1.Method = "POST";
@@ -1922,7 +1982,7 @@ namespace XCustPr
             request1.Headers.Add("Authorization", "Basic " + credentials);
 
             // Set the SOAP action to be invoked; while the call works without this, the value is expected to be set based as per standards
-            request1.Headers.Add("SOAPAction", "http://xmlns.oracle.com/apps/incentiveCompensation/cn/creditSetup/creditRule/creditRuleService/findRule");
+            //request1.Headers.Add("SOAPAction", "http://xmlns.oracle.com/apps/incentiveCompensation/cn/creditSetup/creditRule/creditRuleService/findRule");
 
             // Write the xml payload to the request
             Stream dataStream = request1.GetRequestStream();
