@@ -98,5 +98,33 @@ namespace XCustPr
             }
             return chk;
         }
+        public String selectShiptoLocation(String branchPlant)
+        {
+            String chk = "";
+            DataTable dt = new DataTable();
+            String sql = "SELECT location_code "+
+                    "FROM XCUST_LOCATIONS_MST_TBL "+
+                    "WHERE location_code = '"+ branchPlant + "'";
+            dt = conn.selectData(sql, "kfc_po");
+            if (dt.Rows.Count > 0)
+            {
+                chk = dt.Rows[0]["location_code"].ToString().Trim();
+            }
+            return chk;
+        }
+        public String selectOrg(String org)
+        {
+            String chk = "";
+            DataTable dt = new DataTable();
+            String sql = "select t.ORGANIZATION_CODE " +
+                    "FROM XCUST_LOCATIONS_MST_TBL " +
+                    "WHERE location_code = '" + org + "'";
+            dt = conn.selectData(sql, "kfc_po");
+            if (dt.Rows.Count > 0)
+            {
+                chk = dt.Rows[0]["location_code"].ToString().Trim();
+            }
+            return chk;
+        }
     }
 }

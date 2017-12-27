@@ -42,6 +42,9 @@ namespace XCustPr
             xCPLLIT.running = "running";
             xCPLLIT.ship_to_location = "ship_to_location";
             xCPLLIT.request_id = "request_id";
+            xCPLLIT.ship_to_organization = "ship_to_organization";
+            xCPLLIT.promise_date = "promise_date";
+            xCPLLIT.receipt_required_flag = "receipt_required_flag";
 
             xCPLLIT.table = "XCUST_PO_LINE_LOC_INT_TBL";
         }
@@ -90,14 +93,18 @@ namespace XCustPr
                     xCPLLIT.creation_by + "," + xCPLLIT.destination_type_code + "," + xCPLLIT.error_message + "," +
                     xCPLLIT.input_tax_classsification_code + "," + xCPLLIT.interface_header_key + "," + xCPLLIT.interface_line_key + "," +
                     xCPLLIT.interface_line_location_key + "," + xCPLLIT.last_date_by + "," + xCPLLIT.last_update_date + "," +
-                    xCPLLIT.need_by_date + "," + xCPLLIT.process_flag + "," + xCPLLIT.shipment_number+ "," + xCPLLIT.wo_no + "," + xCPLLIT.running + "," + xCPLLIT.request_id +
+                    xCPLLIT.need_by_date + "," + xCPLLIT.process_flag + "," + xCPLLIT.shipment_number+ "," + 
+                    xCPLLIT.wo_no + "," + xCPLLIT.running + "," + xCPLLIT.request_id + "," + 
+                    xCPLLIT.ship_to_organization + "," + xCPLLIT.ship_to_location + "," + xCPLLIT.promise_date + "," + xCPLLIT.receipt_required_flag +
                     ") " +
                     "Values(" + p.amt + ",'" + p.attribute1 + "','" + p.attribute2 + "','" +
                     p.attribute3 + "','" + p.attribute4 + "',getdate(),'" +
                     creation_by + "','" + p.destination_type_code + "','" + p.error_message + "','" +
                     p.input_tax_classsification_code + "','" + p.interface_header_key + "','" + p.interface_line_key + "','" +
                     p.interface_line_location_key + "','" + last_update_by + "',null,'" +
-                    p.need_by_date + "','" + p.process_flag + "','" + p.shipment_number + "','"+ p.wo_no + "','" + p.running + "','" + p.request_id + "'" +
+                    p.need_by_date + "','" + p.process_flag + "','" + p.shipment_number + "','"+ 
+                    p.wo_no + "','" + p.running + "','" + p.request_id + "','" + 
+                    p.ship_to_organization + "','" + p.ship_to_location + "','" + p.promise_date + "','" + p.receipt_required_flag + "'" +
                    ") ";
                 chk = conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
                 if (chk.Equals("1"))

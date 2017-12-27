@@ -32,6 +32,8 @@ namespace XCustPr
 
         private ListViewColumnSorter lvwColumnSorter;
         String[] filePO;
+
+        String requestId = "";
         public XCustPO008(ControlMain cm)
         {
             this.Size = new Size(formwidth, formheight);
@@ -191,7 +193,7 @@ namespace XCustPr
         //WSDL : https:// eglj-test.fa.us2.oraclecloud.com:443/fndAppCoreServices/FndManageImportExportFilesService?WSDL
         private void btnRead_Click(object sender, EventArgs e)
         {
-            String requestId = "";
+            
             lv1.Items.Clear();
             filePO = Cm.getFileinFolder(Cm.initC.PO008PathInitial);
             requestId = cPo008.processCedarPOtoErpPR(filePO, lv1, this, pB1);
@@ -215,59 +217,61 @@ namespace XCustPr
         }
         private void btnWebService_Click(object sender, EventArgs e)
         {
-            String uri = "";
-            HttpWebRequest request = CreateWebRequest();
-            XmlDocument soapEnvelopeXml = new XmlDocument();
-            uri = @" <soapenv:Envelope xmlns:soapenv ='http://schemas.xmlsoap.org/soap/envelope/' xmlns:typ='http://xmlns.oracle.com/oracle/apps/fnd/applcore/webservices/types/' xmlns:web='http://xmlns.oracle.com/oracle/apps/fnd/applcore/webservices/'> " +
-          "<soapenv:Header/> " +
-           "<soapenv:Body> " +
 
-                         "<typ:uploadFiletoUCM> " +
-                   "<typ:document> " +
-                       "<!--Optional:--> " +
-                        "<web:fileName> PorImportRequisitions_amo.zip </web:fileName> " +
-                             "<!--Optional:--> " +
-                              "<web:contentType> application / zip </web:contentType> " +
-                                     "<!--Optional:--> " +
-                                      "<web:content> UEsDBBQAAAAIAKRiZ0tLgrW4eAAAAMYAAAAdAAAAUG9yUmVxSGVhZGVyc0ludGVyZmFjZUFsbC5j " +
-"c3YzNNPx8fRz84 / QCXINDnEMDXL0CwlWcHENc / XxD / B19QtRcPb3DXD0i1Tw8fT1DHF10TE00zE0 " +
-"MNBxDAgI8g8D8ovzixKLE7MdilJKMhIzcxLzUvSS83NxCevoBKUWlmYWl2Tm5yk4Z2cmZ6fm6ZAP " +
-"InVc / Vx4uQBQSwMEFAAAAAgApWJnS8jtihWnAAAAGwEAABsAAABQb3JSZXFMaW5lc0ludGVyZmFj " +
-"ZUFsbC5jc3a1jtEKgjAARd + D / sEPuMZWZD2mc6mUU3QJPg6VFM2R0 / 8vij6h83zgHOqAOkAkCi5k " +
-"kpUIG1U / FzXNzWRACAWMnpRR / Wmq51Z1gxrrTaUfYG1X9c2IcwBk / oV8XARa1wZ7QiBDD3RH8CPj " +
-"uXRvmStkbvm84Nckjd9NiyVx6orSukZxJLmPIygixi2mR7MMczfe4XoM / 2JL6MFOmLTpdzVlOcCF " +
-  "v169AFBLAwQUAAAACACmYmdL8SPCeS4AAACmAAAAGwAAAFBvclJlcURpc3RzSW50ZXJmYWNlQWxs " +
-"LmNzdjM00zEEIgMDHR0TUwMdQ2MDPRCbqsDQUMcABIAMc0MDKMdAB4wIWubq58LLBQBQSwECFAAU " +
-"AAAACACkYmdLS4K1uHgAAADGAAAAHQAAAAAAAAABACAAAAAAAAAAUG9yUmVxSGVhZGVyc0ludGVy " +
-"ZmFjZUFsbC5jc3ZQSwECFAAUAAAACAClYmdLyO2KFacAAAAbAQAAGwAAAAAAAAABACAAAACzAAAA " +
-"UG9yUmVxTGluZXNJbnRlcmZhY2VBbGwuY3N2UEsBAhQAFAAAAAgApmJnS / EjwnkuAAAApgAAABsA " +
-"AAAAAAAAAQAgAAAAkwEAAFBvclJlcURpc3RzSW50ZXJmYWNlQWxsLmNzdlBLBQYAAAAAAwADAN0A " +
-"AAD6AQAAAAA = " +
-"</web:content> " +
-             "<!--Optional:--> " +
-              "<web:documentAccount> prc$/ requisition$/ import$</web:documentAccount> " +
-                    "<!--Optional:--> " +
-                     "<web:documentTitle> amo_test_load </web:documentTitle> " +
-                       "</typ:document> " +
-                     "</typ:uploadFiletoUCM> " +
-                   "</soapenv:Body> " +
-                 "</soapenv:Envelope>";
+            cPo008.processCallWebService(lv1, this, pB1, requestId);
+//            String uri = "";
+//            HttpWebRequest request = CreateWebRequest();
+//            XmlDocument soapEnvelopeXml = new XmlDocument();
+//            uri = @" <soapenv:Envelope xmlns:soapenv ='http://schemas.xmlsoap.org/soap/envelope/' xmlns:typ='http://xmlns.oracle.com/oracle/apps/fnd/applcore/webservices/types/' xmlns:web='http://xmlns.oracle.com/oracle/apps/fnd/applcore/webservices/'> " +
+//          "<soapenv:Header/> " +
+//           "<soapenv:Body> " +
 
-            soapEnvelopeXml.LoadXml(uri);
+//                         "<typ:uploadFiletoUCM> " +
+//                   "<typ:document> " +
+//                       "<!--Optional:--> " +
+//                        "<web:fileName> PorImportRequisitions_amo.zip </web:fileName> " +
+//                             "<!--Optional:--> " +
+//                              "<web:contentType> application / zip </web:contentType> " +
+//                                     "<!--Optional:--> " +
+//                                      "<web:content> UEsDBBQAAAAIAKRiZ0tLgrW4eAAAAMYAAAAdAAAAUG9yUmVxSGVhZGVyc0ludGVyZmFjZUFsbC5j " +
+//"c3YzNNPx8fRz84 / QCXINDnEMDXL0CwlWcHENc / XxD / B19QtRcPb3DXD0i1Tw8fT1DHF10TE00zE0 " +
+//"MNBxDAgI8g8D8ovzixKLE7MdilJKMhIzcxLzUvSS83NxCevoBKUWlmYWl2Tm5yk4Z2cmZ6fm6ZAP " +
+//"InVc / Vx4uQBQSwMEFAAAAAgApWJnS8jtihWnAAAAGwEAABsAAABQb3JSZXFMaW5lc0ludGVyZmFj " +
+//"ZUFsbC5jc3a1jtEKgjAARd + D / sEPuMZWZD2mc6mUU3QJPg6VFM2R0 / 8vij6h83zgHOqAOkAkCi5k " +
+//"kpUIG1U / FzXNzWRACAWMnpRR / Wmq51Z1gxrrTaUfYG1X9c2IcwBk / oV8XARa1wZ7QiBDD3RH8CPj " +
+//"uXRvmStkbvm84Nckjd9NiyVx6orSukZxJLmPIygixi2mR7MMczfe4XoM / 2JL6MFOmLTpdzVlOcCF " +
+//  "v169AFBLAwQUAAAACACmYmdL8SPCeS4AAACmAAAAGwAAAFBvclJlcURpc3RzSW50ZXJmYWNlQWxs " +
+//"LmNzdjM00zEEIgMDHR0TUwMdQ2MDPRCbqsDQUMcABIAMc0MDKMdAB4wIWubq58LLBQBQSwECFAAU " +
+//"AAAACACkYmdLS4K1uHgAAADGAAAAHQAAAAAAAAABACAAAAAAAAAAUG9yUmVxSGVhZGVyc0ludGVy " +
+//"ZmFjZUFsbC5jc3ZQSwECFAAUAAAACAClYmdLyO2KFacAAAAbAQAAGwAAAAAAAAABACAAAACzAAAA " +
+//"UG9yUmVxTGluZXNJbnRlcmZhY2VBbGwuY3N2UEsBAhQAFAAAAAgApmJnS / EjwnkuAAAApgAAABsA " +
+//"AAAAAAAAAQAgAAAAkwEAAFBvclJlcURpc3RzSW50ZXJmYWNlQWxsLmNzdlBLBQYAAAAAAwADAN0A " +
+//"AAD6AQAAAAA = " +
+//"</web:content> " +
+//             "<!--Optional:--> " +
+//              "<web:documentAccount> prc$/ requisition$/ import$</web:documentAccount> " +
+//                    "<!--Optional:--> " +
+//                     "<web:documentTitle> amo_test_load </web:documentTitle> " +
+//                       "</typ:document> " +
+//                     "</typ:uploadFiletoUCM> " +
+//                   "</soapenv:Body> " +
+//                 "</soapenv:Envelope>";
 
-            using (Stream stream = request.GetRequestStream())
-            {
-                soapEnvelopeXml.Save(stream);
-            }
+//            soapEnvelopeXml.LoadXml(uri);
 
-            using (WebResponse response = request.GetResponse())
-            {
-                using (StreamReader rd = new StreamReader(response.GetResponseStream()))
-                {
-                    string soapResult = rd.ReadToEnd();
-                    Console.WriteLine(soapResult);
-                }
-            }
+//            using (Stream stream = request.GetRequestStream())
+//            {
+//                soapEnvelopeXml.Save(stream);
+//            }
+
+//            using (WebResponse response = request.GetResponse())
+//            {
+//                using (StreamReader rd = new StreamReader(response.GetResponseStream()))
+//                {
+//                    string soapResult = rd.ReadToEnd();
+//                    Console.WriteLine(soapResult);
+//                }
+//            }
         }
         private void btnFTP_Click(object sender, EventArgs e)
         {

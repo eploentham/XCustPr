@@ -238,7 +238,7 @@ namespace XCustPr
             //"   " + whereRerun+ where+
             //" GROUP BY po.VENDOR_ID, t.SUPPLIER_NUMBER,po.attribute2, po.DELIVER_DATE ";
 
-            sql = "select  t.SUPPLIER_NUMBER, po.DELIVER_DATE as DELIVERY_DATE ,po.VENDOR_ID,po.attribute2 " +
+            sql = "select  t.SUPPLIER_NUMBER, po.DELIVER_DATE as DELIVERY_DATE ,po.VENDOR_ID,t.attribute2 " +
             "from xcust_PO_TBL po " +
             ",XCUST_SUPPLIER_MST_TBL t  " +
             ", XCUST_PR_TBL pr  " +
@@ -246,18 +246,85 @@ namespace XCustPr
             " and t.ATTRIBUTE1 = 'Y' and   po.REQUISITION_HEADER_ID = PR.REQUISITION_HEADER_ID and po.REQUISITION_LINE_ID = PR.REQUISITION_LINE_ID and pr.ATTRIBUTE1 = 'MMX'  " +
             //" and po.GEN_OUTBOUD_FLAG = ''   and po.DELIVER_DATE is not null " +
             "   " + whereRerun + where +
-            " GROUP BY po.VENDOR_ID, t.SUPPLIER_NUMBER,po.attribute2, po.DELIVER_DATE ";
+            " GROUP BY po.VENDOR_ID, t.SUPPLIER_NUMBER,t.attribute2, po.DELIVER_DATE ";
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
+        }
+        public DataTable selectPRPO006GroupByVendorDeliveryDate2(String delivery_date, String rerun, String buId)
+        {
+            DataTable dt = new DataTable();
+            String sql = "", where = "", date = "", whereRerun = "", whereId="";
+            if (delivery_date.Equals("sysdate"))
+            {
+                date = System.DateTime.Now.ToString("yyyy-MM-dd");
+            }
+            else
+            {
+                date = delivery_date;
+            }
+            if (delivery_date.Equals(""))
+            {
+                where = " ";
+            }
+            else
+            {
+                where = " and po.DELIVER_DATE = '" + date + "' ";
+                //where = "  "; //for test
+                //where = " and po.DELIVER_DATE = '2017-12-25' "; //for test
+            }
+            if (rerun.Equals("Y"))
+            {
+                whereRerun = " and po.GEN_OUTBOUD_FLAG = 'Y' ";
+            }
+            else
+            {
+                //whereRerun = " and po.GEN_OUTBOUD_FLAG = 'N' ";
+                whereRerun = " and po.GEN_OUTBOUD_FLAG is null ";
+            }
+            if (buId.Equals(""))
+            {
+                whereId = " ";
+            }
+            else
+            {
+                whereId = " and po.PRC_BU_ID = '"+buId+"'";
+            }
+               
+            //sql = "SELECT po.VENDOR_ID, po.acc_segment1 as deliveryDate " +
+            //    "From xcust_pr_tbl PR " +
+            //    "inner Join xcust_po_tbl po On  po.REQUISITION_HEADER_ID = PR.REQUISITION_HEADER_ID and po.REQUISITION_LINE_ID = PR.REQUISITION_LINE_ID  " +
+            //    "Where  " + "" +
+            //    " PR.ATTRIBUTE1 <> 'MMX' group by po.VENDOR_ID, po.acc_segment1 ";[DELIVER_DATE]
+            //sql = "select  t.SUPPLIER_NUMBER, po.DELIVER_DATE as DELIVERY_DATE ,po.VENDOR_ID,po.attribute2 " +
+            //"from xcust_PO_TBL po " +
+            //",XCUST_SUPPLIER_MST_TBL t  " +
+            //"where  po.VENDOR_ID = t.VENDOR_ID  " + "" +
+            //" and t.ATTRIBUTE1 = 'Y' " +
+            ////" and po.GEN_OUTBOUD_FLAG = ''   and po.DELIVER_DATE is not null " +
+            //"   " + whereRerun+ where+
+            //" GROUP BY po.VENDOR_ID, t.SUPPLIER_NUMBER,po.attribute2, po.DELIVER_DATE ";
+
+            sql = "Select  t.SUPPLIER_NUMBER, po.DELIVER_DATE as DELIVERY_DATE ,po.VENDOR_ID,t.attribute2 " +
+            "from xcust_PO_TBL po " +
+            ",XCUST_SUPPLIER_MST_TBL t  " +
+            ", XCUST_PR_TBL pr  " +
+            "where  po.VENDOR_ID = t.VENDOR_ID  " + " " +
+            " and t.ATTRIBUTE1 = 'Y' and   po.REQUISITION_HEADER_ID = PR.REQUISITION_HEADER_ID and po.REQUISITION_LINE_ID = PR.REQUISITION_LINE_ID and pr.ATTRIBUTE1 = 'MMX'  " +
+            //" and po.GEN_OUTBOUD_FLAG = ''   and po.DELIVER_DATE is not null " +
+            "   " + whereRerun + where + whereId +
+            " GROUP BY po.VENDOR_ID, t.SUPPLIER_NUMBER,t.attribute2, po.DELIVER_DATE ";
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
         public DataTable selectPRPO006GroupByVendor()
         {
             DataTable dt = new DataTable();
-            String sql = "SELECT po.VENDOR_ID " +
-                "From xcust_pr_tbl PR " +
-                "inner Join xcust_po_tbl po On  po.REQUISITION_HEADER_ID = PR.REQUISITION_HEADER_ID and po.REQUISITION_LINE_ID = PR.REQUISITION_LINE_ID  " +
-                "Where  " + "" +
-                " PR.ATTRIBUTE1 <> 'MMX' group by po.VENDOR_ID ";
+            String sql = "SELECT t.attribute2 " +
+                "From xcust_pr_tbl PR "+
+                " , XCUST_SUPPLIER_MST_TBL t" +
+                ", XCUST_po_TBL po      " +
+                "Where  po.VENDOR_ID = t.VENDOR_ID and po.REQUISITION_HEADER_ID = PR.REQUISITION_HEADER_ID and po.REQUISITION_LINE_ID = PR.REQUISITION_LINE_ID  " +
+                " and PR.ATTRIBUTE1 = 'MMX' group by t.attribute2 ";
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }

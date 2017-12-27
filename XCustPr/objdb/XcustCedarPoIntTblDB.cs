@@ -71,6 +71,7 @@ namespace XCustPr
             xCCPIT.row_cnt = "row_cnt";
             xCCPIT.row_number = "row_number";
             xCCPIT.request_id = "request_id";
+            xCCPIT.project_code = "project_code";
 
             xCCPIT.table = "XCUST_CEDAR_PO_INT_TBL";
         }
@@ -250,7 +251,7 @@ namespace XCustPr
                     String loctype = "", payment_term = "", period = "", po_no = "", qt_no = "";
                     String shippto_location = "", supplier_code = "", supplier_contact = "", supplier_name = "", supplier_site_code = "", sup_agreement_no = "", total = "";
                     String vat = "", week = "", work_type = "", wo_no = "", xno = "";
-                    String erp_qty = "0", erp_uom = "", BRANCH_NAME="";
+                    String erp_qty = "0", erp_uom = "", BRANCH_NAME="", project_code="";
                     i++;
                     sql.Clear();
                     pB1.Value = i;
@@ -285,7 +286,8 @@ namespace XCustPr
                     cedar_close_date = aaa[colCEDAR_CLOSE_DATE];
                     invoice_due_date = aaa[colINVOICE_DUE_DATE];
                     sup_agreement_no = aaa[colSUPP_AGREEMENT_NO];       // no field
-                    account_segment2 = aaa[colACCOUNT_SEGMENT];
+                    account_segment2 = aaa[colACCOUNT_SEGMENT];       // 60-12-27
+                    project_code = aaa[colACCOUNT_SEGMENT];             // 60-12-27
                     data_source = aaa[colDATA_SOURCE];
 
                     admin_receipt_doc_date = dateYearShortToDB(admin_receipt_doc_date);
@@ -311,6 +313,9 @@ namespace XCustPr
                     //aaa[2] + "','" + aaa[4] + "','" + aaa[5] + "','" +
                     //aaa[1] + "','" + processFlag + "','" + aaa[7] + "','" +
                     //aaa[3] + "','" + aaa[8] + "','" + validateFlag + "'),";
+                    String ship = "";
+                    ship = selectShiptoLocation(branch_plant);
+                    shippto_location = ship;
                     sql.Append("Insert Into ").Append(xCCPIT.table).Append(" (").Append(xCCPIT.account_segment1).Append(",").Append(xCCPIT.account_segment2).Append(",").Append(xCCPIT.account_segment3)
                         .Append(",").Append(xCCPIT.account_segment4).Append(",").Append(xCCPIT.account_segment5).Append(",").Append(xCCPIT.account_segment6)
                         .Append(",").Append(xCCPIT.account_segment_no).Append(",").Append(xCCPIT.admin).Append(",").Append(xCCPIT.admin_receipt_doc_date)
@@ -325,7 +330,7 @@ namespace XCustPr
                         .Append(",").Append(xCCPIT.supplier_code).Append(",").Append(xCCPIT.supplier_contact).Append(",").Append(xCCPIT.supplier_name)
                         .Append(",").Append(xCCPIT.supplier_site_code).Append(",").Append(xCCPIT.sup_agreement_no).Append(",").Append(xCCPIT.total)
                         .Append(",").Append(xCCPIT.validate_flag).Append(",").Append(xCCPIT.vat).Append(",").Append(xCCPIT.week)
-                        .Append(",").Append(xCCPIT.work_type).Append(",").Append(xCCPIT.wo_no).Append(",").Append(xCCPIT.xno).Append(",").Append(xCCPIT.request_id).Append(",row_number, row_cnt")
+                        .Append(",").Append(xCCPIT.work_type).Append(",").Append(xCCPIT.wo_no).Append(",").Append(xCCPIT.xno).Append(",").Append(xCCPIT.request_id).Append(",row_number, row_cnt, project_code")
                         .Append(") Values ('")
                         .Append(account_segment1).Append("','").Append(account_segment2).Append("','").Append(account_segment3)
                         .Append("','").Append(account_segment4).Append("','").Append(account_segment5).Append("','").Append(account_segment6)
@@ -339,13 +344,27 @@ namespace XCustPr
                         .Append("','").Append(payment_term).Append("','").Append(period).Append("','").Append(po_no)
                         .Append("','").Append(processFlag).Append("','").Append(qt_no).Append("','").Append(shippto_location)
                         .Append("','").Append(supplier_code).Append("','").Append(supplier_contact).Append("','").Append(supplier_name)
-                        .Append("','").Append(supplier_site_code).Append("','").Append(lastUpdateTime).Append("',").Append(total)
+                        .Append("','").Append(supplier_site_code).Append("','").Append(sup_agreement_no).Append("',").Append(total)
                         .Append(",'").Append(validateFlag).Append("',").Append(vat).Append(",'").Append(week)
-                        .Append("','").Append(work_type).Append("','").Append(wo_no).Append("',").Append(xno).Append(",'").Append(requestId).Append("','").Append(i).Append("','").Append(cedar.Count).Append("' ")
+                        .Append("','").Append(work_type).Append("','").Append(wo_no).Append("',").Append(xno).Append(",'").Append(requestId).Append("','").Append(i).Append("','").Append(cedar.Count).Append("','").Append(project_code).Append("' ")
                         .Append(") ");
                     chk = conn.ExecuteNonQuery(sql.ToString(), host, pathLog);
                 }
             }
+        }
+        public String selectShiptoLocation(String branchPlant)
+        {
+            String chk = "";
+            DataTable dt = new DataTable();
+            String sql = "SELECT location_code " +
+                    "FROM XCUST_LOCATIONS_MST_TBL " +
+                    "WHERE location_code = '" + branchPlant + "'";
+            dt = conn.selectData(sql, "kfc_po");
+            if (dt.Rows.Count > 0)
+            {
+                chk = dt.Rows[0]["location_code"].ToString().Trim();
+            }
+            return chk;
         }
         public String dateYearShortToDB(String date)
         {

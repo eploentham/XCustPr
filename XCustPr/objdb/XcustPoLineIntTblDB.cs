@@ -40,6 +40,9 @@ namespace XCustPr
             xCPLIT.attribute1 = "attribute1";
             xCPLIT.attribute2 = "attribute2";
             xCPLIT.request_id = "request_id";
+            xCPLIT.attribute3 = "attribute3";
+            xCPLIT.attribute4 = "attribute4";
+            xCPLIT.attribute5 = "attribute5";
 
             xCPLIT.table = "XCUST_PO_LINE_INT_TBL";
         }
@@ -87,13 +90,17 @@ namespace XCustPr
                     xCPLIT.creation_date + "," + xCPLIT.error_message + "," + xCPLIT.interface_header_key + "," +
                     xCPLIT.interface_line_key + "," + xCPLIT.item_description + "," + xCPLIT.last_update_by + "," +
                     xCPLIT.last_update_date + "," + xCPLIT.line_num + "," + xCPLIT.line_type + "," +
-                    xCPLIT.process_flag + "," + xCPLIT.unit_price + "," + xCPLIT.wo_no + "," + xCPLIT.qt_no + "," + xCPLIT.running + "," + xCPLIT.attribute1 + "," + xCPLIT.attribute2 + "," + xCPLIT.request_id +
+                    xCPLIT.process_flag + "," + xCPLIT.unit_price + "," + xCPLIT.wo_no + "," + 
+                    xCPLIT.qt_no + "," + xCPLIT.running + "," + xCPLIT.attribute1 + "," + 
+                    xCPLIT.attribute2 + "," + xCPLIT.request_id + "," + xCPLIT.attribute3 + "," + xCPLIT.attribute4 + "," + xCPLIT.attribute5 +
                     ") " +
                     "Values('" + p.action + "','" + p.category + "','" + creation_by + "'," +
                     "getdate(),'" + p.error_message + "','" + p.interface_header_key + "','" +
                     p.interface_line_key + "','" + p.item_description + "','" + last_update_by + "'," +
                     "null,'" + p.line_num + "','" + p.line_type + "','" +
-                    p.process_flag + "'," + p.unit_price + ",'" + p.wo_no + "','" + p.qt_no + "','" + p.running + "','" + p.attribute1 + "','" + p.attribute2 + "','" + p.request_id +
+                    p.process_flag + "'," + p.unit_price + ",'" + p.wo_no + "','" + 
+                    p.qt_no + "','" + p.running + "','" + p.attribute1 + "','" + 
+                    p.attribute2 + "','" + p.request_id + "','" + p.attribute3 + "','" + p.attribute4 + "','" + p.attribute5 +
                     "') ";
                 chk = conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
                 if (chk.Equals("1"))

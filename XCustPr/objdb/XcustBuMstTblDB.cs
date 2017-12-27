@@ -76,5 +76,17 @@ namespace XCustPr
             }
             return chk;
         }
+        public String selectIdActiveBuName(String name)
+        {
+            DataTable dt = new DataTable();
+            String chk = "";
+            String sql = "select * From " + xCBMT.table + " where " + xCBMT.STATUS + "  = 'A' and "+xCBMT.BU_NAME +" = '"+name+"'";
+            dt = conn.selectData(sql, "kfc_po");
+            if (dt.Rows.Count > 0)
+            {
+                chk = dt.Rows[0][xCBMT.BU_ID].ToString().Trim();
+            }
+            return chk;
+        }
     }
 }

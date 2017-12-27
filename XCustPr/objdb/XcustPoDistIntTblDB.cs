@@ -72,6 +72,46 @@ namespace XCustPr
             }
             return chk;
         }
+        public DataTable selectChargeAcc(String orgId)
+        {
+            DataTable dt = new DataTable();
+            String sql = "select org.material_account_ccid "+
+                ", gcc.SEGMENT1 account_seg1 " +
+                 ", gcc.SEGMENT2 account_seg2 " +
+                 " , gcc.SEGMENT3 account_seg3 " +
+                 "  , gcc.SEGMENT4 account_seg4 " +
+                 "   , gcc.SEGMENT5 account_seg5 " +
+                 "    , gcc.SEGMENT6 account_seg6 " +
+                "from xcust_organization_mst_tbl org " +
+                ",xcust_gl_code_combinations_tbl gcc " +
+                "where org.organization_code = '"+ orgId + "' " +
+                "and org.material_account_ccid = gcc.code_combination_id " +
+                "and org.CHART_OF_ACCOUNTS_ID = gcc.CHART_OF_ACCOUNTS_ID";
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
+        }
+        public String validateChargeAcc(String org,String seg1, String seg2, String seg3, String seg4, String seg5, String seg6)
+        {
+            DataTable dt = new DataTable();
+            String chk = "";
+            String sql = "select count(*) "+
+                "from xcust_organization_mst_tbl org " +
+                ",xcust_gl_code_combinations_tbl gcc " +
+                "where org.organization_code = '"+ org + "' " +
+                "and org.CHART_OF_ACCOUNTS_ID = gcc.CHART_OF_ACCOUNTS_ID " +
+                "and gcc.SEGMENT1 = '" + seg1 + "'" +
+                "and gcc.segment2 = '" + seg2 + "'" +
+                "and gcc.segment3 = '" + seg3 + "'" +
+                "and gcc.segment4 = '" + seg4 + "'" +
+                "and gcc.segment5 = '" + seg5 + "'" +
+                "and gcc.segment6 = '" + seg6 + "'";
+            dt = conn.selectData(sql, "kfc_po");
+            if (dt.Rows.Count > 0)
+            {
+                chk = dt.Rows[0][0].ToString().Trim();
+            }
+            return chk;
+        }
         public String insert(XcustPoDistIntTbl p, String pathLog)
         {
             String sql = "", chk = "";
@@ -92,7 +132,8 @@ namespace XCustPr
                     xCPDIT.deliver_to_location + "," + xCPDIT.destion_subinventory + "," + xCPDIT.distribution_num + "," +
                     xCPDIT.error_message + "," + xCPDIT.interface_distribution_key + "," + xCPDIT.interface_header_key + "," +
                     xCPDIT.interface_line_key + "," + xCPDIT.interface_line_location_key + "," + xCPDIT.last_update_by + "," +
-                    xCPDIT.last_update_date + "," + xCPDIT.process_flag + "," + xCPDIT.wo_no + "," + xCPDIT.running + "," + xCPDIT.request_id +
+                    xCPDIT.last_update_date + "," + xCPDIT.process_flag + "," + xCPDIT.wo_no + "," + 
+                    xCPDIT.running + "," + xCPDIT.request_id +
                     ") " +
                     "Values('" + p.amt + "','" + p.charge_account_segment1 + "','" + p.charge_account_segment2 + "','" +
                     p.charge_account_segment3 + "','" + p.charge_account_segment4 + "','" + p.charge_account_segment5 + "','" +
@@ -100,7 +141,8 @@ namespace XCustPr
                     p.deliver_to_location + "','" + p.destion_subinventory + "','" + p.distribution_num + "','" +
                     p.error_message + "','" + p.interface_distribution_key + "','" + p.interface_header_key + "','" +
                     p.interface_line_key + "','" + p.interface_line_location_key + "','" + last_update_by + "'," +
-                    "null,'" + p.process_flag + "','" + p.wo_no + "','" + p.running + "','"+ p.request_id + "'" +
+                    "null,'" + p.process_flag + "','" + p.wo_no + "','" + 
+                    p.running + "','"+ p.request_id + "'" +
                     ") ";
                 chk = conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
                 //chk = p.RowNumber;

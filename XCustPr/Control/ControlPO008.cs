@@ -5,9 +5,12 @@ using System.Drawing;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml;
+using System.Xml.Linq;
 
 namespace XCustPr
 {
@@ -63,7 +66,7 @@ namespace XCustPr
         private List<XcustUomMstTbl> listXcUMT;
 
         public XcustCedarPoIntTblDB xCCPITDB;// table temp
-
+        String errOrg = "", errChargeAcc="";
 
         public ControlPO008(ControlMain cm)
         {
@@ -382,6 +385,7 @@ namespace XCustPr
         {
             addListView("อ่าน file จาก " + Cm.initC.PO008PathProcess, "Validate", lv1, form1);
             pB1.Visible = true;
+            
 
             Boolean chk = false;
             DataTable dtGroupBy = new DataTable();
@@ -428,6 +432,7 @@ namespace XCustPr
                 vPP.Validate = "";
                 lVPr.Add(vPP);
                 cntErr++;       // gen log
+                errOrg = "Error PO008-009 : Invalid Deliver-to Organization";
             }
             else if (Org.Equals("D"))
             {
@@ -564,31 +569,43 @@ namespace XCustPr
                         cntErr++;       // gen log
                         xCCPITDB.updateErrorMessage(filename, rowNumber, "Error PO008-002 : Date Format not correct cedar_close_date", requestId, "kfc_po", Cm.initC.PO008PathLog);
                     }
-                    //Error PO001-010 : Invalid Subinventory Code      //ไม่มี store code              
-                    //subInv_code = validateSubInventoryCode(Cm.initC.ORGANIZATION_code.Trim(), row[xCCPITDB.xCCPIT.store_code].ToString().Trim());
-                    //if (subInv_code.Equals(""))
-                    //{
-                    //    vPP = new ValidatePrPo();
-                    //    vPP.Filename = rowG[xCCPITDB.xCCPIT.file_name].ToString().Trim();
-                    //    vPP.Message = "Error PO001-010 ";
-                    //    vPP.Validate = "row " + row1 + " ORGANIZATION_code " + Cm.initC.ORGANIZATION_code.Trim();
-                    //    lVPr.Add(vPP);
-                    //    cntErr++;
-                    //}
-                    // Error PO008 - 011 : Invalid Item Number     //ในเอกสาร  Item Description    
-                    //if (!xCIMTDB.validateItemCodeByOrgRef1("300000000949654", row[xCLFPTDB.xCLFPT.ITEM_CODE].ToString().Trim()))// ต้องแก้ Fix code อยู่
-                    //if (validateItemCodeByOrgRef("300000000949654", row[xCLFPTDB.xCLFPT.ITEM_CODE].ToString().Trim()))// ต้องแก้ Fix code อยู่
-                    //{
-                    //    vPP = new ValidatePrPo();
-                    //    vPP.Filename = rowG[xCLFPTDB.xCLFPT.file_name].ToString().Trim();
-                    //    vPP.Message = "Error PO001-011 ";
-                    //    vPP.Validate = "row " + row1 + " store_code=" + row[xCLFPTDB.xCLFPT.store_code].ToString().Trim() + " item_code " + row[xCLFPTDB.xCLFPT.ITEM_CODE].ToString().Trim();
-                    //    lVPr.Add(vPP);
-                    //    cntErr++;
-                    //}
-                    // Error PO001-015 : Invalid Supplier
-                    //if (!xCSMTDB.validateSupplierBySupplierCode(row[xCLFPTDB.xCLFPT.SUPPLIER_CODE].ToString().Trim()))
-                    String vendorId = "";
+                    String ship = "";
+                    ship = row[xCCPITDB.xCCPIT.shippto_location].ToString();
+                    if (ship.Equals(""))
+                    {
+                        vPP = new ValidatePrPo();
+                        vPP.Filename = row[xCCPITDB.xCCPIT.file_name].ToString().Trim();
+                        vPP.Message = "Error PO008-008 : Invalid Deliver To Location  ";
+                        vPP.Validate = "row " + row1 + " cedar_close_date=" + row[xCCPITDB.xCCPIT.cedar_close_date].ToString();
+                        lVPr.Add(vPP);
+                        cntErr++;       // gen log
+                        xCCPITDB.updateErrorMessage(filename, rowNumber, "Error PO008-008 : Invalid Deliver To Location", requestId, "kfc_po", Cm.initC.PO008PathLog);
+                    }
+                        //Error PO001-010 : Invalid Subinventory Code      //ไม่มี store code              
+                        //subInv_code = validateSubInventoryCode(Cm.initC.ORGANIZATION_code.Trim(), row[xCCPITDB.xCCPIT.store_code].ToString().Trim());
+                        //if (subInv_code.Equals(""))
+                        //{
+                        //    vPP = new ValidatePrPo();
+                        //    vPP.Filename = rowG[xCCPITDB.xCCPIT.file_name].ToString().Trim();
+                        //    vPP.Message = "Error PO001-010 ";
+                        //    vPP.Validate = "row " + row1 + " ORGANIZATION_code " + Cm.initC.ORGANIZATION_code.Trim();
+                        //    lVPr.Add(vPP);
+                        //    cntErr++;
+                        //}
+                        // Error PO008 - 011 : Invalid Item Number     //ในเอกสาร  Item Description    
+                        //if (!xCIMTDB.validateItemCodeByOrgRef1("300000000949654", row[xCLFPTDB.xCLFPT.ITEM_CODE].ToString().Trim()))// ต้องแก้ Fix code อยู่
+                        //if (validateItemCodeByOrgRef("300000000949654", row[xCLFPTDB.xCLFPT.ITEM_CODE].ToString().Trim()))// ต้องแก้ Fix code อยู่
+                        //{
+                        //    vPP = new ValidatePrPo();
+                        //    vPP.Filename = rowG[xCLFPTDB.xCLFPT.file_name].ToString().Trim();
+                        //    vPP.Message = "Error PO001-011 ";
+                        //    vPP.Validate = "row " + row1 + " store_code=" + row[xCLFPTDB.xCLFPT.store_code].ToString().Trim() + " item_code " + row[xCLFPTDB.xCLFPT.ITEM_CODE].ToString().Trim();
+                        //    lVPr.Add(vPP);
+                        //    cntErr++;
+                        //}
+                        // Error PO001-015 : Invalid Supplier
+                        //if (!xCSMTDB.validateSupplierBySupplierCode(row[xCLFPTDB.xCLFPT.SUPPLIER_CODE].ToString().Trim()))
+                        String vendorId = "";
                     vendorId = xCSMTDB.validateSupplierBySupplierCode1(row[xCCPITDB.xCCPIT.supplier_code].ToString().Trim());
                     //if (validateSupplierBySupplierCode(row[xCCPITDB.xCCPIT.supplier_code].ToString().Trim()))
                     if (vendorId.Equals(""))
@@ -733,6 +750,9 @@ namespace XCustPr
                                     xCPoLIT.running = running;
                                     xCPoLIT.line_num = running;
                                     xCPoLIT.request_id = requestId;
+
+                                    //if(dtCedarR)
+                                    //xCPoLIT.line_type = "";
                                     String seqL = xCPLITDB.insert(xCPoLIT, Cm.initC.PO008PathLog);
 
                                     XcustPoLineLocIntTbl xCPoLLIT = new XcustPoLineLocIntTbl();
@@ -889,14 +909,40 @@ namespace XCustPr
             item.interface_line_key = row[xCCPITDB.xCCPIT.wo_no].ToString() + running;
             item.action = "ADD";
             item.line_num = "";//ถาม
-            item.line_type = "SERVICE";
+           
+            if (row[xCCPITDB.xCCPIT.item_e1].ToString().Equals("MR"))//   xcust_cedar_po_int_tbl.item_e1 = ‘MR’ 
+            {
+                //ให้ Line_type = ‘Fixed Price Services’
+                item.line_type = "Fixed Price Services";
+            }
+            else
+            {
+                //ให้ Line_type = ‘Goods’
+                item.line_type = "Goods";
+            }
+            
             item.item_description = row[xCCPITDB.xCCPIT.wo_no].ToString() + "_" + row[xCCPITDB.xCCPIT.qt_no].ToString() + "_" + row[xCCPITDB.xCCPIT.item_description].ToString() + "_" + row[xCCPITDB.xCCPIT.branch_plant].ToString();
-            item.category = "";//ถาม
+            item.category = row[xCCPITDB.xCCPIT.item_e1].ToString();//ถาม
             item.unit_price = row[xCCPITDB.xCCPIT.amt].ToString();
             item.wo_no = row[xCCPITDB.xCCPIT.wo_no].ToString();
             item.qt_no = row[xCCPITDB.xCCPIT.qt_no].ToString();
-            item.attribute1 = row[xCCPITDB.xCCPIT.asset_code].ToString();
-            item.attribute2 = row[xCCPITDB.xCCPIT.asset_name].ToString();
+            //item.attribute1 = row[xCCPITDB.xCCPIT.asset_code].ToString();     //60-12-27
+            String project_code = "", project_code1="";
+            project_code = row[xCCPITDB.xCCPIT.project_code].ToString();
+            if (project_code.Equals(""))
+            {
+                project_code1 = "CEDAR-NPJC";
+            }
+            else
+            {
+                project_code1 = "CEDAR-PJC";
+            }
+            item.attribute1 = project_code1;
+            item.attribute2 = row[xCCPITDB.xCCPIT.qt_no].ToString();
+            item.attribute3 = row[xCCPITDB.xCCPIT.wo_no].ToString();
+            item.attribute4 = row[xCCPITDB.xCCPIT.asset_code].ToString();
+            item.attribute5 = row[xCCPITDB.xCCPIT.sup_agreement_no].ToString();
+            
             //item.BUSINESS_UNIT = "";
 
             //item.SUBINVENTORY_CODE = row[xCLPRITDB.xCLPRIT.subinventory_code].ToString();
@@ -953,7 +999,32 @@ namespace XCustPr
             item.attribute3 = row[xCCPITDB.xCCPIT.asset_code].ToString();
             item.attribute4 = row[xCCPITDB.xCCPIT.asset_name].ToString();
             item.wo_no = row[xCCPITDB.xCCPIT.wo_no].ToString();
-            
+            item.promise_date = row[xCCPITDB.xCCPIT.cedar_close_date].ToString();
+            if (row[xCCPITDB.xCCPIT.item_e1].ToString().Equals("MR"))//   xcust_cedar_po_int_tbl.item_e1 = ‘MR’ 
+            {
+                //ให้ Line_type = ‘Fixed Price Services’
+                item.destination_type_code = "EXPENSE";
+            }
+            else
+            {
+                //ให้ Line_type = ‘Goods’
+                item.destination_type_code = "INVENTORY";
+            }
+            if(row[xCCPITDB.xCCPIT.item_e1].ToString().Equals("MR"))
+            {
+                item.receipt_required_flag = "N";
+            }
+            else
+            {
+                item.receipt_required_flag = "Y";
+            }
+
+            //String ship = "";
+            //ship = xCSIMTDB.selectShiptoLocation(row[xCCPITDB.xCCPIT.branch_plant].ToString());
+            item.ship_to_location = row[xCCPITDB.xCCPIT.shippto_location].ToString();
+            item.ship_to_organization = Cm.initC.ORGANIZATION_code;
+            //String Org = "";
+            //Org = xCDOMTDB.selectActiveByCode(Cm.initC.ORGANIZATION_code.Trim());
             //item.LINE_TYPE = "";
 
             //item.QTY = row[xCMPITDB.xCMPIT.confirm_qty].ToString();
@@ -995,7 +1066,7 @@ namespace XCustPr
         }
         private XcustPoDistIntTbl addXcustListDist1(DataRow row)
         {
-            String running = "";
+            String running = "", acc1="", acc2="", acc3="", acc4="",acc5="", acc6="";
             running = "00" + listXcustPDIT.Count + 1;
             running = running.Substring(0, running.Length - 2);
             XcustPoDistIntTbl item = new XcustPoDistIntTbl();
@@ -1006,12 +1077,52 @@ namespace XCustPr
             item.deliver_to_location = row[xCCPITDB.xCCPIT.branch_plant].ToString();//ถาม
             item.destion_subinventory = row[xCCPITDB.xCCPIT.branch_plant].ToString();//ถาม
             item.amt = row[xCCPITDB.xCCPIT.amt].ToString();
-            item.charge_account_segment1 = row[xCCPITDB.xCCPIT.account_segment1].ToString();//ถาม
-            item.charge_account_segment2 = row[xCCPITDB.xCCPIT.account_segment2].ToString();//ถาม
-            item.charge_account_segment3 = row[xCCPITDB.xCCPIT.account_segment3].ToString();//ถาม
-            item.charge_account_segment4 = row[xCCPITDB.xCCPIT.account_segment4].ToString();//ถาม
-            item.charge_account_segment5 = row[xCCPITDB.xCCPIT.account_segment5].ToString();//ถาม
-            item.charge_account_segment6 = row[xCCPITDB.xCCPIT.account_segment6].ToString();//ถาม
+            DataTable dt = new DataTable();
+            dt = xCPDITDB.selectChargeAcc(Cm.initC.ORGANIZATION_code);
+            if (dt.Rows.Count > 0)
+            {
+                acc1 = dt.Rows[0]["account_seg1"].ToString();
+                acc2 = dt.Rows[0]["account_seg2"].ToString();
+                acc3 = dt.Rows[0]["account_seg3"].ToString();
+                acc4 = dt.Rows[0]["account_seg4"].ToString();
+                acc5 = dt.Rows[0]["account_seg5"].ToString();
+                acc6 = dt.Rows[0]["account_seg6"].ToString();
+            }
+            item.charge_account_segment1 = acc1;//ถาม
+            item.charge_account_segment2 = row[xCCPITDB.xCCPIT.branch_plant].ToString();//ถาม
+            String ws = "", acc4_1="";
+            if (row[xCCPITDB.xCCPIT.item_e1].ToString().Equals("MR"))
+            {
+                ws = processCallWebServiceChargeAcc3(row[xCCPITDB.xCCPIT.item_e1].ToString());
+            }
+            else
+            {
+                ws = acc3;
+            }
+            if (!row[xCCPITDB.xCCPIT.project_code].ToString().Equals(""))
+            {
+                acc4_1 = row[xCCPITDB.xCCPIT.project_code].ToString();
+            }
+            else
+            {
+                acc4_1 = acc4;
+            }
+
+
+
+            
+
+
+            item.charge_account_segment3 = ws;//ถาม
+            item.charge_account_segment4 = acc4_1;//ถาม
+            item.charge_account_segment5 = acc5;//ถาม
+            item.charge_account_segment6 = acc6;//ถาม
+
+            String chk = "";
+            chk = xCPDITDB.validateChargeAcc(Cm.initC.ORGANIZATION_code, item.charge_account_segment1,
+                item.charge_account_segment2, item.charge_account_segment3, item.charge_account_segment4,
+                item.charge_account_segment5, item.charge_account_segment6);
+            errChargeAcc = "Error PO009-024 : Not found Account Cdoe Combinations";
             item.wo_no = row[xCCPITDB.xCCPIT.wo_no].ToString();
             //item.QTY = row[xCMPITDB.xCMPIT.confirm_qty].ToString();
             //item.CURRENCY_CODE = initC.CURRENCY_CODE;
@@ -1078,14 +1189,19 @@ namespace XCustPr
                 filename = @Cm.initC.PO005PathArchive;
             }
             Cm.deleteFile(filenameZip);
-            ZipArchive zip = ZipFile.Open(filenameZip, ZipArchiveMode.Create);
+            
 
             var allFiles = Directory.GetFiles(filename, "*.*", SearchOption.AllDirectories);
-            foreach (String file in allFiles)
+            if (allFiles.Length > 0)
             {
-                zip.CreateEntryFromFile(file, Path.GetFileName(file));
+                ZipArchive zip = ZipFile.Open(filenameZip, ZipArchiveMode.Create);
+                foreach (String file in allFiles)
+                {
+                    zip.CreateEntryFromFile(file, Path.GetFileName(file));
+                }
+                zip.Dispose();
             }
-            zip.Dispose();
+            
         }
         public void processGenCSVxCPHITDB(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String flag, String requestId)
         {
@@ -1099,14 +1215,17 @@ namespace XCustPr
             {
                 dt = xCPHITDB.selectAll();
             }
-
+            if (dt.Rows.Count <= 0)
+            {
+                return;
+            }
             addListView("processGenCSVxCPHITDB จำนวนข้อมูล " + dt.Rows.Count, "CVS", lv1, form1);
             using (var stream = File.CreateText(file))
             {
                 foreach (DataRow row in dt.Rows)
                 {
-                    //string col01 = row[xCPHITDB.xCPHIT.interface_header_key].ToString();
-                    string col01 = row[xCPHITDB.xCPHIT.wo_no].ToString();
+                    string col01 = row[xCPHITDB.xCPHIT.interface_header_key].ToString();
+                    //string col01 = row[xCPHITDB.xCPHIT.wo_no].ToString();
                     string col02 = row[xCPHITDB.xCPHIT.action].ToString(); ;      //action        
                     string col03 = "";      //batch_id      รอถาม  
                     string col04 = row[xCPHITDB.xCPHIT.import_source].ToString();
@@ -1254,16 +1373,19 @@ namespace XCustPr
             {
                 dt = xCPLITDB.selectAll();
             }
-
+            if (dt.Rows.Count <= 0)
+            {
+                return;
+            }
             addListView("processGenCSVxCPLITDB จำนวนข้อมูล " + dt.Rows.Count, "CVS", lv1, form1);
             using (var stream = File.CreateText(file))
             {
                 foreach (DataRow row in dt.Rows)
                 {
-                    //string col01 = row[xCPLITDB.xCPLIT.interface_line_key].ToString();     //Interface Line Key
-                    string col01 = row[xCPLITDB.xCPLIT.wo_no].ToString() + row[xCPLITDB.xCPLIT.running].ToString();     //Interface Line Key
-                    //string col02 = row[xCPLITDB.xCPLIT.interface_header_key].ToString();      //Interface Header Key        
-                    string col02 = row[xCPLITDB.xCPLIT.wo_no].ToString();      //Interface Header Key        
+                    string col01 = row[xCPLITDB.xCPLIT.interface_line_key].ToString();     //Interface Line Key
+                    //string col01 = row[xCPLITDB.xCPLIT.wo_no].ToString() + row[xCPLITDB.xCPLIT.running].ToString();     //Interface Line Key
+                    string col02 = row[xCPLITDB.xCPLIT.interface_header_key].ToString();      //Interface Header Key        
+                    //string col02 = row[xCPLITDB.xCPLIT.wo_no].ToString();      //Interface Header Key        
                     string col03 = row[xCPLITDB.xCPLIT.action].ToString();      //Action      
                     string col04 = row[xCPLITDB.xCPLIT.line_num].ToString();       //Line
                     string col05 = row[xCPLITDB.xCPLIT.line_type].ToString();//Line Type      
@@ -1271,7 +1393,7 @@ namespace XCustPr
                     string col07 = row[xCPLITDB.xCPLIT.item_description].ToString();//Item Description      รอถาม  
                     string col08 = "";//Item Revision       รอถาม 
                     string col09 = row[xCPLITDB.xCPLIT.category].ToString();//Category Name       รอถาม 
-                    string col10 = "";//Amount       รอถาม 
+                    string col10 = row[xCPLITDB.xCPLIT.unit_price].ToString();//Amount       รอถาม 
 
                     string col11 = "";//Quantity รอถาม  
                     string col12 = "";//UOM
@@ -1288,9 +1410,10 @@ namespace XCustPr
                     string col22 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_CATEGORY].ToString();
                     string col23 = row[xCPLITDB.xCPLIT.attribute1].ToString(); //row[xCRHIADB.xCRHIA.ATTRIBUTE1].ToString();
                     string col24 = row[xCPLITDB.xCPLIT.attribute2].ToString(); //row[xCRHIADB.xCRHIA.ATTRIBUTE2].ToString();
-                    string col25 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE3].ToString();
-                    string col26 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE4].ToString();
-                    string col27 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE5].ToString();
+                    string col25 = row[xCPLITDB.xCPLIT.attribute3].ToString(); //row[xCRHIADB.xCRHIA.ATTRIBUTE3].ToString();
+                    string col26 = row[xCPLITDB.xCPLIT.attribute4].ToString(); //row[xCRHIADB.xCRHIA.ATTRIBUTE4].ToString();
+                    
+                    string col27 = row[xCPLITDB.xCPLIT.attribute5].ToString(); //row[xCRHIADB.xCRHIA.ATTRIBUTE5].ToString();
                     string col28 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE6].ToString();
                     string col29 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE7].ToString();
                     string col30 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE8].ToString();
@@ -1407,23 +1530,26 @@ namespace XCustPr
             {
                 dt = xCPLLITDB.selectAll();
             }
-
+            if (dt.Rows.Count <= 0)
+            {
+                return;
+            }
             addListView("processGenCSVxCPLLITDB จำนวนข้อมูล " + dt.Rows.Count, "CVS", lv1, form1);
             using (var stream = File.CreateText(file))
             {
                 foreach (DataRow row in dt.Rows)
                 {
-                    //string col01 = row[xCPLLITDB.xCPLLIT.interface_line_key].ToString();     // Interface Line Location Key
-                    String col01 = row[xCPLLITDB.xCPLLIT.wo_no].ToString() + row[xCPLLITDB.xCPLLIT.running].ToString()+"11";
-                    //string col02 = row[xCPLLITDB.xCPLLIT.interface_header_key].ToString();      //Interface Line Key         
-                    String col02 = row[xCPLLITDB.xCPLLIT.wo_no].ToString() + row[xCPLLITDB.xCPLLIT.running].ToString() + "1";
-                    string col03 = "";//row[xCPLLITDB.xCPLLIT.s].ToString();      //Schedule      
-                    string col04 = "";//row[xCPLLITDB.xCPLLIT.line_num].ToString();       //Ship-to Location
-                    string col05 = "";//row[xCPLLITDB.xCPLLIT.shipment_number].ToString();//Ship-to Organization       
+                    string col01 = row[xCPLLITDB.xCPLLIT.interface_line_location_key].ToString();     // Interface Line Location Key
+                    //String col01 = row[xCPLLITDB.xCPLLIT.wo_no].ToString() + row[xCPLLITDB.xCPLLIT.running].ToString()+"11";
+                    string col02 = row[xCPLLITDB.xCPLLIT.interface_line_key].ToString();      //Interface Line Key         
+                    //String col02 = row[xCPLLITDB.xCPLLIT.wo_no].ToString() + row[xCPLLITDB.xCPLLIT.running].ToString() + "1";
+                    string col03 = "1";//row[xCPLLITDB.xCPLLIT.s].ToString();      //Schedule      
+                    string col04 = row[xCPLLITDB.xCPLLIT.ship_to_location].ToString();//row[xCPLLITDB.xCPLLIT.line_num].ToString();       //Ship-to Location
+                    string col05 = row[xCPLLITDB.xCPLLIT.ship_to_organization].ToString();//row[xCPLLITDB.xCPLLIT.shipment_number].ToString();//Ship-to Organization       
                     string col06 = row[xCPLLITDB.xCPLLIT.amt].ToString();      //Amount      
                     string col07 = "";//row[xCPLLITDB.xCPLLIT.q].ToString();//Quantity      
                     string col08 = row[xCPLLITDB.xCPLLIT.need_by_date].ToString();//Need-by Date       
-                    string col09 = "";//row[xCPLITDB.xCPLIT.category].ToString();//Promised Date       รอถาม 
+                    string col09 = row[xCPLLITDB.xCPLLIT.promise_date].ToString();//row[xCPLITDB.xCPLIT.category].ToString();//Promised Date       รอถาม 
                     string col10 = "";//Secondary Quantity       รอถาม 
 
                     string col11 = "";//Secondary UOM รอถาม  
@@ -1435,7 +1561,7 @@ namespace XCustPr
                     string col17 = "";//Negotiated
                     string col18 = "";//Hazard Class
                     string col19 = "";//UN Number
-                    string col20 = "";//Note to Supplier 
+                    string col20 = row[xCPLLITDB.xCPLLIT.receipt_required_flag].ToString();//Note to Supplier 
 
                     string col21 = "";//Note to Receiver
                     string col22 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_CATEGORY].ToString();
@@ -1560,16 +1686,19 @@ namespace XCustPr
             {
                 dt = xCPDITDB.selectAll();
             }
-
+            if (dt.Rows.Count <= 0)
+            {
+                return;
+            }
             addListView("processGenCSVxCPDITDB จำนวนข้อมูล " + dt.Rows.Count, "CVS", lv1, form1);
             using (var stream = File.CreateText(file))
             {
                 foreach (DataRow row in dt.Rows)
                 {
-                    //string col01 = row[xCPDITDB.xCPDIT.interface_distribution_key].ToString();
-                    String col01 = row[xCPDITDB.xCPDIT.wo_no].ToString() + row[xCPDITDB.xCPDIT.running].ToString() + "111";
-                    //string col02 = row[xCPDITDB.xCPDIT.interface_line_location_key].ToString();//row[xCPHITDB.xCPHIT.d].ToString();      //Interface Line Location Key      
-                    String col02 = row[xCPDITDB.xCPDIT.wo_no].ToString() + row[xCPDITDB.xCPDIT.running].ToString() + "11";
+                    string col01 = row[xCPDITDB.xCPDIT.interface_distribution_key].ToString();
+                    //String col01 = row[xCPDITDB.xCPDIT.wo_no].ToString() + row[xCPDITDB.xCPDIT.running].ToString() + "111";
+                    string col02 = row[xCPDITDB.xCPDIT.interface_line_location_key].ToString();//row[xCPHITDB.xCPHIT.d].ToString();      //Interface Line Location Key      
+                    //String col02 = row[xCPDITDB.xCPDIT.wo_no].ToString() + row[xCPDITDB.xCPDIT.running].ToString() + "11";
                     //string col03 = row[xCPDITDB.xCPDIT.distribution_num].ToString();//"col03";      // Distribution     
                     String col03 = "1";
                     string col04 = row[xCPDITDB.xCPDIT.deliver_to_location].ToString();// Deliver-to Location  row[xCPHITDB.xCPHIT.import_source].ToString();
@@ -1577,13 +1706,13 @@ namespace XCustPr
                     string col06 = "";      //Order       รอถาม  
                     string col07 = row[xCPDITDB.xCPDIT.amt].ToString();//
                     string col08 = "";//Style       รอถาม 
-                    string col09 = "";//row[xCPHITDB.xCPHIT.prc_bu_name].ToString(); ;//Procurement BU       รอถาม 
-                    string col10 = "";//row[xCPHITDB.xCPHIT.req_bu_name].ToString(); ;//Requisitioning BU       รอถาม 
+                    string col09 = row[xCPDITDB.xCPDIT.charge_account_segment1].ToString();//row[xCPHITDB.xCPHIT.prc_bu_name].ToString(); ;//Procurement BU       รอถาม 
+                    string col10 = row[xCPDITDB.xCPDIT.charge_account_segment2].ToString();//row[xCPHITDB.xCPHIT.req_bu_name].ToString(); ;//Requisitioning BU       รอถาม 
 
-                    string col11 = "";//row[xCPHITDB.xCPHIT.soldto_re_name].ToString(); ;//Sold-to Legal Entity รอถาม  
-                    string col12 = "";//row[xCPHITDB.xCPHIT.billto_bu_name].ToString(); ;//Bill-to BU
-                    string col13 = "";//row[xCPHITDB.xCPHIT.buyyer_name].ToString(); ;//Buyer
-                    string col14 = "";//row[xCPHITDB.xCPHIT.currency_code].ToString(); ;//Currency Code
+                    string col11 = row[xCPDITDB.xCPDIT.charge_account_segment3].ToString();//row[xCPHITDB.xCPHIT.soldto_re_name].ToString(); ;//Sold-to Legal Entity รอถาม  
+                    string col12 = row[xCPDITDB.xCPDIT.charge_account_segment4].ToString();//row[xCPHITDB.xCPHIT.billto_bu_name].ToString(); ;//Bill-to BU
+                    string col13 = row[xCPDITDB.xCPDIT.charge_account_segment5].ToString();//row[xCPHITDB.xCPHIT.buyyer_name].ToString(); ;//Buyer
+                    string col14 = row[xCPDITDB.xCPDIT.charge_account_segment6].ToString();//row[xCPHITDB.xCPHIT.currency_code].ToString(); ;//Currency Code
                     string col15 = "";//Rate
                     string col16 = "";//Rate Type
                     string col17 = "";//Rate Date
@@ -1732,6 +1861,208 @@ namespace XCustPr
                     stream.WriteLine(csvRow);
                 }
             }
+        }
+        public void processCallWebService(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String requestId)
+        {
+            addListView("callWebService ", "web service", lv1, form1);
+            String uri = "", dump = "";
+            //HttpWebRequest request = CreateWebRequest();
+            XmlDocument soapEnvelopeXml = new XmlDocument();
+            const Int32 BufferSize = 128;
+            String[] filePO;
+            String filename = "";
+
+            addListView("callWebService อ่าน file ZIP", "web service", lv1, form1);
+            filePO = Cm.getFileinFolder(Cm.initC.PO008PathFileZip);
+            /*String text = System.IO.File.ReadAllText(filePO[0])*/
+            ;
+            filename = filePO[0].Replace(Cm.initC.PO008PathFileZip, "");
+            //byte[] byteArraytext = Encoding.UTF8.GetBytes(text);
+            //byte[] toEncodeAsBytestext = System.Text.ASCIIEncoding.ASCII.GetBytes(text);
+            byte[] toEncodeAsBytestext = System.IO.File.ReadAllBytes(filePO[0]);
+            String Arraytext = System.Convert.ToBase64String(toEncodeAsBytestext);
+
+            uri = @" <soapenv:Envelope xmlns:soapenv ='http://schemas.xmlsoap.org/soap/envelope/' xmlns:typ='http://xmlns.oracle.com/oracle/apps/fnd/applcore/webservices/types/' xmlns:web='http://xmlns.oracle.com/oracle/apps/fnd/applcore/webservices/'> " +
+                    "<soapenv:Header/> " +
+                        "<soapenv:Body> " +
+                         "<typ:uploadFiletoUCM> " +
+                   "<typ:document> " +
+                       "<!--Optional:--> " +
+                        "<web:fileName>" + filename + "</web:fileName> " +
+                             "<!--Optional:--> " +
+                              "<web:contentType>application/zip</web:contentType> " +
+                                     "<!--Optional:--> " +
+                                        "<web:content>" + Arraytext +
+                                        "</web:content> " +
+             "<!--Optional:--> " +
+              "<web:documentAccount>prc$/requisition$/import$</web:documentAccount> " +
+                    "<!--Optional:--> " +
+                     "<web:documentTitle> amo_test_load </web:documentTitle> " +
+                       "</typ:document> " +
+                     "</typ:uploadFiletoUCM> " +
+                   "</soapenv:Body> " +
+                 "</soapenv:Envelope>";
+
+            //byte[] byteArray = Encoding.UTF8.GetBytes(envelope);
+            byte[] byteArray = Encoding.UTF8.GetBytes(uri);
+            addListView("callWebService prepare web service", "web service", lv1, form1);
+            // Construct the base 64 encoded string used as credentials for the service call
+            byte[] toEncodeAsBytes = System.Text.ASCIIEncoding.ASCII.GetBytes("icetech@iceconsulting.co.th" + ":" + "icetech@2017");
+            string credentials = System.Convert.ToBase64String(toEncodeAsBytes);
+
+            // Create HttpWebRequest connection to the service
+            HttpWebRequest request1 = (HttpWebRequest)WebRequest.Create("https://eglj-test.fa.us2.oraclecloud.com:443/fndAppCoreServices/FndManageImportExportFilesService?WSDL");
+
+            // Configure the request content type to be xml, HTTP method to be POST, and set the content length
+            request1.Method = "POST";
+            request1.ContentType = "text/xml;charset=UTF-8";
+            request1.ContentLength = byteArray.Length;
+
+            // Configure the request to use basic authentication, with base64 encoded user name and password, to invoke the service.
+            request1.Headers.Add("Authorization", "Basic " + credentials);
+
+            // Set the SOAP action to be invoked; while the call works without this, the value is expected to be set based as per standards
+            request1.Headers.Add("SOAPAction", "http://xmlns.oracle.com/apps/incentiveCompensation/cn/creditSetup/creditRule/creditRuleService/findRule");
+
+            // Write the xml payload to the request
+            Stream dataStream = request1.GetRequestStream();
+            dataStream.Write(byteArray, 0, byteArray.Length);
+            dataStream.Close();
+            addListView("callWebService กำลังรอ รับข้อมูล จาก web service", "web service", lv1, form1);
+            // Get the response and process it; In this example, we simply print out the response XDocument doc;
+            string actNumber = "";
+            XDocument doc;
+            using (WebResponse response = request1.GetResponse())
+            {
+                using (Stream stream = response.GetResponseStream())
+                {
+                    doc = XDocument.Load(stream);
+                    addListView("callWebService กำลังถอดเลขที่เอกสาร", "web service", lv1, form1);
+                    foreach (XNode node in doc.DescendantNodes())
+                    {
+                        if (node is XElement)
+                        {
+                            XElement element = (XElement)node;
+                            if (element.Name.LocalName.Equals("result"))
+                            {
+                                actNumber = element.ToString().Replace("http://xmlns.oracle.com/oracle/apps/fnd/applcore/webservices/types/", "");
+                                actNumber = actNumber.Replace("result xmlns=", "").Replace("</result>", "").Replace(@"""", "").Replace("<>", "");
+                                addListView("callWebService เลขที่เอกสาร " + actNumber, "web service", lv1, form1);
+                            }
+                        }
+                    }
+                }
+            }
+            //xCPRHIADB.updateDocumentId(actNumber, requestId, Cm.initC.pathLogErr);
+            //xCPRLIADB.updateDocumentId(actNumber, requestId, Cm.initC.pathLogErr);
+            //xCPRDIADB.updateDocumentId(actNumber, requestId, Cm.initC.pathLogErr);
+            //xCLPTDB.updatePrcessFlag(requestId, "kfc_po", Cm.initC.pathLogErr);
+            Console.WriteLine(doc);
+
+            //moveFileToFolderArchiveError(requestId);
+        }
+        public String processCallWebServiceChargeAcc3( String e1)
+        {
+            //addListView("processCallWebServiceChargeAcc3 ", "web service", lv1, form1);
+            String uri = "", dump = "";
+            //HttpWebRequest request = CreateWebRequest();
+            XmlDocument soapEnvelopeXml = new XmlDocument();
+            const Int32 BufferSize = 128;
+            String[] filePO;
+            String filename = "";
+
+            //addListView("callWebService อ่าน file ZIP", "web service", lv1, form1);
+            //filePO = Cm.getFileinFolder(Cm.initC.PO008PathFileZip);
+            /*String text = System.IO.File.ReadAllText(filePO[0])*/
+            //;
+            //filename = filePO[0].Replace(Cm.initC.PO008PathFileZip, "");
+            //byte[] byteArraytext = Encoding.UTF8.GetBytes(text);
+            //byte[] toEncodeAsBytestext = System.Text.ASCIIEncoding.ASCII.GetBytes(text);
+            //byte[] toEncodeAsBytestext = System.IO.File.ReadAllBytes(filePO[0]);
+            //String Arraytext = System.Convert.ToBase64String(toEncodeAsBytestext);
+
+            uri = @" <soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:pub='http://xmlns.oracle.com/oxp/service/PublicReportService'> " +
+            "<soapenv:Header/> " +
+                        "<soapenv:Body> " +
+                         "<v2:runReport> " +
+                   "<v2:reportRequest> " +
+                       "<!--Optional:--> " +
+                        "<v2:attributeLocale>en-US</v2:attributeLocale> " +
+                             "<!--Optional:--> " +
+                              "<v2:attributeTemplate>XCUST_PO_MAPPING_ACCOUNT_REP</v2:attributeTemplate> " +
+                                     "<!--Optional:--> " +
+                                        "<v2:reportAbsolutePath>/Custom/XCUST_CUSTOM/XCUST_PO_MAPPING_ACCOUNT_REP.xdo</v2:reportAbsolutePath> " +
+             "<!--Optional:--> " +
+              "<pub:parameterNameValues> " +
+                    "<!--Optional:--> " +
+                     "<pub:item> " +
+                       "<pub:multiValuesAllowed>False</pub:multiValuesAllowed> " +
+                     "<pub:name>P_VALUE_CAT</pub:name> " +
+                   "<pub:values> " +
+                 "<pub:item>"+ e1 + "</pub:item> </pub:values> </pub:item> </pub:parameterNameValues> </v2:reportRequest> <v2:userID>icetech@iceconsulting.co.th</v2:userID> <v2:password>icetech@2017</v2:password> </v2:runReport> </soapenv:Body> </soapenv:Envelope>";
+
+            //byte[] byteArray = Encoding.UTF8.GetBytes(envelope);
+            byte[] byteArray = Encoding.UTF8.GetBytes(uri);
+            //addListView("callWebService prepare web service", "web service", lv1, form1);
+            // Construct the base 64 encoded string used as credentials for the service call
+            byte[] toEncodeAsBytes = System.Text.ASCIIEncoding.ASCII.GetBytes("icetech@iceconsulting.co.th" + ":" + "icetech@2017");
+            string credentials = System.Convert.ToBase64String(toEncodeAsBytes);
+
+            // Create HttpWebRequest connection to the service
+            HttpWebRequest request1 = (HttpWebRequest)WebRequest.Create("https://eglj-test.fa.us2.oraclecloud.com/xmlpserver/services/PublicReportService?WSDL");
+
+            // Configure the request content type to be xml, HTTP method to be POST, and set the content length
+            request1.Method = "POST";
+            request1.ContentType = "text/xml;charset=UTF-8";
+            request1.ContentLength = byteArray.Length;
+
+            // Configure the request to use basic authentication, with base64 encoded user name and password, to invoke the service.
+            request1.Headers.Add("Authorization", "Basic " + credentials);
+
+            // Set the SOAP action to be invoked; while the call works without this, the value is expected to be set based as per standards
+            request1.Headers.Add("SOAPAction", "http://xmlns.oracle.com/apps/incentiveCompensation/cn/creditSetup/creditRule/creditRuleService/findRule");
+
+            // Write the xml payload to the request
+            Stream dataStream = request1.GetRequestStream();
+            dataStream.Write(byteArray, 0, byteArray.Length);
+            dataStream.Close();
+            //addListView("callWebService กำลังรอ รับข้อมูล จาก web service", "web service", lv1, form1);
+            // Get the response and process it; In this example, we simply print out the response XDocument doc;
+            string actNumber = "";
+            XDocument doc;
+            using (WebResponse response = request1.GetResponse())
+            {
+                using (Stream stream = response.GetResponseStream())
+                {
+                    doc = XDocument.Load(stream);
+                    //addListView("callWebService กำลังถอดเลขที่เอกสาร", "web service", lv1, form1);
+                    foreach (XNode node in doc.DescendantNodes())
+                    {
+                        if (node is XElement)
+                        {
+                            XElement element = (XElement)node;
+                            if (element.Name.LocalName.Equals("reportBytes"))
+                            {
+
+                                actNumber = element.ToString().Replace(@"""", "").Replace(@"<ns1:reportBytes xmlns:ns1=http://xmlns.oracle.com/oxp/service/PublicReportService>", "");
+                                actNumber = actNumber.ToString().Replace("</ns1:reportBytes>", "");
+                                //actNumber = actNumber.Replace("result xmlns=", "").Replace("</result>", "").Replace(@"""", "").Replace("<>", "");
+                                //addListView("callWebService เลขที่เอกสาร " + actNumber, "web service", lv1, form1);
+                            }
+                        }
+                    }
+                }
+            }
+            //xCPRHIADB.updateDocumentId(actNumber, requestId, Cm.initC.pathLogErr);
+            //xCPRLIADB.updateDocumentId(actNumber, requestId, Cm.initC.pathLogErr);
+            //xCPRDIADB.updateDocumentId(actNumber, requestId, Cm.initC.pathLogErr);
+            //xCLPTDB.updatePrcessFlag(requestId, "kfc_po", Cm.initC.pathLogErr);
+            Console.WriteLine(doc);
+            byte[] toEncodeAsBytes1 = Convert.FromBase64String(actNumber);
+            string chk = Encoding.UTF8.GetString(toEncodeAsBytes1);
+            chk = chk.Replace("﻿ACCOUNT_SEGMENT3", "").Replace("\n","");
+            //moveFileToFolderArchiveError(requestId);
+            return chk;
         }
     }
 }

@@ -30,6 +30,7 @@ namespace XCustPr
             int colVAT = 15, colTOTAL = 16, colSUPPLIER_CODE = 17, colSUPPLIER_NAME = 18, colADMIN = 19, colADMIN_RECEIVE_DOC = 20, colAPPROVE_DATE = 21, colCEDAR_CLOSE_DATE = 22, colINVOICE_DUE_DATE = 23;
             int colSUPP_AGREEMENT_NO = 24, colACCOUNT_SEGMENT = 25, colDATA_SOURCE = 26;
             int col_no = 1;
+            int col_project_code = 25;      //แก้ 
 
             List<String> result = new List<String>();
             Microsoft.Office.Interop.Excel.Application excelapp = new Microsoft.Office.Interop.Excel.Application();
@@ -55,7 +56,7 @@ namespace XCustPr
                     String txt = "";
                     String PO_NO = "", QT_NO = "", WO_NO = "", PERIOD = "", Week = "", BRANCH_PLANT = "", BRANCH_NAME = "", LOCTYPE = "", ITEM_E1 = "", ASSET_CODE = "", ASSET_NAME = "", WORK_TYPE = "", AMOUNT = "";
                     String VAT = "", TOTAL = "", SUPPLIER_CODE = "", SUPPLIER_NAME = "", ADMIN = "", ADMIN_RECEIVE_DOC = "", APPROVE_DATE = "", CEDAR_CLOSE_DATE = "", INVOICE_DUE_DATE = "";
-                    String SUPP_AGREEMENT_NO = "", ACCOUNT_SEGMENT = "", DATA_SOURCE = "", xno="";
+                    String SUPP_AGREEMENT_NO = "", ACCOUNT_SEGMENT = "", DATA_SOURCE = "", xno="", project_code="";
 
                     xno = worksheet.Cells[i, col_no].value != null ? String.Concat(worksheet.Cells[i, col_no].value) : "";
                     if(!int.TryParse(xno, out no))
@@ -92,9 +93,16 @@ namespace XCustPr
                     ACCOUNT_SEGMENT = worksheet.Cells[i, colACCOUNT_SEGMENT].value != null ? String.Concat(worksheet.Cells[i, colACCOUNT_SEGMENT].value) : "";
                     DATA_SOURCE = worksheet.Cells[i, colDATA_SOURCE].value != null ? String.Concat(worksheet.Cells[i, colDATA_SOURCE].value) : "";
 
-                    txt += xno+"|"+PO_NO + "|" + QT_NO + "|" + WO_NO + "|" + PERIOD + "|" + Week + "|" + BRANCH_PLANT + "|" + BRANCH_NAME + "|" + LOCTYPE + "|" + ITEM_E1 + "|" + ASSET_CODE + "|" + ASSET_NAME + "|" +
+                    //project_code = worksheet.Cells[i, col_project_code].value != null ? String.Concat(worksheet.Cells[i, col_project_code].value) : "";
+
+                    txt += xno + "|" + PO_NO + "|" + QT_NO + "|" + WO_NO + "|" + PERIOD + "|" + Week + "|" + BRANCH_PLANT + "|" + BRANCH_NAME + "|" + LOCTYPE + "|" + ITEM_E1 + "|" + ASSET_CODE + "|" + ASSET_NAME + "|" +
                         WORK_TYPE + "|" + AMOUNT + "|" + VAT + "|" + TOTAL + "|" + SUPPLIER_CODE + "|" + SUPPLIER_NAME + "|" + ADMIN + "|" + ADMIN_RECEIVE_DOC + "|" + APPROVE_DATE + "|" + CEDAR_CLOSE_DATE + "|" +
                         INVOICE_DUE_DATE + "|" + SUPP_AGREEMENT_NO + "|" + ACCOUNT_SEGMENT + "|" + DATA_SOURCE;
+
+                    //txt += xno + "|" + PO_NO + "|" + QT_NO + "|" + WO_NO + "|" + PERIOD + "|" + Week + "|" + BRANCH_PLANT + "|" + BRANCH_NAME + "|" + LOCTYPE + "|" + ITEM_E1 + "|" + ASSET_CODE + "|" + ASSET_NAME + "|" +
+                    //    WORK_TYPE + "|" + AMOUNT + "|" + VAT + "|" + TOTAL + "|" + SUPPLIER_CODE + "|" + SUPPLIER_NAME + "|" + ADMIN + "|" + ADMIN_RECEIVE_DOC + "|" + APPROVE_DATE + "|" + CEDAR_CLOSE_DATE + "|" +
+                    //    INVOICE_DUE_DATE + "|" + SUPP_AGREEMENT_NO + "|" + project_code + "|" + DATA_SOURCE;
+
                     result.Add(txt);
                 }
                 Thread.Sleep(2000);

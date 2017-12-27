@@ -126,9 +126,11 @@ namespace XCustPr
             DataTable dtFixLen = xCPrTDB.selectPO006FixLen();
             DateTime deliveryDateLog = System.DateTime.Now;
             if (dtFixLen.Rows.Count <= 0) return;
-            
+
             //dt006 = xCPrTDB.selectPRPO006GroupByVendorDeliveryDate();
-            dt006 = xCPrTDB.selectPRPO006GroupByVendorDeliveryDate1(Cm.initC.Po006DeliveryDate, Cm.initC.PO006ReRun);
+            String buId = "";
+            buId = xCBMTDB.selectIdActiveBuName(Cm.initC.BU_NAME);
+            dt006 = xCPrTDB.selectPRPO006GroupByVendorDeliveryDate2(Cm.initC.Po006DeliveryDate, Cm.initC.PO006ReRun, buId);
             if (dt006.Rows.Count > 0)
             {
                 pB1.Minimum = 0;
@@ -288,7 +290,8 @@ namespace XCustPr
         public String writeTextPO006(String vendor_id, String attribute2, String delivery_date, DataTable dt, DataTable dtFixLen)
         {
             //var file = Cm.initC.PO006PathInitial + "S" + vendor_id+"_R" + delivery_date.Replace("-","") + ".KFC";     //60-12-25
-            var file = Cm.initC.PO006PathInitial + vendor_id + "_R" + delivery_date.Replace("-", "") + ".KFC";
+            //var file = Cm.initC.PO006PathInitial + vendor_id + "_R" + delivery_date.Replace("-", "") + ".KFC";
+            var file = Cm.initC.PO006PathInitial + attribute2 + "_R" + delivery_date.Replace("-", "") + ".KFC";
             String Org = xCDOMTDB.selectActiveByCode(Cm.initC.ORGANIZATION_code.Trim());
             String deliveryDate1 = "";
             using (var stream = File.CreateText(file))
@@ -412,6 +415,9 @@ namespace XCustPr
         }
         public void sendEmailPO006(String vendorName)
         {
+
+
+
             var fromAddress = new MailAddress(Cm.initC.EmailUsername, "");
             var toAddress = new MailAddress(Cm.initC.APPROVER_EMAIL, "To Name");
             //var toAddress2 = new MailAddress("amo@iceconsulting.co.th", "To Name");
@@ -457,7 +463,13 @@ namespace XCustPr
                 foreach(DataRow row in dt006.Rows)
                 {
                     String[] filePO;
-                    filePO = Cm.getFileinFolder(Cm.initC.PO006PathInitial, row["VENDOR_ID"].ToString());
+                    if (row["attribute2"].ToString().Equals(""))
+                    {
+                        continue;
+                    }
+                    String attr = "";
+                    attr = row["attribute2"].ToString();
+                    filePO = Cm.getFileinFolder(Cm.initC.PO006PathInitial, row["attribute2"].ToString());
                     if (filePO.Length > 0)
                     {
                         foreach (string aa in filePO)
