@@ -66,7 +66,7 @@ namespace XCustPr
         private List<XcustUomMstTbl> listXcUMT;
 
         public XcustCedarPoIntTblDB xCCPITDB;// table temp
-        String errOrg = "", errChargeAcc="";
+        String errOrg = "", errChargeAcc="", WS="";
 
         public ControlPO008(ControlMain cm)
         {
@@ -176,7 +176,7 @@ namespace XCustPr
                 }
                 else
                 {
-                    lVPr.Add(vPP);
+                    lVPr.Add(vPPexcel);
                     cntErr++;       // gen log
                     ValidateFileName vF = new ValidateFileName();   // gen log
                     vF.fileName = filename.Replace(Cm.initC.PO008PathProcess, "");   // gen log
@@ -185,6 +185,7 @@ namespace XCustPr
                     vF.totalError = cntErr.ToString();   // gen log
                     lVfile.Add(vF);   // gen log
                     Cm.moveFile(filename, Cm.initC.PO008PathError, filename.Replace(Cm.initC.PO008PathProcess, ""));
+                    //xCCPITDB.updateErrorMessage(filename, rowNumber, "Error PO008-006 : Invalid data type amt", requestId, "kfc_po", Cm.initC.PO008PathLog);
                 }
             }
             //Cm.logProcess("xcustpo008", lVPr, dateStart, lVfile);   // gen log
@@ -385,7 +386,9 @@ namespace XCustPr
         {
             addListView("อ่าน file จาก " + Cm.initC.PO008PathProcess, "Validate", lv1, form1);
             pB1.Visible = true;
-            
+
+            WS = processCallWebServiceChargeAcc3("MR");
+
             Boolean chk = false;
             DataTable dtGroupBy = new DataTable();
             DataTable dt = new DataTable();
@@ -617,6 +620,62 @@ namespace XCustPr
                         cntErr++;
                         xCCPITDB.updateErrorMessage(filename, rowNumber, "Error PO008-015 : Invalid Supplier", requestId, "kfc_po", Cm.initC.PO008PathLog);
                     }
+
+                    // chechk charge account  Error PO009-024 : Not found Account Cdoe Combinations
+                    String acc1 = "", acc2 = "", acc3 = "", acc4 = "", acc5 = "", acc6 = "", branchPlant="";
+                    //String acc1 = "", acc2 = "", acc3 = "", acc4 = "", acc5 = "", acc6 = "";
+                    DataTable dt2 = new DataTable();
+                    dt2 = xCPDITDB.selectChargeAcc(Cm.initC.ORGANIZATION_code);
+                    if (dt2.Rows.Count > 0)
+                    {
+                        acc1 = dt2.Rows[0]["account_seg1"].ToString();
+                        acc2 = dt2.Rows[0]["account_seg2"].ToString();
+                        acc3 = dt2.Rows[0]["account_seg3"].ToString();
+                        acc4 = dt2.Rows[0]["account_seg4"].ToString();
+                        acc5 = dt2.Rows[0]["account_seg5"].ToString();
+                        acc6 = dt2.Rows[0]["account_seg6"].ToString();
+                    }
+                    //item.charge_account_segment1 = acc1;//ถาม
+                    //item.charge_account_segment2 = row[xCCPITDB.xCCPIT.branch_plant].ToString();//ถาม
+                    String ws = "", acc4_1 = "";
+                    if (row[xCCPITDB.xCCPIT.item_e1].ToString().Equals("MR"))
+                    {
+                        //ws = processCallWebServiceChargeAcc3(row[xCCPITDB.xCCPIT.item_e1].ToString());
+                        ws = WS;
+                    }
+                    else
+                    {
+                        ws = acc3;
+                    }
+                    if (!row[xCCPITDB.xCCPIT.project_code].ToString().Equals(""))
+                    {
+                        acc4_1 = row[xCCPITDB.xCCPIT.project_code].ToString();
+                    }
+                    else
+                    {
+                        acc4_1 = acc4;
+                    }
+
+                    //item.charge_account_segment3 = ws;//ถาม
+                    //item.charge_account_segment4 = acc4_1;//ถาม
+                    //item.charge_account_segment5 = acc5;//ถาม
+                    //item.charge_account_segment6 = acc6;//ถาม
+
+                    String chk1 = "";
+                    branchPlant = row[xCCPITDB.xCCPIT.branch_plant].ToString();
+                    chk1 = xCPDITDB.validateChargeAcc(Cm.initC.ORGANIZATION_code, acc1, branchPlant, ws, acc4_1, acc5, acc6);
+                    if (chk1.Equals("0"))
+                    {
+                        vPP = new ValidatePrPo();
+                        vPP.Filename = rowG[xCCPITDB.xCCPIT.file_name].ToString().Trim();
+                        vPP.Message = "Error PO009-024 : Not found Account Cdoe Combinations ";
+                        vPP.Validate = "row " + row1 + " supplier_code " + row[xCCPITDB.xCCPIT.supplier_code].ToString().Trim();
+                        lVPr.Add(vPP);
+                        cntErr++;
+                        xCCPITDB.updateErrorMessage(filename, rowNumber, "Error PO009-024 : Not found Account Cdoe Combinations", requestId, "kfc_po", Cm.initC.PO008PathLog);
+                    }
+
+
                     String vendorSiteCode = "";
                     vendorSiteCode = xCSSMTDB.getVendorSiteCodeBySupplierCode(row[xCCPITDB.xCCPIT.supplier_code].ToString().Trim());
                     addXcustListHeader(row[xCCPITDB.xCCPIT.wo_no].ToString().Trim(), row[xCCPITDB.xCCPIT.branch_plant].ToString().Trim()
@@ -632,7 +691,7 @@ namespace XCustPr
             updateValidateFlagY(requestId);
             pB1.Visible = false;
             //Cm.logProcess("xcustpo008", lVPr, dateStart, lVfile);   // gen log
-            //xCCPITDB.logProcessPO008("xcustpo008", dateStart, requestId);   // gen log
+            //xCCPITDB.logProcessPO008("xcustpo008", dateStart, requestId,"","");   // gen log        for test
         }
         private void updateValidateFlagY(String requestId)
         {
@@ -655,6 +714,12 @@ namespace XCustPr
                     }
                 }
             }
+        }
+        public String getCountNoErrorByFilename(String requestId)
+        {
+            String chk = "";
+            chk = xCCPITDB.getCountNoErrorByFilename(requestId);
+            return chk;
         }
         public void processInsertTable(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
         {
@@ -952,8 +1017,10 @@ namespace XCustPr
             item.attribute2 = row[xCCPITDB.xCCPIT.qt_no].ToString();
             item.attribute3 = row[xCCPITDB.xCCPIT.wo_no].ToString();
             item.attribute4 = row[xCCPITDB.xCCPIT.asset_code].ToString();
-            item.attribute5 = row[xCCPITDB.xCCPIT.sup_agreement_no].ToString();
-            
+            //item.attribute5 = row[xCCPITDB.xCCPIT.sup_agreement_no].ToString();
+            item.attribute5 = row[xCCPITDB.xCCPIT.asset_name].ToString();
+            item.attribute6 = row[xCCPITDB.xCCPIT.item_e1].ToString();
+
             //item.BUSINESS_UNIT = "";
 
             //item.SUBINVENTORY_CODE = row[xCLPRITDB.xCLPRIT.subinventory_code].ToString();
@@ -1085,7 +1152,11 @@ namespace XCustPr
             item.interface_line_location_key = row[xCCPITDB.xCCPIT.wo_no].ToString() + running + "11";
             item.interface_distribution_key = row[xCCPITDB.xCCPIT.wo_no].ToString() + running + "111";
             item.distribution_num = running;//ถาม ใช้อันเดียวกันได้ไหม
-            item.deliver_to_location = row[xCCPITDB.xCCPIT.branch_plant].ToString();//ถาม
+            String ship = "", branch_plant="";
+            branch_plant = row[xCCPITDB.xCCPIT.branch_plant].ToString();
+            ship = xCCPITDB.selectShiptoLocation(branch_plant);
+            //item.deliver_to_location = row[xCCPITDB.xCCPIT.branch_plant].ToString();//
+            item.deliver_to_location = ship;//
             item.destion_subinventory = row[xCCPITDB.xCCPIT.branch_plant].ToString();//ถาม
             item.amt = row[xCCPITDB.xCCPIT.amt].ToString();
 
@@ -1107,7 +1178,8 @@ namespace XCustPr
             String ws = "", acc4_1="";
             if (row[xCCPITDB.xCCPIT.item_e1].ToString().Equals("MR"))
             {
-                ws = processCallWebServiceChargeAcc3(row[xCCPITDB.xCCPIT.item_e1].ToString());
+                //ws = processCallWebServiceChargeAcc3(row[xCCPITDB.xCCPIT.item_e1].ToString());
+                ws = WS;
             }
             else
             {
@@ -1132,11 +1204,12 @@ namespace XCustPr
             item.charge_account_segment5 = acc5;//ถาม
             item.charge_account_segment6 = acc6;//ถาม
 
-            String chk = "";
-            chk = xCPDITDB.validateChargeAcc(Cm.initC.ORGANIZATION_code, item.charge_account_segment1,
-                item.charge_account_segment2, item.charge_account_segment3, item.charge_account_segment4,
-                item.charge_account_segment5, item.charge_account_segment6);
-            errChargeAcc = "Error PO009-024 : Not found Account Cdoe Combinations";
+            //String chk = "";
+            //chk = xCPDITDB.validateChargeAcc(Cm.initC.ORGANIZATION_code, item.charge_account_segment1,
+            //    item.charge_account_segment2, item.charge_account_segment3, item.charge_account_segment4,
+            //    item.charge_account_segment5, item.charge_account_segment6);
+            //errChargeAcc += "Error PO009-024 : Not found Account Cdoe Combinations";
+            //xCCPITDB.updateErrorMessage(filename, rowNumber, "Error PO008-006 : Invalid data type total", requestId, "kfc_po", Cm.initC.PO008PathLog);
             item.wo_no = row[xCCPITDB.xCCPIT.wo_no].ToString();
             //item.QTY = row[xCMPITDB.xCMPIT.confirm_qty].ToString();
             //item.CURRENCY_CODE = initC.CURRENCY_CODE;
@@ -1264,7 +1337,8 @@ namespace XCustPr
                     string col03 = "";      //batch_id      รอถาม  
                     string col04 = row[xCPHITDB.xCPHIT.import_source].ToString();
                     string col05 = row[xCPHITDB.xCPHIT.approval_action].ToString();//Approval Action      
-                    string col06 = row[xCPHITDB.xCPHIT.wo_no].ToString();      //Order       
+                    //string col06 = row[xCPHITDB.xCPHIT.wo_no].ToString();      //Order       
+                    string col06 = "";      //Order
                     string col07 = row[xCPHITDB.xCPHIT.document_typre_code].ToString(); ;//Document Type Code      
                     string col08 = "";//Style       รอถาม 
                     string col09 = row[xCPHITDB.xCPHIT.prc_bu_name].ToString(); ;//Procurement BU       รอถาม 
@@ -1307,7 +1381,7 @@ namespace XCustPr
 
                     string col41 = "";//Default Taxation Country Code
                     string col42 = "";//Tax Document Subtype Code
-                    string col43 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE_CATEGORY].ToString();
+                    string col43 = "CEDAR";//row[xCPHITDB.xCPHIT.ATTRIBUTE_CATEGORY].ToString();
                     string col44 = row[xCPHITDB.xCPHIT.wo_no].ToString();//row[xCPHITDB.xCPHIT.ATTRIBUTE1].ToString();
                     string col45 = row[xCPHITDB.xCPHIT.qt_no].ToString();//row[xCPHITDB.xCPHIT.ATTRIBUTE2].ToString();
                     string col46 = "";//row[xCPHITDB.xCPHIT.ATTRIBUTE3].ToString();
@@ -1443,7 +1517,7 @@ namespace XCustPr
                     string col20 = "";//Note to Supplier 
 
                     string col21 = "";//Note to Receiver
-                    string col22 = ""; //row[xCRHIADB.xCRHIA.ATTRIBUTE_CATEGORY].ToString();
+                    string col22 = "CEDAR"; //row[xCRHIADB.xCRHIA.ATTRIBUTE_CATEGORY].ToString();
                     string col23 = row[xCPLITDB.xCPLIT.attribute1].ToString(); //row[xCRHIADB.xCRHIA.ATTRIBUTE1].ToString();
                     string col24 = row[xCPLITDB.xCPLIT.attribute2].ToString(); //row[xCRHIADB.xCRHIA.ATTRIBUTE2].ToString();
                     string col25 = row[xCPLITDB.xCPLIT.attribute3].ToString(); //row[xCRHIADB.xCRHIA.ATTRIBUTE3].ToString();
@@ -1580,7 +1654,7 @@ namespace XCustPr
                     string col02 = row[xCPLLITDB.xCPLLIT.interface_line_key].ToString();      //Interface Line Key         
                     //String col02 = row[xCPLLITDB.xCPLLIT.wo_no].ToString() + row[xCPLLITDB.xCPLLIT.running].ToString() + "1";
                     string col03 = "1";//row[xCPLLITDB.xCPLLIT.s].ToString();      //Schedule      
-                    string col04 = row[xCPLLITDB.xCPLLIT.ship_to_location].ToString();//row[xCPLLITDB.xCPLLIT.line_num].ToString();       //Ship-to Location
+                    string col04 = '"'+row[xCPLLITDB.xCPLLIT.ship_to_location].ToString()+'"';//row[xCPLLITDB.xCPLLIT.line_num].ToString();       //Ship-to Location
                     string col05 = row[xCPLLITDB.xCPLLIT.ship_to_organization].ToString();//row[xCPLLITDB.xCPLLIT.shipment_number].ToString();//Ship-to Organization       
                     string col06 = row[xCPLLITDB.xCPLLIT.amt].ToString();      //Amount      
                     string col07 = "";//row[xCPLLITDB.xCPLLIT.q].ToString();//Quantity      
@@ -1737,7 +1811,7 @@ namespace XCustPr
                     //String col02 = row[xCPDITDB.xCPDIT.wo_no].ToString() + row[xCPDITDB.xCPDIT.running].ToString() + "11";
                     //string col03 = row[xCPDITDB.xCPDIT.distribution_num].ToString();//"col03";      // Distribution     
                     String col03 = "1";
-                    string col04 = row[xCPDITDB.xCPDIT.deliver_to_location].ToString();// Deliver-to Location  row[xCPHITDB.xCPHIT.import_source].ToString();
+                    string col04 = '"'+row[xCPDITDB.xCPDIT.deliver_to_location].ToString()+'"';// Deliver-to Location  row[xCPHITDB.xCPHIT.import_source].ToString();
                     string col05 = row[xCPDITDB.xCPDIT.requester].ToString();//Requester      รอถาม  
                     string col06 = "";      //Order       รอถาม  
                     string col07 = row[xCPDITDB.xCPDIT.amt].ToString();//
@@ -1911,7 +1985,7 @@ namespace XCustPr
 
             chk = ieS.uploadFiletoUCM(toEncodeAsBytestext, filename, "/oracle/apps/ess/prc/po/pdoi,ImportSPOJob", buId+",300000001043097,SUBMIT,"+ buId + ",,N,,true ");
             addListView("processCallWebService1 คิดต่อ web service", "web service", lv1, form1);
-            xCCPITDB.logProcessPO008("xcustpo008", dateStart, requestId,chk);   // gen log
+            xCCPITDB.logProcessPO008("xcustpo008", dateStart, requestId,chk, errChargeAcc);   // gen log
             xCCPITDB.updateErpId(chk, requestId, "kfc_po", Cm.initC.PO008PathLog);
             addListView("processCallWebService1 update ERP ID"+ chk, "web service", lv1, form1);
         }

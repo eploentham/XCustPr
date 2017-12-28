@@ -43,6 +43,7 @@ namespace XCustPr
             xCPLIT.attribute3 = "attribute3";
             xCPLIT.attribute4 = "attribute4";
             xCPLIT.attribute5 = "attribute5";
+            xCPLIT.attribute6 = "attribute6";
 
             xCPLIT.table = "XCUST_PO_LINE_INT_TBL";
         }
@@ -92,7 +93,8 @@ namespace XCustPr
                     xCPLIT.last_update_date + "," + xCPLIT.line_num + "," + xCPLIT.line_type + "," +
                     xCPLIT.process_flag + "," + xCPLIT.unit_price + "," + xCPLIT.wo_no + "," + 
                     xCPLIT.qt_no + "," + xCPLIT.running + "," + xCPLIT.attribute1 + "," + 
-                    xCPLIT.attribute2 + "," + xCPLIT.request_id + "," + xCPLIT.attribute3 + "," + xCPLIT.attribute4 + "," + xCPLIT.attribute5 +
+                    xCPLIT.attribute2 + "," + xCPLIT.request_id + "," + xCPLIT.attribute3 + "," + 
+                    xCPLIT.attribute4 + "," + xCPLIT.attribute5 + "," + xCPLIT.attribute6 +
                     ") " +
                     "Values('" + p.action + "','" + p.category + "','" + creation_by + "'," +
                     "getdate(),'" + p.error_message + "','" + p.interface_header_key + "','" +
@@ -100,7 +102,8 @@ namespace XCustPr
                     "null,'" + p.line_num + "','" + p.line_type + "','" +
                     p.process_flag + "'," + p.unit_price + ",'" + p.wo_no + "','" + 
                     p.qt_no + "','" + p.running + "','" + p.attribute1 + "','" + 
-                    p.attribute2 + "','" + p.request_id + "','" + p.attribute3 + "','" + p.attribute4 + "','" + p.attribute5 +
+                    p.attribute2 + "','" + p.request_id + "','" + p.attribute3 + "','" + 
+                    p.attribute4 + "','" + p.attribute5 + "','" + p.attribute6 +
                     "') ";
                 chk = conn.ExecuteNonQuery(sql, "kfc_po", pathLog);
                 if (chk.Equals("1"))

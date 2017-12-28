@@ -86,8 +86,8 @@ namespace XCustPr
                 "from xcust_organization_mst_tbl org " +
                 ",xcust_gl_code_combinations_tbl gcc " +
                 "where org.organization_code = '"+ orgId + "' " +
-                "and org.material_account_ccid = gcc.code_combination_id " +
-                "and org.CHART_OF_ACCOUNTS_ID = gcc.CHART_OF_ACCOUNTS_ID";
+                " and org.material_account_ccid = gcc.code_combination_id " +
+                " and org.CHART_OF_ACCOUNTS_ID = gcc.CHART_OF_ACCOUNTS_ID ";
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
@@ -99,13 +99,13 @@ namespace XCustPr
                 "from xcust_organization_mst_tbl org " +
                 ",xcust_gl_code_combinations_tbl gcc " +
                 "where org.organization_code = '"+ org + "' " +
-                "and org.CHART_OF_ACCOUNTS_ID = gcc.CHART_OF_ACCOUNTS_ID " +
-                "and gcc.SEGMENT1 = '" + seg1 + "'" +
-                "and gcc.segment2 = '" + seg2 + "'" +
-                "and gcc.segment3 = '" + seg3 + "'" +
-                "and gcc.segment4 = '" + seg4 + "'" +
-                "and gcc.segment5 = '" + seg5 + "'" +
-                "and gcc.segment6 = '" + seg6 + "'";
+                " and org.CHART_OF_ACCOUNTS_ID = gcc.CHART_OF_ACCOUNTS_ID " +
+                " and gcc.SEGMENT1 = '" + seg1 + "'" +
+                " and gcc.segment2 = '" + seg2 + "'" +
+                " and gcc.segment3 = '" + seg3 + "'" +
+                " and gcc.segment4 = '" + seg4 + "'" +
+                " and gcc.segment5 = '" + seg5 + "'" +
+                " and gcc.segment6 = '" + seg6 + "'";
             dt = conn.selectData(sql, "kfc_po");
             if (dt.Rows.Count > 0)
             {

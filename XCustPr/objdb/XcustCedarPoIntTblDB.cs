@@ -150,6 +150,21 @@ namespace XCustPr
             }
             return chk;
         }
+        public String getCountNoErrorByFilename(String requestId)
+        {
+            DataTable dt = new DataTable();
+            String sql = "", chk = "";
+            sql = "Select  count(1) as cnt " +
+                " From " + xCCPIT.table +
+                " Where " + xCCPIT.request_id + "='" + requestId + "'  " +
+                " and len(" + xCCPIT.error_message + ") <= 0";
+            dt = conn.selectData(sql, "kfc_po");
+            if (dt.Rows.Count > 0)
+            {
+                chk = dt.Rows[0]["cnt"].ToString();
+            }
+            return chk;
+        }
         public DataTable selectCedarGroupBySupplier(String filename, String requestId)
         {
             DataTable dt = new DataTable();
@@ -356,13 +371,14 @@ namespace XCustPr
         {
             String chk = "";
             DataTable dt = new DataTable();
-            String sql = "SELECT location_code " +
+            String sql = "SELECT location_code, LOCATION_NAME " +
                     "FROM XCUST_LOCATIONS_MST_TBL " +
                     "WHERE location_code = '" + branchPlant + "'";
             dt = conn.selectData(sql, "kfc_po");
             if (dt.Rows.Count > 0)
             {
-                chk = dt.Rows[0]["location_code"].ToString().Trim();
+                //chk = dt.Rows[0]["location_code"].ToString().Trim();
+                chk = dt.Rows[0]["LOCATION_NAME"].ToString().Trim();
             }
             return chk;
         }
@@ -392,7 +408,7 @@ namespace XCustPr
 
             return chk;
         }
-        public void logProcessPO008(String programname, String startdatetime, String requestId, String erpId)
+        public void logProcessPO008(String programname, String startdatetime, String requestId, String erpId, String fileReadError)
         {
             String line1 = "", parameter = "", programstart = "", filename = "", recordError = "", txt = "", path = "", sql = "";
             String date = System.DateTime.Now.ToString("dd MMM yyyy");
@@ -470,6 +486,10 @@ namespace XCustPr
                     //}
                 }
             }
+            if (!fileReadError.Equals(""))
+            {
+                filename += fileReadError + Environment.NewLine;
+            }
             String filename1 = "", filename1old = "";
             sql = "Select * From " + xCCPIT.table + " " +
                 "Where " + xCCPIT.request_id + " ='" + requestId + "' " +
@@ -491,8 +511,10 @@ namespace XCustPr
                         recordError += Environment.NewLine + "FileName : " + dtErr1[xCCPIT.file_name].ToString() + Environment.NewLine;
                     }
                     //recordError += "FileName " + dtErr1[xCLFPT.file_name].ToString() + Environment.NewLine;
-                    recordError += "=>PO_NUMER = " + dtErr1[xCCPIT.po_no].ToString() + ",QT NO = " + dtErr1[xCCPIT.qt_no].ToString() + ",ERROR" + Environment.NewLine;
+                    //recordError += "=>PO_NUMER = " + dtErr1[xCCPIT.po_no].ToString() + ",QT NO = " + dtErr1[xCCPIT.qt_no].ToString() + ",ERROR" + Environment.NewLine;
+                    recordError += "=>Supplier Code = " + dtErr1[xCCPIT.supplier_code].ToString() + ",QT NO = " + dtErr1[xCCPIT.qt_no].ToString() + ",ERROR" + Environment.NewLine;
                     recordError += "     ====>" + dtErr1[xCCPIT.error_message].ToString() + Environment.NewLine;
+                    
                 }
                 if (recordError.Length > 0)
                 {

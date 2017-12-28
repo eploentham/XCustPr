@@ -206,6 +206,13 @@ namespace XCustPr
 
             cPo008.processGetTempTableToValidate(lv1, this, pB1, requestId);
 
+            String chk = "";
+            chk = cPo008.getCountNoErrorByFilename(requestId);
+            if (chk.Equals("0"))
+            {
+
+            }
+
             cPo008.processInsertTable2(requestId, lv1, this, pB1);
 
             cPo008.processGenCSV(lv1, this, pB1, requestId);
