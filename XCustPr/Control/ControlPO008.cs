@@ -718,7 +718,17 @@ namespace XCustPr
         public String getCountNoErrorByFilename(String requestId)
         {
             String chk = "";
-            chk = xCCPITDB.getCountNoErrorByFilename(requestId);
+            DataTable dt = new DataTable();
+            dt = xCCPITDB.getFileNameNoErrorByFilename(requestId);
+            if (dt.Rows.Count > 0)
+            {
+                foreach(DataRow row in dt.Rows)
+                {
+                    String filename = "";
+                    filename = row[xCCPITDB.xCCPIT.file_name].ToString();
+
+                }
+            }
             return chk;
         }
         public void processInsertTable(MaterialListView lv1, Form form1, MaterialProgressBar pB1)

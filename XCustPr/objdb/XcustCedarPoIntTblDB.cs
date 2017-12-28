@@ -150,21 +150,19 @@ namespace XCustPr
             }
             return chk;
         }
-        public String getCountNoErrorByFilename(String requestId)
+        public DataTable getFileNameNoErrorByFilename(String requestId)
         {
             DataTable dt = new DataTable();
             String sql = "", chk = "";
-            sql = "Select  count(1) as cnt " +
+            sql = "Select  "+xCCPIT.file_name+" " +
                 " From " + xCCPIT.table +
-                " Where " + xCCPIT.request_id + "='" + requestId + "'  " +
-                " and len(" + xCCPIT.error_message + ") <= 0";
+                " Where " + xCCPIT.request_id + "='" + requestId + "' " +
+                "Group By "+xCCPIT.file_name;
             dt = conn.selectData(sql, "kfc_po");
-            if (dt.Rows.Count > 0)
-            {
-                chk = dt.Rows[0]["cnt"].ToString();
-            }
-            return chk;
+            
+            return dt;
         }
+        
         public DataTable selectCedarGroupBySupplier(String filename, String requestId)
         {
             DataTable dt = new DataTable();
