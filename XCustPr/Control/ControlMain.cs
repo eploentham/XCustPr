@@ -18,7 +18,7 @@ namespace XCustPr
     public class ControlMain
     {
         public InitC initC;        //standard
-        private IniFile iniFile, iniFile001, iniFile002, iniFile003, iniFile004, iniFile005, iniFile006, iniFile007, iniFile008;        //standard
+        private IniFile iniFile;//, iniFile001, iniFile002, iniFile003, iniFile004, iniFile005, iniFile006, iniFile007, iniFile008;        //standard
 
         private StringBuilder sYear = new StringBuilder();
         private StringBuilder sMonth = new StringBuilder();
@@ -32,17 +32,30 @@ namespace XCustPr
         }
         private void initConfig()
         {
-            iniFile = new IniFile(Environment.CurrentDirectory + "\\" + Application.ProductName + ".ini");        //standard
-            //iniFile = new IniFile(Environment.CurrentDirectory + "\\xcust_parameter\\" + Application.ProductName + ".ini");        //standard
-                        
-            iniFile001 = new IniFile(Environment.CurrentDirectory + "\\xcust_parameter\\xcustpo001.ini");        //standard
-            iniFile002 = new IniFile(Environment.CurrentDirectory + "\\xcust_parameter\\xcustpo002.ini");        //standard
-            iniFile003 = new IniFile(Environment.CurrentDirectory + "\\xcust_parameter\\xcustpo003.ini");        //standard
-            iniFile004 = new IniFile(Environment.CurrentDirectory + "\\xcust_parameter\\xcustpo004.ini");        //standard
-            iniFile005 = new IniFile(Environment.CurrentDirectory + "\\xcust_parameter\\xcustpo005.ini");        //standard
-            iniFile006 = new IniFile(Environment.CurrentDirectory + "\\xcust_parameter\\xcustpo006.ini");        //standard
-            iniFile007 = new IniFile(Environment.CurrentDirectory + "\\xcust_parameter\\xcustpo007ini");        //standard
-            iniFile008 = new IniFile(Environment.CurrentDirectory + "\\xcust_parameter\\xcustpo008.ini");        //standard
+            //iniFile = new IniFile(Environment.CurrentDirectory + "\\" + Application.ProductName + ".ini");    //standard
+            String appName = "";
+            appName = System.AppDomain.CurrentDomain.FriendlyName;
+            appName = appName.ToLower().Replace(".exe" , "");
+            if (System.IO.File.Exists(Environment.CurrentDirectory + "\\" + appName + ".ini"))
+            {
+                appName = Environment.CurrentDirectory + "\\" + appName + ".ini";
+            }
+            else
+            {
+                appName = Environment.CurrentDirectory + "\\" + Application.ProductName + ".ini";
+            }
+            iniFile = new IniFile(appName);      //standard
+            //MessageBox.Show("2 "+ System.AppDomain.CurrentDomain.FriendlyName, "1");
+                                                                                                                  //iniFile = new IniFile(Environment.CurrentDirectory + "\\xcust_parameter\\" + Application.ProductName + ".ini");        //standard
+
+            //iniFile001 = new IniFile(Environment.CurrentDirectory + "\\xcust_parameter\\xcustpo001.ini");       //standard
+            //iniFile002 = new IniFile(Environment.CurrentDirectory + "\\xcust_parameter\\xcustpo002.ini");       //standard
+            //iniFile003 = new IniFile(Environment.CurrentDirectory + "\\xcust_parameter\\xcustpo003.ini");       //standard
+            //iniFile004 = new IniFile(Environment.CurrentDirectory + "\\xcust_parameter\\xcustpo004.ini");       //standard
+            //iniFile005 = new IniFile(Environment.CurrentDirectory + "\\xcust_parameter\\xcustpo005.ini");       //standard
+            //iniFile006 = new IniFile(Environment.CurrentDirectory + "\\xcust_parameter\\xcustpo006.ini");       //standard
+            //iniFile007 = new IniFile(Environment.CurrentDirectory + "\\xcust_parameter\\xcustpo007.ini");       //standard
+            //iniFile008 = new IniFile(Environment.CurrentDirectory + "\\xcust_parameter\\xcustpo008.ini");       //standard
             initC = new InitC();        //standard
 
             GetConfig();
@@ -690,6 +703,8 @@ namespace XCustPr
             initC.PO008PathFileZip = iniFile.Read("PO008PathFileZip").Trim();
             initC.PO008ORGINATOR_RULE = iniFile.Read("PO008ORGINATOR_RULE").Trim();
             initC.PO008tax_code = iniFile.Read("PO008tax_code").Trim();
+
+            //MessageBox.Show(" 1 "+initC.PO008PathArchive, "");
 
             initC.PO002PathInitial = iniFile.Read("PO002PathInitial").Trim();
             initC.PO002PathDestinaion = iniFile.Read("PO002PathDestinaion").Trim();

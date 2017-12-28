@@ -523,8 +523,8 @@ namespace XCustPr
                 txt = line1;
                 txt += parameter;
                 txt += programstart + Environment.NewLine;
-                txt += "Request Id : " + requestId;
-                txt += "Erp Process Id : " + erpId;
+                txt += "Request Id : " + requestId + Environment.NewLine;
+                txt += "Erp Process Id : " + erpId + Environment.NewLine;
                 txt += "File " + Environment.NewLine;
                 txt += "--------------------------------------------------------------------------" + Environment.NewLine;
                 txt += filename + Environment.NewLine;

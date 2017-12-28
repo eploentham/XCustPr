@@ -42,7 +42,7 @@ namespace XCustPr
             initConfig();
             cTxtL = txtFileName.BackColor;
             cTxtE = Color.Yellow;
-            this.Text = "Last Update 2017-11-08 ";
+            this.Text = "Last Update 2017-11-08 "+Cm.initC.PO008PathFileCSV;
         }
         private void initConfig()
         {

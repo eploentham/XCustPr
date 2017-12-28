@@ -386,7 +386,6 @@ namespace XCustPr
             addListView("อ่าน file จาก " + Cm.initC.PO008PathProcess, "Validate", lv1, form1);
             pB1.Visible = true;
             
-
             Boolean chk = false;
             DataTable dtGroupBy = new DataTable();
             DataTable dt = new DataTable();
@@ -1901,6 +1900,7 @@ namespace XCustPr
         }
         public void processCallWebService1(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String requestId)
         {
+            addListView("processCallWebService1 เริ่ม web service", "web service", lv1, form1);
             ImportExportService ieS = new ImportExportService();
             String[] filePO;
             String filename = "", chk="", buId="";
@@ -1910,8 +1910,10 @@ namespace XCustPr
             byte[] toEncodeAsBytestext = System.IO.File.ReadAllBytes(filePO[0]);
 
             chk = ieS.uploadFiletoUCM(toEncodeAsBytestext, filename, "/oracle/apps/ess/prc/po/pdoi,ImportSPOJob", buId+",300000001043097,SUBMIT,"+ buId + ",,N,,true ");
+            addListView("processCallWebService1 คิดต่อ web service", "web service", lv1, form1);
             xCCPITDB.logProcessPO008("xcustpo008", dateStart, requestId,chk);   // gen log
             xCCPITDB.updateErpId(chk, requestId, "kfc_po", Cm.initC.PO008PathLog);
+            addListView("processCallWebService1 update ERP ID"+ chk, "web service", lv1, form1);
         }
         public void processCallWebService(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String requestId)
         {
