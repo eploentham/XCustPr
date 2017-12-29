@@ -42,7 +42,7 @@ namespace XCustPr
             initConfig();
             cTxtL = txtFileName.BackColor;
             cTxtE = Color.Yellow;
-            this.Text = "Last Update 2017-11-08 "+Cm.initC.PO008PathFileCSV;
+            this.Text = "Last Update 2017-12-29 13.23 "+Cm.initC.PO008PathFileCSV;
         }
         private void initConfig()
         {
@@ -80,6 +80,10 @@ namespace XCustPr
                 lv1.Items.Add(AddToList((i++), aa, ""));
                 //lv1.Items.s
             }
+            btnPrepare.Hide();
+            btnFTP.Hide();
+            btnWebService.Hide();
+            btnEmail.Hide();
         }
         private void disableBtn()
         {
@@ -195,8 +199,8 @@ namespace XCustPr
         {
             
             lv1.Items.Clear();
-            filePO = Cm.getFileinFolder(Cm.initC.PO008PathInitial);
-            requestId = cPo008.processCedarPOtoErpPR(filePO, lv1, this, pB1);
+            //filePO = Cm.getFileinFolder(Cm.initC.PO008PathInitial);
+            //requestId = cPo008.processCedarPOtoErpPR(filePO, lv1, this, pB1);
             //1.ดึงข้อมูลตาม group by filename เพราะ field filename เป็นตัวแบ่งข้อมูลแต่ละfile
             //2.ดึงข้อมูล where ตาม filename เพื่อ validate ถ้า validate ผ่าน ก็ update validate_flag = 'Y'
             //d.	จากนั้น Program จะเอาข้อมูลจาก Table XCUST_CEDAR_PO_TBL มาทำการ Validate 
@@ -204,18 +208,30 @@ namespace XCustPr
             //- 
             //-
 
-            cPo008.processGetTempTableToValidate(lv1, this, pB1, requestId);
+            cPo008.CallProcess(lv1, this, pB1);
 
-            String chk = "";
-            chk = cPo008.getCountNoErrorByFilename(requestId);
-            if (chk.Equals("0"))
-            {
 
-            }
+            //cPo008.processGetTempTableToValidate(lv1, this, pB1, requestId);
 
-            cPo008.processInsertTable2(requestId, lv1, this, pB1);
 
-            cPo008.processGenCSV(lv1, this, pB1, requestId);
+            //cPo008.processInsertTable2(lv1, this, pB1, requestId);
+
+            //cPo008.processGenCSV(lv1, this, pB1, requestId);
+
+
+            //cPo008.processCallWebService1(lv1, this, pB1, requestId);
+
+
+            //String chk = "";
+            //chk = cPo008.getCountNoErrorByFilename(requestId);
+            //if (chk.Equals("0"))
+            //{
+
+            //}
+
+            //cPo008.processInsertTable2(requestId, lv1, this, pB1);
+
+            //cPo008.processGenCSV(lv1, this, pB1, requestId);
 
         }
         private void btnPrepare_Click(object sender, EventArgs e)
@@ -227,7 +243,7 @@ namespace XCustPr
 
             //cPo008.processCallWebService(lv1, this, pB1, requestId);
 
-            cPo008.processCallWebService1(lv1, this, pB1, requestId);
+            //cPo008.processCallWebService1(lv1, this, pB1, requestId);
 //            String uri = "";
 //            HttpWebRequest request = CreateWebRequest();
 //            XmlDocument soapEnvelopeXml = new XmlDocument();

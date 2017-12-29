@@ -20,7 +20,7 @@ namespace XCustPr
         {
 
         }
-        public List<String> ReadExcelPO008(String filename, MaterialProgressBar pB1, ValidatePrPo vPPexcel)
+        public List<String> ReadExcelPO008(String filename, MaterialProgressBar pB1, ValidateFileName vFexcel)
         {
             pB1.Show();
             pB1.Minimum = 0;
@@ -111,13 +111,17 @@ namespace XCustPr
             catch (Exception ex)
             {
                 chk = "";
-                vPPexcel.Filename = filename.Replace(initC.PO008PathProcess,"");
-                vPPexcel.Message = " PO008-0020 : read excel error";
-                vPPexcel.Validate = "";
+                vFexcel.fileName = filename.Replace(initC.PO008PathProcess,"");
+                vFexcel.Message = " PO008-0020 : read excel error"+ex.Message;
+                //vFexcel.Validate = "";
             }
 
             excelapp.Quit();
             pB1.Visible = false;
+
+            //vPPexcel.Filename = filename.Replace(initC.PO008PathProcess, "");       //for test
+            //vPPexcel.Message = " PO008-0020 : read excel error";       //for test
+            //vPPexcel.Validate = "";       //for test
 
             return result;
         }

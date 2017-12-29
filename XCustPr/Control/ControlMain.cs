@@ -8,6 +8,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Net.Mime;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
@@ -551,15 +552,16 @@ namespace XCustPr
                 String[] filename11 = destinationFile.Split('.');
                 if (filename11.Length >= 2)
                 {
-                    filename1 = filename11[0] + "_new_" + date + "_" + time + "." + filename11[filename11.Length-1];
+                    filename1 = filename11[0] + "_old_" + date + "_" + time + "." + filename11[filename11.Length-1];
                     System.IO.File.Move(path + destinationFile, path + filename1);
+                    Thread.Sleep(1000);
                 }
                 else
                 {
                     filename1 += "_new";
                 }
             }
-            System.IO.File.Move(@sourceFile, path+ filename1);
+            System.IO.File.Move(@sourceFile, path+ destinationFile);
         }
         public void moveFile(String sourceFile, String path, String destinationFile, String errorPath)
         {
@@ -572,15 +574,25 @@ namespace XCustPr
                 String[] filename11 = destinationFile.Split('.');
                 if (filename11.Length >= 2)
                 {
-                    filename1 = filename11[0] + "_new_" + date + "_" + time + "." + filename11[filename11.Length - 1];
+                    filename1 = filename11[0] + "_old_" + date + "_" + time + "." + filename11[filename11.Length - 1];
                     System.IO.File.Move(path + destinationFile, errorPath + filename1);
+                    Thread.Sleep(1000);
                 }
                 else
                 {
-                    filename1 += "_new";
+                    filename1 += "_old";
                 }
             }
             System.IO.File.Move(@sourceFile, path + destinationFile);
+        }
+        public void deleteFileInFolder(String path)
+        {
+            String[] filePOProcess;
+            filePOProcess = getFileinFolder(path);
+            foreach (string filename1 in filePOProcess)
+            {
+                deleteFile(filename1);
+            }
         }
         public void deleteFile(String sourceFile)
         {

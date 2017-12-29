@@ -406,9 +406,9 @@ namespace XCustPr
 
             return chk;
         }
-        public void logProcessPO008(String programname, String startdatetime, String requestId, String erpId, String fileReadError)
+        public void logProcessPO008(String programname, String startdatetime, String requestId, String erpId, String fileNotFound, List<ValidatePrPo> lVPr, List<ValidateFileName> lVfile)
         {
-            String line1 = "", parameter = "", programstart = "", filename = "", recordError = "", txt = "", path = "", sql = "";
+            String line1 = "", parameter = "", programstart = "", filename = "", recordError = "", txt = "", path = "", sql = "", cnt="0";
             String date = System.DateTime.Now.ToString("dd MMM yyyy");
             String time = System.DateTime.Now.ToString("HH.mm");
 
@@ -426,67 +426,73 @@ namespace XCustPr
             programstart = "Program Start : " + date+time  + Environment.NewLine;
 
 
-            sql = "Select count(1) as cnt, " + xCCPIT.file_name
-            + " From " + xCCPIT.table
-            + " Where " + xCCPIT.request_id + " ='" + requestId + "' " +
-            "Group By " + xCCPIT.file_name;
-            DataTable dtFile = conn.selectData(sql, "kfc_po");
-
-            if (dtFile.Rows.Count > 0)
+            
+            if (fileNotFound.Equals("Error PO008-001: Not found "))
             {
-                foreach (DataRow rowFile in dtFile.Rows)
-                {
-                    String valiPass = "", valiErr = "", filenameR="";
-                    filenameR = rowFile[xCCPIT.file_name].ToString();
-                    sql = "Select count(1) as cnt_vali " +
-                        " From " + xCCPIT.table + " " +
-                        " Where " + xCCPIT.request_id + " ='" + requestId + "' " +
-                        " and " + xCCPIT.file_name + "='" + filenameR + "' and " + xCCPIT.validate_flag + "='Y' ";
-
-                    DataTable dtR = conn.selectData(sql, "kfc_po");
-                    if (dtR.Rows.Count > 0)
-                    {
-                        foreach (DataRow rowVali in dtR.Rows)
-                        {
-                            valiPass = rowVali["cnt_vali"].ToString();
-                            //cntPass++;
-                        }
-                    }
-                    dtR.Clear();
-                    sql = "Select count(1) as cnt_vali " +
-                        " From " + xCCPIT.table + " " +
-                        " Where " + xCCPIT.request_id + " ='" + requestId + "' " +
-                        " and " + xCCPIT.file_name + "='" + filenameR + "' and " + xCCPIT.validate_flag + "='E' ";
-                    dtR = conn.selectData(sql, "kfc_po");
-                    if (dtR.Rows.Count > 0)
-                    {
-                        foreach (DataRow rowVali in dtR.Rows)
-                        {
-                            valiErr = rowVali["cnt_vali"].ToString();
-                            //cntErr++;
-                        }
-                    }
-                    if (valiErr.Equals("0"))
-                    {
-                        cntPass++;
-                    }
-                    else
-                    {
-                        cntErr++;
-                    }
-                    filename += "Filename " + filenameR + ", Total = " + rowFile["cnt"].ToString() + " record, Pass = " + valiPass + " record, Record Error = " + valiErr + " record" + Environment.NewLine;
-                    //if (int.TryParse(rowFile.recordError, out err))
-                    //{
-                    //    if (int.Parse(rowFile.recordError) > 0)
-                    //    {
-                    //        cntErr++;
-                    //    }
-                    //}
-                }
+                filename += fileNotFound + Environment.NewLine;
+                cnt = "0";
             }
-            if (!fileReadError.Equals(""))
+            else
             {
-                filename += fileReadError + Environment.NewLine;
+                sql = "Select count(1) as cnt, " + xCCPIT.file_name
+                    + " From " + xCCPIT.table
+                    + " Where " + xCCPIT.request_id + " ='" + requestId + "' " +
+                    "Group By " + xCCPIT.file_name;
+                DataTable dtFile = conn.selectData(sql, "kfc_po");
+
+                if (dtFile.Rows.Count > 0)
+                {
+                    cnt = dtFile.Rows.Count.ToString();
+                    foreach (DataRow rowFile in dtFile.Rows)
+                    {
+                        String valiPass = "", valiErr = "", filenameR = "";
+                        filenameR = rowFile[xCCPIT.file_name].ToString();
+                        sql = "Select count(1) as cnt_vali " +
+                            " From " + xCCPIT.table + " " +
+                            " Where " + xCCPIT.request_id + " ='" + requestId + "' " +
+                            " and " + xCCPIT.file_name + "='" + filenameR + "' and " + xCCPIT.validate_flag + "='Y' ";
+
+                        DataTable dtR = conn.selectData(sql, "kfc_po");
+                        if (dtR.Rows.Count > 0)
+                        {
+                            foreach (DataRow rowVali in dtR.Rows)
+                            {
+                                valiPass = rowVali["cnt_vali"].ToString();
+                                //cntPass++;
+                            }
+                        }
+                        dtR.Clear();
+                        sql = "Select count(1) as cnt_vali " +
+                            " From " + xCCPIT.table + " " +
+                            " Where " + xCCPIT.request_id + " ='" + requestId + "' " +
+                            " and " + xCCPIT.file_name + "='" + filenameR + "' and " + xCCPIT.validate_flag + "='E' ";
+                        dtR = conn.selectData(sql, "kfc_po");
+                        if (dtR.Rows.Count > 0)
+                        {
+                            foreach (DataRow rowVali in dtR.Rows)
+                            {
+                                valiErr = rowVali["cnt_vali"].ToString();
+                                //cntErr++;
+                            }
+                        }
+                        if (valiErr.Equals("0"))
+                        {
+                            cntPass++;
+                        }
+                        else
+                        {
+                            cntErr++;
+                        }
+                        filename += "Filen Name " + filenameR + ", Total = " + rowFile["cnt"].ToString() + " record, Pass = " + valiPass + " record, Record Error = " + valiErr + " record" + Environment.NewLine;
+                        //if (int.TryParse(rowFile.recordError, out err))
+                        //{
+                        //    if (int.Parse(rowFile.recordError) > 0)
+                        //    {
+                        //        cntErr++;
+                        //    }
+                        //}
+                    }
+                }
             }
             String filename1 = "", filename1old = "";
             sql = "Select * From " + xCCPIT.table + " " +
@@ -538,6 +544,25 @@ namespace XCustPr
             //    error = dt.Rows[0]["cnt"].ToString();
             //}
             //using (var stream = File.CreateText(Environment.CurrentDirectory + "\\" + programname + "_" + startdatetime.Replace("-", "_").Replace(":", "_") + ".log"))
+
+            if (lVPr.Count > 0)
+            {
+                foreach (ValidatePrPo vPr in lVPr)
+                {
+                    recordError += "Parameter : " + vPr.Filename + Environment.NewLine;
+                    //recordError += "==>" + vPr.Validate + Environment.NewLine;
+                    recordError += "     ====>Error" + vPr.Message + Environment.NewLine;
+                }
+            }
+            String fileReadError = "";
+            if (lVfile.Count > 0)
+            {
+                foreach (ValidateFileName vFexcel in lVfile)
+                {
+                    fileReadError += "File Name : " + vFexcel.fileName + vFexcel.Message + Environment.NewLine;
+                }
+            }
+
             using (var stream = File.CreateText(path + programname + "_" + startdatetime.Replace("-", "_").Replace(":", "_") + ".log"))
             {
                 txt = line1;
@@ -552,7 +577,7 @@ namespace XCustPr
                 txt += "--------------------------------------------------------------------------" + Environment.NewLine;
                 txt += recordError + Environment.NewLine;
                 txt += Environment.NewLine + "==========================================================================" + Environment.NewLine;
-                txt += "Total = " + dtFile.Rows.Count+" File" + Environment.NewLine;
+                txt += "Total = " + cnt+" File" + Environment.NewLine;
                 txt += "Complete = " + cntPass + " File" + Environment.NewLine;
                 txt += "Error = " + cntErr + " File" + Environment.NewLine;
                 stream.WriteLine(txt);

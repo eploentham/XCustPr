@@ -69,6 +69,13 @@ namespace XCustPr
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
+        public DataTable selectByRequestId(String request_id, String filename)
+        {
+            DataTable dt = new DataTable();
+            String sql = "select * From " + xCPHIT.table + " Where " + xCPHIT.request_id + "='" + request_id + "'";
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
+        }
         public String genSeqReqHeaderNumber()
         {
             DataTable dt = new DataTable();
