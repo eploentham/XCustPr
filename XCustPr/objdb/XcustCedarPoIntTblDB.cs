@@ -406,7 +406,7 @@ namespace XCustPr
 
             return chk;
         }
-        public void logProcessPO008(String programname, String startdatetime, String requestId, String erpId, String fileNotFound, List<ValidatePrPo> lVPr, List<ValidateFileName> lVfile)
+        public void logProcessPO008(String programname, String startdatetime, String requestId, String erpId, String fileNotFound, List<ValidatePrPo> lVPr, List<ValidateFileName> lVfileReadErr, String totalFile)
         {
             String line1 = "", parameter = "", programstart = "", filename = "", recordError = "", txt = "", path = "", sql = "", cnt="0";
             String date = System.DateTime.Now.ToString("dd MMM yyyy");
@@ -555,9 +555,9 @@ namespace XCustPr
                 }
             }
             String fileReadError = "";
-            if (lVfile.Count > 0)
+            if (lVfileReadErr.Count > 0)
             {
-                foreach (ValidateFileName vFexcel in lVfile)
+                foreach (ValidateFileName vFexcel in lVfileReadErr)
                 {
                     fileReadError += "File Name : " + vFexcel.fileName + vFexcel.Message + Environment.NewLine;
                 }
@@ -575,9 +575,10 @@ namespace XCustPr
                 txt += filename + Environment.NewLine;
                 txt += "File Error " + Environment.NewLine;
                 txt += "--------------------------------------------------------------------------" + Environment.NewLine;
+                txt += fileReadError + Environment.NewLine;
                 txt += recordError + Environment.NewLine;
                 txt += Environment.NewLine + "==========================================================================" + Environment.NewLine;
-                txt += "Total = " + cnt+" File" + Environment.NewLine;
+                txt += "Total = " + totalFile + " File" + Environment.NewLine;
                 txt += "Complete = " + cntPass + " File" + Environment.NewLine;
                 txt += "Error = " + cntErr + " File" + Environment.NewLine;
                 stream.WriteLine(txt);

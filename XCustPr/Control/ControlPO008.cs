@@ -71,6 +71,7 @@ namespace XCustPr
         List<ValidateFileName> lVfile = new List<ValidateFileName>();   // gen log
 
         String errOrg = "", errChargeAcc="", WS="";
+        String[] filePOProcess;
 
         public ControlPO008(ControlMain cm)
         {
@@ -134,7 +135,7 @@ namespace XCustPr
             int cntErr = 0, cntFileErr = 0;   // gen log
 
             ReadExcel re = new ReadExcel(Cm.initC);
-            String[] filePOProcess;
+            
             DataTable dt = new DataTable();
             Boolean chk = false;
 
@@ -184,12 +185,12 @@ namespace XCustPr
                 {
                     lVfile.Add(vFexcel);
                     cntErr++;       // gen log
-                    ValidateFileName vF = new ValidateFileName();   // gen log
-                    vF.fileName = filename.Replace(Cm.initC.PO008PathProcess, "");   // gen log
-                    vF.recordTotal = cntErr.ToString();   // gen log
-                    vF.recordError = cntErr.ToString();   // gen log
-                    vF.totalError = cntErr.ToString();   // gen log
-                    lVfile.Add(vF);   // gen log
+                    //ValidateFileName vF = new ValidateFileName();   // gen log
+                    //vF.fileName = filename.Replace(Cm.initC.PO008PathProcess, "");   // gen log
+                    //vF.recordTotal = cntErr.ToString();   // gen log
+                    //vF.recordError = cntErr.ToString();   // gen log
+                    //vF.totalError = cntErr.ToString();   // gen log
+                    //lVfile.Add(vF);   // gen log
                     Cm.moveFile(filename, Cm.initC.PO008PathError, filename.Replace(Cm.initC.PO008PathProcess, ""));
                     //xCCPITDB.updateErrorMessage(filename, rowNumber, "Error PO008-006 : Invalid data type amt", requestId, "kfc_po", Cm.initC.PO008PathLog);
                 }
@@ -503,34 +504,16 @@ namespace XCustPr
                     chk = validateAmount(row[xCCPITDB.xCCPIT.amt].ToString());
                     if (!chk)
                     {
-                        //vPP = new ValidatePrPo();
-                        //vPP.Filename = filename;
-                        //vPP.Message = "Error PO008-006 : Invalid data type ";
-                        //vPP.Validate = "row " + row1 + " amt=" + row[xCCPITDB.xCCPIT.amt].ToString();
-                        //lVPr.Add(vPP);
-                        //cntErr++;       // gen log
                         xCCPITDB.updateErrorMessage(filename, rowNumber, "Error PO008-006 : Invalid data type amt", requestId, "kfc_po", Cm.initC.PO008PathLog);
                     }
                     chk = validateAmount(row[xCCPITDB.xCCPIT.total].ToString());
                     if (!chk)
                     {
-                        //vPP = new ValidatePrPo();
-                        //vPP.Filename = row[xCCPITDB.xCCPIT.file_name].ToString().Trim();
-                        //vPP.Message = "Error PO008-006 : Invalid data type ";
-                        //vPP.Validate = "row " + row1 + " total=" + row[xCCPITDB.xCCPIT.total].ToString();
-                        //lVPr.Add(vPP);
-                        //cntErr++;       // gen log
                         xCCPITDB.updateErrorMessage(filename, rowNumber, "Error PO008-006 : Invalid data type total", requestId, "kfc_po", Cm.initC.PO008PathLog);
                     }
                     chk = validateAmount(row[xCCPITDB.xCCPIT.vat].ToString());
                     if (!chk)
                     {
-                        //vPP = new ValidatePrPo();
-                        //vPP.Filename = row[xCCPITDB.xCCPIT.file_name].ToString().Trim();
-                        //vPP.Message = "Error PO008-006 : Invalid data type ";
-                        //vPP.Validate = "row " + row1 + " vat=" + row[xCCPITDB.xCCPIT.vat].ToString();
-                        //lVPr.Add(vPP);
-                        //cntErr++;       // gen log
                         xCCPITDB.updateErrorMessage(filename, rowNumber, "Error PO008-006 : Invalid data type vat", requestId, "kfc_po", Cm.initC.PO008PathLog);
                     }
                     //chk = validateAmount(row[xCCPITDB.xCCPIT.amt].ToString());
@@ -547,46 +530,22 @@ namespace XCustPr
                     chk = validateDate(row[xCCPITDB.xCCPIT.admin_receipt_doc_date].ToString());
                     if (!chk)
                     {
-                        //vPP = new ValidatePrPo();
-                        //vPP.Filename = row[xCCPITDB.xCCPIT.file_name].ToString().Trim();
-                        //vPP.Message = "Error PO008-002 : Date Format not correct  ";
-                        //vPP.Validate = "row " + row1 + " admin_receipt_doc_date=" + row[xCCPITDB.xCCPIT.admin_receipt_doc_date].ToString();
-                        //lVPr.Add(vPP);
-                        //cntErr++;       // gen log
                         xCCPITDB.updateErrorMessage(filename, rowNumber, "Error PO008-002 : Date Format not correct admin_receipt_doc_date", requestId, "kfc_po", Cm.initC.PO008PathLog);
                     }
                     chk = validateDate(row[xCCPITDB.xCCPIT.approve_date].ToString());
                     if (!chk)
                     {
-                        //vPP = new ValidatePrPo();
-                        //vPP.Filename = row[xCCPITDB.xCCPIT.file_name].ToString().Trim();
-                        //vPP.Message = "Error PO008-002 : Date Format not correct  ";
-                        //vPP.Validate = "row " + row1 + " approve_date=" + row[xCCPITDB.xCCPIT.approve_date].ToString();
-                        //lVPr.Add(vPP);
-                        //cntErr++;       // gen log
                         xCCPITDB.updateErrorMessage(filename, rowNumber, "Error PO008-002 : Date Format not correct approve_date", requestId, "kfc_po", Cm.initC.PO008PathLog);
                     }
                     chk = validateDate(row[xCCPITDB.xCCPIT.cedar_close_date].ToString());
                     if (!chk)
                     {
-                        //vPP = new ValidatePrPo();
-                        //vPP.Filename = row[xCCPITDB.xCCPIT.file_name].ToString().Trim();
-                        //vPP.Message = "Error PO008-002 : Date Format not correct  ";
-                        //vPP.Validate = "row " + row1 + " cedar_close_date=" + row[xCCPITDB.xCCPIT.cedar_close_date].ToString();
-                        //lVPr.Add(vPP);
-                        //cntErr++;       // gen log
                         xCCPITDB.updateErrorMessage(filename, rowNumber, "Error PO008-002 : Date Format not correct cedar_close_date", requestId, "kfc_po", Cm.initC.PO008PathLog);
                     }
                     String ship = "";
                     ship = row[xCCPITDB.xCCPIT.shippto_location].ToString();
                     if (ship.Equals(""))
                     {
-                        //vPP = new ValidatePrPo();
-                        //vPP.Filename = row[xCCPITDB.xCCPIT.file_name].ToString().Trim();
-                        //vPP.Message = "Error PO008-008 : Invalid Deliver To Location  ";
-                        //vPP.Validate = "row " + row1 + " cedar_close_date=" + row[xCCPITDB.xCCPIT.cedar_close_date].ToString();
-                        //lVPr.Add(vPP);
-                        //cntErr++;       // gen log
                         xCCPITDB.updateErrorMessage(filename, rowNumber, "Error PO008-008 : Invalid Deliver To Location", requestId, "kfc_po", Cm.initC.PO008PathLog);
                     }
                         //Error PO001-010 : Invalid Subinventory Code      //ไม่มี store code              
@@ -1287,9 +1246,9 @@ namespace XCustPr
         public Boolean processGenZIP(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String flag)
         {
             //PO008_YYYYMMDDHH24MISS.zi
-            String[] filePOProcess;
-            filePOProcess = Cm.getFileinFolder(Cm.initC.PO008PathFileZip);
-            foreach (string filename1 in filePOProcess)
+            String[] filePOZip;
+            filePOZip = Cm.getFileinFolder(Cm.initC.PO008PathFileZip);
+            foreach (string filename1 in filePOZip)
             {
                 Cm.deleteFile(filename1);
             }
@@ -1314,20 +1273,16 @@ namespace XCustPr
             
 
             var allFiles = Directory.GetFiles(filename, "*.*", SearchOption.AllDirectories);
-            if (allFiles.Length > 0)
+            if (allFiles.Length <= 0) return false;
+            
+            ZipArchive zip = ZipFile.Open(filenameZip, ZipArchiveMode.Create);
+            foreach (String file in allFiles)
             {
-                ZipArchive zip = ZipFile.Open(filenameZip, ZipArchiveMode.Create);
-                foreach (String file in allFiles)
-                {
-                    zip.CreateEntryFromFile(file, Path.GetFileName(file));
-                }
-                zip.Dispose();
-                return true;
+                zip.CreateEntryFromFile(file, Path.GetFileName(file));
             }
-            else
-            {
-                return false;
-            }
+            zip.Dispose();
+            return true;
+            
             
         }
         public void processGenCSVxCPHITDB(MaterialListView lv1, Form form1, MaterialProgressBar pB1, String flag, String requestId)
@@ -1997,7 +1952,7 @@ namespace XCustPr
             String filename = "", chk="test", buId="";
             buId = xCBMTDB.selectIdActiveBuName(Cm.initC.BU_NAME);
             filePO = Cm.getFileinFolder(Cm.initC.PO008PathFileZip);
-            if (filePO.Length <= 0) return "";
+            if (filePO.Length <= 0) return "test";
             filename = filePO[0].Replace(Cm.initC.PO008PathFileZip, "");
             byte[] toEncodeAsBytestext = System.IO.File.ReadAllBytes(filePO[0]);
 
@@ -2239,7 +2194,7 @@ namespace XCustPr
             }
             else
             {
-                fileNotFound = "Error PO008-001: Not found ";
+                fileNotFound = "Error PO008-001: File Not found ";
             }
 
             String date = System.DateTime.Now.ToString("yyyy-MM-dd");
@@ -2255,7 +2210,9 @@ namespace XCustPr
                 lVPr.Add(vPP);
             }
             dateStart = date + " " + time;       //gen log
-            xCCPITDB.logProcessPO008("xcustpo008", dateStart, requestId, erpId, fileNotFound, lVPr, lVfile);   // gen log
+            int cnt = 0;
+            cnt = filePOProcess == null ? 0 : filePOProcess.Length;
+            xCCPITDB.logProcessPO008("xcustpo008", dateStart, requestId, erpId, fileNotFound, lVPr, lVfile, cnt.ToString());   // gen log
             lVPr.Clear();
         }
     }
