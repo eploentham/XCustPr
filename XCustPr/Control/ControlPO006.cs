@@ -39,6 +39,7 @@ namespace XCustPr
         public XcustSupplierMstTblDB xCSMTDB;
         public XcustUomMstTblDB xCUMTDB;
         public XcustValueSetMstTblDB xCVSMTDB;
+        public XcustSupplierSiteMstTblDB xCSSMTDB;
         
         private List<XcustSubInventoryMstTbl> listXcSIMT;
         private List<XcustItemMstTbl> listXcIMT;
@@ -52,6 +53,7 @@ namespace XCustPr
 
         List<ValidatePrPo> lVPr = new List<ValidatePrPo>();   // gen log
         List<ValidateFileName> lVfile = new List<ValidateFileName>();   // gen log
+        List<XcustSupplierSiteMstTbl> lSuppEmail = new List<XcustSupplierSiteMstTbl>();
         int cntErr = 0, cntFileErr = 0;   // gen log
 
         public ControlPO006(ControlMain cm)
@@ -74,6 +76,7 @@ namespace XCustPr
             xCSMTDB = new XcustSupplierMstTblDB(conn, Cm.initC);
             xCUMTDB = new XcustUomMstTblDB(conn, Cm.initC);
             xCVSMTDB = new XcustValueSetMstTblDB(conn, Cm.initC);
+            xCSSMTDB = new XcustSupplierSiteMstTblDB(conn, Cm.initC);
 
             xCPrTDB = new XcustPrTblDB(conn, Cm.initC);
             xCPoTDB = new XcustPoTblDB(conn, Cm.initC);
@@ -130,6 +133,7 @@ namespace XCustPr
             //dt006 = xCPrTDB.selectPRPO006GroupByVendorDeliveryDate();
             String buId = "";
             buId = xCBMTDB.selectIdActiveBuName(Cm.initC.BU_NAME);
+            Cm.GetConfigPO006();
             dt006 = xCPrTDB.selectPRPO006GroupByVendorDeliveryDate2(Cm.initC.Po006DeliveryDate, Cm.initC.PO006ReRun, buId);
             if (dt006.Rows.Count > 0)
             {
@@ -169,6 +173,18 @@ namespace XCustPr
                             vF.Message = "";
                             vF.recordError = "0";
                             lVfile.Add(vF);   // gen log
+                            DataTable dtSupp = new DataTable();
+                            String email = "";
+                            dtSupp = xCSSMTDB.SelectByVendorId(vendorId);
+                            XcustSupplierSiteMstTbl supp = new XcustSupplierSiteMstTbl();
+                            if (dtSupp.Rows.Count > 0)
+                            {
+                                supp.EMAIL_ADDRESS = dtSupp.Rows[0][xCSSMTDB.xCSSMT.EMAIL_ADDRESS].ToString();
+                                supp.filename = filename;
+                                supp.supp_name = dtSupp.Rows[0]["supplier_name"].ToString();
+                                lSuppEmail.Add(supp);
+                            }
+                            
                         }
                         else
                         {
@@ -413,11 +429,16 @@ namespace XCustPr
                 listXcUMT.Add(item);
             }
         }
+        public void sendEmailPO006()
+        {
+            foreach(XcustSupplierSiteMstTbl xcs in lSuppEmail)
+            {
+                sendEmailPO006(xcs.supp_name);
+            }
+            lSuppEmail.Clear();
+        }
         public void sendEmailPO006(String vendorName)
         {
-
-
-
             var fromAddress = new MailAddress(Cm.initC.EmailUsername, "");
             var toAddress = new MailAddress(Cm.initC.APPROVER_EMAIL, "To Name");
             //var toAddress2 = new MailAddress("amo@iceconsulting.co.th", "To Name");
@@ -431,10 +452,15 @@ namespace XCustPr
             string Body = System.IO.File.ReadAllText(Environment.CurrentDirectory + "\\" + "email_regis.html");
             Body = Body.Replace("#vendorName#", vendorName);
 
+            int port = 0;
+            int.TryParse(Cm.initC.EmailPort, out port);
+
             var smtp1 = new SmtpClient
             {
-                Host = "smtp.office365.com",
-                Port = 587,
+                //Host = "smtp.office365.com",
+                Host = Cm.initC.EmailHost,
+                //Port = 587,
+                Port = port,
                 EnableSsl = true,
                 DeliveryMethod = SmtpDeliveryMethod.Network,
                 Credentials = new NetworkCredential(fromAddress.Address, fromPassword),
@@ -443,7 +469,7 @@ namespace XCustPr
 
             var message = new MailMessage();
             message.From = fromAddress;
-            message.Subject = "Test send Email form PO006";
+            message.Subject = "PO006 "+ vendorName;
             message.To.Add(toAddress);
             //message.To.Add(toAddress2);
             message.To.Add(toAddress3);

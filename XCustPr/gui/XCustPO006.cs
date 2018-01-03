@@ -241,8 +241,9 @@ namespace XCustPr
 
             filePO = Cm.getFileinFolder(Cm.initC.PO006PathInitial);
             cPo006.processGetTempTableToValidate(lv1, this, pB1);
-            chkReRun.Checked = false;            
+            chkReRun.Checked = false;
 
+            cPo006.sendEmailPO006();
             //cPo006.processGetTempTableToValidate(lv1, this, pB1);
 
             //cPo006.processInsertTable(lv1, this, pB1);

@@ -761,6 +761,11 @@ namespace XCustPr
             //}
             //initC.Password = regE.getPassword();
         }
+        public void GetConfigPO006()
+        {
+            initC.PO006ReRun = iniFile.Read("PO006ReRun").Trim();
+            initC.Po006DeliveryDate = iniFile.Read("Po006DeliveryDate").Trim();
+        }
         /*
          * check qty ว่า data type ถูกต้องไหม
          * ที่ใช้ int.tryparse เพราะ ใน database เป็น decimal(18,0)

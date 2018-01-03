@@ -270,7 +270,7 @@ namespace XCustPr
             {
                 where = " and po.DELIVER_DATE = '" + date + "' ";
                 //where = "  "; //for test
-                //where = " and po.DELIVER_DATE = '2017-12-25' "; //for test
+                //where = " and po.DELIVER_DATE = '2017-12-31' "; //for test
             }
             if (rerun.Equals("Y"))
             {

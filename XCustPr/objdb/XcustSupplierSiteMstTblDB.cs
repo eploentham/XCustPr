@@ -9,7 +9,7 @@ namespace XCustPr
 {
     public class XcustSupplierSiteMstTblDB
     {
-        XcustSupplierSiteMstTbl xCSSMT;
+        public XcustSupplierSiteMstTbl xCSSMT;
         ConnectDB conn;
         private InitC initC;
 
@@ -194,6 +194,32 @@ namespace XCustPr
                 chk = vendorSPKId.Equals("") ? getVendorSiteCode(vendorSPKId) : "";
             }
             return chk;
+        }
+        public String getEmailByVendorId(String vendorId)
+        {
+            DataTable dt = new DataTable();
+            String chk = "";
+            String sql = "select " + xCSSMT.EMAIL_ADDRESS + " " +
+                "From " + xCSSMT.table + " " +
+                "Where " + xCSSMT.VENDOR_ID + "='" + vendorId + "'";
+            dt = conn.selectData(sql, "kfc_po");
+            if (dt.Rows.Count > 0)
+            {
+                chk = dt.Rows[0][xCSSMT.EMAIL_ADDRESS].ToString();
+            }
+            return chk;
+        }
+        public DataTable SelectByVendorId(String vendorId)
+        {
+            DataTable dt = new DataTable();
+            String chk = "";
+            String sql = "select ss." + xCSSMT.EMAIL_ADDRESS + ", s.supplier_name " +
+                "From " + xCSSMT.table + " ss " +
+                "Left join XCUST_SUPPLIER_MST_TBL s on ss."+xCSSMT.VENDOR_ID +" = s.VENDOR_ID " +
+                "Where ss." + xCSSMT.VENDOR_ID + "='" + vendorId + "'";
+            dt = conn.selectData(sql, "kfc_po");
+
+            return dt;
         }
     }
 }
