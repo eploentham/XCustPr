@@ -588,18 +588,9 @@ namespace XCustPr
 
                     // chechk charge account  Error PO009-024 : Not found Account Cdoe Combinations
                     String acc1 = "", acc2 = "", acc3 = "", acc4 = "", acc5 = "", acc6 = "", branchPlant="";
+                    branchPlant = row[xCCPITDB.xCCPIT.branch_plant].ToString();
                     //String acc1 = "", acc2 = "", acc3 = "", acc4 = "", acc5 = "", acc6 = "";
-                    DataTable dt2 = new DataTable();
-                    dt2 = xCPDITDB.selectChargeAcc(Cm.initC.ORGANIZATION_code);
-                    if (dt2.Rows.Count > 0)
-                    {
-                        acc1 = dt2.Rows[0]["account_seg1"].ToString();
-                        acc2 = dt2.Rows[0]["account_seg2"].ToString();
-                        acc3 = dt2.Rows[0]["account_seg3"].ToString();
-                        acc4 = dt2.Rows[0]["account_seg4"].ToString();
-                        acc5 = dt2.Rows[0]["account_seg5"].ToString();
-                        acc6 = dt2.Rows[0]["account_seg6"].ToString();
-                    }
+                    
                     //item.charge_account_segment1 = acc1;//ถาม
                     //item.charge_account_segment2 = row[xCCPITDB.xCCPIT.branch_plant].ToString();//ถาม
                     String ws = "", acc4_1 = "";
@@ -607,39 +598,87 @@ namespace XCustPr
                     {
                         //ws = processCallWebServiceChargeAcc3(row[xCCPITDB.xCCPIT.item_e1].ToString());
                         ws = WS;
+                        DataTable dtMR = new DataTable();
+                        dtMR = xCPDITDB.selectChargeAccMR(Cm.initC.ORGANIZATION_code);
+                        if (dtMR.Rows.Count > 0)
+                        {
+                            acc1 = dtMR.Rows[0]["account_seg1"].ToString();
+                            acc2 = dtMR.Rows[0]["account_seg2"].ToString();
+                            acc3 = dtMR.Rows[0]["account_seg3"].ToString();
+                            acc4 = dtMR.Rows[0]["account_seg4"].ToString();
+                            acc5 = dtMR.Rows[0]["account_seg5"].ToString();
+                            acc6 = dtMR.Rows[0]["account_seg6"].ToString();
+                        }
+                        if (!row[xCCPITDB.xCCPIT.project_code].ToString().Equals(""))
+                        {
+                            acc4_1 = row[xCCPITDB.xCCPIT.project_code].ToString();
+                        }
+                        else
+                        {
+                            acc4_1 = acc4;
+                        }
+                        String chk1 = "";
+
+                        chk1 = xCPDITDB.validateChargeAcc(Cm.initC.ORGANIZATION_code, acc1, branchPlant, ws, acc4_1, acc5, acc6);
+                        if (chk1.Equals("0"))
+                        {
+                            //vPP = new ValidatePrPo();
+                            //vPP.Filename = rowG[xCCPITDB.xCCPIT.file_name].ToString().Trim();
+                            //vPP.Message = "Error PO009-024 : Not found Account Cdoe Combinations ";
+                            //vPP.Validate = "row " + row1 + " supplier_code " + row[xCCPITDB.xCCPIT.supplier_code].ToString().Trim();
+                            //lVPr.Add(vPP);
+                            //cntErr++;
+
+                            xCCPITDB.updateErrorMessage(filename, rowNumber, "Error PO009-024 : Not found Account Code Combinations", requestId, "kfc_po", Cm.initC.PO008PathLog);
+                        }
+                    }
+                    else if (row[xCCPITDB.xCCPIT.item_e1].ToString().Equals("FA"))
+                    {
+                        ws = WS;
+                        DataTable dtFA = new DataTable();
+                        dtFA = xCPDITDB.selectChargeAccFA(Cm.initC.ORGANIZATION_code);
+                        if (dtFA.Rows.Count > 0)
+                        {
+                            acc1 = dtFA.Rows[0]["account_seg1"].ToString();
+                            acc2 = dtFA.Rows[0]["account_seg2"].ToString();
+                            acc3 = dtFA.Rows[0]["account_seg3"].ToString();
+                            acc4 = dtFA.Rows[0]["account_seg4"].ToString();
+                            acc5 = dtFA.Rows[0]["account_seg5"].ToString();
+                            acc6 = dtFA.Rows[0]["account_seg6"].ToString();
+                        }
+                        if (!row[xCCPITDB.xCCPIT.project_code].ToString().Equals(""))
+                        {
+                            acc4_1 = row[xCCPITDB.xCCPIT.project_code].ToString();
+                        }
+                        else
+                        {
+                            acc4_1 = acc4;
+                        }
+                        String chk1 = "";
+                        chk1 = xCPDITDB.validateChargeAcc(Cm.initC.ORGANIZATION_code, acc1, branchPlant, ws, acc4_1, acc5, acc6);
+                        int chk2 = 0;
+                        chk2 = int.Parse(chk1);
+                        if (chk2>1)
+                        {
+                            xCCPITDB.updateErrorMessage(filename, rowNumber, "Error PO008-025 : Asset Category account have morethan one rows", requestId, "kfc_po", Cm.initC.PO008PathLog);
+                        }
+                        else if (chk2 == 0)
+                        {
+                            xCCPITDB.updateErrorMessage(filename, rowNumber, "Error PO008-026 : Not found Asset Category account ", requestId, "kfc_po", Cm.initC.PO008PathLog);
+                        }
                     }
                     else
                     {
-                        ws = acc3;
+                        
                     }
-                    if (!row[xCCPITDB.xCCPIT.project_code].ToString().Equals(""))
-                    {
-                        acc4_1 = row[xCCPITDB.xCCPIT.project_code].ToString();
-                    }
-                    else
-                    {
-                        acc4_1 = acc4;
-                    }
+                    
 
                     //item.charge_account_segment3 = ws;//ถาม
                     //item.charge_account_segment4 = acc4_1;//ถาม
                     //item.charge_account_segment5 = acc5;//ถาม
                     //item.charge_account_segment6 = acc6;//ถาม
 
-                    String chk1 = "";
-                    branchPlant = row[xCCPITDB.xCCPIT.branch_plant].ToString();
-                    chk1 = xCPDITDB.validateChargeAcc(Cm.initC.ORGANIZATION_code, acc1, branchPlant, ws, acc4_1, acc5, acc6);
-                    if (chk1.Equals("0"))
-                    {
-                        //vPP = new ValidatePrPo();
-                        //vPP.Filename = rowG[xCCPITDB.xCCPIT.file_name].ToString().Trim();
-                        //vPP.Message = "Error PO009-024 : Not found Account Cdoe Combinations ";
-                        //vPP.Validate = "row " + row1 + " supplier_code " + row[xCCPITDB.xCCPIT.supplier_code].ToString().Trim();
-                        //lVPr.Add(vPP);
-                        //cntErr++;
-
-                        xCCPITDB.updateErrorMessage(filename, rowNumber, "Error PO009-024 : Not found Account Code Combinations", requestId, "kfc_po", Cm.initC.PO008PathLog);
-                    }
+                    
 
 
                     String vendorSiteCode = "";
@@ -1139,7 +1178,7 @@ namespace XCustPr
             item.requester = row[xCCPITDB.xCCPIT.admin].ToString();
 
             DataTable dt = new DataTable();
-            dt = xCPDITDB.selectChargeAcc(Cm.initC.ORGANIZATION_code);
+            dt = xCPDITDB.selectChargeAccMR(Cm.initC.ORGANIZATION_code);
             if (dt.Rows.Count > 0)
             {
                 acc1 = dt.Rows[0]["account_seg1"].ToString();

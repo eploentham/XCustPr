@@ -73,7 +73,7 @@ namespace XCustPr
             }
             return chk;
         }
-        public DataTable selectChargeAcc(String orgId)
+        public DataTable selectChargeAccMR(String orgId)
         {
             DataTable dt = new DataTable();
             String sql = "select org.material_account_ccid "+
@@ -112,6 +112,21 @@ namespace XCustPr
                 chk = dt.Rows[0][0].ToString().Trim();
             }
             return chk;
+        }
+        public DataTable selectChargeAccFA(String orgCode)
+        {
+            DataTable dt = new DataTable();
+            String sql = "select gl.segment1,gl.segment2,gl.segment3,gl.segment4,gl.segment5,gl.segment6 " +
+                "from xcust_item_mst_tbl msi " +
+                ",xcust_gl_code_combinations_tbl gl " +
+                ",xcust_organization_mst_tbl org " +
+                " where msi.asset_category_code = " +
+                " and msi.organization_id = org.organization_id " +
+                " and org.organization_code = '"+ orgCode + "' " +
+                " and gl.CHART_OF_ACCOUNTS_ID = org.CHART_OF_ACCOUNTS_ID " +
+                " and msi.account_code_combination_id = gl.code_combination_id ";
+            dt = conn.selectData(sql, "kfc_po");
+            return dt;
         }
         public String insert(XcustPoDistIntTbl p, String pathLog)
         {
