@@ -83,7 +83,7 @@ namespace XCustPr
         public String PO007PathLog = "";
 
         public String PO002PathInitial = "", PO002PathDestinaion = "", PO002PathLog = "";
-        public String PO006PathInitial = "", PO006ReRun="", Po006DeliveryDate="";
+        public String PO006PathInitial = "", PO006ReRun="", PO006DeliveryDate="", PO006ReRunCreationDate = "";
         public String PO006PathLog = "";
 
         public String ExtractZipPathZipExtractRead = "", ExtractZipPathZipExtract="", ExtractZipPathLog = "";

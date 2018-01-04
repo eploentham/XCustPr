@@ -13,6 +13,10 @@ using System.Windows.Forms;
 
 namespace XCustPr
 {
+    /*
+     * 1. 61-01-04 rerun -> create_date
+     * 
+     */ 
     public class ControlPO006
     {
         static String fontName = "Microsoft Sans Serif";        //standard
@@ -134,7 +138,7 @@ namespace XCustPr
             String buId = "";
             buId = xCBMTDB.selectIdActiveBuName(Cm.initC.BU_NAME);
             Cm.GetConfigPO006();
-            dt006 = xCPrTDB.selectPRPO006GroupByVendorDeliveryDate2(Cm.initC.Po006DeliveryDate, Cm.initC.PO006ReRun, buId);
+            dt006 = xCPrTDB.selectPRPO006GroupByVendorDeliveryDate2(Cm.initC.PO006DeliveryDate, Cm.initC.PO006ReRunCreationDate, Cm.initC.PO006ReRun, buId);
             if (dt006.Rows.Count > 0)
             {
                 pB1.Minimum = 0;
@@ -191,12 +195,12 @@ namespace XCustPr
                             ValidateFileName vF = new ValidateFileName();   // gen log
                             vF.fileName = "PO006 before write file ";   // gen log
                             vF.recordTotal = "1";   // gen log
-                            vF.Message = "(No Data DeliveryDate = " + Cm.initC.Po006DeliveryDate + " SUPPLIER_NUMBER = " + row["SUPPLIER_NUMBER"].ToString() + " re run = " + Cm.initC.PO006ReRun + ")";
+                            vF.Message = "(No Data DeliveryDate = " + Cm.initC.PO006DeliveryDate + " SUPPLIER_NUMBER = " + row["SUPPLIER_NUMBER"].ToString() + " re run = " + Cm.initC.PO006ReRun + ")";
                             vF.recordError = "1";
 
                             vPP = new ValidatePrPo();
                             vPP.Filename = "PO006";
-                            vPP.Message = "(No Data DeliveryDate = " + Cm.initC.Po006DeliveryDate + " SUPPLIER_NUMBER = " + row["SUPPLIER_NUMBER"].ToString() + " re run = " + Cm.initC.PO006ReRun + ")";
+                            vPP.Message = "(No Data DeliveryDate = " + Cm.initC.PO006DeliveryDate + " SUPPLIER_NUMBER = " + row["SUPPLIER_NUMBER"].ToString() + " re run = " + Cm.initC.PO006ReRun + ")";
                             vPP.Validate = "Error PO006-004: No Data Found "+ vPP.Message;
                             lVPr.Add(vPP);
                             cntErr++;       // gen log
@@ -307,7 +311,10 @@ namespace XCustPr
         {
             //var file = Cm.initC.PO006PathInitial + "S" + vendor_id+"_R" + delivery_date.Replace("-","") + ".KFC";     //60-12-25
             //var file = Cm.initC.PO006PathInitial + vendor_id + "_R" + delivery_date.Replace("-", "") + ".KFC";
-            var file = Cm.initC.PO006PathInitial + attribute2 + "_R" + delivery_date.Replace("-", "") + ".KFC";
+            String date = "";
+            date = delivery_date.Length >= 10 ? delivery_date.Substring(0,10) : delivery_date;
+
+            var file = Cm.initC.PO006PathInitial + attribute2 + "_R" + date.Replace("-", "") + ".KFC";
             String Org = xCDOMTDB.selectActiveByCode(Cm.initC.ORGANIZATION_code.Trim());
             String deliveryDate1 = "";
             using (var stream = File.CreateText(file))
@@ -429,16 +436,18 @@ namespace XCustPr
                 listXcUMT.Add(item);
             }
         }
-        public void sendEmailPO006()
+        public void sendEmailPO006(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
         {
             foreach(XcustSupplierSiteMstTbl xcs in lSuppEmail)
             {
-                sendEmailPO006(xcs.supp_name);
+                sendEmailPO006(xcs.supp_name, xcs.filename, lv1,form1,pB1);
             }
             lSuppEmail.Clear();
         }
-        public void sendEmailPO006(String vendorName)
+        public void sendEmailPO006(String vendorName, String filename,MaterialListView lv1, Form form1, MaterialProgressBar pB1)
         {
+            addListView("sendEmailPO006 " + vendorName, "Validate", lv1, form1);
+
             var fromAddress = new MailAddress(Cm.initC.EmailUsername, "");
             var toAddress = new MailAddress(Cm.initC.APPROVER_EMAIL, "To Name");
             //var toAddress2 = new MailAddress("amo@iceconsulting.co.th", "To Name");
@@ -447,8 +456,8 @@ namespace XCustPr
             String fromPassword = Cm.initC.EmailPassword;
             const string subject = "test";
             DataTable dt006;
-            dt006 = xCPrTDB.selectPRPO006GroupByVendor();
-            if (dt006.Rows.Count <= 0) return;
+            //dt006 = xCPrTDB.selectPRPO006GroupByVendor();
+            //if (dt006.Rows.Count <= 0) return;
             string Body = System.IO.File.ReadAllText(Environment.CurrentDirectory + "\\" + "email_regis.html");
             Body = Body.Replace("#vendorName#", vendorName);
 
@@ -484,30 +493,30 @@ namespace XCustPr
             AlternateView htmlView = AlternateView.CreateAlternateViewFromString(Body, null, "text/html");
             htmlView.LinkedResources.Add(LinkedImage);
             message.AlternateViews.Add(htmlView);            
-            if (dt006.Rows.Count > 0)
-            {
-                foreach(DataRow row in dt006.Rows)
-                {
-                    String[] filePO;
-                    if (row["attribute2"].ToString().Equals(""))
-                    {
-                        continue;
-                    }
-                    String attr = "";
-                    attr = row["attribute2"].ToString();
-                    filePO = Cm.getFileinFolder(Cm.initC.PO006PathInitial, row["attribute2"].ToString());
-                    if (filePO.Length > 0)
-                    {
-                        foreach (string aa in filePO)
-                        {
+            //if (dt006.Rows.Count > 0)
+            //{
+                //foreach(DataRow row in dt006.Rows)
+                //{
+                    //String[] filePO;
+                    //if (row["attribute2"].ToString().Equals(""))
+                    //{
+                    //    continue;
+                    //}
+                    //String attr = "";
+                    //attr = row["attribute2"].ToString();
+                    //filePO = Cm.getFileinFolder(Cm.initC.PO006PathInitial, row["attribute2"].ToString());
+                    //if (filePO.Length > 0)
+                    //{
+                        //foreach (string aa in filePO)
+                        //{
                             //MessageBox.Show("Attachment " + aa, "");
                             Attachment attachment;
-                            attachment = new System.Net.Mail.Attachment(aa);
+                            attachment = new System.Net.Mail.Attachment(Cm.initC.PO006PathInitial+filename);
                             message.Attachments.Add(attachment);
-                        }
-                    }
-                }
-            }
+                        //}
+                    //}
+                //}
+            //}
             message.Body = Body;
             smtp1.Send(message);
         }

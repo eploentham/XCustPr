@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 
 namespace XCustPr
 {
+    /*
+     * 1. 61-01-04 rerun -> create_date
+     * 
+     */
     public class XcustPrTblDB
     {
         public XcustPrTbl xCPR;
@@ -250,7 +254,7 @@ namespace XCustPr
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
-        public DataTable selectPRPO006GroupByVendorDeliveryDate2(String delivery_date, String rerun, String buId)
+        public DataTable selectPRPO006GroupByVendorDeliveryDate2(String delivery_date, String creation_date, String rerun, String buId)
         {
             DataTable dt = new DataTable();
             String sql = "", where = "", date = "", whereRerun = "", whereId="";
@@ -262,25 +266,29 @@ namespace XCustPr
             {
                 date = delivery_date;
             }
+
             if (delivery_date.Equals(""))
             {
                 where = " ";
             }
             else
             {
-                where = " and po.DELIVER_DATE = '" + date + "' ";
+                where = " and po.CREATION_DATE = '" + date + "' ";
                 //where = "  "; //for test
-                //where = " and po.DELIVER_DATE = '2017-12-31' "; //for test
+                //where = " and po.CREATION_DATE = '2017-12-31' "; //for test
             }
+
             if (rerun.Equals("Y"))
             {
                 whereRerun = " and po.GEN_OUTBOUD_FLAG = 'Y' ";
+                where = " and po.CREATION_DATE >= '" + creation_date + " 00:00' and po.CREATION_DATE <= '"+creation_date+" 23:59'";       //+1
             }
             else
             {
                 //whereRerun = " and po.GEN_OUTBOUD_FLAG = 'N' ";
                 whereRerun = " and po.GEN_OUTBOUD_FLAG is null ";
             }
+
             if (buId.Equals(""))
             {
                 whereId = " ";
@@ -304,7 +312,17 @@ namespace XCustPr
             //"   " + whereRerun+ where+
             //" GROUP BY po.VENDOR_ID, t.SUPPLIER_NUMBER,po.attribute2, po.DELIVER_DATE ";
 
-            sql = "Select  t.SUPPLIER_NUMBER, po.DELIVER_DATE as DELIVERY_DATE ,po.VENDOR_ID,t.attribute2 " +
+            //sql = "Select  t.SUPPLIER_NUMBER, po.DELIVER_DATE as DELIVERY_DATE ,po.VENDOR_ID,t.attribute2 " +
+            //"from xcust_PO_TBL po " +
+            //",XCUST_SUPPLIER_MST_TBL t  " +
+            //", XCUST_PR_TBL pr  " +
+            //"where  po.VENDOR_ID = t.VENDOR_ID  " + " " +
+            //" and t.ATTRIBUTE1 = 'Y' and   po.REQUISITION_HEADER_ID = PR.REQUISITION_HEADER_ID and po.REQUISITION_LINE_ID = PR.REQUISITION_LINE_ID and pr.ATTRIBUTE1 = 'MMX'  " +
+            ////" and po.GEN_OUTBOUD_FLAG = ''   and po.DELIVER_DATE is not null " +
+            //"   " + whereRerun + where + whereId +
+            //" GROUP BY po.VENDOR_ID, t.SUPPLIER_NUMBER,t.attribute2, po.DELIVER_DATE ";
+
+            sql = "Select  t.SUPPLIER_NUMBER, substring(po.CREATION_DATE,1,10) as DELIVERY_DATE ,po.VENDOR_ID,t.attribute2 " +
             "from xcust_PO_TBL po " +
             ",XCUST_SUPPLIER_MST_TBL t  " +
             ", XCUST_PR_TBL pr  " +
@@ -312,7 +330,7 @@ namespace XCustPr
             " and t.ATTRIBUTE1 = 'Y' and   po.REQUISITION_HEADER_ID = PR.REQUISITION_HEADER_ID and po.REQUISITION_LINE_ID = PR.REQUISITION_LINE_ID and pr.ATTRIBUTE1 = 'MMX'  " +
             //" and po.GEN_OUTBOUD_FLAG = ''   and po.DELIVER_DATE is not null " +
             "   " + whereRerun + where + whereId +
-            " GROUP BY po.VENDOR_ID, t.SUPPLIER_NUMBER,t.attribute2, po.DELIVER_DATE ";
+            " GROUP BY po.VENDOR_ID, t.SUPPLIER_NUMBER,t.attribute2, substring(po.CREATION_DATE,1,10) ";
             dt = conn.selectData(sql, "kfc_po");
             return dt;
         }
@@ -380,7 +398,8 @@ namespace XCustPr
             }
             else
             {
-                where = " and po.DELIVER_DATE = '" + delivery_date + "' ";
+                //where = " and po.DELIVER_DATE = '" + delivery_date + "' ";
+                where = " and po.CREATION_DATE >= '" + delivery_date + " 00:00' and po.CREATION_DATE <= '"+delivery_date+" 23:59'";       //+1
                 //where = "  ";
             }
             //if (rerun.Equals("Y"))

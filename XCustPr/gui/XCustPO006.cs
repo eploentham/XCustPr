@@ -23,7 +23,7 @@ namespace XCustPr
         MaterialProgressBar pB1;
 
         CheckBox chkReRun, chkDeliveryDate;
-        DateTimePicker dtpDeliveryDate;
+        DateTimePicker dtpCreationDate;
 
         Color cTxtL, cTxtE, cForm;
 
@@ -80,7 +80,9 @@ namespace XCustPr
                 lv1.Items.Add(AddToList((i++), aa, ""));
                 //lv1.Items.s
             }
-            dtpDeliveryDate.Enabled = false;
+            dtpCreationDate.Enabled = false;
+            btnEmail.Visible = false;
+            //dtpCreateDate.Enabled = false;
         }
         private void disableBtn()
         {
@@ -140,24 +142,34 @@ namespace XCustPr
             chkReRun.Location = new System.Drawing.Point(grd3, line1+10);
             chkReRun.Click += ChkReRun_Click;
 
-            chkDeliveryDate = new CheckBox();
-            chkDeliveryDate.Font = cPo006.fV1B;
-            chkDeliveryDate.Text = "ระบุวันที่ ";
-            chkDeliveryDate.Size = new System.Drawing.Size(80, ControlHeight);
-            Controls.Add(chkDeliveryDate);
-            chkDeliveryDate.Location = new System.Drawing.Point(grd4, line1+10);
-            chkDeliveryDate.Click += ChkDeliveryDate_Click;
+            //chkDeliveryDate = new CheckBox();
+            //chkDeliveryDate.Font = cPo006.fV1B;
+            //chkDeliveryDate.Text = "ระบุวันที่ ";
+            //chkDeliveryDate.Size = new System.Drawing.Size(80, ControlHeight);
+            //Controls.Add(chkDeliveryDate);
+            //chkDeliveryDate.Location = new System.Drawing.Point(grd4, line1+10);
+            //chkDeliveryDate.Click += ChkDeliveryDate_Click;
 
-            dtpDeliveryDate = new DateTimePicker();
+            dtpCreationDate = new DateTimePicker();
             //dtpDeliveryDate = new MaterialFlatButton();
-            dtpDeliveryDate.Font = cPo006.fV1;
+            dtpCreationDate.Font = cPo006.fV1;
             //btnWebService.Text = "3. Web Service";
-            dtpDeliveryDate.Size = new System.Drawing.Size(120, ControlHeight);
-            Controls.Add(dtpDeliveryDate);
-            dtpDeliveryDate.Location = new System.Drawing.Point(grd4+chkDeliveryDate.Width+5, line1+10);
-            dtpDeliveryDate.Format = DateTimePickerFormat.Short;
-            dtpDeliveryDate.ValueChanged += DtpDeliveryDate_ValueChanged;
+            dtpCreationDate.Size = new System.Drawing.Size(120, ControlHeight);
+            Controls.Add(dtpCreationDate);
+            dtpCreationDate.Location = new System.Drawing.Point(grd3+chkReRun.Width+5, line1+10);
+            dtpCreationDate.Format = DateTimePickerFormat.Short;
+            dtpCreationDate.ValueChanged += DtpCreateDate_ValueChanged;
             //btnWebService.Click += btnWebService_Click;
+
+            //dtpCreateDate = new DateTimePicker();
+            ////dtpDeliveryDate = new MaterialFlatButton();
+            //dtpCreateDate.Font = cPo006.fV1;
+            ////btnWebService.Text = "3. Web Service";
+            //dtpCreateDate.Size = new System.Drawing.Size(120, ControlHeight);
+            //Controls.Add(dtpCreateDate);
+            //dtpCreateDate.Location = new System.Drawing.Point(grd3, line2 + 10);
+            //dtpCreateDate.Format = DateTimePickerFormat.Short;
+            //dtpCreateDate.ValueChanged += DtpCreateDate_ValueChanged; ;
 
             //btnFTP = new MaterialFlatButton();
             //btnFTP.Font = cPo006.fV1;
@@ -193,43 +205,66 @@ namespace XCustPr
             Controls.Add(lv1);
         }
 
-        private void DtpDeliveryDate_ValueChanged(object sender, EventArgs e)
+        //private void DtpCreateDate_ValueChanged(object sender, EventArgs e)
+        //{
+        //    //throw new NotImplementedException();
+        //    setDtpCreateDate();
+        //}
+
+        private void DtpCreateDate_ValueChanged(object sender, EventArgs e)
         {
             //throw new NotImplementedException();
-            setDtpDelivery();
+            setDtpCreateDate();
         }
 
-        private void setDtpDelivery()
+        private void setDtpCreateDate()
         {
             String year = "", month = "", day = "";
-            year = dtpDeliveryDate.Value.Year.ToString();
-            month = dtpDeliveryDate.Value.Month.ToString("00");
-            day = dtpDeliveryDate.Value.Day.ToString("00");
-            Cm.setConfig("Po006DeliveryDate", year + "-" + month + "-" + day);
+            year = dtpCreationDate.Value.Year.ToString();
+            month = dtpCreationDate.Value.Month.ToString("00");
+            day = dtpCreationDate.Value.Day.ToString("00");
+            Cm.setConfig("PO006ReRunCreationDate", year + "-" + month + "-" + day);
         }
-        private void ChkDeliveryDate_Click(object sender, EventArgs e)
-        {
-            //throw new NotImplementedException();
-            if (chkDeliveryDate.Checked)
-            {
-                dtpDeliveryDate.Enabled = true;
-                setDtpDelivery();
-            }
-            else
-            {
-                dtpDeliveryDate.Enabled = false;
-            }
-        }
+        //private void setDtpCreateDate()
+        //{
+        //    String year = "", month = "", day = "";
+        //    year = dtpCreateDate.Value.Year.ToString();
+        //    month = dtpCreateDate.Value.Month.ToString("00");
+        //    day = dtpCreateDate.Value.Day.ToString("00");
+        //    Cm.setConfig("PO006ReRunCreateDate", year + "-" + month + "-" + day);
+        //}
+        //private void ChkDeliveryDate_Click(object sender, EventArgs e)
+        //{
+        //    //throw new NotImplementedException();
+        //    if (chkDeliveryDate.Checked)
+        //    {
+        //        dtpCreationDate.Enabled = true;
+        //        setDtpCreateDate();
+        //    }
+        //    else
+        //    {
+        //        dtpCreationDate.Enabled = false;
+        //    }
+        //}
 
         private void ChkReRun_Click(object sender, EventArgs e)
         {
             //throw new NotImplementedException();
             if (chkReRun.Checked)
             {
+                dtpCreationDate.Enabled = true;
+                String year = "", month = "", day = "";
+                year = dtpCreationDate.Value.Year.ToString();
+                month = dtpCreationDate.Value.Month.ToString("00");
+                day = dtpCreationDate.Value.Day.ToString("00");
+
                 Cm.setConfig("PO006ReRun", "Y");
+                Cm.setConfig("PO006ReRunCreateDate", year + "-" + month + "-" + day);
+
             }
             else
             {
+                dtpCreationDate.Enabled = false;
                 Cm.setConfig("PO006ReRun", "N");
             }
         }
@@ -243,7 +278,7 @@ namespace XCustPr
             cPo006.processGetTempTableToValidate(lv1, this, pB1);
             chkReRun.Checked = false;
 
-            cPo006.sendEmailPO006();
+            cPo006.sendEmailPO006(lv1, this, pB1);
             //cPo006.processGetTempTableToValidate(lv1, this, pB1);
 
             //cPo006.processInsertTable(lv1, this, pB1);
@@ -262,7 +297,7 @@ namespace XCustPr
         }
         private void btnEmail_Click(object sender, EventArgs e)
         {
-            cPo006.sendEmailPO006("Test Vendor");
+            //cPo006.sendEmailPO006("Test Vendor");
         }
         private void txtFileName_Leave(object sender, EventArgs e)
         {

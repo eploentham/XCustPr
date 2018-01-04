@@ -726,7 +726,8 @@ namespace XCustPr
 
             initC.PO006PathInitial = iniFile.Read("PO006PathInitial").Trim();
             initC.PO006ReRun = iniFile.Read("PO006ReRun").Trim();
-            initC.Po006DeliveryDate = iniFile.Read("Po006DeliveryDate").Trim();
+            initC.PO006DeliveryDate = iniFile.Read("PO006DeliveryDate").Trim();
+            initC.PO006ReRunCreationDate = iniFile.Read("PO006ReRunCreationDate").Trim();
 
             initC.ExtractZipPathZipExtractRead = iniFile.Read("ExtractZipPathZipExtractRead").Trim();
             initC.ExtractZipPathZipExtract = iniFile.Read("ExtractZipPathZipExtract").Trim();
@@ -764,7 +765,8 @@ namespace XCustPr
         public void GetConfigPO006()
         {
             initC.PO006ReRun = iniFile.Read("PO006ReRun").Trim();
-            initC.Po006DeliveryDate = iniFile.Read("Po006DeliveryDate").Trim();
+            initC.PO006DeliveryDate = iniFile.Read("PO006DeliveryDate").Trim();
+            initC.PO006ReRunCreationDate = iniFile.Read("PO006ReRunCreationDate").Trim();
         }
         /*
          * check qty ว่า data type ถูกต้องไหม
