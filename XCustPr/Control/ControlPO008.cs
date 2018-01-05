@@ -167,11 +167,12 @@ namespace XCustPr
             //vPP.Message = " PO001-009 : Invalid Deliver-to Organization";
             //vPP.Validate = "";
             //lVPr.Add(vPP);
-
+            pB1.Show();
             foreach (string filename in filePOProcess)
             {
                 ValidateFileName vFexcel = new ValidateFileName();   // gen log
                 List<ValidatePrPo> lVPrExcel = new List<ValidatePrPo>();   // gen log
+                addListView("อ่าน Excel File " + filename, "", lv1, form1);
                 List<String> cedar = re.ReadExcelPO008(filename, pB1, vFexcel);
                 if (vFexcel.Message.Equals(""))
                 {
@@ -195,6 +196,7 @@ namespace XCustPr
                     //xCCPITDB.updateErrorMessage(filename, rowNumber, "Error PO008-006 : Invalid data type amt", requestId, "kfc_po", Cm.initC.PO008PathLog);
                 }
             }
+            pB1.Hide();
             //Cm.logProcess("xcustpo008", lVPr, dateStart, lVfile);   // gen log
             return requestId;
         }
@@ -587,10 +589,10 @@ namespace XCustPr
                     }
 
                     // chechk charge account  Error PO009-024 : Not found Account Cdoe Combinations
-                    String acc1 = "", acc2 = "", acc3 = "", acc4 = "", acc5 = "", acc6 = "", branchPlant="";
+                    String acc1 = "", acc2 = "", acc3 = "", acc4 = "", acc5 = "", acc6 = "", branchPlant = "";
                     branchPlant = row[xCCPITDB.xCCPIT.branch_plant].ToString();
                     //String acc1 = "", acc2 = "", acc3 = "", acc4 = "", acc5 = "", acc6 = "";
-                    
+
                     //item.charge_account_segment1 = acc1;//ถาม
                     //item.charge_account_segment2 = row[xCCPITDB.xCCPIT.branch_plant].ToString();//ถาม
                     String ws = "", acc4_1 = "";
@@ -632,7 +634,7 @@ namespace XCustPr
                             xCCPITDB.updateErrorMessage(filename, rowNumber, "Error PO009-024 : Not found Account Code Combinations", requestId, "kfc_po", Cm.initC.PO008PathLog);
                         }
                     }
-                    else if (row[xCCPITDB.xCCPIT.item_e1].ToString().Equals("FA"))
+                    else //if (row[xCCPITDB.xCCPIT.item_e1].ToString().Equals("FA"))
                     {
                         ws = WS;
                         DataTable dtFA = new DataTable();
@@ -658,7 +660,7 @@ namespace XCustPr
                         chk1 = xCPDITDB.validateChargeAcc(Cm.initC.ORGANIZATION_code, acc1, branchPlant, ws, acc4_1, acc5, acc6);
                         int chk2 = 0;
                         chk2 = int.Parse(chk1);
-                        if (chk2>1)
+                        if (chk2 > 1)
                         {
                             xCCPITDB.updateErrorMessage(filename, rowNumber, "Error PO008-025 : Asset Category account have morethan one rows", requestId, "kfc_po", Cm.initC.PO008PathLog);
                         }
@@ -667,18 +669,15 @@ namespace XCustPr
                             xCCPITDB.updateErrorMessage(filename, rowNumber, "Error PO008-026 : Not found Asset Category account ", requestId, "kfc_po", Cm.initC.PO008PathLog);
                         }
                     }
-                    else
-                    {
-                        
-                    }
                     
+
 
                     //item.charge_account_segment3 = ws;//ถาม
                     //item.charge_account_segment4 = acc4_1;//ถาม
                     //item.charge_account_segment5 = acc5;//ถาม
                     //item.charge_account_segment6 = acc6;//ถาม
 
-                    
+
 
 
                     String vendorSiteCode = "";

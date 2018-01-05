@@ -34,6 +34,7 @@ namespace XCustPr
 
             List<String> result = new List<String>();
             Microsoft.Office.Interop.Excel.Application excelapp = new Microsoft.Office.Interop.Excel.Application();
+            //Thread.Sleep(500);
             excelapp.Visible = false;
             try
             {
@@ -63,7 +64,6 @@ namespace XCustPr
                     {
                         continue;
                     }
-                    
 
                     PO_NO = worksheet.Cells[i, colPO_NO].value != null ? String.Concat(worksheet.Cells[i, colPO_NO].value) : "";
                     QT_NO = worksheet.Cells[i, colQT_NO].value != null ? String.Concat(worksheet.Cells[i, colQT_NO].value) : "";
@@ -105,7 +105,7 @@ namespace XCustPr
 
                     result.Add(txt);
                 }
-                Thread.Sleep(2000);
+                Thread.Sleep(500);
                 workbook.Close(true, null, null);
             }
             catch (Exception ex)
