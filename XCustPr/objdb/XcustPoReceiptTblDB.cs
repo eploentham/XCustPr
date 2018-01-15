@@ -220,6 +220,70 @@ namespace XCustPr
                 //p.RowNumber = selectMaxRowNumber(p.YearId);
                 //p.Active = "1";
                 String last_update_by = "0", creation_by = "0";
+
+                p.VENDOR_ID = p.VENDOR_ID.Equals("") ? "null" : p.VENDOR_ID;
+                p.VENDOR_SITE_ID = p.VENDOR_SITE_ID.Equals("") ? "null" : p.VENDOR_SITE_ID;
+                p.ORGANIZATION_ID = p.ORGANIZATION_ID.Equals("") ? "null" : p.ORGANIZATION_ID;
+                p.SHIP_TO_LOCATION_ID = p.SHIP_TO_LOCATION_ID.Equals("") ? "null" : p.SHIP_TO_LOCATION_ID;
+                p.REQUEST_ID = p.REQUEST_ID.Equals("") ? "null" : p.REQUEST_ID;
+                p.GROSS_WEIGHT = p.GROSS_WEIGHT.Equals("") ? "null" : p.GROSS_WEIGHT;
+                p.NET_WEIGHT = p.NET_WEIGHT.Equals("") ? "null" : p.NET_WEIGHT;
+                p.NET_WEIGHT_UOM_CODE = p.NET_WEIGHT_UOM_CODE.Equals("") ? "null" : p.NET_WEIGHT_UOM_CODE;
+                p.INVOICE_AMOUNT = p.INVOICE_AMOUNT.Equals("") ? "null" : p.INVOICE_AMOUNT;
+                p.TAX_AMOUNT = p.TAX_AMOUNT.Equals("") ? "null" : p.TAX_AMOUNT;
+                p.FREIGHT_AMOUNT = p.FREIGHT_AMOUNT.Equals("") ? "null" : p.FREIGHT_AMOUNT;
+                p.CONVERSION_RATE = p.CONVERSION_RATE.Equals("") ? "null" : p.CONVERSION_RATE;
+                p.PAYMENT_TERMS_ID = p.PAYMENT_TERMS_ID.Equals("") ? "null" : p.PAYMENT_TERMS_ID;
+                p.SHIP_TO_ORG_ID = p.SHIP_TO_ORG_ID.Equals("") ? "null" : p.SHIP_TO_ORG_ID;
+                p.CUSTOMER_ID = p.CUSTOMER_ID.Equals("") ? "null" : p.CUSTOMER_ID;
+                p.CUSTOMER_SITE_ID = p.CUSTOMER_SITE_ID.Equals("") ? "null" : p.CUSTOMER_SITE_ID;
+                p.REMIT_TO_SITE_ID = p.REMIT_TO_SITE_ID.Equals("") ? "null" : p.REMIT_TO_SITE_ID;
+                p.SHIP_FROM_LOCATION_ID = p.SHIP_FROM_LOCATION_ID.Equals("") ? "null" : p.SHIP_FROM_LOCATION_ID;
+                p.RMA_BU_ID = p.RMA_BU_ID.Equals("") ? "null" : p.RMA_BU_ID;
+                p.HEADER_INTERFACE_ID = p.HEADER_INTERFACE_ID.Equals("") ? "null" : p.HEADER_INTERFACE_ID;
+                p.SHIPMENT_LINE_ID = p.SHIPMENT_LINE_ID.Equals("") ? "null" : p.SHIPMENT_LINE_ID;
+                p.LINE_NUM = p.LINE_NUM.Equals("") ? "null" : p.LINE_NUM;
+                p.CATEGORY_ID = p.CATEGORY_ID.Equals("") ? "null" : p.CATEGORY_ID;
+                p.QUANTITY_SHIPPED = p.QUANTITY_SHIPPED.Equals("") ? "null" : p.QUANTITY_SHIPPED;
+                p.QUANTITY_RECEIVED = p.QUANTITY_RECEIVED.Equals("") ? "null" : p.QUANTITY_RECEIVED;
+                p.QUANTITY_DELIVERED = p.QUANTITY_DELIVERED.Equals("") ? "null" : p.QUANTITY_DELIVERED;
+                p.QUANTITY_RETURNED = p.QUANTITY_RETURNED.Equals("") ? "null" : p.QUANTITY_RETURNED;
+                p.QUANTITY_ACCEPTED = p.QUANTITY_ACCEPTED.Equals("") ? "null" : p.QUANTITY_ACCEPTED;
+                p.QUANTITY_REJECTED = p.QUANTITY_REJECTED.Equals("") ? "null" : p.QUANTITY_REJECTED;
+                p.ITEM_ID = p.ITEM_ID.Equals("") ? "null" : p.ITEM_ID;
+                p.PO_HEADER_ID = p.PO_HEADER_ID.Equals("") ? "null" : p.PO_HEADER_ID;
+                p.PO_LINE_ID = p.PO_LINE_ID.Equals("") ? "null" : p.PO_LINE_ID;
+                p.PO_LINE_LOCATION_ID = p.PO_LINE_LOCATION_ID.Equals("") ? "null" : p.PO_LINE_LOCATION_ID;
+                p.PO_DISTRIBUTION_ID = p.PO_DISTRIBUTION_ID.Equals("") ? "null" : p.PO_DISTRIBUTION_ID;
+                p.REQUISITION_LINE_ID = p.REQUISITION_LINE_ID.Equals("") ? "null" : p.REQUISITION_LINE_ID;
+                p.REQ_DISTRIBUTION_ID = p.REQ_DISTRIBUTION_ID.Equals("") ? "null" : p.REQ_DISTRIBUTION_ID;
+                p.FROM_ORGANIZATION_ID = p.FROM_ORGANIZATION_ID.Equals("") ? "null" : p.FROM_ORGANIZATION_ID;
+                p.TO_ORGANIZATION_ID = p.TO_ORGANIZATION_ID.Equals("") ? "null" : p.TO_ORGANIZATION_ID;
+                p.LOCATOR_ID = p.LOCATOR_ID.Equals("") ? "null" : p.LOCATOR_ID;
+                p.DELIVER_TO_LOCATION_ID = p.DELIVER_TO_LOCATION_ID.Equals("") ? "null" : p.DELIVER_TO_LOCATION_ID;
+                p.SHIPMENT_UNIT_PRICE = p.SHIPMENT_UNIT_PRICE.Equals("") ? "null" : p.SHIPMENT_UNIT_PRICE;
+                p.TRANSFER_COST = p.TRANSFER_COST.Equals("") ? "null" : p.TRANSFER_COST;
+                p.TRANSPORTATION_COST = p.TRANSPORTATION_COST.Equals("") ? "null" : p.TRANSPORTATION_COST;
+                p.ATTRIBUTE_NUMBER1_L = p.ATTRIBUTE_NUMBER1_L.Equals("") ? "null" : p.ATTRIBUTE_NUMBER1_L;
+                p.ATTRIBUTE_NUMBER2_L = p.ATTRIBUTE_NUMBER2_L.Equals("") ? "null" : p.ATTRIBUTE_NUMBER2_L;
+                p.ATTRIBUTE_NUMBER3_L = p.ATTRIBUTE_NUMBER3_L.Equals("") ? "null" : p.ATTRIBUTE_NUMBER3_L;
+                p.ATTRIBUTE_NUMBER4_L = p.ATTRIBUTE_NUMBER4_L.Equals("") ? "null" : p.ATTRIBUTE_NUMBER4_L;
+                p.ATTRIBUTE_NUMBER5_L = p.ATTRIBUTE_NUMBER5_L.Equals("") ? "null" : p.ATTRIBUTE_NUMBER5_L;
+                p.ATTRIBUTE_NUMBER6_L = p.ATTRIBUTE_NUMBER6_L.Equals("") ? "null" : p.ATTRIBUTE_NUMBER6_L;
+                p.ATTRIBUTE_NUMBER7_L = p.ATTRIBUTE_NUMBER7_L.Equals("") ? "null" : p.ATTRIBUTE_NUMBER7_L;
+                p.ATTRIBUTE_NUMBER8_L = p.ATTRIBUTE_NUMBER8_L.Equals("") ? "null" : p.ATTRIBUTE_NUMBER8_L;
+                p.ATTRIBUTE_NUMBER9_L = p.ATTRIBUTE_NUMBER9_L.Equals("") ? "null" : p.ATTRIBUTE_NUMBER9_L;
+                p.ATTRIBUTE_NUMBER10_L = p.ATTRIBUTE_NUMBER10_L.Equals("") ? "null" : p.ATTRIBUTE_NUMBER10_L;
+                p.REASON_ID = p.REASON_ID.Equals("") ? "null" : p.REASON_ID;
+                p.REQUEST_ID_L = p.REQUEST_ID_L.Equals("") ? "null" : p.REQUEST_ID_L;
+                p.TAX_AMOUNT_L = p.TAX_AMOUNT_L.Equals("") ? "null" : p.TAX_AMOUNT_L;
+                p.SHIP_TO_LOCATION_ID_L = p.SHIP_TO_LOCATION_ID_L.Equals("") ? "null" : p.SHIP_TO_LOCATION_ID_L;
+                p.SECONDARY_QUANTITY_SHIPPED = p.SECONDARY_QUANTITY_SHIPPED.Equals("") ? "null" : p.SECONDARY_QUANTITY_SHIPPED;
+                p.SECONDARY_QUANTITY_RECEIVED = p.SECONDARY_QUANTITY_RECEIVED.Equals("") ? "null" : p.SECONDARY_QUANTITY_RECEIVED;
+                p.MMT_TRANSACTION_ID = p.MMT_TRANSACTION_ID.Equals("") ? "null" : p.MMT_TRANSACTION_ID;
+                p.AMOUNT = p.AMOUNT.Equals("") ? "null" : p.AMOUNT;
+                p.AMOUNT_RECEIVED = p.AMOUNT_RECEIVED.Equals("") ? "null" : p.AMOUNT_RECEIVED;
+
                 p.TAX_AMOUNT = p.TAX_AMOUNT.Equals("") ? "0" : p.TAX_AMOUNT;
                 sql = "Insert Into " + xCPoR.table + "(" + xCPoR.LAST_UPDATE_DATE + "," + xCPoR.CREATION_DATE + "," + xCPoR.RECEIPT_SOURCE_CODE + "," +
                     xCPoR.VENDOR_ID + "," + xCPoR.VENDOR_SITE_ID + "," + xCPoR.ORGANIZATION_ID + "," +
@@ -264,46 +328,46 @@ namespace XCustPr
                     xCPoR.LOT_NUMBER + " " +
 
                     ") " +
-                    "Values('" + p.LAST_UPDATE_DATE + "','" + p.CREATION_DATE + "','" + p.RECEIPT_SOURCE_CODE + "','" +
-                    p.VENDOR_ID + "','" + p.VENDOR_SITE_ID + "','" + p.ORGANIZATION_ID + "','" +
-                    p.SHIPMENT_NUM + "','" + p.RECEIPT_NUM + "','" + p.SHIP_TO_LOCATION_ID + "','" +
+                    "Values('" + p.LAST_UPDATE_DATE + "','" + p.CREATION_DATE + "','" + p.RECEIPT_SOURCE_CODE + "'," +
+                    p.VENDOR_ID + "," + p.VENDOR_SITE_ID + "," + p.ORGANIZATION_ID + ",'" +
+                    p.SHIPMENT_NUM + "','" + p.RECEIPT_NUM + "'," + p.SHIP_TO_LOCATION_ID + ",'" +
                     p.PACKING_SLIP + "','" + p.SHIPPED_DATE + "','" + p.EXPECTED_RECEIPT_DATE + "','" +
                     p.ATTRIBUTE_CATEGORY + "','" + p.ATTRIBUTE1 + "','" + p.ATTRIBUTE2 + "','" +
                     p.ATTRIBUTE3 + "','" + p.ATTRIBUTE4 + "','" + p.ATTRIBUTE5 + "','" +
                     p.ATTRIBUTE6 + "','" + p.ATTRIBUTE7 + "','" + p.ATTRIBUTE8 + "','" +
-                    p.ATTRIBUTE9 + "','" + p.ATTRIBUTE10 + "','" + p.REQUEST_ID + "','" +
-                    p.GROSS_WEIGHT + "','" + p.GROSS_WEIGHT_UOM_CODE + "','" + p.NET_WEIGHT + "','" +
-                    p.NET_WEIGHT_UOM_CODE + "','" + p.PACKAGING_CODE + "','" + p.INVOICE_NUM + "','" +
-                    p.INVOICE_DATE + "','" + p.INVOICE_AMOUNT + "','" + p.TAX_NAME + "','" +
-                    p.TAX_AMOUNT + "','" + p.FREIGHT_AMOUNT + "','" + p.INVOICE_STATUS_CODE + "','" +
-                    p.CURRENCY_CODE + "','" + p.CONVERSION_RATE_TYPE + "','" + p.CONVERSION_RATE + "','" +
-                    p.CONVERSION_DATE + "','" + p.PAYMENT_TERMS_ID + "','" + p.SHIP_TO_ORG_ID + "','" +
-                    p.CUSTOMER_ID + "','" + p.CUSTOMER_SITE_ID + "','" + p.REMIT_TO_SITE_ID + "','" +
-                    p.SHIP_FROM_LOCATION_ID + "','" + p.APPROVAL_STATUS + "','" + p.RMA_BU_ID + "','" +
-                    p.HEADER_INTERFACE_ID + "','" + p.RA_ORIG_SYSTEM_REF + "','" + p.SHIPMENT_LINE_ID + "','" +
-                    p.LINE_NUM + "','" + p.CATEGORY_ID + "','" + p.QUANTITY_SHIPPED + "','" +
-                    p.QUANTITY_RECEIVED + "','" + p.QUANTITY_DELIVERED + "','" + p.QUANTITY_RETURNED + "','" +
-                    p.QUANTITY_ACCEPTED + "','" + p.QUANTITY_REJECTED + "','" + p.UOM_CODE + "','" +
-                    p.ITEM_DESCRIPTION + "','" + p.ITEM_ID + "','" + p.ITEM_REVISION + "','" +
-                    p.SHIPMENT_LINE_STATUS_CODE + "','" + p.SOURCE_DOCUMENT_CODE + "','" + p.PO_HEADER_ID + "','" +
-                    p.PO_LINE_ID + "','" + p.PO_LINE_LOCATION_ID + "','" + p.PO_DISTRIBUTION_ID + "','" +
-                    p.REQUISITION_LINE_ID + "','" + p.REQ_DISTRIBUTION_ID + "','" + p.FROM_ORGANIZATION_ID + "','" +
-                    p.DESTINATION_TYPE_CODE + "','" + p.TO_ORGANIZATION_ID + "','" + p.TO_SUBINVENTORY + "','" +
-                    p.LOCATOR_ID + "','" + p.DELIVER_TO_LOCATION_ID + "','" + p.SHIPMENT_UNIT_PRICE + "','" +
-                    p.TRANSFER_COST + "','" + p.TRANSPORTATION_COST + "','" + p.ATTRIBUTE_CATEGORY_L + "','" +
+                    p.ATTRIBUTE9 + "','" + p.ATTRIBUTE10 + "'," + p.REQUEST_ID + "," +
+                    p.GROSS_WEIGHT + ",'" + p.GROSS_WEIGHT_UOM_CODE + "'," + p.NET_WEIGHT + "," +
+                    p.NET_WEIGHT_UOM_CODE + ",'" + p.PACKAGING_CODE + "','" + p.INVOICE_NUM + "','" +
+                    p.INVOICE_DATE + "'," + p.INVOICE_AMOUNT + ",'" + p.TAX_NAME + "'," +
+                    p.TAX_AMOUNT + "," + p.FREIGHT_AMOUNT + ",'" + p.INVOICE_STATUS_CODE + "','" +
+                    p.CURRENCY_CODE + "','" + p.CONVERSION_RATE_TYPE + "'," + p.CONVERSION_RATE + ",'" +
+                    p.CONVERSION_DATE + "'," + p.PAYMENT_TERMS_ID + "," + p.SHIP_TO_ORG_ID + "," +
+                    p.CUSTOMER_ID + "," + p.CUSTOMER_SITE_ID + "," + p.REMIT_TO_SITE_ID + "," +
+                    p.SHIP_FROM_LOCATION_ID + ",'" + p.APPROVAL_STATUS + "'," + p.RMA_BU_ID + "," +
+                    p.HEADER_INTERFACE_ID + ",'" + p.RA_ORIG_SYSTEM_REF + "'," + p.SHIPMENT_LINE_ID + "," +
+                    p.LINE_NUM + "," + p.CATEGORY_ID + "," + p.QUANTITY_SHIPPED + ",'" +
+                    p.QUANTITY_RECEIVED + "'," + p.QUANTITY_DELIVERED + "," + p.QUANTITY_RETURNED + "," +
+                    p.QUANTITY_ACCEPTED + "," + p.QUANTITY_REJECTED + ",'" + p.UOM_CODE + "','" +
+                    p.ITEM_DESCRIPTION + "'," + p.ITEM_ID + ",'" + p.ITEM_REVISION + "','" +
+                    p.SHIPMENT_LINE_STATUS_CODE + "','" + p.SOURCE_DOCUMENT_CODE + "'," + p.PO_HEADER_ID + "," +
+                    p.PO_LINE_ID + "," + p.PO_LINE_LOCATION_ID + "," + p.PO_DISTRIBUTION_ID + ",'" +
+                    p.REQUISITION_LINE_ID + "," + p.REQ_DISTRIBUTION_ID + "," + p.FROM_ORGANIZATION_ID + "," +
+                    p.DESTINATION_TYPE_CODE + "'," + p.TO_ORGANIZATION_ID + ",'" + p.TO_SUBINVENTORY + "'," +
+                    p.LOCATOR_ID + "," + p.DELIVER_TO_LOCATION_ID + "," + p.SHIPMENT_UNIT_PRICE + "," +
+                    p.TRANSFER_COST + "," + p.TRANSPORTATION_COST + ",'" + p.ATTRIBUTE_CATEGORY_L + "','" +
                     p.ATTRIBUTE1_L + "','" + p.ATTRIBUTE2_L + "','" + p.ATTRIBUTE3_L + "','" +
                     p.ATTRIBUTE4_L + "','" + p.ATTRIBUTE5_L + "','" + p.ATTRIBUTE6_L + "','" +
                     p.ATTRIBUTE7_L + "','" + p.ATTRIBUTE8_L + "','" + p.ATTRIBUTE9_L + "','" +
-                    p.ATTRIBUTE10_L + "','" + p.ATTRIBUTE_NUMBER1_L + "','" + p.ATTRIBUTE_NUMBER2_L + "','" +
-                    p.ATTRIBUTE_NUMBER3_L + "','" + p.ATTRIBUTE_NUMBER4_L + "','" + p.ATTRIBUTE_NUMBER5_L + "','" +
-                    p.ATTRIBUTE_NUMBER6_L + "','" + p.ATTRIBUTE_NUMBER7_L + "','" + p.ATTRIBUTE_NUMBER8_L + "','" +
-                    p.ATTRIBUTE_NUMBER9_L + "','" + p.ATTRIBUTE_NUMBER10_L + "','" + p.ATTRIBUTE_DATE1_L + "','" +
-                    p.ATTRIBUTE_DATE2_L + "','" + p.ATTRIBUTE_DATE3_L + "','" + p.ATTRIBUTE_DATE4_L + "','" +
-                    p.REASON_ID + "','" + p.REQUEST_ID_L + "','" + p.DESTINATION_CONTEXT + "','" +
-                    p.PRIMARY_UOM_CODE + "','" + p.TAX_NAME_L + "','" + p.TAX_AMOUNT_L + "','" +
-                    p.INVOICE_STATUS_CODE_L + "','" + p.SHIP_TO_LOCATION_ID_L + "','" + p.SECONDARY_QUANTITY_SHIPPED + "','" +
-                    p.SECONDARY_QUANTITY_RECEIVED + "','" + p.SECONDARY_UOM_CODE + "','" + p.MMT_TRANSACTION_ID + "','" +
-                    p.AMOUNT + "','" + p.AMOUNT_RECEIVED + "','" + p.ATTRIBUTE_DATE5_L + "','" +
+                    p.ATTRIBUTE10_L + "'," + p.ATTRIBUTE_NUMBER1_L + "," + p.ATTRIBUTE_NUMBER2_L + "," +
+                    p.ATTRIBUTE_NUMBER3_L + "," + p.ATTRIBUTE_NUMBER4_L + "," + p.ATTRIBUTE_NUMBER5_L + "," +
+                    p.ATTRIBUTE_NUMBER6_L + "," + p.ATTRIBUTE_NUMBER7_L + "," + p.ATTRIBUTE_NUMBER8_L + "," +
+                    p.ATTRIBUTE_NUMBER9_L + "," + p.ATTRIBUTE_NUMBER10_L + ",'" + p.ATTRIBUTE_DATE1_L + "','" +
+                    p.ATTRIBUTE_DATE2_L + "','" + p.ATTRIBUTE_DATE3_L + "','" + p.ATTRIBUTE_DATE4_L + "'," +
+                    p.REASON_ID + "," + p.REQUEST_ID_L + ",'" + p.DESTINATION_CONTEXT + "','" +
+                    p.PRIMARY_UOM_CODE + "','" + p.TAX_NAME_L + "'," + p.TAX_AMOUNT_L + ",'" +
+                    p.INVOICE_STATUS_CODE_L + "'," + p.SHIP_TO_LOCATION_ID_L + "," + p.SECONDARY_QUANTITY_SHIPPED + "," +
+                    p.SECONDARY_QUANTITY_RECEIVED + ",'" + p.SECONDARY_UOM_CODE + "'," + p.MMT_TRANSACTION_ID + "," +
+                    p.AMOUNT + "," + p.AMOUNT_RECEIVED + ",'" + p.ATTRIBUTE_DATE5_L + "','" +
                     p.LOT_NUMBER + "'" +
 
                     ") ";

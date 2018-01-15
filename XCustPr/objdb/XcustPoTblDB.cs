@@ -96,6 +96,7 @@ namespace XCustPr
             xCPO.ASSESSABLE_VALUE = "ASSESSABLE_VALUE";
             xCPO.DELIVER_DATE = "DELIVER_DATE";
             xCPO.DELIVER_QTY = "DELIVER_QTY";
+            xCPO.DISTRIBUTION_NUM = "DISTRIBUTION_NUM";
 
             xCPO.table = "xcust_PO_TBL";
 
@@ -174,7 +175,6 @@ namespace XCustPr
             {
                 if (selectDupPk(p.PO_HEADER_ID, p.PO_LINE_ID))
                 {
-
                     deletexCPR(p.PO_HEADER_ID, p.PO_LINE_ID, pathLog);
                 }
                 chk = insert(p, pathLog);
@@ -222,6 +222,7 @@ namespace XCustPr
                 p.PRC_BU_ID = p.PRC_BU_ID.Equals("") ? "null" : p.PRC_BU_ID;
                 p.PO_HEADER_ID = p.PO_HEADER_ID.Equals("") ? "null" : p.PO_HEADER_ID;
                 p.DELIVER_QTY = p.DELIVER_QTY.Equals("") ? "null" : p.DELIVER_QTY;
+                p.DISTRIBUTION_NUM = p.DISTRIBUTION_NUM.Equals("") ? "null" : p.DISTRIBUTION_NUM;
 
                 String last_update_by = "0", creation_by = "0";
                 p.TAX_AMOUNT = p.TAX_AMOUNT.Equals("") ? "0" : p.TAX_AMOUNT;
@@ -245,7 +246,7 @@ namespace XCustPr
                     xCPO.VENDOR_CONTACT_ID + "," + xCPO.VENDOR_ID + "," + xCPO.VENDOR_SITE + "," +
                     xCPO.TAX_AMOUNT + "," + xCPO.TAX_CODE + "," + xCPO.ACC_SEGMENT1 + "," +
                     xCPO.ACC_SEGMENT2 + "," + xCPO.ACC_SEGMENT3 + "," + xCPO.ACC_SEGMENT4 + "," +
-                    xCPO.ACC_SEGMENT5 + "," + xCPO.ACC_SEGMENT6+ "," + xCPO.DELIVER_DATE+ "," + xCPO.DELIVER_QTY +
+                    xCPO.ACC_SEGMENT5 + "," + xCPO.ACC_SEGMENT6+ "," + xCPO.DELIVER_DATE+ "," + xCPO.DELIVER_QTY + "," + xCPO.DISTRIBUTION_NUM +
 
                   ") " +
                     "Values(" + p.AGENT_ID + ",'" + p.APPROVED_DATE + "','" + p.APPROVED_FLAG + "'," +
@@ -268,7 +269,7 @@ namespace XCustPr
                     p.VENDOR_CONTACT_ID + "," + p.VENDOR_ID + ",'" + p.VENDOR_SITE + "','" +
                     p.TAX_AMOUNT + "','" + p.TAX_CODE + "','" + p.ACC_SEGMENT1 + "','" +
                     p.ACC_SEGMENT2 + "','" + p.ACC_SEGMENT3 + "','" + p.ACC_SEGMENT4 + "','" +
-                    p.ACC_SEGMENT5 + "','" + p.ACC_SEGMENT6 + "','" + p.DELIVER_DATE + "'," + p.DELIVER_QTY + " " +
+                    p.ACC_SEGMENT5 + "','" + p.ACC_SEGMENT6 + "','" + p.DELIVER_DATE + "'," + p.DELIVER_QTY + "," + p.DISTRIBUTION_NUM + " " +
 
                   ") ";
                 chk = conn.ExecuteNonQuery(sql, "kfc_po", pathLog);

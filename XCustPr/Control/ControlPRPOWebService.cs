@@ -592,13 +592,14 @@ namespace XCustPr
 
                     item.ACC_SEGMENT6 = data2[60].Trim();
                     item.COUNT_AP_INVOICE = data2[61].Trim();
-                    item.DESTINATION_TYPE = data2[64].Trim();
-                    item.DELIVER_TO_LOC = data2[65].Trim();
-                    item.PRODUCT_TYPE = data2[66].Trim();
-                    item.ASSESSABLE_VALUE = data2[67].Trim().Replace("|#",",");
-                    item.DELIVER_TO_LOC_LINFOX = data2[68].Trim();
-                    item.DELIVER_QTY = data2[69].Trim();
-                    item.DELIVER_DATE = xCPODB.xCPO.dateYearToDB(data2[70].Trim());
+                    item.DISTRIBUTION_NUM = data2[62].Trim();
+                    item.DESTINATION_TYPE = data2[65].Trim();
+                    item.DELIVER_TO_LOC = data2[66].Trim();
+                    item.PRODUCT_TYPE = data2[67].Trim();
+                    item.ASSESSABLE_VALUE = data2[68].Trim().Replace("|#",",");
+                    item.DELIVER_TO_LOC_LINFOX = data2[69].Trim();
+                    item.DELIVER_QTY = data2[70].Trim();
+                    item.DELIVER_DATE = xCPODB.xCPO.dateYearToDB(data2[71].Trim());
                     if (item.ASSESSABLE_VALUE.ToLower().Equals("goods"))
                     {
                         dump = "";
@@ -609,6 +610,10 @@ namespace XCustPr
                     }
                     //int VALUE_SET_ID = 0, VALUE_SET_CODE = 1, VALUE_ID = 2, VALUE = 3, DESCRIPTION = 4, ENABLED_FLAG = 5, LAST_UPDATE_DATE = 6, CREATION_DATE = 7;
                     if (item.PO_HEADER_ID.Equals("12988051"))
+                    {
+                        dump = "";
+                    }
+                    if (item.SEGMENT1.Equals("399000445"))
                     {
                         dump = "";
                     }
