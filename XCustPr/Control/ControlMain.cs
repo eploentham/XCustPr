@@ -482,9 +482,52 @@ namespace XCustPr
                 MessageBox.Show("Path ExtractZipPathLog empty", "createFolderExtractZip");
                 return;
             }
+            if (initC.ExtractZipPathInitial.Equals(""))
+            {
+                MessageBox.Show("Path ExtractZipPathInitial empty", "createFolderExtractZip");
+                return;
+            }
+            if (initC.ExtractZipPathTmp.Equals(""))
+            {
+                MessageBox.Show("Path ExtractZipPathTmp empty", "createFolderExtractZip");
+                return;
+            }
+            if (initC.ExtractZipPathZipExtract_DFT.Equals(""))
+            {
+                MessageBox.Show("Path ExtractZipPathZipExtract_DFT empty", "createFolderExtractZip");
+                return;
+            }
+            if (initC.ExtractZipPathZipExtract_DIN_PIN_WIN.Equals(""))
+            {
+                MessageBox.Show("Path ExtractZipPathZipExtract_DIN_PIN_WIN empty", "createFolderExtractZip");
+                return;
+            }
+            if (initC.ExtractZipPathZipExtract_DUS_WUS.Equals(""))
+            {
+                MessageBox.Show("Path ExtractZipPathZipExtract_DUS_WUS empty", "createFolderExtractZip");
+                return;
+            }
+            if (initC.ExtractZipPathZipExtract_DEX.Equals(""))
+            {
+                MessageBox.Show("Path ExtractZipPathZipExtract_DEX empty", "createFolderExtractZip");
+                return;
+            }
+            if (initC.ExtractZipPathZipExtract_DRT.Equals(""))
+            {
+                MessageBox.Show("Path ExtractZipPathZipExtract_DRT empty", "createFolderExtractZip");
+                return;
+            }
+
             createFolder(initC.ExtractZipPathZipExtractRead);
             createFolder(initC.ExtractZipPathZipExtract);
             createFolder(initC.ExtractZipPathLog);
+            createFolder(initC.ExtractZipPathInitial);
+            createFolder(initC.ExtractZipPathTmp);
+            createFolder(initC.ExtractZipPathZipExtract_DFT);
+            createFolder(initC.ExtractZipPathZipExtract_DIN_PIN_WIN);
+            createFolder(initC.ExtractZipPathZipExtract_DUS_WUS);
+            createFolder(initC.ExtractZipPathZipExtract_DEX);
+            createFolder(initC.ExtractZipPathZipExtract_DRT);
         }
         public void createFolderPO001PathProcess()
         {
@@ -733,6 +776,14 @@ namespace XCustPr
             initC.ExtractZipPathZipExtract = iniFile.Read("ExtractZipPathZipExtract").Trim();
             initC.AutoRunExtractZip = iniFile.Read("AutoRunExtractZip").Trim();
             initC.ExtractZipPathLog = iniFile.Read("ExtractZipPathLog").Trim();
+            initC.ExtractZipPathInitial = iniFile.Read("ExtractZipPathInitial").Trim();
+            initC.ExtractZipPathTmp = iniFile.Read("ExtractZipPathTmp").Trim();
+            initC.ExtractZipPathZipExtract_DFT = iniFile.Read("ExtractZipPathZipExtract_DFT").Trim();
+            initC.ExtractZipPathZipExtract_DIN_PIN_WIN = iniFile.Read("ExtractZipPathZipExtract_DIN_PIN_WIN").Trim();
+            initC.ExtractZipPathZipExtract_DUS_WUS = iniFile.Read("ExtractZipPathZipExtract_DUS_WUS").Trim();
+            initC.ExtractZipPathZipExtract_DEX = iniFile.Read("ExtractZipPathZipExtract_DEX").Trim();
+            initC.ExtractZipPathZipExtract_DRT = iniFile.Read("ExtractZipPathZipExtract_DRT").Trim();
+
 
             initC.AP001PathArchive = iniFile.Read("AP001PathArchive").Trim();
             initC.AP001PathError = iniFile.Read("AP001PathError").Trim();

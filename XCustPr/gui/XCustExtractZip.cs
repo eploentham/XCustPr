@@ -57,13 +57,13 @@ namespace XCustPr
             txtFileName.Text = Cm.initC.AutoRunExtractZip;
 
             int i = 1;
-            if (Cm.initC.ExtractZipPathZipExtractRead.Equals(""))
+            if (Cm.initC.ExtractZipPathInitial.Equals(""))
             {
                 MessageBox.Show("Path Config ExtractZip ไม่ถูกต้อง", "");
                 disableBtn();
                 return;
             }
-            filePO = Cm.getFileinFolder(Cm.initC.ExtractZipPathZipExtractRead);
+            filePO = Cm.getFileinFolder(Cm.initC.ExtractZipPathInitial);
             if (filePO == null)
             {
                 MessageBox.Show("Folder ExtractZip ไม่ถูกต้อง", "");
@@ -142,8 +142,8 @@ namespace XCustPr
         private void btnRead_Click(object sender, EventArgs e)
         {
             lv1.Items.Clear();
-            filePO = Cm.getFileinFolder(Cm.initC.ExtractZipPathZipExtractRead);
-            cEZ.readZIPFile(filePO, lv1, this, pB1);
+            filePO = Cm.getFileinFolder(Cm.initC.ExtractZipPathInitial);
+            cEZ.readZIPFileToTemp(filePO, lv1, this, pB1);
         }
         private void txtFileName_Leave(object sender, EventArgs e)
         {

@@ -32,9 +32,10 @@ namespace XCustPr
         {
             Cm.createFolderExtractZip();
         }
-        public void readZIPFile(String[] filePO, MaterialListView lv1, Form form1, MaterialProgressBar pB1)
+        public void readZIPFileToTemp(String[] filePO, MaterialListView lv1, Form form1, MaterialProgressBar pB1)
         {
-            addListView("read zip file " + Cm.initC.ExtractZipPathZipExtractRead, "read zip ", lv1, form1);
+            //addListView("read zip file " + Cm.initC.ExtractZipPathZipExtractRead, "read zip ", lv1, form1);
+            addListView("read zip file " + Cm.initC.ExtractZipPathInitial, "read zip ", lv1, form1);
             String filename = "";
             List<ValidateFileName> lVfile = new List<ValidateFileName>();
             List<ValidatePrPo> lVPr = new List<ValidatePrPo>();
@@ -45,6 +46,7 @@ namespace XCustPr
             //Cm.deleteFile(filename);
             //ZipArchive zip = ZipFile.Open(filename, ZipArchiveMode.Read);
             //var allFiles = Directory.GetFiles(@Cm.initC.ExtractZipPathZipExtractRead, "*.*", SearchOption.AllDirectories);
+            Cm.deleteFileInFolder(Cm.initC.ExtractZipPathTmp);
             foreach (String file in filePO)
             {
                 using (ZipArchive archive = ZipFile.OpenRead(file))
@@ -53,19 +55,23 @@ namespace XCustPr
                     {
                         //if (entry.FullName.EndsWith(".txt", StringComparison.OrdinalIgnoreCase))
                         //{
+                        if (entry.Name.Equals(""))
+                        {
+                            continue;
+                        }
                         ValidateFileName vF = new ValidateFileName();
-                        vF.fileName = entry.FullName;
+                        vF.fileName = entry.Name;
                         vF.recordTotal = "1";
                         lVfile.Add(vF);
                         try
                         {
-                            Cm.moveFile(@Cm.initC.ExtractZipPathZipExtract+entry.FullName, @Cm.initC.ExtractZipPathZipExtract, entry.FullName);
-                            entry.ExtractToFile(Path.Combine(@Cm.initC.ExtractZipPathZipExtract, entry.FullName));
+                            //Cm.moveFile(@Cm.initC.ExtractZipPathTmp + entry.Name, @Cm.initC.Ext1ractZipPathTmp, entry.Name);
+                            entry.ExtractToFile(Path.Combine(@Cm.initC.ExtractZipPathTmp, entry.Name));
                         }
                         catch (IOException ioe)
                         {
                             vPP = new ValidatePrPo();
-                            vPP.Filename = entry.FullName;
+                            vPP.Filename = entry.Name;
                             vPP.Message = ioe.Message;
                             //vPP.Validate = "row " + row1 + " ORDER_DATE=" + row[xCLFPTDB.xCLFPT.ORDER_DATE].ToString();
                             lVPr.Add(vPP);
@@ -74,13 +80,13 @@ namespace XCustPr
                         catch (ArgumentException ae)
                         {
                             vPP = new ValidatePrPo();
-                            vPP.Filename = entry.FullName;
+                            vPP.Filename = entry.Name;
                             vPP.Message = ae.Message;
                             //vPP.Validate = "row " + row1 + " ORDER_DATE=" + row[xCLFPTDB.xCLFPT.ORDER_DATE].ToString();
                             lVPr.Add(vPP);
                             addListView("err " + ae.Message, "extract error ", lv1, form1);
                         }
-                        addListView("extract zip file " + entry.FullName, "extract zip ", lv1, form1);
+                        //addListView("extract zip file " + entry.Name, "extract zip ", lv1, form1);
                         //}
                     }
                     archive.Dispose();
