@@ -37,7 +37,7 @@ namespace XCustPr
             initConfig();
             cTxtL = txtFileName.BackColor;
             cTxtE = Color.Yellow;
-            this.Text = "Last Update 2017-11-08 ";
+            this.Text = "Last Update 201ค-01-26 ";
         }
         private void initConfig()
         {
@@ -144,6 +144,7 @@ namespace XCustPr
             lv1.Items.Clear();
             filePO = Cm.getFileinFolder(Cm.initC.ExtractZipPathInitial);
             cEZ.readZIPFileToTemp(filePO, lv1, this, pB1);
+            cEZ.moveFileToFolder(lv1, this, pB1);
         }
         private void txtFileName_Leave(object sender, EventArgs e)
         {

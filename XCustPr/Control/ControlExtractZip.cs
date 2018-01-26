@@ -97,6 +97,55 @@ namespace XCustPr
             //zip.Dispose();
             Cm.logProcess("xcustextractzip", lVPr, date +" "+ time, lVfile);
         }
+        public void moveFileToFolder(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
+        {
+            addListView("move File To Folder " + Cm.initC.ExtractZipPathInitial, "read zip ", lv1, form1);
+            String[] filePO;
+            filePO = Cm.getFileinFolder(Cm.initC.ExtractZipPathTmp);
+            foreach (String file in filePO)
+            {
+                if (file.ToLower().IndexOf("wus")>0)
+                {
+                    Cm.moveFile(file, Cm.initC.ExtractZipPathZipExtract_DUS_WUS, file.Replace(Cm.initC.ExtractZipPathTmp, ""), Cm.initC.ExtractZipPathLog);
+                    continue;
+                }
+                else if (file.ToLower().IndexOf("dus") > 0)
+                {
+                    Cm.moveFile(file, Cm.initC.ExtractZipPathZipExtract_DRT, file.Replace(Cm.initC.ExtractZipPathTmp, ""), Cm.initC.ExtractZipPathLog);
+                    continue;
+                }
+                else if (file.ToLower().IndexOf("dex") > 0)
+                {
+                    Cm.moveFile(file, Cm.initC.ExtractZipPathZipExtract_DEX, file.Replace(Cm.initC.ExtractZipPathTmp, ""), Cm.initC.ExtractZipPathLog);
+                    continue;
+                }
+                else if (file.ToLower().IndexOf("dft") > 0)
+                {
+                    Cm.moveFile(file, Cm.initC.ExtractZipPathZipExtract_DFT, file.Replace(Cm.initC.ExtractZipPathTmp, ""), Cm.initC.ExtractZipPathLog);
+                    continue;
+                }
+                else if (file.ToLower().IndexOf("win") > 0)
+                {
+                    Cm.moveFile(file, Cm.initC.ExtractZipPathZipExtract_DIN_PIN_WIN, file.Replace(Cm.initC.ExtractZipPathTmp, ""), Cm.initC.ExtractZipPathLog);
+                    continue;
+                }
+                else if (file.ToLower().IndexOf("din") > 0)
+                {
+                    Cm.moveFile(file, Cm.initC.ExtractZipPathZipExtract_DIN_PIN_WIN, file.Replace(Cm.initC.ExtractZipPathTmp, ""), Cm.initC.ExtractZipPathLog);
+                    continue;
+                }
+                else if (file.ToLower().IndexOf("pin") > 0)
+                {
+                    Cm.moveFile(file, Cm.initC.ExtractZipPathZipExtract_DIN_PIN_WIN, file.Replace(Cm.initC.ExtractZipPathTmp, ""), Cm.initC.ExtractZipPathLog);
+                    continue;
+                }
+                else if (file.ToLower().IndexOf("drt") > 0)
+                {
+                    Cm.moveFile(file, Cm.initC.ExtractZipPathZipExtract_DRT, file.Replace(Cm.initC.ExtractZipPathTmp, ""), Cm.initC.ExtractZipPathLog);
+                    continue;
+                }
+            }
+        }
         private void addListView(String col1, String col2, MaterialListView lv1, Form form1)
         {
             lv1.Items.Add(AddToList((lv1.Items.Count + 1), col1, col2));
