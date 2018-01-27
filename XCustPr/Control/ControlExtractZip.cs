@@ -42,7 +42,7 @@ namespace XCustPr
             ValidatePrPo vPP = new ValidatePrPo();
             String date = System.DateTime.Now.ToString("yyyy-MMM-dd");
             String time = System.DateTime.Now.ToString("HH:mm:ss");
-            filename = Cm.initC.ExtractZipPathZipExtractRead + "\\xcustpr.zip";
+            //filename = Cm.initC.ExtractZipPathZipExtractRead + "\\xcustpr.zip";
             //Cm.deleteFile(filename);
             //ZipArchive zip = ZipFile.Open(filename, ZipArchiveMode.Read);
             //var allFiles = Directory.GetFiles(@Cm.initC.ExtractZipPathZipExtractRead, "*.*", SearchOption.AllDirectories);
@@ -111,7 +111,7 @@ namespace XCustPr
                 }
                 else if (file.ToLower().IndexOf("dus") > 0)
                 {
-                    Cm.moveFile(file, Cm.initC.ExtractZipPathZipExtract_DRT, file.Replace(Cm.initC.ExtractZipPathTmp, ""), Cm.initC.ExtractZipPathLog);
+                    Cm.moveFile(file, Cm.initC.ExtractZipPathZipExtract_DUS_WUS, file.Replace(Cm.initC.ExtractZipPathTmp, ""), Cm.initC.ExtractZipPathLog);
                     continue;
                 }
                 else if (file.ToLower().IndexOf("dex") > 0)
