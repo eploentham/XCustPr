@@ -37,7 +37,7 @@ namespace XCustPr
             initConfig();
             cTxtL = txtFileName.BackColor;
             cTxtE = Color.Yellow;
-            this.Text = "Last Update 201ค-01-26 ";
+            this.Text = "Last Update 2018-01-26 ";
         }
         private void initConfig()
         {
