@@ -467,16 +467,16 @@ namespace XCustPr
         }
         public void createFolderExtractZip()
         {
-            if (initC.ExtractZipPathZipExtractRead.Equals(""))
-            {
-                MessageBox.Show("Path ExtractZipPathZipExtractRead empty", "createFolderExtractZip");
-                return;
-            }
-            if (initC.ExtractZipPathZipExtract.Equals(""))
-            {
-                MessageBox.Show("Path ExtractZipPathZipExtract empty", "createFolderExtractZip");
-                return;
-            }
+            //if (initC.ExtractZipPathZipExtractRead.Equals(""))
+            //{
+            //    MessageBox.Show("Path ExtractZipPathZipExtractRead empty", "createFolderExtractZip");
+            //    return;
+            //}
+            //if (initC.ExtractZipPathZipExtract.Equals(""))
+            //{
+            //    MessageBox.Show("Path ExtractZipPathZipExtract empty", "createFolderExtractZip");
+            //    return;
+            //}
             if (initC.ExtractZipPathLog.Equals(""))
             {
                 MessageBox.Show("Path ExtractZipPathLog empty", "createFolderExtractZip");
@@ -518,8 +518,8 @@ namespace XCustPr
                 return;
             }
 
-            createFolder(initC.ExtractZipPathZipExtractRead);
-            createFolder(initC.ExtractZipPathZipExtract);
+            //createFolder(initC.ExtractZipPathZipExtractRead);
+            //createFolder(initC.ExtractZipPathZipExtract);
             createFolder(initC.ExtractZipPathLog);
             createFolder(initC.ExtractZipPathInitial);
             createFolder(initC.ExtractZipPathTmp);
@@ -772,8 +772,8 @@ namespace XCustPr
             initC.PO006DeliveryDate = iniFile.Read("PO006DeliveryDate").Trim();
             initC.PO006ReRunCreationDate = iniFile.Read("PO006ReRunCreationDate").Trim();
 
-            initC.ExtractZipPathZipExtractRead = iniFile.Read("ExtractZipPathZipExtractRead").Trim();
-            initC.ExtractZipPathZipExtract = iniFile.Read("ExtractZipPathZipExtract").Trim();
+            //initC.ExtractZipPathZipExtractRead = iniFile.Read("ExtractZipPathZipExtractRead").Trim();
+            //initC.ExtractZipPathZipExtract = iniFile.Read("ExtractZipPathZipExtract").Trim();
             initC.AutoRunExtractZip = iniFile.Read("AutoRunExtractZip").Trim();
             initC.ExtractZipPathLog = iniFile.Read("ExtractZipPathLog").Trim();
             initC.ExtractZipPathInitial = iniFile.Read("ExtractZipPathInitial").Trim();
