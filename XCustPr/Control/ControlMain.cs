@@ -517,6 +517,11 @@ namespace XCustPr
                 MessageBox.Show("Path ExtractZipPathZipExtract_DRT empty", "createFolderExtractZip");
                 return;
             }
+            if (initC.ExtractZipPathNoProcess.Equals(""))
+            {
+                MessageBox.Show("Path ExtractZipPathNoProcess empty", "createFolderExtractZip");
+                return;
+            }
 
             //createFolder(initC.ExtractZipPathZipExtractRead);
             //createFolder(initC.ExtractZipPathZipExtract);
@@ -528,6 +533,7 @@ namespace XCustPr
             createFolder(initC.ExtractZipPathZipExtract_DUS_WUS);
             createFolder(initC.ExtractZipPathZipExtract_DEX);
             createFolder(initC.ExtractZipPathZipExtract_DRT);
+            createFolderExtractZipNoProcess();
         }
         public void createFolderPO001PathProcess()
         {
@@ -558,6 +564,13 @@ namespace XCustPr
             bool folderExists = Directory.Exists(initC.PathFileCSV);
             if (!folderExists)
                 Directory.CreateDirectory(initC.PathFileCSV);
+        }
+        public void createFolderExtractZipNoProcess()
+        {
+            String date = System.DateTime.Now.ToString("yyyy-MM-dd");
+            bool folderExists = Directory.Exists(initC.ExtractZipPathNoProcess + "\\" + date);
+            if (!folderExists)
+                Directory.CreateDirectory(initC.ExtractZipPathNoProcess + "\\"+ date);
         }
         public String[] getFileinFolder(String path)
         {
@@ -783,7 +796,7 @@ namespace XCustPr
             initC.ExtractZipPathZipExtract_DUS_WUS = iniFile.Read("ExtractZipPathZipExtract_DUS_WUS").Trim();
             initC.ExtractZipPathZipExtract_DEX = iniFile.Read("ExtractZipPathZipExtract_DEX").Trim();
             initC.ExtractZipPathZipExtract_DRT = iniFile.Read("ExtractZipPathZipExtract_DRT").Trim();
-
+            initC.ExtractZipPathNoProcess = iniFile.Read("ExtractZipPathNoProcess").Trim();
 
             initC.AP001PathArchive = iniFile.Read("AP001PathArchive").Trim();
             initC.AP001PathError = iniFile.Read("AP001PathError").Trim();

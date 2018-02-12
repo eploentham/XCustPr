@@ -86,7 +86,7 @@ namespace XCustPr
         public String PO006PathInitial = "", PO006ReRun="", PO006DeliveryDate="", PO006ReRunCreationDate = "";
         public String PO006PathLog = "";
 
-        public String ExtractZipPathLog = "";
+        public String ExtractZipPathLog = "", ExtractZipPathNoProcess="";
         public String ExtractZipPathInitial = "", ExtractZipPathTmp = "", ExtractZipPathZipExtract_DFT = "", ExtractZipPathZipExtract_DIN_PIN_WIN = "", ExtractZipPathZipExtract_DUS_WUS = "", ExtractZipPathZipExtract_DEX = "", ExtractZipPathZipExtract_DRT = "";
 
         public String AP001PathInitial = "", AP001PathProcess = "", AP001PathError = "", AP001PathArchive = "", AP001ImportSource = "", AP001LEGAL_ENTITY="", AP001INVOICE_TYPE="";

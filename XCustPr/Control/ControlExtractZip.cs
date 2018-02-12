@@ -97,9 +97,41 @@ namespace XCustPr
             //zip.Dispose();
             Cm.logProcess("xcustextractzip", lVPr, date +" "+ time, lVfile);
         }
+        public void backupFileNoProcess()
+        {
+            String date = System.DateTime.Now.ToString("yyyy-MM-dd");
+            Cm.createFolderExtractZipNoProcess();
+            String[] filePO;
+            filePO = Cm.getFileinFolder(Cm.initC.ExtractZipPathZipExtract_DEX);
+            foreach (String file in filePO)
+            {
+                Cm.moveFile(file, Cm.initC.ExtractZipPathNoProcess + "\\" + date+"\\" + file.Replace(Cm.initC.ExtractZipPathZipExtract_DEX, ""));
+            }
+            filePO = Cm.getFileinFolder(Cm.initC.ExtractZipPathZipExtract_DFT);
+            foreach (String file in filePO)
+            {
+                Cm.moveFile(file, Cm.initC.ExtractZipPathNoProcess + "\\" + date + "\\" + file.Replace(Cm.initC.ExtractZipPathZipExtract_DFT, ""));
+            }
+            filePO = Cm.getFileinFolder(Cm.initC.ExtractZipPathZipExtract_DRT);
+            foreach (String file in filePO)
+            {
+                Cm.moveFile(file, Cm.initC.ExtractZipPathNoProcess + "\\" + date + "\\" + file.Replace(Cm.initC.ExtractZipPathZipExtract_DRT, ""));
+            }
+            filePO = Cm.getFileinFolder(Cm.initC.ExtractZipPathZipExtract_DUS_WUS);
+            foreach (String file in filePO)
+            {
+                Cm.moveFile(file, Cm.initC.ExtractZipPathNoProcess + "\\" + date + "\\" + file.Replace(Cm.initC.ExtractZipPathZipExtract_DUS_WUS, ""));
+            }
+            filePO = Cm.getFileinFolder(Cm.initC.ExtractZipPathZipExtract_DIN_PIN_WIN);
+            foreach (String file in filePO)
+            {
+                Cm.moveFile(file, Cm.initC.ExtractZipPathNoProcess + "\\" + date + "\\" + file.Replace(Cm.initC.ExtractZipPathZipExtract_DIN_PIN_WIN, ""));
+            }
+        }
         public void moveFileToFolder(MaterialListView lv1, Form form1, MaterialProgressBar pB1)
         {
             addListView("move File To Folder " + Cm.initC.ExtractZipPathInitial, "read zip ", lv1, form1);
+            backupFileNoProcess();
             String[] filePO;
             filePO = Cm.getFileinFolder(Cm.initC.ExtractZipPathTmp);
             foreach (String file in filePO)
